@@ -1,0 +1,74 @@
+:root {
+    --principal: #0062A5;
+    --secundario: #0062A5;
+    --correcto: #d2e7c9;
+    --secondary: #da1900;
+}
+
+.bg-azul {
+    background-color: #2198e7;
+    color: white !important;
+}
+
+.secondary {
+    background: var(--secondary);
+    color: white;
+}
+
+.text-secondary {
+    color: var(--secondary);
+}
+
+.login-page .login-box .card .card-header img {
+    width: 100%;
+}
+
+.vs-pagination--ul {
+    margin-bottom: 0px;
+}
+
+.modal.fade {
+    transition: 2s all;
+}
+
+.modal.fade.show {
+    padding-right: 17px;
+    display: block;
+    background-color: rgba(0, 0, 0, 0.479);
+    overflow: auto;
+}
+
+.el-avatar>img {
+    width: 100%;
+}
+
+.w-full {
+    width: 100% !important;
+}
+
+.is-invalid select,
+.is-invalid textarea,
+.is-invalid input {
+    border-color: #dc3545;
+}
+
+.el-upload.el-upload--text {
+    max-width: 100%;
+}
+
+.el-upload-dragger {
+    max-width: 100%;
+}
+
+input.form-control {
+    border: solid 1px #dcdfe6;
+}
+
+.el-input__inner:read-only {
+    cursor: not-allowed;
+}
+
+.fondo_rojo {
+    background: #DC3545;
+    color: white;
+}
