@@ -207,8 +207,6 @@ class UserController extends Controller
 
             "informe_actividad.index",
 
-            'aprobar.modulos',
-
             "reportes.formulario_cuatro",
             "reportes.formulario_cinco",
             "reportes.memoria_calculos",
@@ -231,19 +229,24 @@ class UserController extends Controller
             'formulario_cuatro.index',
             'formulario_cuatro.create',
             'formulario_cuatro.edit',
+            'formulario_cuatro.destroy',
 
             'detalle_formularios.index',
             'detalle_formularios.create',
             'detalle_formularios.edit',
+            'detalle_formularios.destroy',
 
             'formulario_cinco.index',
             'formulario_cinco.create',
             'formulario_cinco.edit',
+            'formulario_cinco.destroy',
 
             'memoria_calculos.index',
             'memoria_calculos.create',
             'memoria_calculos.edit',
+            'memoria_calculos.destroy',
 
+            'aprobar.modulos',
 
             "reportes.formulario_cuatro",
             "reportes.formulario_cinco",
@@ -264,19 +267,24 @@ class UserController extends Controller
             'formulario_cuatro.index',
             'formulario_cuatro.create',
             'formulario_cuatro.edit',
+            'formulario_cuatro.destroy',
 
             'detalle_formularios.index',
             'detalle_formularios.create',
             'detalle_formularios.edit',
+            'detalle_formularios.destroy',
 
             'formulario_cinco.index',
             'formulario_cinco.create',
             'formulario_cinco.edit',
+            'formulario_cinco.destroy',
 
             'memoria_calculos.index',
             'memoria_calculos.create',
             'memoria_calculos.edit',
+            'memoria_calculos.destroy',
 
+            'aprobar.modulos',
 
             "reportes.formulario_cuatro",
             "reportes.formulario_cinco",
@@ -297,19 +305,24 @@ class UserController extends Controller
             'formulario_cuatro.index',
             'formulario_cuatro.create',
             'formulario_cuatro.edit',
-
+            'formulario_cuatro.destroy',
+            
             'detalle_formularios.index',
             'detalle_formularios.create',
             'detalle_formularios.edit',
-
+            'detalle_formularios.destroy',
+            
             'formulario_cinco.index',
             'formulario_cinco.create',
             'formulario_cinco.edit',
-
+            'formulario_cinco.destroy',
+            
             'memoria_calculos.index',
             'memoria_calculos.create',
             'memoria_calculos.edit',
-
+            'memoria_calculos.destroy',
+            
+            'aprobar.modulos',
 
             "reportes.formulario_cuatro",
             "reportes.formulario_cinco",

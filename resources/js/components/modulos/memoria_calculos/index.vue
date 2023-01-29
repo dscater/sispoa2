@@ -316,6 +316,7 @@ export default {
     },
     data() {
         return {
+            user: JSON.parse(localStorage.getItem("user")),
             permisos: localStorage.getItem("permisos"),
             search: "",
             listRegistros: [],
