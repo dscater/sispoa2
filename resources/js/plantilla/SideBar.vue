@@ -589,6 +589,20 @@
                     </li>
                     <li
                         class="nav-item"
+                        v-if="permisos.includes('personals.index')"
+                    >
+                        <router-link
+                            exact
+                            :to="{ name: 'personals.index' }"
+                            class="nav-link"
+                            v-loading.fullscreen.lock="fullscreenLoading"
+                        >
+                            <i class="nav-icon fas fa-users"></i>
+                            <p>Personal</p>
+                        </router-link>
+                    </li>
+                    <li
+                        class="nav-item"
                         v-if="permisos.includes('usuarios.index')"
                     >
                         <router-link

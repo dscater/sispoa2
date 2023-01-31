@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <p class="w-10 text-md font-weight-bold text-center">
-                        {{ o_modulo.modulo }}
+                        {{ user?.unidad.nombre }}
                     </p>
                 </div>
                 <div class="form-group col-md-12 text-center">
@@ -12,12 +12,12 @@
                         :class="{
                             'text-danger': errors.acceso,
                         }"
-                        ></label
+                        >Pendiente/Aprobado</label
                     >
                     <el-switch
                         :disabled="enviando"
                         style="display: block"
-                        v-model="sw_editar"
+                        v-model="sw_estado"
                         active-color="#13ce66"
                         inactive-color="#ff4949"
                         active-text="APROBADO"
@@ -35,9 +35,10 @@ export default {
     props: ["modulo"],
     data() {
         return {
+            user: JSON.parse(localStorage.getItem("user")),
             o_modulo: this.modulo,
             errors: [],
-            sw_editar: this.modulo.editar == 1 ? true : false,
+            sw_estado: this.modulo.estado == 1 ? true : false,
             sw_eliminar: this.modulo.eliminar == 1 ? true : false,
             enviando: false,
         };
@@ -45,7 +46,7 @@ export default {
     watch: {
         modulo(newVal, oldVal) {
             this.o_modulo = newVal;
-            this.sw_editar = this.o_modulo.editar == 1 ? true : false;
+            this.sw_estado = this.o_modulo.estado == 1 ? true : false;
             this.sw_eliminar = this.o_modulo.eliminar == 1 ? true : false;
         },
     },
@@ -53,11 +54,10 @@ export default {
         actualizaModulo() {
             try {
                 this.enviando = true;
-                let url = "/admin/configuracion_modulos/" + this.modulo.id;
+                let url = "/admin/aprobar_formularios/" + this.modulo.id;
                 let datos = {
                     _method: "put",
-                    editar: this.sw_editar ? 1 : 0,
-                    eliminar: this.sw_eliminar ? 1 : 0,
+                    estado: this.sw_estado ? 1 : 0,
                 };
                 axios
                     .post(url, datos)

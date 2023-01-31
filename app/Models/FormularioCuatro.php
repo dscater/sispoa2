@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class FormularioCuatro extends Model
 {
@@ -19,7 +20,7 @@ class FormularioCuatro extends Model
 
     protected $with = ["unidad"];
 
-    protected $appends = ["estado_aprobado"];
+    protected $appends = ["estado_aprobado", "sw_aprobado"];
 
     public function unidad()
     {
@@ -43,7 +44,25 @@ class FormularioCuatro extends Model
 
     public function getEstadoAprobadoAttribute()
     {
-        $configuracion_modulos = ConfiguracionModulo::where("modulo", "APROBAR FORMULARIOS")->get()->first();
-        return $configuracion_modulos->editar === 1 ? "APROBADO" : "PENDIENTE";
+        $aprobacion_formulario = Aprobacion::where("unidad_id", Auth::user()->unidad_id)->get()->first();
+        if (!$aprobacion_formulario) {
+            $aprobacion_formulario = Aprobacion::create([
+                "unidad_id" => Auth::user()->unidad_id,
+                "estado" => 0,
+            ]);
+        }
+
+        return $aprobacion_formulario->estado === 1 ? "APROBADO" : "PENDIENTE";
+    }
+    public function getSwAprobadoAttribute()
+    {
+        $aprobacion_formulario = Aprobacion::where("unidad_id", Auth::user()->unidad_id)->get()->first();
+        if (!$aprobacion_formulario) {
+            $aprobacion_formulario = Aprobacion::create([
+                "unidad_id" => Auth::user()->unidad_id,
+                "estado" => 0,
+            ]);
+        }
+        return $aprobacion_formulario->estado;
     }
 }

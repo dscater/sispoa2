@@ -205,7 +205,9 @@
                                                                 permisos.includes(
                                                                     'detalle_formularios.edit'
                                                                 ) &&
-                                                                !estado_aprobado
+                                                                row.item
+                                                                    .sw_aprobado ==
+                                                                    0
                                                             "
                                                             @click="
                                                                 editar(
@@ -227,7 +229,9 @@
                                                                 permisos.includes(
                                                                     'detalle_formularios.destroy'
                                                                 ) &&
-                                                                !estado_aprobado
+                                                                row.item
+                                                                    .sw_aprobado ==
+                                                                    0
                                                             "
                                                             @click="
                                                                 eliminaDetalleFormulario(
@@ -349,14 +353,12 @@ export default {
             filter: null,
             muestra_configuracion_modulo: false,
             muestra_aprobar_formularios: false,
-            estado_aprobado: false,
         };
     },
     mounted() {
         this.loadingWindow.close();
         this.getDetalleFormularios();
         this.obtienePermisos();
-        this.getAprobado();
     },
     methods: {
         // Listar DetalleFormularios
@@ -470,11 +472,6 @@ export default {
         },
         muestraAprobarFormularios() {
             this.muestra_aprobar_formularios = true;
-        },
-        getAprobado() {
-            axios.get("/admin/get_aprobados").then((response) => {
-                this.estado_aprobado = response.data;
-            });
         },
     },
 };

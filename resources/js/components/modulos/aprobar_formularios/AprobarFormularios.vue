@@ -22,12 +22,11 @@
                 </div>
                 <div class="modal-body">
                     <form>
-                        <div
-                            class="row"
-                            v-for="(item, index) in listConfiguracionModulos"
-                        >
+                        <div class="row">
                             <div class="col-md-12">
-                                <Acceso :modulo="item"></Acceso>
+                                <Acceso
+                                    :modulo="aprobacion_formulario"
+                                ></Acceso>
                             </div>
                         </div>
                     </form>
@@ -73,18 +72,32 @@ export default {
         return {
             user: JSON.parse(localStorage.getItem("user")),
             bModal: this.muestra_modal,
-            listConfiguracionModulos: [],
+            aprobacion_formulario: {
+                unidad_id: this.user?.unidad_id,
+                estado: 0,
+            },
         };
     },
     mounted() {
         this.bModal = this.muestra_modal;
         this.getConfiguracionModulos();
+        this.getUser();
     },
     methods: {
+        getUser() {
+            axios.get("/admin/usuarios/" + this.user.id).then((response) => {
+                console.log(response.data);
+                localStorage.setItem(
+                    "user",
+                    JSON.stringify(response.data.usuario)
+                );
+                this.user = JSON.parse(localStorage.getItem("user"));
+            });
+        },
         getConfiguracionModulos() {
             axios.get("/admin/aprobar_formularios").then((response) => {
-                this.listConfiguracionModulos =
-                    response.data.configuracion_modulos;
+                this.aprobacion_formulario =
+                    response.data.aprobacion_formulario;
             });
         },
         // Dialog/modal

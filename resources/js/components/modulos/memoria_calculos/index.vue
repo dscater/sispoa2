@@ -220,7 +220,9 @@
                                                                 permisos.includes(
                                                                     'memoria_calculos.edit'
                                                                 ) &&
-                                                                !estado_aprobado
+                                                                row.item
+                                                                    .sw_aprobado ==
+                                                                    0
                                                             "
                                                             @click="
                                                                 editar(
@@ -242,7 +244,9 @@
                                                                 permisos.includes(
                                                                     'memoria_calculos.destroy'
                                                                 ) &&
-                                                                !estado_aprobado
+                                                                row.item
+                                                                    .sw_aprobado ==
+                                                                    0
                                                             "
                                                             @click="
                                                                 eliminaMemoriaCalculo(
@@ -369,14 +373,12 @@ export default {
             filter: null,
             muestra_configuracion_modulo: false,
             muestra_aprobar_formularios: false,
-            estado_aprobado: false,
         };
     },
     mounted() {
         this.loadingWindow.close();
         this.getMemoriaCalculo();
         this.obtienePermisos();
-        this.getAprobado();
     },
     methods: {
         // Listar MemoriaCalculo
@@ -513,11 +515,6 @@ export default {
         },
         muestraAprobarFormularios() {
             this.muestra_aprobar_formularios = true;
-        },
-        getAprobado() {
-            axios.get("/admin/get_aprobados").then((response) => {
-                this.estado_aprobado = response.data;
-            });
         },
     },
 };

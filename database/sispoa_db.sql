@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 25-01-2023 a las 03:19:57
+-- Tiempo de generación: 31-01-2023 a las 21:36:03
 -- Versión del servidor: 5.7.33
 -- Versión de PHP: 7.4.19
 
@@ -47,6 +47,28 @@ INSERT INTO `actividad_realizadas` (`id`, `descripcion`, `archivo`, `estado`, `f
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `aprobacions`
+--
+
+CREATE TABLE `aprobacions` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `unidad_id` bigint(20) UNSIGNED NOT NULL,
+  `estado` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `aprobacions`
+--
+
+INSERT INTO `aprobacions` (`id`, `unidad_id`, `estado`, `created_at`, `updated_at`) VALUES
+(1, 3, 1, '2023-01-31 21:19:48', '2023-01-31 21:35:01'),
+(2, 1, 0, '2023-01-31 21:30:02', '2023-01-31 21:30:02');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `certificacions`
 --
 
@@ -63,7 +85,7 @@ CREATE TABLE `certificacions` (
   `superior_id` bigint(20) UNSIGNED NOT NULL,
   `inicio` date NOT NULL,
   `final` date NOT NULL,
-  `personal_designado` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `personal_designado` bigint(20) UNSIGNED DEFAULT NULL,
   `departamento` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `municipio` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `estado` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -78,11 +100,11 @@ CREATE TABLE `certificacions` (
 --
 
 INSERT INTO `certificacions` (`id`, `formulario_id`, `mo_id`, `mod_id`, `cantidad_usar`, `presupuesto_usarse`, `archivo`, `correlativo`, `solicitante_id`, `superior_id`, `inicio`, `final`, `personal_designado`, `departamento`, `municipio`, `estado`, `anulado`, `fecha_registro`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, 9, 2, '60.00', NULL, 1, 2, 3, '2022-02-01', '2022-12-01', 'JOSE PAREDES', 'LA PAZ', 'LA PAZ', 'PENDIENTE', 0, '2022-12-13', '2022-12-13 21:57:46', '2022-12-23 15:08:15'),
-(2, 2, 11, 2, 28, '1120.00', NULL, 2, 5, 4, '2022-04-04', '2022-12-12', 'CARLOS SANCHEZ', 'LA PAZ', 'LA PAZ', 'PENDIENTE', 0, '2022-12-13', '2022-12-13 22:12:46', '2022-12-13 22:28:05'),
-(3, 4, 14, 11, 3, '120.00', NULL, 3, 6, 4, '2022-04-04', '2022-12-30', 'JUAN PERES', '', '', 'PENDIENTE', 0, '2022-12-23', '2022-12-23 14:56:35', '2022-12-23 14:56:44'),
-(4, 5, 15, 12, 30, '1200.00', NULL, 4, 5, 4, '2023-03-03', '2023-06-06', 'JUAN PERES', '', '', 'PENDIENTE', 0, '2023-01-06', '2023-01-06 15:46:42', '2023-01-06 15:46:42'),
-(5, 1, 1, 6, 3, '60.00', NULL, 5, 10, 5, '2023-02-03', '2023-12-12', 'JOSE PAREDES', '', '', 'PENDIENTE', 0, '2023-01-14', '2023-01-14 16:53:28', '2023-01-14 16:53:28');
+(1, 1, 1, 9, 2, '60.00', NULL, 1, 2, 3, '2022-02-01', '2022-12-01', 1, 'LA PAZ', 'LA PAZ', 'PENDIENTE', 0, '2022-12-13', '2022-12-13 21:57:46', '2023-01-31 18:42:37'),
+(2, 2, 11, 2, 28, '1120.00', NULL, 2, 5, 4, '2022-04-04', '2022-12-12', 2, 'LA PAZ', 'LA PAZ', 'PENDIENTE', 0, '2022-12-13', '2022-12-13 22:12:46', '2023-01-31 18:42:46'),
+(3, 4, 14, 11, 3, '120.00', NULL, 3, 6, 4, '2022-04-04', '2022-12-30', 1, '', '', 'PENDIENTE', 0, '2022-12-23', '2022-12-23 14:56:35', '2022-12-23 14:56:44'),
+(4, 5, 15, 12, 30, '1200.00', NULL, 4, 5, 4, '2023-03-03', '2023-06-06', 1, '', '', 'PENDIENTE', 0, '2023-01-06', '2023-01-06 15:46:42', '2023-01-06 15:46:42'),
+(5, 1, 1, 6, 3, '60.00', NULL, 5, 10, 5, '2023-02-03', '2023-12-12', 1, '', '', 'PENDIENTE', 0, '2023-01-14', '2023-01-14 16:53:28', '2023-01-14 16:53:28');
 
 -- --------------------------------------------------------
 
@@ -133,10 +155,10 @@ CREATE TABLE `configuracion_modulos` (
 --
 
 INSERT INTO `configuracion_modulos` (`id`, `modulo`, `editar`, `eliminar`, `created_at`, `updated_at`) VALUES
-(1, 'FORMULARIO 4', 1, 1, NULL, '2023-01-25 02:51:46'),
+(1, 'FORMULARIO 4', 1, 1, NULL, '2023-01-29 15:23:51'),
 (2, 'DETALLE FORMULARIO 4', 1, 1, NULL, '2023-01-25 02:51:47'),
 (3, 'MEMORIA DE CÁLCULO', 1, 1, NULL, '2023-01-25 02:51:48'),
-(4, 'APROBAR FORMULARIOS', 1, 1, NULL, '2023-01-25 02:52:05');
+(4, 'APROBAR FORMULARIOS', 0, 1, NULL, '2023-01-29 15:23:16');
 
 -- --------------------------------------------------------
 
@@ -497,7 +519,49 @@ INSERT INTO `logs` (`id`, `accion`, `modulo`, `detalle`, `user_id`, `fecha`, `ho
 (153, 'MODIFICACIÓN', 'CONFIGURACIÓN DE MODULOS', 'EL USUARIO 1 REALIZÓ UN CAMBIO EN LA CONFIGURACIÓN DE MODULOS PARA EDITAR/ELIMINAR', 1, '2023-01-24', '22:51:46'),
 (154, 'MODIFICACIÓN', 'CONFIGURACIÓN DE MODULOS', 'EL USUARIO 1 REALIZÓ UN CAMBIO EN LA CONFIGURACIÓN DE MODULOS PARA EDITAR/ELIMINAR', 1, '2023-01-24', '22:51:47'),
 (155, 'MODIFICACIÓN', 'CONFIGURACIÓN DE MODULOS', 'EL USUARIO 1 REALIZÓ UN CAMBIO EN LA CONFIGURACIÓN DE MODULOS PARA EDITAR/ELIMINAR', 1, '2023-01-24', '22:51:48'),
-(156, 'MODIFICACIÓN', 'CONFIGURACIÓN DE MODULOS', 'EL USUARIO 2 REALIZÓ UN CAMBIO EN LA CONFIGURACIÓN DE MODULOS PARA EDITAR/ELIMINAR', 2, '2023-01-24', '22:52:05');
+(156, 'MODIFICACIÓN', 'CONFIGURACIÓN DE MODULOS', 'EL USUARIO 2 REALIZÓ UN CAMBIO EN LA CONFIGURACIÓN DE MODULOS PARA EDITAR/ELIMINAR', 2, '2023-01-24', '22:52:05'),
+(157, 'MODIFICACIÓN', 'CONFIGURACIÓN DE MODULOS', 'EL USUARIO 2 REALIZÓ UN CAMBIO EN LA CONFIGURACIÓN DE MODULOS PARA EDITAR/ELIMINAR', 2, '2023-01-29', '11:08:56'),
+(158, 'MODIFICACIÓN', 'CONFIGURACIÓN DE MODULOS', 'EL USUARIO 2 REALIZÓ UN CAMBIO EN LA CONFIGURACIÓN DE MODULOS PARA EDITAR/ELIMINAR', 2, '2023-01-29', '11:20:17'),
+(159, 'MODIFICACIÓN', 'CONFIGURACIÓN DE MODULOS', 'EL USUARIO 2 REALIZÓ UN CAMBIO EN LA CONFIGURACIÓN DE MODULOS PARA EDITAR/ELIMINAR', 2, '2023-01-29', '11:20:22'),
+(160, 'MODIFICACIÓN', 'CONFIGURACIÓN DE MODULOS', 'EL USUARIO 5 REALIZÓ UN CAMBIO EN LA CONFIGURACIÓN DE MODULOS PARA EDITAR/ELIMINAR', 5, '2023-01-29', '11:21:45'),
+(161, 'MODIFICACIÓN', 'CONFIGURACIÓN DE MODULOS', 'EL USUARIO 5 REALIZÓ UN CAMBIO EN LA CONFIGURACIÓN DE MODULOS PARA EDITAR/ELIMINAR', 5, '2023-01-29', '11:21:50'),
+(162, 'MODIFICACIÓN', 'CONFIGURACIÓN DE MODULOS', 'EL USUARIO 5 REALIZÓ UN CAMBIO EN LA CONFIGURACIÓN DE MODULOS PARA EDITAR/ELIMINAR', 5, '2023-01-29', '11:21:59'),
+(163, 'MODIFICACIÓN', 'CONFIGURACIÓN DE MODULOS', 'EL USUARIO 5 REALIZÓ UN CAMBIO EN LA CONFIGURACIÓN DE MODULOS PARA EDITAR/ELIMINAR', 5, '2023-01-29', '11:22:02'),
+(164, 'MODIFICACIÓN', 'CONFIGURACIÓN DE MODULOS', 'EL USUARIO 5 REALIZÓ UN CAMBIO EN LA CONFIGURACIÓN DE MODULOS PARA EDITAR/ELIMINAR', 5, '2023-01-29', '11:22:15'),
+(165, 'MODIFICACIÓN', 'CONFIGURACIÓN DE MODULOS', 'EL USUARIO 5 REALIZÓ UN CAMBIO EN LA CONFIGURACIÓN DE MODULOS PARA EDITAR/ELIMINAR', 5, '2023-01-29', '11:22:18'),
+(166, 'MODIFICACIÓN', 'CONFIGURACIÓN DE MODULOS', 'EL USUARIO 5 REALIZÓ UN CAMBIO EN LA CONFIGURACIÓN DE MODULOS PARA EDITAR/ELIMINAR', 5, '2023-01-29', '11:23:10'),
+(167, 'MODIFICACIÓN', 'CONFIGURACIÓN DE MODULOS', 'EL USUARIO 5 REALIZÓ UN CAMBIO EN LA CONFIGURACIÓN DE MODULOS PARA EDITAR/ELIMINAR', 5, '2023-01-29', '11:23:10'),
+(168, 'MODIFICACIÓN', 'CONFIGURACIÓN DE MODULOS', 'EL USUARIO 5 REALIZÓ UN CAMBIO EN LA CONFIGURACIÓN DE MODULOS PARA EDITAR/ELIMINAR', 5, '2023-01-29', '11:23:11'),
+(169, 'MODIFICACIÓN', 'CONFIGURACIÓN DE MODULOS', 'EL USUARIO 5 REALIZÓ UN CAMBIO EN LA CONFIGURACIÓN DE MODULOS PARA EDITAR/ELIMINAR', 5, '2023-01-29', '11:23:16'),
+(170, 'MODIFICACIÓN', 'CONFIGURACIÓN DE MODULOS', 'EL USUARIO 1 REALIZÓ UN CAMBIO EN LA CONFIGURACIÓN DE MODULOS PARA EDITAR/ELIMINAR', 1, '2023-01-29', '11:23:30'),
+(171, 'MODIFICACIÓN', 'CONFIGURACIÓN DE MODULOS', 'EL USUARIO 1 REALIZÓ UN CAMBIO EN LA CONFIGURACIÓN DE MODULOS PARA EDITAR/ELIMINAR', 1, '2023-01-29', '11:23:38'),
+(172, 'MODIFICACIÓN', 'CONFIGURACIÓN DE MODULOS', 'EL USUARIO 1 REALIZÓ UN CAMBIO EN LA CONFIGURACIÓN DE MODULOS PARA EDITAR/ELIMINAR', 1, '2023-01-29', '11:23:45'),
+(173, 'MODIFICACIÓN', 'CONFIGURACIÓN DE MODULOS', 'EL USUARIO 1 REALIZÓ UN CAMBIO EN LA CONFIGURACIÓN DE MODULOS PARA EDITAR/ELIMINAR', 1, '2023-01-29', '11:23:45'),
+(174, 'MODIFICACIÓN', 'CONFIGURACIÓN DE MODULOS', 'EL USUARIO 1 REALIZÓ UN CAMBIO EN LA CONFIGURACIÓN DE MODULOS PARA EDITAR/ELIMINAR', 1, '2023-01-29', '11:23:50'),
+(175, 'MODIFICACIÓN', 'CONFIGURACIÓN DE MODULOS', 'EL USUARIO 1 REALIZÓ UN CAMBIO EN LA CONFIGURACIÓN DE MODULOS PARA EDITAR/ELIMINAR', 1, '2023-01-29', '11:23:51'),
+(176, 'CREACIÓN', 'PERSONAL', 'EL USUARIO 1 REGISTRO UN NUEVO PERSONAL', 1, '2023-01-31', '14:37:37'),
+(177, 'MODIFICACIÓN', 'PERSONAL', 'EL USUARIO 1 MODIFICÓ UN PERSONAL', 1, '2023-01-31', '14:37:43'),
+(178, 'MODIFICACIÓN', 'PERSONAL', 'EL USUARIO 1 MODIFICÓ UN PERSONAL', 1, '2023-01-31', '14:37:45'),
+(179, 'MODIFICACIÓN', 'PERSONAL', 'EL USUARIO 1 MODIFICÓ UN PERSONAL', 1, '2023-01-31', '14:37:48'),
+(180, 'MODIFICACIÓN', 'CERTIFICACIÓN POA', 'EL USUARIO 1 MODIFICÓ UNA CERTIFICACIÓN POA', 1, '2023-01-31', '14:41:44'),
+(181, 'CREACIÓN', 'PERSONAL', 'EL USUARIO 1 REGISTRO UN NUEVO PERSONAL', 1, '2023-01-31', '14:42:17'),
+(182, 'MODIFICACIÓN', 'CERTIFICACIÓN POA', 'EL USUARIO 1 MODIFICÓ UNA CERTIFICACIÓN POA', 1, '2023-01-31', '14:42:25'),
+(183, 'MODIFICACIÓN', 'CERTIFICACIÓN POA', 'EL USUARIO 1 MODIFICÓ UNA CERTIFICACIÓN POA', 1, '2023-01-31', '14:42:29'),
+(184, 'MODIFICACIÓN', 'CERTIFICACIÓN POA', 'EL USUARIO 1 MODIFICÓ UNA CERTIFICACIÓN POA', 1, '2023-01-31', '14:42:37'),
+(185, 'MODIFICACIÓN', 'CERTIFICACIÓN POA', 'EL USUARIO 1 MODIFICÓ UNA CERTIFICACIÓN POA', 1, '2023-01-31', '14:42:46'),
+(186, 'MODIFICACIÓN', 'MEMORIA DE CÁLCULO', 'EL USUARIO 1 MODIFICÓ UNA MEMORIA DE CÁLCULO', 1, '2023-01-31', '14:46:40'),
+(187, 'MODIFICACIÓN', 'MEMORIA DE CÁLCULO', 'EL USUARIO 1 MODIFICÓ UNA MEMORIA DE CÁLCULO', 1, '2023-01-31', '14:47:25'),
+(188, 'MODIFICACIÓN', 'MEMORIA DE CÁLCULO', 'EL USUARIO 1 MODIFICÓ UNA MEMORIA DE CÁLCULO', 1, '2023-01-31', '14:47:32'),
+(189, 'MODIFICACIÓN', 'MEMORIA DE CÁLCULO', 'EL USUARIO 1 MODIFICÓ UNA MEMORIA DE CÁLCULO', 1, '2023-01-31', '14:47:51'),
+(190, 'MODIFICACIÓN', 'MEMORIA DE CÁLCULO', 'EL USUARIO 1 MODIFICÓ UNA MEMORIA DE CÁLCULO', 1, '2023-01-31', '14:51:26'),
+(191, 'MODIFICACIÓN', 'USUARIOS', 'EL USUARIO 1 MODIFICÓ UN USUARIO', 1, '2023-01-31', '17:28:45'),
+(192, 'MODIFICACIÓN', 'APROBACIÓN DE FORMULARIOS', 'EL USUARIO 5 REALIZÓ UNA APROBACIÓN/PENDIENTE DE FORMULARIOS UNIDAD UNIDAD 3', 5, '2023-01-31', '17:29:18'),
+(193, 'MODIFICACIÓN', 'APROBACIÓN DE FORMULARIOS', 'EL USUARIO 5 REALIZÓ UNA APROBACIÓN/PENDIENTE DE FORMULARIOS UNIDAD UNIDAD 3', 5, '2023-01-31', '17:29:22'),
+(194, 'MODIFICACIÓN', 'APROBACIÓN DE FORMULARIOS', 'EL USUARIO 5 REALIZÓ UNA APROBACIÓN/PENDIENTE DE FORMULARIOS UNIDAD UNIDAD 3', 5, '2023-01-31', '17:29:40'),
+(195, 'MODIFICACIÓN', 'USUARIOS', 'EL USUARIO 1 MODIFICÓ UN USUARIO', 1, '2023-01-31', '17:29:57'),
+(196, 'MODIFICACIÓN', 'USUARIOS', 'EL USUARIO 1 MODIFICÓ UN USUARIO', 1, '2023-01-31', '17:34:20'),
+(197, 'MODIFICACIÓN', 'APROBACIÓN DE FORMULARIOS', 'EL USUARIO 5 REALIZÓ UNA APROBACIÓN/PENDIENTE DE FORMULARIOS UNIDAD UNIDAD 3', 5, '2023-01-31', '17:35:01'),
+(198, 'MODIFICACIÓN', 'USUARIOS', 'EL USUARIO 1 MODIFICÓ UN USUARIO', 1, '2023-01-31', '17:35:15');
 
 -- --------------------------------------------------------
 
@@ -532,7 +596,7 @@ CREATE TABLE `memoria_calculos` (
 --
 
 INSERT INTO `memoria_calculos` (`id`, `formulario_id`, `total_actividades`, `total_ene`, `total_feb`, `total_mar`, `total_abr`, `total_may`, `total_jun`, `total_jul`, `total_ago`, `total_sep`, `total_oct`, `total_nov`, `total_dic`, `total_final`, `fecha_registro`, `created_at`, `updated_at`) VALUES
-(1, 1, '2210.00', '0.00', '0.00', '0.00', '30.00', '30.00', '1060.00', '1045.00', '45.00', '0.00', '0.00', '0.00', '0.00', '2210.00', '2022-11-04', '2022-11-04 20:19:23', '2023-01-14 18:39:12'),
+(1, 1, '2210.00', '0.00', '0.00', '0.00', '30.00', '30.00', '1060.00', '1045.00', '45.00', '0.00', '0.00', '0.00', '0.00', '2210.00', '2022-11-04', '2022-11-04 20:19:23', '2023-01-31 18:51:26'),
 (4, 2, '2640.00', '0.00', '0.00', '100.00', '0.00', '1700.00', '400.00', '440.00', '0.00', '0.00', '0.00', '0.00', '0.00', '2640.00', '2022-12-12', '2022-12-12 19:34:59', '2022-12-13 17:03:31'),
 (6, 4, '120.00', '0.00', '0.00', '60.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '60.00', '120.00', '2022-12-23', '2022-12-23 14:56:02', '2022-12-23 14:56:02'),
 (7, 5, '1200.00', '0.00', '400.00', '400.00', '400.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '1200.00', '2023-01-06', '2023-01-06 15:40:56', '2023-01-06 15:41:05');
@@ -559,9 +623,9 @@ CREATE TABLE `memoria_operacions` (
 --
 
 INSERT INTO `memoria_operacions` (`id`, `memoria_id`, `operacion_id`, `detalle_operacion_id`, `total_operacion`, `fecha_registro`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, 1, '0.00', '2022-11-04', '2022-11-04 20:19:23', '2023-01-14 18:39:12'),
-(7, 1, 2, 6, '0.00', '2022-11-04', '2022-11-04 21:44:45', '2023-01-14 18:39:12'),
-(8, 1, 19, 30, '0.00', '2022-11-04', '2022-11-04 21:46:34', '2023-01-14 18:39:12'),
+(1, 1, 1, 1, '0.00', '2022-11-04', '2022-11-04 20:19:23', '2023-01-31 18:51:26'),
+(7, 1, 2, 6, '0.00', '2022-11-04', '2022-11-04 21:44:45', '2023-01-31 18:51:26'),
+(8, 1, 19, 30, '0.00', '2022-11-04', '2022-11-04 21:46:34', '2023-01-31 18:51:26'),
 (11, 4, 3, 9, '0.00', '2022-12-12', '2022-12-12 19:34:59', '2022-12-13 17:03:31'),
 (12, 4, 4, 11, '0.00', '2022-12-12', '2022-12-12 19:34:59', '2022-12-13 17:03:31'),
 (14, 6, 20, 31, '0.00', '2022-12-23', '2022-12-23 14:56:02', '2022-12-23 14:56:02'),
@@ -619,7 +683,7 @@ INSERT INTO `memoria_operacion_detalles` (`id`, `memoria_operacion_id`, `ue`, `p
 (5, '12', '01', '01', '10', 'BENI', 'TECNICO RESPONSABLE', 2, '21002', 'SERVICIOS DE PRUEBA', '2', 'DESCRIPCION DE PRUEBA NUEVO POR ACTUALIZACION', 4.00, 'UNIDAD', '10.00', '40.00', 'JUSTIFICACION', NULL, NULL, NULL, NULL, NULL, NULL, '40.00', NULL, NULL, NULL, NULL, NULL, '40.00', '2022-12-12 19:50:58', '2022-12-13 17:03:31'),
 (6, '1', '01', '01', '10', 'LA PAZ', 'TECNICO EN TELECOMUNICACIONES', 2, '21002', 'SERVICIOS DE PRUEBA', '1', 'DESCRIPCION PRIMER GASTO', 3.00, 'UNIDAD', '20.00', '60.00', 'JUSTIFICACION', NULL, NULL, NULL, NULL, NULL, '60.00', NULL, NULL, NULL, NULL, NULL, NULL, '60.00', '2022-12-12 20:02:21', '2022-12-13 13:56:47'),
 (7, '7', '01', '01', '10', 'LA PAZ', 'PERIODISTAS', 2, '21002', 'SERVICIOS DE PRUEBA', '1', 'GASTO DE PRUEBA EN SEGUNDA OPERACION', 3.00, 'UNIDAD', '30.00', '90.00', 'JUSTIFICACION', NULL, NULL, NULL, NULL, NULL, NULL, '45.00', '45.00', NULL, NULL, NULL, NULL, '90.00', '2022-12-12 20:02:21', '2023-01-14 15:57:10'),
-(8, '8', '01', '01', '10', 'LA PAZ', 'TECNICO RESPONSABLE', 2, '21002', 'SERVICIOS DE PRUEBA', '1', 'DESCRIPCION GASTO OPERACION 3', 20.00, 'UNIDAD', '100.00', '2000.00', 'JUSTIFICACION DEL GASTO DE LA OPERACION NRO. 3', NULL, NULL, NULL, NULL, NULL, '1000.00', '1000.00', NULL, NULL, NULL, NULL, NULL, '2000.00', '2022-12-12 20:02:21', '2023-01-14 15:55:03'),
+(8, '8', '01', '01', '10', 'LA PAZ', 'TECNICO RESPONSABLE', 2, '21002', 'SERVICIOS DE PRUEBA', '1', 'DESCRIPCION GASTO OPERACION 3', 20.00, 'UNIDAD', '100.00', '2000.00', 'JUSTIFICACION DEL GASTO DE LA OPERACION NRO. 3', NULL, NULL, NULL, NULL, NULL, '1000.00', '1000.00', NULL, NULL, NULL, NULL, NULL, '2000.00', '2022-12-12 20:02:21', '2023-01-31 18:47:51'),
 (9, '1', '01', '01', '10', 'LA PAZ', 'TECNICO EN TELECOMUNICACIONES', 1, '25600', 'SERVICIOS DE FOTOCOPIADO Y FOTOGRAFICO', '2', 'PRUEBA SEGUNDO GASTO PRIMERA OPERACION ACTUALIZACION', 2.00, 'UNIDAD', '30.00', '60.00', 'JUSTIFICACION', NULL, NULL, NULL, '30.00', '30.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '60.00', '2022-12-12 20:03:04', '2022-12-13 15:42:11'),
 (10, '13', '01', '01', '10', 'LA PAZ', 'TECNICO', 2, '21002', 'SERVICIOS DE PRUEBA', '1', 'DESCRIPCION DETALLADA', 3.00, 'UNIDAD', '300.00', '900.00', 'JUSTIFICACION', NULL, NULL, '300.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '300.00', '300.00', '900.00', '2022-12-23 14:50:59', '2022-12-23 14:50:59'),
 (11, '14', '01', '01', '10', 'LA PAZ', 'TECNICO', 1, '25600', 'SERVICIOS DE FOTOCOPIADO Y FOTOGRAFICO', '1', 'DETALLE', 3.00, 'UNIDAD', '40.00', '120.00', 'JUSTIFICACION', NULL, NULL, '60.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '60.00', '120.00', '2022-12-23 14:56:02', '2022-12-23 14:56:02'),
@@ -667,7 +731,9 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (33, '2022_11_19_083815_create_partidas_table', 16),
 (34, '2022_12_12_112259_create_subdireccions_table', 17),
 (35, '2022_12_12_133756_create_memoria_operacion_detalles_table', 18),
-(36, '2023_01_14_132641_create_configuracion_modulos_table', 19);
+(36, '2023_01_14_132641_create_configuracion_modulos_table', 19),
+(37, '2023_01_31_141458_create_personals_table', 20),
+(38, '2023_01_31_164235_create_aprobacions_table', 21);
 
 -- --------------------------------------------------------
 
@@ -721,6 +787,30 @@ CREATE TABLE `partidas` (
 INSERT INTO `partidas` (`id`, `partida`, `descripcion`, `created_at`, `updated_at`) VALUES
 (1, '25600', 'SERVICIOS DE FOTOCOPIADO Y FOTOGRAFICO', '2022-11-19 12:39:02', '2022-11-19 12:39:12'),
 (2, '21002', 'SERVICIOS DE PRUEBA', '2022-11-19 12:47:59', '2022-11-19 12:47:59');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `personals`
+--
+
+CREATE TABLE `personals` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `nombre` varchar(155) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `paterno` varchar(155) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `materno` varchar(155) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `cargo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `personals`
+--
+
+INSERT INTO `personals` (`id`, `nombre`, `paterno`, `materno`, `cargo`, `created_at`, `updated_at`) VALUES
+(1, 'JOSE', 'MORALES', '', 'CARGO DE PRUEBA', '2023-01-31 18:37:37', '2023-01-31 18:37:48'),
+(2, 'PABLO', 'CACERES', '', 'CARGO PRUEBA', '2023-01-31 18:42:17', '2023-01-31 18:42:17');
 
 -- --------------------------------------------------------
 
@@ -840,10 +930,10 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `usuario`, `nombre`, `paterno`, `materno`, `ci`, `ci_exp`, `fono`, `cargo`, `lugar_trabajo`, `descripcion_puesto`, `observacion`, `unidad_id`, `tipo`, `foto`, `password`, `acceso`, `fecha_registro`, `created_at`, `updated_at`) VALUES
 (1, 'admin', 'admin', '', NULL, '', '', '', '', '', '', NULL, NULL, 'SUPER USUARIO', 'default.png', '$2y$10$cDSOdzTsMDQAfqcb6.WFtu40s.wmQ4Jl8poIwW69MSZnnedD3prKu', 1, '2022-10-13', NULL, NULL),
-(2, 'JPERES', 'JUAN', 'PERES', '', '1234', 'LP', '22222', 'RESPONSABLE DE OFICINA DEPARTAMENTAL POTOSÍ', 'POTOSI', 'DESC PUESTO', 'OBS', 1, 'ENLACE', 'default.png', '$2y$10$1hgmqNI9y8FEfM2ZY/scau4SFqC055G7U.NowDmBkJrCuORkfzLuu', 1, '2022-10-16', '2022-10-16 17:47:11', '2023-01-14 18:44:28'),
+(2, 'JPERES', 'JUAN', 'PERES', '', '1234', 'LP', '22222', 'RESPONSABLE DE OFICINA DEPARTAMENTAL POTOSÍ', 'POTOSI', 'DESC PUESTO', 'OBS', 1, 'ENLACE', 'default.png', '$2y$10$1hgmqNI9y8FEfM2ZY/scau4SFqC055G7U.NowDmBkJrCuORkfzLuu', 1, '2022-10-16', '2022-10-16 17:47:11', '2023-01-31 21:35:15'),
 (3, 'RCOLQUE', 'RUBEN', 'COLQUE', '', '2222', 'LP', '22222', 'RESPONSABLE REGIONAL LA PAZ', '', '', NULL, 1, 'MAE', 'default.png', '$2y$10$BTLd1mspf9zY1UaBWWgnz.ktFLPIQtvRAuL0IfI45M6GnpQCbmu2O', 1, '2022-10-16', '2022-10-16 17:47:49', '2022-11-04 14:00:02'),
 (4, 'AGONZALES', 'ALBERTO', 'GONZALES', '', '3333', 'LP', '2222', 'CARGO', '', '', NULL, 1, 'FINANCIERA', 'default.png', '$2y$10$hjd0GxLr801x/JTYDuuAZeObvjdgMs1RKMDY1YiOhELF7SXjSMGge', 1, '2022-11-04', '2022-11-04 13:56:22', '2022-11-05 20:00:56'),
-(5, 'PALBES', 'PEDRO', 'ALBES', 'CONDORI', '4444', 'CB', '22222', 'CARGO 4', '', '', NULL, 3, 'JEFES DE UNIDAD', 'default.png', '$2y$10$r3IopSrAc4DPjUVhYCod1OfcykM//CP9gPRlpg4RXoAquhtA09.I6', 1, '2022-11-05', '2022-11-05 20:00:43', '2022-11-05 20:00:48'),
+(5, 'PALBES', 'PEDRO', 'ALBES', 'CONDORI', '4444', 'CB', '22222', 'CARGO 4', 'LA PAZ', 'PUESTO', '', 3, 'JEFES DE UNIDAD', 'default.png', '$2y$10$r3IopSrAc4DPjUVhYCod1OfcykM//CP9gPRlpg4RXoAquhtA09.I6', 1, '2022-11-05', '2022-11-05 20:00:43', '2023-01-31 21:34:20'),
 (6, 'CSANCHEZ', 'CARLOS', 'SANCHEZ', '', '5555', 'LP', '2222', 'CARGO 5', 'LA PAZ', 'DESC', '', 1, 'DIRECTORES', 'default.png', '$2y$10$75Xh3l4YZqj5gccjdI3jcObhRQrc5sOJBIKTSM0L7P12PCT0Xr8bW', 1, '2022-11-05', '2022-11-05 20:13:26', '2023-01-25 00:22:49'),
 (7, 'ALBERTO.MAMANI', 'ALBERTO', 'MAMANI', 'ROSALES', '3434', 'LP', '77777', 'DENOMINACIÓN DEL PUESTO', 'LA PAZ', 'DESCRIPCION DELPUESTO', '', 2, 'ENLACE', 'default.png', '$2y$10$oWp3CGo81bjOjZND8jceWub10nOnvIceqDDaQC7olTW.TckuF3VoG', 1, '2023-01-14', '2023-01-14 15:23:00', '2023-01-14 15:23:00'),
 (8, 'JUAN.CORTEZ', 'JUAN PABLO', 'CORTEZ', 'CORTEZ', '2424', 'CB', '666666', 'RESPONSABLE DE OFICINA DEPARTAMENTAL POTOSÍ', 'POTOSI', 'DESCRIPCION', 'OBS', 1, 'JEFES DE UNIDAD', 'default.png', '$2y$10$/inv0MjLvND92V4P98pn5.cocJDweU8AfWS7ppy5mCGM56hTa39SO', 1, '2023-01-14', '2023-01-14 15:24:16', '2023-01-14 15:24:16'),
@@ -880,6 +970,13 @@ INSERT INTO `verificacion_actividads` (`id`, `gestion`, `actividad`, `created_at
 --
 ALTER TABLE `actividad_realizadas`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `aprobacions`
+--
+ALTER TABLE `aprobacions`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `aprobacions_unidad_id_foreign` (`unidad_id`);
 
 --
 -- Indices de la tabla `certificacions`
@@ -990,6 +1087,12 @@ ALTER TABLE `partidas`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `personals`
+--
+ALTER TABLE `personals`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `personal_access_tokens`
 --
 ALTER TABLE `personal_access_tokens`
@@ -1038,6 +1141,12 @@ ALTER TABLE `verificacion_actividads`
 --
 ALTER TABLE `actividad_realizadas`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de la tabla `aprobacions`
+--
+ALTER TABLE `aprobacions`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `certificacions`
@@ -1097,7 +1206,7 @@ ALTER TABLE `formulario_cuatro`
 -- AUTO_INCREMENT de la tabla `logs`
 --
 ALTER TABLE `logs`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=157;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=199;
 
 --
 -- AUTO_INCREMENT de la tabla `memoria_calculos`
@@ -1121,7 +1230,7 @@ ALTER TABLE `memoria_operacion_detalles`
 -- AUTO_INCREMENT de la tabla `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT de la tabla `operacions`
@@ -1133,6 +1242,12 @@ ALTER TABLE `operacions`
 -- AUTO_INCREMENT de la tabla `partidas`
 --
 ALTER TABLE `partidas`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT de la tabla `personals`
+--
+ALTER TABLE `personals`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
@@ -1174,6 +1289,12 @@ ALTER TABLE `verificacion_actividads`
 --
 -- Restricciones para tablas volcadas
 --
+
+--
+-- Filtros para la tabla `aprobacions`
+--
+ALTER TABLE `aprobacions`
+  ADD CONSTRAINT `aprobacions_unidad_id_foreign` FOREIGN KEY (`unidad_id`) REFERENCES `unidads` (`id`);
 
 --
 -- Filtros para la tabla `certificacions`

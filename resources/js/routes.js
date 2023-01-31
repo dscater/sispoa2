@@ -32,6 +32,13 @@ export default new Router({
             component: require('./components/modulos/usuarios/index.vue').default
         },
 
+        // Personal
+        {
+            path: '/personals',
+            name: 'personals.index',
+            component: require('./components/modulos/personals/index.vue').default,
+        },
+
         // PARTIDAS
         {
             path: '/partidas',

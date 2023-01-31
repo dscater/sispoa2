@@ -53,6 +53,11 @@ class UserController extends Controller
             'usuarios.edit',
             'usuarios.destroy',
 
+            'personals.index',
+            'personals.create',
+            'personals.edit',
+            'personals.destroy',
+
             'unidads.index',
             'unidads.create',
             'unidads.edit',

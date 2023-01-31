@@ -206,7 +206,9 @@
                                                                 permisos.includes(
                                                                     'formulario_cuatro.edit'
                                                                 ) &&
-                                                                !estado_aprobado
+                                                                row.item
+                                                                    .sw_aprobado ==
+                                                                    0
                                                             "
                                                             @click="
                                                                 editarRegistro(
@@ -228,7 +230,9 @@
                                                                 permisos.includes(
                                                                     'formulario_cuatro.destroy'
                                                                 ) &&
-                                                                !estado_aprobado
+                                                                row.item
+                                                                    .sw_aprobado ==
+                                                                    0
                                                             "
                                                             @click="
                                                                 eliminaFormularioCuatro(
@@ -405,14 +409,12 @@ export default {
             filter: null,
             muestra_configuracion_modulo: false,
             muestra_aprobar_formularios: false,
-            estado_aprobado: false,
         };
     },
     mounted() {
         this.loadingWindow.close();
         this.getFormularioCuatros();
         this.obtienePermisos();
-        this.getAprobado();
     },
     methods: {
         // Seleccionar Opciones de Tabla
@@ -584,11 +586,6 @@ export default {
         },
         muestraAprobarFormularios() {
             this.muestra_aprobar_formularios = true;
-        },
-        getAprobado() {
-            axios.get("/admin/get_aprobados").then((response) => {
-                this.estado_aprobado = response.data;
-            });
         },
     },
 };

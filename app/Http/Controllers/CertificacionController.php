@@ -25,7 +25,7 @@ class CertificacionController extends Controller
         "superior_id" => "required",
         "inicio" => "required",
         "final" => "required",
-        "personal_designado" => "required|min:2",
+        "personal_designado" => "required",
     ];
 
     public function index()

@@ -442,22 +442,39 @@ export default {
     },
     beforeRouteLeave(to, from, next) {
         if (this.cambioPagina) {
-            Swal.fire({
-                title: "¿Desea guardar el formulario antes de salir?",
-                html: ``,
-                showCancelButton: true,
-                confirmButtonColor: "#05568e",
-                confirmButtonText: "Si, guardar",
-                cancelButtonText: "No, cancelar",
-                denyButtonText: `No, cancelar`,
-            }).then((result) => {
-                /* Read more about isConfirmed, isDenied below */
-                if (result.isConfirmed) {
-                    this.enviarRegistro();
-                } else {
-                    next();
-                }
-            });
+            if (this.enviable) {
+                Swal.fire({
+                    title: "¿Desea guardar el formulario antes de salir?",
+                    html: ``,
+                    showCancelButton: true,
+                    confirmButtonColor: "#05568e",
+                    confirmButtonText: "Si, guardar",
+                    cancelButtonText: "No, cancelar",
+                    denyButtonText: `No, cancelar`,
+                }).then((result) => {
+                    /* Read more about isConfirmed, isDenied below */
+                    if (result.isConfirmed) {
+                        this.enviarRegistro();
+                    } else {
+                        next();
+                    }
+                });
+            } else {
+                Swal.fire({
+                    icon: "info",
+                    title: "Atención",
+                    html: `Los cambios no se guardaran debido a que existen un error de montos en una de las operaciones<br>¿Desea salir del formulario?`,
+                    showCancelButton: true,
+                    confirmButtonColor: "#05568e",
+                    confirmButtonText: "Si, salir",
+                    cancelButtonText: "No, cancelar",
+                    denyButtonText: `No, cancelar`,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        next();
+                    }
+                });
+            }
         } else {
             next();
         }

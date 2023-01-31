@@ -517,7 +517,7 @@
                                             }"
                                             >Personal designado*</label
                                         >
-                                        <el-input
+                                        <el-select
                                             filterable
                                             class="w-100 d-block"
                                             :class="{
@@ -527,9 +527,15 @@
                                             v-model="
                                                 oCertificacion.personal_designado
                                             "
-                                            clearable
                                         >
-                                        </el-input>
+                                            <el-option
+                                                v-for="item in listPersonals"
+                                                :key="item.id"
+                                                :value="item.id"
+                                                :label="item.full_name"
+                                            >
+                                            </el-option>
+                                        </el-select>
                                         <span
                                             class="error invalid-feedback"
                                             v-if="errors.personal_designado"
@@ -644,6 +650,7 @@ export default {
             errors: [],
             listFormularios: [],
             listOperaciones: [],
+            listPersonals: [],
             listTareas: [],
             listDetalles: [],
             listUsuarios: [],
@@ -720,6 +727,7 @@ export default {
     mounted() {
         this.getFormularios();
         this.getUsuarios();
+        this.getPersonals();
         this.getCorrelativo();
         this.loadingWindow.close();
     },
@@ -735,7 +743,11 @@ export default {
                 this.listUsuarios = response.data.usuarios;
             });
         },
-
+        getPersonals() {
+            axios.get("/admin/personals").then((response) => {
+                this.listPersonals = response.data.personals;
+            });
+        },
         getCorrelativo() {
             axios
                 .get("/admin/certificacions/getNroCorrelativo")

@@ -15,7 +15,17 @@
                     </p>
 
                     <form action="../../index3.html" method="post">
-                        <div class="input-group mb-3">
+                        <span
+                            class="error invalid-feedback d-block"
+                            v-if="errors.usuario"
+                            v-text="errors.usuario[0]"
+                        ></span>
+                        <div
+                            class="input-group mb-3"
+                            :class="{
+                                'is-invalid': errors.usuario,
+                            }"
+                        >
                             <input
                                 type="text"
                                 class="form-control"
@@ -30,18 +40,66 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="input-group mb-3">
+
+                        <span
+                            class="error invalid-feedback"
+                            v-if="errors.password"
+                            v-text="errors.password[0]"
+                        ></span>
+                        <div
+                            class="input-group mb-3 contenedor_contrasenia"
+                            :class="{
+                                'is-invalid': errors.password,
+                            }"
+                        >
                             <input
                                 type="password"
                                 class="form-control"
                                 placeholder="Contraseña"
                                 v-model="password"
+                                id="password"
                                 @keypress.enter="login()"
                             />
+                            <div class="input-group-append">
+                                <div
+                                    class="input-group-text bg-light ojo_contrasenia"
+                                    @click="toggleContrasenia"
+                                >
+                                    <i
+                                        class="fa"
+                                        :class="{
+                                            'fa-eye-slash': !muestra,
+                                            'fa-eye': muestra,
+                                        }"
+                                    ></i>
+                                </div>
+                            </div>
                             <div class="input-group-append">
                                 <div class="input-group-text bg-blue">
                                     <span class="fas fa-lock"></span>
                                 </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-2">
+                            <div
+                                class="col-12 text-center contenedor_captcha"
+                                :class="{
+                                    'is-invalid': errors.captcha,
+                                }"
+                            >
+                                <vue-recaptcha
+                                    :sitekey="key_secret"
+                                    ref="recaptcha"
+                                    @verify="verificaCaptcha"
+                                    @error="errorCaptcha"
+                                >
+                                </vue-recaptcha>
+                                <span
+                                    class="error invalid-feedback d-block"
+                                    v-if="errors.captcha"
+                                    v-text="errors.captcha[0]"
+                                ></span>
                             </div>
                         </div>
                         <div class="row" v-if="error">
@@ -80,8 +138,14 @@
 </template>
 
 <script>
+import { VueRecaptcha } from "vue-recaptcha";
 export default {
+    components: { VueRecaptcha },
     props: {
+        key_secret: {
+            String,
+            default: "key reCaptcha Google",
+        },
         empresa: { String, default: "Nombre Empresa" },
         logo: {
             String,
@@ -99,16 +163,36 @@ export default {
             password: "",
             error: false,
             fullscreenLoading: false,
+            muestra: false,
+            captcha: null,
+            errors: [],
         };
     },
     methods: {
-        login() {
-            this.fullscreenLoading = true;
+        errorCaptcha() {},
+        verificaCaptcha(datos) {
+            let config = {
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+            };
+            let formdata = new FormData();
+            formdata.append("secret", this.key_secret);
+            formdata.append("g-recaptcha-response", datos);
             axios
-                .post("/login", {
-                    usuario: this.usuario,
-                    password: this.password,
-                })
+                .post("/verifica_captcha", formdata, config)
+                .then((response) => {
+                    this.captcha = response.data.success;
+                });
+        },
+        login(res_captcha) {
+            this.fullscreenLoading = true;
+            let datos = { usuario: this.usuario, password: this.password };
+            if (this.captcha) {
+                datos["captcha"] = this.captcha;
+            }
+            axios
+                .post("/login", datos)
                 .then((res) => {
                     let user = res.data.user;
                     setTimeout(() => {
@@ -116,10 +200,16 @@ export default {
                     }, 50);
                 })
                 .catch((error) => {
-                    this.error = true;
-                    this.password = "";
-                    console.log(error);
                     this.fullscreenLoading = false;
+                    if (error.response) {
+                        if (error.response.status === 422) {
+                            this.errors = error.response.data.errors;
+                            console.log("asdasd");
+                        } else {
+                            this.error = true;
+                            this.password = "";
+                        }
+                    }
                 });
         },
         obtienePermisos(user) {
@@ -133,6 +223,14 @@ export default {
                 localStorage.setItem("reproducir_audio", "si");
                 location.reload();
             });
+        },
+        toggleContrasenia() {
+            this.muestra = !this.muestra;
+            if (this.muestra) {
+                $("#password").prop("type", "text");
+            } else {
+                $("#password").prop("type", "password");
+            }
         },
     },
 };
@@ -148,5 +246,17 @@ export default {
 }
 .login-page .card-header {
     border-bottom: solid 1px var(--principal);
+}
+
+.contenedor_contrasenia {
+    position: relative;
+}
+
+.ojo_contrasenia {
+    cursor: pointer;
+}
+
+.contenedor_captcha > div > div {
+    width: 100%!important;
 }
 </style>

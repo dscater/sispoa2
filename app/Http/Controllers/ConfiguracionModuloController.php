@@ -15,19 +15,6 @@ class ConfiguracionModuloController extends Controller
         return response()->JSON(["configuracion_modulos" => $configuracion_modulos, "total" => count($configuracion_modulos)]);
     }
 
-
-    public function get_aprobar_formularios()
-    {
-        $configuracion_modulos = ConfiguracionModulo::where("modulo", "APROBAR FORMULARIOS")->get();
-        return response()->JSON(["configuracion_modulos" => $configuracion_modulos, "total" => count($configuracion_modulos)]);
-    }
-
-    public function get_aprobados()
-    {
-        $configuracion_modulos = ConfiguracionModulo::where("modulo", "APROBAR FORMULARIOS")->get()->first();
-        return response()->JSON($configuracion_modulos->editar === 1 ? true : false);
-    }
-
     public function update(Request $request, ConfiguracionModulo $configuracion_modulo)
     {
         $configuracion_modulo->update($request->all());

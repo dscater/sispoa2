@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ActividadRealizadaController;
 use App\Http\Controllers\ActividadTareaController;
+use App\Http\Controllers\AprobacionController;
 use App\Http\Controllers\CertificacionController;
 use App\Http\Controllers\ConfiguracionController;
 use App\Http\Controllers\ConfiguracionModuloController;
@@ -19,6 +20,7 @@ use App\Http\Controllers\MemoriaOperacionDetalleController;
 use App\Http\Controllers\OperacionController;
 use App\Http\Controllers\PartidaController;
 use App\Http\Controllers\PeiController;
+use App\Http\Controllers\PersonalController;
 use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\SemaforoController;
 use App\Http\Controllers\SubdireccionController;
@@ -42,6 +44,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout']);
 
+Route::post('/verifica_captcha', [LoginController::class, 'verifica_captcha']);
 
 // CONFIGURACIÓN
 Route::get('/configuracion/getConfiguracion', [ConfiguracionController::class, 'getConfiguracion']);
@@ -59,8 +62,8 @@ Route::prefix('admin')->group(function () {
     Route::put('/configuracion_modulos/{configuracion_modulo}', [ConfiguracionModuloController::class, 'update']);
 
     // APROBAR FORMULARIOS
-    Route::get('/aprobar_formularios', [ConfiguracionModuloController::class, 'get_aprobar_formularios']);
-    Route::get('/get_aprobados', [ConfiguracionModuloController::class, 'get_aprobados']);
+    Route::get('/aprobar_formularios', [AprobacionController::class, 'index']);
+    Route::put('/aprobar_formularios/{aprobacion}', [AprobacionController::class, 'update']);
 
     // USUARIOS
     Route::get('usuarios/getUsuario/{usuario}', [UserController::class, 'getUsuario']);
@@ -81,6 +84,11 @@ Route::prefix('admin')->group(function () {
 
     // PARTIDAS
     Route::resource('partidas', PartidaController::class)->only([
+        'index', 'store', 'update', 'destroy', 'show'
+    ]);
+
+    // Personal
+    Route::resource('personals', PersonalController::class)->only([
         'index', 'store', 'update', 'destroy', 'show'
     ]);
 

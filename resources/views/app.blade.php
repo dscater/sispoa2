@@ -19,7 +19,8 @@
                 user="{{ Auth::user() }}"></App>
         @else
             <Auth ruta="{{ route('base_path') }}" logo="{{ asset('imgs/' . $configuracion->first()->logo) }}"
-                empresa="{{ $configuracion->first()->razon_social }}" configuracion="{{ $configuracion->first() }}">
+                empresa="{{ $configuracion->first()->razon_social }}" configuracion="{{ $configuracion->first() }}"
+                key_secret="{{ config('app.clave_captcha') }}">
             </Auth>
         @endif
     </div>

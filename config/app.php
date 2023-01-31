@@ -2,6 +2,9 @@
 
 return [
 
+    'clave_captcha' => env('CLAVE_CAPTCHA', '6LfLgEAkAAAAANecvtb6k829Yu-SI7ZLxQRKJtan'),
+    'clave_captcha_servidor' => env('CLAVE_CAPTCHA_SERVIDOR', '6LfLgEAkAAAAAEUx6mam_35HPbm5DUl0u4bfHKay'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Name
