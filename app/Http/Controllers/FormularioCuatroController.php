@@ -10,6 +10,7 @@ use App\Models\Log;
 use App\Models\MemoriaCalculo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class FormularioCuatroController extends Controller
 {
@@ -46,35 +47,56 @@ class FormularioCuatroController extends Controller
     public function store(Request $request)
     {
         $request->validate($this->validacion, $this->mensajes);
-        $request['fecha_registro'] = date('Y-m-d');
-        // $request["codigo_pei"] = implode(",", $request->codigo_pei);
-        // $request["codigo_poa"] = implode(",", $request->codigo_poa);
-        $nuevo_formulario_cuatro = FormularioCuatro::create(array_map('mb_strtoupper', $request->all()));
 
-        $user = Auth::user();
-        Log::registrarLog("CREACIÓN", "FORMULARIO CUATRO", "EL USUARIO $user->id REGISTRO UN FORMULARIO CUATRO", $user);
+        DB::beginTransaction();
+        try {
+            $request['fecha_registro'] = date('Y-m-d');
+            // $request["codigo_pei"] = implode(",", $request->codigo_pei);
+            // $request["codigo_poa"] = implode(",", $request->codigo_poa);
+            $nuevo_formulario_cuatro = FormularioCuatro::create(array_map('mb_strtoupper', $request->all()));
 
-        return response()->JSON([
-            'sw' => true,
-            'formulario_cuatro' => $nuevo_formulario_cuatro,
-            'msj' => 'El registro se realizó de forma correcta',
-        ], 200);
+            $user = Auth::user();
+            Log::registrarLog("CREACIÓN", "FORMULARIO CUATRO", "EL USUARIO $user->id REGISTRO UN FORMULARIO CUATRO", $user);
+
+            DB::commit();
+            return response()->JSON([
+                'sw' => true,
+                'formulario_cuatro' => $nuevo_formulario_cuatro,
+                'msj' => 'El registro se realizó de forma correcta',
+            ], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->JSON([
+                'sw' => false,
+                'message' => $e->getMessage(),
+            ], 500);
+        }
     }
 
     public function update(Request $request, FormularioCuatro $formulario_cuatro)
     {
         $request->validate($this->validacion, $this->mensajes);
 
-        $formulario_cuatro->update(array_map('mb_strtoupper', $request->all()));
+        DB::beginTransaction();
+        try {
+            $formulario_cuatro->update(array_map('mb_strtoupper', $request->all()));
 
-        $user = Auth::user();
-        Log::registrarLog("MODIFICACIÓN", "FORMULARIO CUATRO", "EL USUARIO $user->id MODIFICÓ UN FORMULARIO CUATRO", $user);
+            $user = Auth::user();
+            Log::registrarLog("MODIFICACIÓN", "FORMULARIO CUATRO", "EL USUARIO $user->id MODIFICÓ UN FORMULARIO CUATRO", $user);
 
-        return response()->JSON([
-            'sw' => true,
-            'formulario_cuatro' => $formulario_cuatro,
-            'msj' => 'El registro se actualizó de forma correcta'
-        ], 200);
+            DB::commit();
+            return response()->JSON([
+                'sw' => true,
+                'formulario_cuatro' => $formulario_cuatro,
+                'msj' => 'El registro se actualizó de forma correcta'
+            ], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->JSON([
+                'sw' => false,
+                'message' => $e->getMessage(),
+            ], 500);
+        }
     }
 
     public function show(FormularioCuatro $formulario_cuatro)
@@ -103,15 +125,24 @@ class FormularioCuatroController extends Controller
             return response()->JSON(["sw" => false, "formulario_cuatro" => $formulario_cuatro, "msj" => "No es posible eliminar este registro, porque esta siendo utilizado por otros modulos"]);
         }
 
-        $formulario_cuatro->delete();
+        DB::beginTransaction();
+        try {
+            $formulario_cuatro->delete();
+            $user = Auth::user();
+            Log::registrarLog("ELIMINACIÓN", "FORMULARIO CUATRO", "EL USUARIO $user->id ELIMINÓ UN FORMULARIO CUATRO", $user);
 
-        $user = Auth::user();
-        Log::registrarLog("ELIMINACIÓN", "FORMULARIO CUATRO", "EL USUARIO $user->id ELIMINÓ UN FORMULARIO CUATRO", $user);
-
-        return response()->JSON([
-            'sw' => true,
-            'msj' => 'El registro se eliminó correctamente'
-        ], 200);
+            DB::commit();
+            return response()->JSON([
+                'sw' => true,
+                'msj' => 'El registro se eliminó correctamente'
+            ], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->JSON([
+                'sw' => false,
+                'message' => $e->getMessage(),
+            ], 500);
+        }
     }
 
     public function getOperaciones(Request $request)

@@ -9,6 +9,7 @@ use App\Models\MemoriaOperacionDetalle;
 use App\Models\Partida;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use PDF;
 
 
@@ -48,25 +49,36 @@ class CertificacionController extends Controller
             $this->validacion['archivo'] = 'file';
         }
         $request->validate($this->validacion);
-        $request["fecha_registro"] = date("Y-m-d");
-        $request["estado"] = "PENDIENTE";
-        $request["anulado"] = 0;
-        $memoria_operacion_detalle = MemoriaOperacionDetalle::find($request->mod_id);
-        $presupuesto_usarse = (float)$request->cantidad_usar * (float)$memoria_operacion_detalle->costo;
-        $request["presupuesto_usarse"] = $presupuesto_usarse;
-        $certificacion = Certificacion::create(array_map("mb_strtoupper", $request->except("archivo")));
-        if ($request->hasFile('archivo')) {
-            $file = $request->archivo;
-            $nom_archivo = time() . '_' . $certificacion->id . '.' . $file->getClientOriginalExtension();
-            $certificacion->archivo = $nom_archivo;
-            $file->move(public_path() . '/archivos/', $nom_archivo);
-            $certificacion->save();
+
+        DB::beginTransaction();
+        try {
+            $request["fecha_registro"] = date("Y-m-d");
+            $request["estado"] = "PENDIENTE";
+            $request["anulado"] = 0;
+            $memoria_operacion_detalle = MemoriaOperacionDetalle::find($request->mod_id);
+            $presupuesto_usarse = (float)$request->cantidad_usar * (float)$memoria_operacion_detalle->costo;
+            $request["presupuesto_usarse"] = $presupuesto_usarse;
+            $certificacion = Certificacion::create(array_map("mb_strtoupper", $request->except("archivo")));
+            if ($request->hasFile('archivo')) {
+                $file = $request->archivo;
+                $nom_archivo = time() . '_' . $certificacion->id . '.' . $file->getClientOriginalExtension();
+                $certificacion->archivo = $nom_archivo;
+                $file->move(public_path() . '/archivos/', $nom_archivo);
+                $certificacion->save();
+            }
+
+            $user = Auth::user();
+            Log::registrarLog("CREACIÓN", "CERTIFICACIÓN POA", "EL USUARIO $user->id REGISTRO UNA CERTIFICACIÓN POA", $user);
+
+            DB::commit();
+            return response()->JSON(["sw" => true, "msj" => "El registro se almacenó correctamente"]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->JSON([
+                'sw' => false,
+                'message' => $e->getMessage(),
+            ], 500);
         }
-
-        $user = Auth::user();
-        Log::registrarLog("CREACIÓN", "CERTIFICACIÓN POA", "EL USUARIO $user->id REGISTRO UNA CERTIFICACIÓN POA", $user);
-
-        return response()->JSON(["sw" => true, "msj" => "El registro se almacenó correctamente"]);
     }
 
     public function show(Certificacion $certificacion)
@@ -95,39 +107,60 @@ class CertificacionController extends Controller
             $this->validacion['archivo'] = 'file';
         }
         $request->validate($this->validacion);
-        $memoria_operacion_detalle = MemoriaOperacionDetalle::find($request->mod_id);
-        $presupuesto_usarse = (float)$request->cantidad_usar * (float)$memoria_operacion_detalle->costo;
-        $request["presupuesto_usarse"] = $presupuesto_usarse;
-        $certificacion->update(array_map("mb_strtoupper", $request->except("archivo")));
+        DB::beginTransaction();
+        try {
+            $memoria_operacion_detalle = MemoriaOperacionDetalle::find($request->mod_id);
+            $presupuesto_usarse = (float)$request->cantidad_usar * (float)$memoria_operacion_detalle->costo;
+            $request["presupuesto_usarse"] = $presupuesto_usarse;
+            $certificacion->update(array_map("mb_strtoupper", $request->except("archivo")));
 
-        if ($request->hasFile('archivo')) {
-            $antiguo = $certificacion->archivo;
-            if ($antiguo) {
-                \File::delete(public_path() . '/archivos/' . $antiguo);
+            if ($request->hasFile('archivo')) {
+                $antiguo = $certificacion->archivo;
+                if ($antiguo) {
+                    \File::delete(public_path() . '/archivos/' . $antiguo);
+                }
+                $file = $request->archivo;
+                $nom_archivo = time() . '_' . $certificacion->id . '.' . $file->getClientOriginalExtension();
+                $certificacion->archivo = $nom_archivo;
+                $file->move(public_path() . '/archivos/', $nom_archivo);
+                $certificacion->save();
             }
-            $file = $request->archivo;
-            $nom_archivo = time() . '_' . $certificacion->id . '.' . $file->getClientOriginalExtension();
-            $certificacion->archivo = $nom_archivo;
-            $file->move(public_path() . '/archivos/', $nom_archivo);
-            $certificacion->save();
+
+            $user = Auth::user();
+            Log::registrarLog("MODIFICACIÓN", "CERTIFICACIÓN POA", "EL USUARIO $user->id MODIFICÓ UNA CERTIFICACIÓN POA", $user);
+
+            DB::commit();
+            return response()->JSON(["sw" => true, "certificacion" => $certificacion, "msj" => "El registro se actualizó correctamente"]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->JSON([
+                'sw' => false,
+                'message' => $e->getMessage(),
+            ], 500);
         }
-
-        $user = Auth::user();
-        Log::registrarLog("MODIFICACIÓN", "CERTIFICACIÓN POA", "EL USUARIO $user->id MODIFICÓ UNA CERTIFICACIÓN POA", $user);
-
-        return response()->JSON(["sw" => true, "certificacion" => $certificacion, "msj" => "El registro se actualizó correctamente"]);
     }
 
     public function destroy(Certificacion $certificacion)
     {
-        $antiguo = $certificacion->archivo;
-        \File::delete(public_path() . '/archivos/' . $antiguo);
-        $certificacion->delete();
 
-        $user = Auth::user();
-        Log::registrarLog("ELIMINACIÓN", "CERTIFICACIÓN POA", "EL USUARIO $user->id ELIMINÓ UNA CERTIFICACIÓN POA", $user);
+        DB::beginTransaction();
+        try {
+            $antiguo = $certificacion->archivo;
+            \File::delete(public_path() . '/archivos/' . $antiguo);
+            $certificacion->delete();
 
-        return response()->JSON(["sw" => true, "certificacion" => $certificacion, "msj" => "El registro se actualizó correctamente"]);
+            $user = Auth::user();
+            Log::registrarLog("ELIMINACIÓN", "CERTIFICACIÓN POA", "EL USUARIO $user->id ELIMINÓ UNA CERTIFICACIÓN POA", $user);
+
+            DB::commit();
+            return response()->JSON(["sw" => true, "certificacion" => $certificacion, "msj" => "El registro se actualizó correctamente"]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->JSON([
+                'sw' => false,
+                'message' => $e->getMessage(),
+            ], 500);
+        }
     }
 
     public function aprobar(Certificacion $certificacion)
