@@ -29,10 +29,10 @@ class DetalleFormulario extends Model
 
     public function getEstadoAprobadoAttribute()
     {
-        $aprobacion_formulario = Aprobacion::where("unidad_id", Auth::user()->unidad_id)->get()->first();
+        $aprobacion_formulario = Aprobacion::where("unidad_id", $this->formulario->unidad_id)->get()->first();
         if (!$aprobacion_formulario) {
             $aprobacion_formulario = Aprobacion::create([
-                "unidad_id" => Auth::user()->unidad_id,
+                "unidad_id" => $this->formulario->unidad_id,
                 "estado" => 0,
             ]);
         }
@@ -41,10 +41,10 @@ class DetalleFormulario extends Model
     }
     public function getSwAprobadoAttribute()
     {
-        $aprobacion_formulario = Aprobacion::where("unidad_id", Auth::user()->unidad_id)->get()->first();
+        $aprobacion_formulario = Aprobacion::where("unidad_id", $this->formulario->unidad_id)->get()->first();
         if (!$aprobacion_formulario) {
             $aprobacion_formulario = Aprobacion::create([
-                "unidad_id" => Auth::user()->unidad_id,
+                "unidad_id" => $this->formulario->unidad_id,
                 "estado" => 0,
             ]);
         }
