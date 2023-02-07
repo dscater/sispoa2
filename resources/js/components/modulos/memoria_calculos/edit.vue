@@ -58,11 +58,7 @@
                                                 v-for="item in listFormularios"
                                                 :key="item.id"
                                                 :value="item.id"
-                                                :label="
-                                                    ingresarEnter(
-                                                        item.codigo_pei
-                                                    )
-                                                "
+                                                :label="item.codigo_pei"
                                             >
                                             </el-option>
                                         </el-select>

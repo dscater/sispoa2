@@ -13,14 +13,73 @@ class FormularioCuatro extends Model
     protected $table = "formulario_cuatro";
 
     protected $fillable = [
-        'codigo_pei', 'resultado_institucional', 'indicador', 'codigo_poa',
-        'accion_corto', 'indicador_proceso', 'linea_base', 'meta', 'presupuesto', 'ponderacion',
+        'codigo_pei', 'objetivo_estrategico',
+        'resultado_institucional', 'indicador', 'codigo_poa',
+        'accion_corto', 'indicador_proceso', 'linea_base',
+        'meta', 'presupuesto', 'ponderacion',
         'unidad_id', 'fecha_registro'
     ];
 
     protected $with = ["unidad"];
 
-    protected $appends = ["estado_aprobado", "sw_aprobado"];
+    protected $appends = ["estado_aprobado", "sw_aprobado", "codigo_pei1", "objetivo_estrategico1", "codigo_pei2", "objetivo_estrategico2", "codigo_pei3", "objetivo_estrategico3"];
+
+    public function getCodigoPei1Attribute()
+    {
+        try {
+            $array = explode(" | ", $this->codigo_pei);
+            return isset(explode("-", $array[0])[0]) ? explode("-", $array[0])[0] : "";
+        } catch (\Exception $e) {
+            return $this->codigo_pei;
+        }
+    }
+    public function getObjetivoEstrategico1Attribute()
+    {
+        try {
+            $array = explode(" | ", $this->codigo_pei);
+            return isset(explode("-", $array[0])[1]) ? explode("-", $array[0])[1] : "";
+        } catch (\Exception $e) {
+            return "";
+        }
+    }
+
+    public function getCodigoPei2Attribute()
+    {
+        try {
+            $array = explode(" | ", $this->codigo_pei);
+            return isset(explode("-", $array[1])[0]) ? explode("-", $array[1])[0] : "";
+        } catch (\Exception $e) {
+            return "";
+        }
+    }
+    public function getObjetivoEstrategico2Attribute()
+    {
+        try {
+            $array = explode(" | ", $this->codigo_pei);
+            return isset(explode("-", $array[1])[1]) ? explode("-", $array[1])[1] : "";
+        } catch (\Exception $e) {
+            return "";
+        }
+    }
+
+    public function getCodigoPei3Attribute()
+    {
+        try {
+            $array = explode(" | ", $this->codigo_pei);
+            return isset(explode("-", $array[2])[0]) ? explode("-", $array[2])[0] : "";
+        } catch (\Exception $e) {
+            return "";
+        }
+    }
+    public function getObjetivoEstrategico3Attribute()
+    {
+        try {
+            $array = explode(" | ", $this->codigo_pei);
+            return isset(explode("-", $array[2])[1]) ? explode("-", $array[2])[1] : "";
+        } catch (\Exception $e) {
+            return "";
+        }
+    }
 
     public function unidad()
     {

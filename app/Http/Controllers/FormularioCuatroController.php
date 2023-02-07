@@ -16,11 +16,11 @@ class FormularioCuatroController extends Controller
 {
     public $validacion = [
         'codigo_pei' => 'required|min:1',
+        'objetivo_estrategico' => 'required|min:1',
         'resultado_institucional' => 'required|min:1',
         'indicador' => 'required|min:1',
         'codigo_poa' => 'required|min:1',
         'accion_corto' => 'required|min:1',
-        // 'indicador_proceso' => 'required|min:1',
         'linea_base' => 'required|min:1',
         'meta' => 'required|min:1',
         'presupuesto' => 'required|numeric',
@@ -51,8 +51,7 @@ class FormularioCuatroController extends Controller
         DB::beginTransaction();
         try {
             $request['fecha_registro'] = date('Y-m-d');
-            // $request["codigo_pei"] = implode(",", $request->codigo_pei);
-            // $request["codigo_poa"] = implode(",", $request->codigo_poa);
+            unset($request["objetivo_estrategico"]);
             $nuevo_formulario_cuatro = FormularioCuatro::create(array_map('mb_strtoupper', $request->all()));
 
             $user = Auth::user();
@@ -79,6 +78,7 @@ class FormularioCuatroController extends Controller
 
         DB::beginTransaction();
         try {
+            unset($request["objetivo_estrategico"]);
             $formulario_cuatro->update(array_map('mb_strtoupper', $request->all()));
 
             $user = Auth::user();

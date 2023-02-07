@@ -237,14 +237,6 @@ export default new Router({
             props: true
         },
 
-        // SEGUIMIENTO TRIMESTRAL
-        {
-            path: '/seguimiento_trimestral',
-            name: 'seguimiento_trimestral.index',
-            component: require('./components/modulos/seguimiento_trimestral/index.vue').default,
-            props: true
-        },
-
         // INFORME ACTIVIDAD
         {
             path: '/informe_actividad',

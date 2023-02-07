@@ -135,11 +135,8 @@
                                                 >
                                                     <span
                                                         v-html="
-                                                            ingresarEnter(
-                                                                row.item
-                                                                    .formulario
-                                                                    .codigo_pei
-                                                            )
+                                                            row.item.formulario
+                                                                .codigo_pei
                                                         "
                                                     ></span>
                                                 </template>

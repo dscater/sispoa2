@@ -132,7 +132,7 @@
                                                 empty-filtered-text="Sin resultados"
                                                 :filter="filter"
                                             >
-                                                <template
+                                                <!-- <template
                                                     #cell(codigo_pei)="row"
                                                 >
                                                     <span
@@ -143,16 +143,13 @@
                                                             )
                                                         "
                                                     ></span>
-                                                </template>
+                                                </template> -->
                                                 <template
                                                     #cell(codigo_poa)="row"
                                                 >
                                                     <span
                                                         v-html="
-                                                            ingresarEnter(
-                                                                row.item
-                                                                    .codigo_poa
-                                                            )
+                                                            row.item.codigo_poa
                                                         "
                                                     ></span>
                                                 </template>
@@ -383,7 +380,12 @@ export default {
             modal_accion: "nuevo",
             oFormularioCuatro: {
                 id: 0,
-                codigo_pei: [],
+                codigo_pei: "",
+                objetivo_estrategico: "",
+                codigo_pei2: "",
+                objetivo_estrategico2: "",
+                codigo_pei3: "",
+                objetivo_estrategico3: "",
                 resultado_institucional: "",
                 indicador: "",
                 codigo_poa: [],
@@ -420,9 +422,21 @@ export default {
         // Seleccionar Opciones de Tabla
         editarRegistro(item) {
             this.oFormularioCuatro.id = item.id;
-            this.oFormularioCuatro.codigo_pei = item.codigo_pei
-                ? item.codigo_pei.split(",")
+            this.oFormularioCuatro.codigo_pei = item.codigo_pei1
+                ? item.codigo_pei1
                 : "";
+            this.oFormularioCuatro.objetivo_estrategico =
+                item.objetivo_estrategico1 ? item.objetivo_estrategico1 : "";
+            this.oFormularioCuatro.codigo_pei2 = item.codigo_pei2
+                ? item.codigo_pei2
+                : "";
+            this.oFormularioCuatro.objetivo_estrategico2 =
+                item.objetivo_estrategico2 ? item.objetivo_estrategico2 : "";
+            this.oFormularioCuatro.codigo_pei3 = item.codigo_pei3
+                ? item.codigo_pei3
+                : "";
+            this.oFormularioCuatro.objetivo_estrategico3 =
+                item.objetivo_estrategico3 ? item.objetivo_estrategico3 : "";
             this.oFormularioCuatro.resultado_institucional =
                 item.resultado_institucional
                     ? item.resultado_institucional
@@ -525,7 +539,12 @@ export default {
             this.currentPage = 1;
         },
         limpiaFormularioCuatro() {
-            this.oFormularioCuatro.codigo_pei = [];
+            this.oFormularioCuatro.codigo_pei = "";
+            this.oFormularioCuatro.objetivo_estrategico = "";
+            this.oFormularioCuatro.codigo_pei2 = "";
+            this.oFormularioCuatro.objetivo_estrategico2 = "";
+            this.oFormularioCuatro.codigo_pei3 = "";
+            this.oFormularioCuatro.objetivo_estrategico3 = "";
             this.oFormularioCuatro.resultado_institucional = "";
             this.oFormularioCuatro.indicador = "";
             this.oFormularioCuatro.codigo_poa = [];

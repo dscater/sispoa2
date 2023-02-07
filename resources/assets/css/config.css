@@ -72,3 +72,11 @@ input.form-control {
     background: #DC3545;
     color: white;
 }
+
+.input-group-prepend textarea {
+    min-height: 38px!important;
+}
+
+.input-group .texto{
+    width: 50%;
+}

@@ -23,26 +23,104 @@
                 <div class="modal-body">
                     <form>
                         <div class="row">
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-md-12">
                                 <label
                                     :class="{
                                         'text-danger': errors.codigo_pei,
                                     }"
-                                    >Código PEI*</label
+                                    >Código PEI - Objetivos estrategicos*</label
                                 >
-                                <b-form-tags
-                                    input-id="tags-basic"
-                                    placeholder="Código PEI"
-                                    :class="{ 'is-invalid': errors.codigo_pei }"
-                                    v-model="formulario_cuatro.codigo_pei"
-                                    addButtonText="Añadir"
-                                    remove-on-delete
-                                ></b-form-tags>
+                                <div class="input-group">
+                                    <input
+                                        type="text"
+                                        :class="{
+                                            'is-invalid': errors.codigo_pei,
+                                        }"
+                                        v-model="formulario_cuatro.codigo_pei"
+                                        placeholder="Código PEI"
+                                        class="form-control"
+                                    />
+                                    <div class="input-group-prepend texto">
+                                        <el-input
+                                            type="textarea"
+                                            autosize
+                                            placeholder="Objetivos estrategicos"
+                                            :class="{
+                                                'is-invalid':
+                                                    errors.objetivo_estrategico,
+                                            }"
+                                            v-model="
+                                                formulario_cuatro.objetivo_estrategico
+                                            "
+                                            clearable
+                                        >
+                                        </el-input>
+                                    </div>
+                                </div>
                                 <span
-                                    class="error invalid-feedback"
+                                    class="error invalid-feedback d-block"
                                     v-if="errors.codigo_pei"
                                     v-text="errors.codigo_pei[0]"
                                 ></span>
+                                <span
+                                    class="error invalid-feedback d-block"
+                                    v-if="errors.objetivo_estrategico"
+                                    v-text="errors.objetivo_estrategico[0]"
+                                ></span>
+                                <div class="input-group mt-1">
+                                    <input
+                                        type="text"
+                                        :class="{
+                                            'is-invalid': errors.codigo_pei2,
+                                        }"
+                                        v-model="formulario_cuatro.codigo_pei2"
+                                        placeholder="Código PEI"
+                                        class="form-control"
+                                    />
+                                    <div class="input-group-prepend texto">
+                                        <el-input
+                                            type="textarea"
+                                            autosize
+                                            placeholder="Objetivos estrategicos"
+                                            :class="{
+                                                'is-invalid':
+                                                    errors.objetivo_estrategico2,
+                                            }"
+                                            v-model="
+                                                formulario_cuatro.objetivo_estrategico2
+                                            "
+                                            clearable
+                                        >
+                                        </el-input>
+                                    </div>
+                                </div>
+                                <div class="input-group mt-1">
+                                    <input
+                                        type="text"
+                                        :class="{
+                                            'is-invalid': errors.codigo_pei3,
+                                        }"
+                                        v-model="formulario_cuatro.codigo_pei3"
+                                        placeholder="Código PEI"
+                                        class="form-control"
+                                    />
+                                    <div class="input-group-prepend texto">
+                                        <el-input
+                                            type="textarea"
+                                            autosize
+                                            placeholder="Objetivos estrategicos"
+                                            :class="{
+                                                'is-invalid':
+                                                    errors.objetivo_estrategico3,
+                                            }"
+                                            v-model="
+                                                formulario_cuatro.objetivo_estrategico3
+                                            "
+                                            clearable
+                                        >
+                                        </el-input>
+                                    </div>
+                                </div>
                             </div>
                             <div class="form-group col-md-6">
                                 <label
@@ -52,7 +130,6 @@
                                     }"
                                     >Resultado institucional*</label
                                 >
-
                                 <el-input
                                     type="textarea"
                                     autosize
@@ -308,7 +385,12 @@ export default {
             type: Object,
             default: {
                 id: 0,
-                codigo_pei: [],
+                codigo_pei: "",
+                objetivo_estrategico: "",
+                codigo_pei2: "",
+                objetivo_estrategico2: "",
+                codigo_pei3: "",
+                objetivo_estrategico3: "",
                 resultado_institucional: "",
                 indicador: "",
                 codigo_poa: [],
@@ -378,11 +460,32 @@ export default {
                     },
                 };
                 let formdata = new FormData();
+
+                this.formulario_cuatro.codigo_pei += `-${this.formulario_cuatro.objetivo_estrategico}`;
+                if (
+                    this.formulario_cuatro.codigo_pei2 &&
+                    this.formulario_cuatro.codigo_pei2 != ""
+                ) {
+                    this.formulario_cuatro.codigo_pei += ` | ${this.formulario_cuatro.codigo_pei2}-${this.formulario_cuatro.objetivo_estrategico2}`;
+                }
+                if (
+                    this.formulario_cuatro.codigo_pei3 &&
+                    this.formulario_cuatro.codigo_pei3 != ""
+                ) {
+                    this.formulario_cuatro.codigo_pei += ` | ${this.formulario_cuatro.codigo_pei3}-${this.formulario_cuatro.objetivo_estrategico3}`;
+                }
+
                 formdata.append(
                     "codigo_pei",
                     this.formulario_cuatro.codigo_pei
                         ? this.formulario_cuatro.codigo_pei
-                        : []
+                        : ""
+                );
+                formdata.append(
+                    "objetivo_estrategico",
+                    this.formulario_cuatro.objetivo_estrategico
+                        ? this.formulario_cuatro.objetivo_estrategico
+                        : ""
                 );
                 formdata.append(
                     "resultado_institucional",
@@ -505,7 +608,12 @@ export default {
         },
         limpiaFormularioCuatro() {
             this.errors = [];
-            this.formulario_cuatro.codigo_pei = [];
+            this.formulario_cuatro.codigo_pei = "";
+            this.formulario_cuatro.objetivo_estrategico = "";
+            this.formulario_cuatro.codigo_pei2 = "";
+            this.formulario_cuatro.objetivo_estrategico2 = "";
+            this.formulario_cuatro.codigo_pei3 = "";
+            this.formulario_cuatro.objetivo_estrategico3 = "";
             this.formulario_cuatro.resultado_institucional = "";
             this.formulario_cuatro.indicador = "";
             this.formulario_cuatro.codigo_poa = [];
