@@ -81,7 +81,7 @@
                             </div>
                         </div>
 
-                        <div class="row mb-2">
+                        <!-- <div class="row mb-2">
                             <div
                                 class="col-12 text-center contenedor_captcha"
                                 :class="{
@@ -101,7 +101,7 @@
                                     v-text="errors.captcha[0]"
                                 ></span>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="row" v-if="error">
                             <div class="col-12">
                                 <div class="callout callout-danger">

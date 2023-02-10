@@ -11,7 +11,7 @@ class LoginController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            "captcha" => "required",
+            // "captcha" => "required",
             "usuario" => "required",
             "password" => "required"
         ]);
