@@ -111,7 +111,7 @@
                                                 'text-danger':
                                                     errors.formulario_id,
                                             }"
-                                            >Seleccionar código PEI*</label
+                                            >Seleccionar código POA*</label
                                         >
                                         <el-select
                                             filterable
@@ -132,7 +132,7 @@
                                                 v-for="item in listFormularios"
                                                 :key="item.id"
                                                 :value="item.id"
-                                                :label="item.codigo_pei"
+                                                :label="item.codigo_poa_full"
                                             >
                                             </el-option>
                                         </el-select>
@@ -174,7 +174,11 @@
                                                 :label="
                                                     item.codigo_operacion +
                                                     ' | ' +
-                                                    item.codigo_actividad
+                                                    item.descripcion_operacion +
+                                                    ' | ' +
+                                                    item.codigo_actividad +
+                                                    ' | ' +
+                                                    item.descripcion_actividad
                                                 "
                                             >
                                             </el-option>

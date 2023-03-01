@@ -172,50 +172,105 @@
                                     v-text="errors.indicador[0]"
                                 ></span>
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-md-12">
                                 <label
                                     :class="{
                                         'text-danger': errors.codigo_poa,
                                     }"
-                                    >Código POA*</label
+                                    >Código POA - Acción de Corto Plazo de
+                                    Gestión*</label
                                 >
-                                <b-form-tags
-                                    input-id="tags-basic"
-                                    placeholder="Código POA"
-                                    :class="{ 'is-invalid': errors.codigo_poa }"
-                                    v-model="formulario_cuatro.codigo_poa"
-                                    addButtonText="Añadir"
-                                    remove-on-delete
-                                ></b-form-tags>
+                                <div class="input-group">
+                                    <input
+                                        type="text"
+                                        :class="{
+                                            'is-invalid': errors.codigo_poa,
+                                        }"
+                                        v-model="formulario_cuatro.codigo_poa"
+                                        placeholder="Código POA"
+                                        class="form-control"
+                                    />
+                                    <div class="input-group-prepend texto">
+                                        <el-input
+                                            type="textarea"
+                                            autosize
+                                            placeholder="Acción de Corto Plazo de Gestión"
+                                            :class="{
+                                                'is-invalid':
+                                                    errors.accion_corto,
+                                            }"
+                                            v-model="
+                                                formulario_cuatro.accion_corto
+                                            "
+                                            clearable
+                                        >
+                                        </el-input>
+                                    </div>
+                                </div>
                                 <span
-                                    class="error invalid-feedback"
+                                    class="error invalid-feedback d-block"
                                     v-if="errors.codigo_poa"
                                     v-text="errors.codigo_poa[0]"
                                 ></span>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label
-                                    :class="{
-                                        'text-danger': errors.accion_corto,
-                                    }"
-                                    >Acción de Corto Plazo de Gestión*</label
-                                >
-                                <el-input
-                                    type="textarea"
-                                    autosize
-                                    placeholder="Acción de Corto Plazo de Gestión"
-                                    :class="{
-                                        'is-invalid': errors.accion_corto,
-                                    }"
-                                    v-model="formulario_cuatro.accion_corto"
-                                    clearable
-                                >
-                                </el-input>
                                 <span
-                                    class="error invalid-feedback"
+                                    class="error invalid-feedback d-block"
                                     v-if="errors.accion_corto"
                                     v-text="errors.accion_corto[0]"
                                 ></span>
+                                <div class="input-group mt-1">
+                                    <input
+                                        type="text"
+                                        :class="{
+                                            'is-invalid': errors.codigo_poa2,
+                                        }"
+                                        v-model="formulario_cuatro.codigo_poa2"
+                                        placeholder="Código POA"
+                                        class="form-control"
+                                    />
+                                    <div class="input-group-prepend texto">
+                                        <el-input
+                                            type="textarea"
+                                            autosize
+                                            placeholder="Acción de Corto Plazo de Gestión"
+                                            :class="{
+                                                'is-invalid':
+                                                    errors.accion_corto2,
+                                            }"
+                                            v-model="
+                                                formulario_cuatro.accion_corto2
+                                            "
+                                            clearable
+                                        >
+                                        </el-input>
+                                    </div>
+                                </div>
+                                <div class="input-group mt-1">
+                                    <input
+                                        type="text"
+                                        :class="{
+                                            'is-invalid': errors.codigo_poa3,
+                                        }"
+                                        v-model="formulario_cuatro.codigo_poa3"
+                                        placeholder="Código POA"
+                                        class="form-control"
+                                    />
+                                    <div class="input-group-prepend texto">
+                                        <el-input
+                                            type="textarea"
+                                            autosize
+                                            placeholder="Acción de Corto Plazo de Gestión"
+                                            :class="{
+                                                'is-invalid':
+                                                    errors.accion_corto3,
+                                            }"
+                                            v-model="
+                                                formulario_cuatro.accion_corto3
+                                            "
+                                            clearable
+                                        >
+                                        </el-input>
+                                    </div>
+                                </div>
                             </div>
                             <div class="form-group col-md-6">
                                 <label
@@ -311,11 +366,7 @@
                             </div>
                             <div
                                 class="form-group col-md-6"
-                                v-if="
-                                    user.tipo != 'JEFES DE UNIDAD' &&
-                                    user.tipo != 'DIRECTORES' &&
-                                    user.tipo != 'JEFES DE ÁREAS'
-                                "
+                                v-if="!user.unidad_id && user.unidad_id == ''"
                             >
                                 <label
                                     :class="{
@@ -339,6 +390,25 @@
                                     >
                                     </el-option>
                                 </el-select>
+                                <span
+                                    class="error invalid-feedback"
+                                    v-if="errors.unidad_id"
+                                    v-text="errors.unidad_id[0]"
+                                ></span>
+                            </div>
+                            <div class="form-group col-md-6" v-else>
+                                <label
+                                    :class="{
+                                        'text-danger': errors.unidad_id,
+                                    }"
+                                    >Unidad Organizacional*</label
+                                >
+                                <el-input
+                                    class="w-100"
+                                    :value="user.unidad.nombre"
+                                    readonly
+                                >
+                                </el-input>
                                 <span
                                     class="error invalid-feedback"
                                     v-if="errors.unidad_id"
@@ -393,7 +463,7 @@ export default {
                 objetivo_estrategico3: "",
                 resultado_institucional: "",
                 indicador: "",
-                codigo_poa: [],
+                codigo_poa: "",
                 accion_corto: "",
                 indicador_proceso: "",
                 linea_base: "",
@@ -461,25 +531,42 @@ export default {
                 };
                 let formdata = new FormData();
 
-                this.formulario_cuatro.codigo_pei += `-${this.formulario_cuatro.objetivo_estrategico}`;
+                let codigo_pei_completo =
+                    this.formulario_cuatro.codigo_pei +
+                    `-${this.formulario_cuatro.objetivo_estrategico}`;
+                // this.formulario_cuatro.codigo_pei += `-${this.formulario_cuatro.objetivo_estrategico}`;
                 if (
                     this.formulario_cuatro.codigo_pei2 &&
                     this.formulario_cuatro.codigo_pei2 != ""
                 ) {
-                    this.formulario_cuatro.codigo_pei += ` | ${this.formulario_cuatro.codigo_pei2}-${this.formulario_cuatro.objetivo_estrategico2}`;
+                    codigo_pei_completo += ` | ${this.formulario_cuatro.codigo_pei2}-${this.formulario_cuatro.objetivo_estrategico2}`;
                 }
                 if (
                     this.formulario_cuatro.codigo_pei3 &&
                     this.formulario_cuatro.codigo_pei3 != ""
                 ) {
-                    this.formulario_cuatro.codigo_pei += ` | ${this.formulario_cuatro.codigo_pei3}-${this.formulario_cuatro.objetivo_estrategico3}`;
+                    codigo_pei_completo += ` | ${this.formulario_cuatro.codigo_pei3}-${this.formulario_cuatro.objetivo_estrategico3}`;
+                }
+
+                let codigo_poa_completo =
+                    this.formulario_cuatro.codigo_poa +
+                    `-${this.formulario_cuatro.accion_corto}`;
+                if (
+                    this.formulario_cuatro.codigo_poa2 &&
+                    this.formulario_cuatro.codigo_poa2 != ""
+                ) {
+                    codigo_poa_completo += ` | ${this.formulario_cuatro.codigo_poa2}-${this.formulario_cuatro.accion_corto2}`;
+                }
+                if (
+                    this.formulario_cuatro.codigo_poa3 &&
+                    this.formulario_cuatro.codigo_poa3 != ""
+                ) {
+                    codigo_poa_completo += ` | ${this.formulario_cuatro.codigo_poa3}-${this.formulario_cuatro.accion_corto3}`;
                 }
 
                 formdata.append(
                     "codigo_pei",
-                    this.formulario_cuatro.codigo_pei
-                        ? this.formulario_cuatro.codigo_pei
-                        : ""
+                    codigo_pei_completo ? codigo_pei_completo : ""
                 );
                 formdata.append(
                     "objetivo_estrategico",
@@ -501,9 +588,7 @@ export default {
                 );
                 formdata.append(
                     "codigo_poa",
-                    this.formulario_cuatro.codigo_poa
-                        ? this.formulario_cuatro.codigo_poa
-                        : []
+                    codigo_poa_completo ? codigo_poa_completo : ""
                 );
                 formdata.append(
                     "accion_corto",
@@ -542,11 +627,25 @@ export default {
                         : ""
                 );
 
-                if (
-                    this.user.tipo == "JEFES DE UNIDAD" ||
-                    this.user.tipo == "DIRECTORES" ||
-                    this.user.tipo == "JEFES DE ÁREAS"
-                ) {
+                // if (
+                //     this.user.tipo == "JEFES DE UNIDAD" ||
+                //     this.user.tipo == "DIRECTORES" ||
+                //     this.user.tipo == "JEFES DE ÁREAS"
+                // ) {
+                //     formdata.append(
+                //         "unidad_id",
+                //         this.user.unidad_id ? this.user.unidad_id : ""
+                //     );
+                // } else {
+                //     formdata.append(
+                //         "unidad_id",
+                //         this.formulario_cuatro.unidad_id
+                //             ? this.formulario_cuatro.unidad_id
+                //             : ""
+                //     );
+                // }
+
+                if (this.user.unidad_id && this.user.unidad_id != "") {
                     formdata.append(
                         "unidad_id",
                         this.user.unidad_id ? this.user.unidad_id : ""
@@ -616,8 +715,12 @@ export default {
             this.formulario_cuatro.objetivo_estrategico3 = "";
             this.formulario_cuatro.resultado_institucional = "";
             this.formulario_cuatro.indicador = "";
-            this.formulario_cuatro.codigo_poa = [];
+            this.formulario_cuatro.codigo_poa = "";
             this.formulario_cuatro.accion_corto = "";
+            this.formulario_cuatro.codigo_poa2 = "";
+            this.formulario_cuatro.accion_corto2 = "";
+            this.formulario_cuatro.codigo_poa3 = "";
+            this.formulario_cuatro.accion_corto3 = "";
             this.formulario_cuatro.indicador_proceso = "";
             this.formulario_cuatro.linea_base = "";
             this.formulario_cuatro.meta = "";

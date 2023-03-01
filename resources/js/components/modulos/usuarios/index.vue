@@ -233,6 +233,11 @@ export default {
                     sortable: true,
                 },
                 { key: "tipo", label: "Tipo Usuario", sortable: true },
+                {
+                    key: "unidad.nombre",
+                    label: "Unidad Organizacional",
+                    sortable: true,
+                },
                 { key: "foto", label: "Foto" },
                 {
                     key: "acceso",

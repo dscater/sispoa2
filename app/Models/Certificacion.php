@@ -32,7 +32,7 @@ class Certificacion extends Model
         return $this->belongsTo(MemoriaOperacionDetalle::class, 'mod_id');
     }
 
-    public function personal_designado()
+    public function o_personal_designado()
     {
         return $this->belongsTo(Personal::class, 'personal_designado');
     }

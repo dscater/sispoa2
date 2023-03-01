@@ -258,6 +258,7 @@
                                         }"
                                         v-model="item_mod.partida_id"
                                         @change="getTextoPartida(index_mod)"
+                                        filterable
                                     >
                                         <el-option
                                             v-for="partida in listPartidas"

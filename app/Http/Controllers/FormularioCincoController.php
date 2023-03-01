@@ -273,6 +273,7 @@ class FormularioCincoController extends Controller
     {
         // armar repetidos
         $array_registros = FormularioCincoController::armaRepetidos($formulario_cinco);
+        // return $array_registros;
         $html = view("parcial.formulario_cinco", compact("array_registros", "formulario_cinco"))->render();
         return response()->JSON($html);
     }
@@ -329,6 +330,7 @@ class FormularioCincoController extends Controller
 
             // unir los registros de lugares y responsables con el array $array_lugares
             $array_registros[] = [
+                "operacion_id" => $operacion->operacion_id,
                 "codigo_operacion" => $operacion->codigo_operacion,
                 "subdireccion" => $operacion->operacion->subdireccion,
                 "operacion" => $operacion->operacion->operacion,
@@ -338,6 +340,37 @@ class FormularioCincoController extends Controller
                 "lugares" => $array_lugares
             ];
         }
+
+        // agrupar por operaciones
+        $operaciones_filtro = DB::select("SELECT DISTINCT(operacion_id) FROM memoria_operacions WHERE memoria_id = " . $formulario_cinco->memoria->id . ";");
+        $array_registros = FormularioCincoController::agruparOperaciones($operaciones_filtro, $array_registros);
+
         return $array_registros;
+    }
+
+    public static function agruparOperaciones($operaciones, $registros)
+    {
+        $nuevo_array = [];
+        $suma_rowspan = [];
+        $suma_registros = [];
+        foreach ($operaciones as $op) {
+            $operacion = Operacion::find($op->operacion_id);
+            $suma_rowspan[$op->operacion_id] = 0;
+
+            foreach ($registros as $value) {
+                if ($value["operacion_id"] == $op->operacion_id) {
+                    $suma_rowspan[$op->operacion_id] += (int)$value["rowspan"];
+                    $suma_registros[$op->operacion_id][] = $value;
+                }
+            }
+
+            $nuevo_array[] = [
+                "rowspan" => $suma_rowspan[$op->operacion_id],
+                "codigo_operacion" => $operacion->codigo_operacion,
+                "operacion" => $operacion->operacion,
+                "registros" => $suma_registros[$op->operacion_id],
+            ];
+        }
+        return $nuevo_array;
     }
 }

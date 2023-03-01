@@ -22,8 +22,13 @@ class FormularioCuatro extends Model
 
     protected $with = ["unidad"];
 
-    protected $appends = ["estado_aprobado", "sw_aprobado", "codigo_pei1", "objetivo_estrategico1", "codigo_pei2", "objetivo_estrategico2", "codigo_pei3", "objetivo_estrategico3"];
+    protected $appends = [
+        "estado_aprobado", "sw_aprobado",
+        "codigo_pei1", "objetivo_estrategico1", "codigo_pei2", "objetivo_estrategico2", "codigo_pei3", "objetivo_estrategico3",
+        "codigo_poa1", "accion_corto1", "codigo_poa2", "accion_corto2", "codigo_poa3", "accion_corto3", "codigo_poa_full","accion_corto_full"
+    ];
 
+    // PEI's
     public function getCodigoPei1Attribute()
     {
         try {
@@ -80,6 +85,135 @@ class FormularioCuatro extends Model
             return "";
         }
     }
+
+    // POA's
+    public function getCodigoPoa1Attribute()
+    {
+        try {
+            $array = explode(" | ", $this->codigo_poa);
+            return isset(explode("-", $array[0])[0]) ? explode("-", $array[0])[0] : "";
+        } catch (\Exception $e) {
+            return $this->codigo_poa;
+        }
+    }
+    public function getAccionCorto1Attribute()
+    {
+        try {
+            $array = explode(" | ", $this->codigo_poa);
+            return isset(explode("-", $array[0])[1]) ? explode("-", $array[0])[1] : "";
+        } catch (\Exception $e) {
+            return "";
+        }
+    }
+
+    public function getCodigoPoa2Attribute()
+    {
+        try {
+            $array = explode(" | ", $this->codigo_poa);
+            return isset(explode("-", $array[1])[0]) ? explode("-", $array[1])[0] : "";
+        } catch (\Exception $e) {
+            return "";
+        }
+    }
+    public function getAccionCorto2Attribute()
+    {
+        try {
+            $array = explode(" | ", $this->codigo_poa);
+            return isset(explode("-", $array[1])[1]) ? explode("-", $array[1])[1] : "";
+        } catch (\Exception $e) {
+            return "";
+        }
+    }
+
+    public function getCodigoPoa3Attribute()
+    {
+        try {
+            $array = explode(" | ", $this->codigo_poa);
+            return isset(explode("-", $array[2])[0]) ? explode("-", $array[2])[0] : "";
+        } catch (\Exception $e) {
+            return "";
+        }
+    }
+    public function getAccionCorto3Attribute()
+    {
+        try {
+            $array = explode(" | ", $this->codigo_poa);
+            return isset(explode("-", $array[2])[1]) ? explode("-", $array[2])[1] : "";
+        } catch (\Exception $e) {
+            return "";
+        }
+    }
+
+    public function getCodigoPoaFullAttribute()
+    {
+        try {
+            $array = explode(" | ", $this->codigo_poa);
+            $full = "";
+
+            $codigo1 = null;
+            $codigo2 = null;
+            $codigo3 = null;
+
+            if (isset($array[0]) && isset(explode("-", $array[0])[0])) {
+                $codigo1 = "".explode("-", $array[0])[0];
+            }
+            if (isset($array[1]) && isset(explode("-", $array[1])[0])) {
+                $codigo2 = "".explode("-", $array[1])[0];
+            }
+            if (isset($array[2]) && isset(explode("-", $array[2])[0])) {
+                $codigo3 = "".explode("-", $array[2])[0];
+            }
+
+            if ($codigo1) {
+                $full .= $codigo1;
+            }
+            if ($codigo2) {
+                $full .= " | " . $codigo2;
+            }
+            if ($codigo3) {
+                $full .= " | " . $codigo3;
+            }
+            return $full;
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+    public function getAccionCortoFullAttribute()
+    {
+        try {
+            $array = explode(" | ", $this->codigo_poa);
+            $full = "";
+
+            $codigo1 = null;
+            $codigo2 = null;
+            $codigo3 = null;
+
+            if (isset($array[0]) && isset(explode("-", $array[0])[0])) {
+                $codigo1 = "".explode("-", $array[0])[0];
+            }
+            if (isset($array[1]) && isset(explode("-", $array[1])[1])) {
+                $codigo2 = "".explode("-", $array[1])[1];
+            }
+            if (isset($array[2]) && isset(explode("-", $array[2])[2])) {
+                $codigo3 = "".explode("-", $array[2])[2];
+            }
+
+            if ($codigo1) {
+                $full .= $codigo1;
+            }
+            if ($codigo2) {
+                $full .= " | " . $codigo2;
+            }
+            if ($codigo3) {
+                $full .= " | " . $codigo3;
+            }
+            return $full;
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
 
     public function unidad()
     {

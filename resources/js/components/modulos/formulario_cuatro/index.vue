@@ -144,7 +144,7 @@
                                                         "
                                                     ></span>
                                                 </template> -->
-                                                <template
+                                                <!-- <template
                                                     #cell(codigo_poa)="row"
                                                 >
                                                     <span
@@ -152,7 +152,7 @@
                                                             row.item.codigo_poa
                                                         "
                                                     ></span>
-                                                </template>
+                                                </template> -->
                                                 <template #cell(foto)="row">
                                                     <b-avatar
                                                         :src="
@@ -388,8 +388,12 @@ export default {
                 objetivo_estrategico3: "",
                 resultado_institucional: "",
                 indicador: "",
-                codigo_poa: [],
+                codigo_poa: "",
                 accion_corto: "",
+                codigo_poa2: "",
+                accion_corto2: "",
+                codigo_poa3: "",
+                accion_corto3: "",
                 indicador_proceso: "",
                 linea_base: "",
                 meta: "",
@@ -437,6 +441,7 @@ export default {
                 : "";
             this.oFormularioCuatro.objetivo_estrategico3 =
                 item.objetivo_estrategico3 ? item.objetivo_estrategico3 : "";
+
             this.oFormularioCuatro.resultado_institucional =
                 item.resultado_institucional
                     ? item.resultado_institucional
@@ -444,12 +449,24 @@ export default {
             this.oFormularioCuatro.indicador = item.indicador
                 ? item.indicador
                 : "";
-            this.oFormularioCuatro.codigo_poa = item.codigo_poa
-                ? item.codigo_poa.split(",")
+
+
+            this.oFormularioCuatro.codigo_poa = item.codigo_poa1
+                ? item.codigo_poa1
                 : "";
-            this.oFormularioCuatro.accion_corto = item.accion_corto
-                ? item.accion_corto
+            this.oFormularioCuatro.accion_corto =
+                item.accion_corto1 ? item.accion_corto1 : "";
+            this.oFormularioCuatro.codigo_poa2 = item.codigo_poa2
+                ? item.codigo_poa2
                 : "";
+            this.oFormularioCuatro.accion_corto2 =
+                item.accion_corto2 ? item.accion_corto2 : "";
+            this.oFormularioCuatro.codigo_poa3 = item.codigo_poa3
+                ? item.codigo_poa3
+                : "";
+            this.oFormularioCuatro.accion_corto3 =
+                item.accion_corto3 ? item.accion_corto3 : "";
+
             this.oFormularioCuatro.indicador_proceso = item.indicador_proceso
                 ? item.indicador_proceso
                 : "";
@@ -547,8 +564,12 @@ export default {
             this.oFormularioCuatro.objetivo_estrategico3 = "";
             this.oFormularioCuatro.resultado_institucional = "";
             this.oFormularioCuatro.indicador = "";
-            this.oFormularioCuatro.codigo_poa = [];
+            this.oFormularioCuatro.codigo_poa = "";
             this.oFormularioCuatro.accion_corto = "";
+            this.oFormularioCuatro.codigo_poa2 = "";
+            this.oFormularioCuatro.accion_corto2 = "";
+            this.oFormularioCuatro.codigo_poa3 = "";
+            this.oFormularioCuatro.accion_corto3 = "";
             this.oFormularioCuatro.indicador_proceso = "";
             this.oFormularioCuatro.linea_base = "";
             this.oFormularioCuatro.meta = "";

@@ -166,6 +166,11 @@ export default {
                     sortable: true,
                 },
                 {
+                    key: "memoria.formulario.unidad.nombre",
+                    label: "Unidad Organizacional",
+                    sortable: true,
+                },
+                {
                     key: "memoria.operacions.length",
                     label: "Total operaciones",
                     sortable: true,

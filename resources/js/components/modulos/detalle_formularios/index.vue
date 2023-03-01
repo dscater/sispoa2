@@ -314,6 +314,11 @@ export default {
                     sortable: true,
                 },
                 {
+                    key: "formulario.unidad.nombre",
+                    label: "Unidad Organizacional",
+                    sortable: true,
+                },
+                {
                     key: "operacions.length",
                     label: "Total operaciones",
                     sortable: true,

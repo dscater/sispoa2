@@ -62,88 +62,90 @@
             $tarea_actual = 0;
             $muestra = true;
         @endphp
-        @foreach ($array_registros as $index_registro => $registro)
-            @foreach ($registro['lugares'] as $index_lugar => $lugar)
-                @foreach ($lugar['responsables'] as $index_responsable => $responsable)
-                    @foreach ($responsable['registros'] as $index_registro_rep => $registro_resp)
-                        @if ($index_lugar == 0 && $index_responsable == 0 && $index_registro_rep == 0)
-                            @if ($registro['subdireccion'])
+        @foreach ($array_registros as $i_p => $ar)
+            @foreach ($ar['registros'] as $index_registro => $registro)
+                @foreach ($registro['lugares'] as $index_lugar => $lugar)
+                    @foreach ($lugar['responsables'] as $index_responsable => $responsable)
+                        @foreach ($responsable['registros'] as $index_registro_rep => $registro_resp)
+                            @if ($index_registro == 0 && $index_lugar == 0 && $index_responsable == 0 && $index_registro_rep == 0)
+                                @if ($registro['subdireccion'])
+                                    <tr>
+                                        <td colspan="17" class="bg-primary">
+                                            {{ $registro['subdireccion']->nombre }}
+                                        </td>
+                                    </tr>
+                                @endif
                                 <tr>
-                                    <td colspan="17" class="bg-primary">
-                                        {{ $registro['subdireccion']->nombre }}
+                                    <td rowspan="{{ $ar['rowspan'] }}">{{ $registro['codigo_operacion'] }}</td>
+                                    <td rowspan="{{ $ar['rowspan'] }}">{{ $registro['operacion'] }}</td>
+                                    <td rowspan="{{ $ar['rowspan'] }}">{{ $registro['codigo_tarea'] }}</td>
+                                    <td rowspan="{{ $ar['rowspan'] }}">{{ $registro['tarea'] }}</td>
+                                    <td rowspan="{{ $lugar['rowspan'] }}">{{ $lugar['lugar'] }}</td>
+                                    <td rowspan="{{ $responsable['rowspan'] }}">{{ $responsable['responsable'] }}</td>
+                                    <td>{{ $registro_resp->partida }}</td>
+                                    <td>{{ $registro_resp->descripcion }}</td>
+                                    <td>{{ $registro_resp->cantidad }}</td>
+                                    <td>{{ $registro_resp->unidad }}</td>
+                                    <td>{{ $registro_resp->costo }}</td>
+                                    <td>{{ $registro_resp->total }}</td>
+                                    <td>{{ $registro_resp->ue }}</td>
+                                    <td>{{ $registro_resp->prog }}</td>
+                                    <td>{{ $registro_resp->act }}</td>
+                                    <td></td>
+                                    <td class="{{ (float) $registro_resp->saldo == 0 ? 'fondo_rojo' : '' }}">
+                                        {{ $registro_resp->total_actividad }}</td>
+                                </tr>
+                            @elseif ($index_responsable == 0 && $index_registro_rep == 0)
+                                <tr>
+                                    <td rowspan="{{ $lugar['rowspan'] }}">{{ $lugar['lugar'] }}
                                     </td>
+                                    <td rowspan="{{ $responsable['rowspan'] }}">{{ $responsable['responsable'] }}</td>
+                                    <td>{{ $registro_resp->partida }}</td>
+                                    <td>{{ $registro_resp->descripcion }}</td>
+                                    <td>{{ $registro_resp->cantidad }}</td>
+                                    <td>{{ $registro_resp->unidad }}</td>
+                                    <td>{{ $registro_resp->costo }}</td>
+                                    <td>{{ $registro_resp->total }}</td>
+                                    <td>{{ $registro_resp->ue }}</td>
+                                    <td>{{ $registro_resp->prog }}</td>
+                                    <td>{{ $registro_resp->act }}</td>
+                                    <td></td>
+                                    <td class="{{ (float) $registro_resp->saldo == 0 ? 'fondo_rojo' : '' }}">
+                                        {{ $registro_resp->total_actividad }}</td>
+                                </tr>
+                            @elseif ($index_registro_rep == 0)
+                                <tr>
+                                    <td rowspan="{{ $responsable['rowspan'] }}">{{ $responsable['responsable'] }}</td>
+                                    <td>{{ $registro_resp->partida }}</td>
+                                    <td>{{ $registro_resp->descripcion }}</td>
+                                    <td>{{ $registro_resp->cantidad }}</td>
+                                    <td>{{ $registro_resp->unidad }}</td>
+                                    <td>{{ $registro_resp->costo }}</td>
+                                    <td>{{ $registro_resp->total }}</td>
+                                    <td>{{ $registro_resp->ue }}</td>
+                                    <td>{{ $registro_resp->prog }}</td>
+                                    <td>{{ $registro_resp->act }}</td>
+                                    <td></td>
+                                    <td class="{{ (float) $registro_resp->saldo == 0 ? 'fondo_rojo' : '' }}">
+                                        {{ $registro_resp->total_actividad }}</td>
+                                </tr>
+                            @else
+                                <tr>
+                                    <td>{{ $registro_resp->partida }}</td>
+                                    <td>{{ $registro_resp->descripcion }}</td>
+                                    <td>{{ $registro_resp->cantidad }}</td>
+                                    <td>{{ $registro_resp->unidad }}</td>
+                                    <td>{{ $registro_resp->costo }}</td>
+                                    <td>{{ $registro_resp->total }}</td>
+                                    <td>{{ $registro_resp->ue }}</td>
+                                    <td>{{ $registro_resp->prog }}</td>
+                                    <td>{{ $registro_resp->act }}</td>
+                                    <td></td>
+                                    <td class="{{ (float) $registro_resp->saldo == 0 ? 'fondo_rojo' : '' }}">
+                                        {{ $registro_resp->total_actividad }}</td>
                                 </tr>
                             @endif
-                            <tr>
-                                <td rowspan="{{ $registro['rowspan'] }}">{{ $registro['codigo_operacion'] }}</td>
-                                <td rowspan="{{ $registro['rowspan'] }}">{{ $registro['operacion'] }}</td>
-                                <td rowspan="{{ $registro['rowspan'] }}">{{ $registro['codigo_tarea'] }}</td>
-                                <td rowspan="{{ $registro['rowspan'] }}">{{ $registro['tarea'] }}</td>
-                                <td rowspan="{{ $lugar['rowspan'] }}">{{ $lugar['lugar'] }}</td>
-                                <td rowspan="{{ $responsable['rowspan'] }}">{{ $responsable['responsable'] }}</td>
-                                <td>{{ $registro_resp->partida }}</td>
-                                <td>{{ $registro_resp->descripcion }}</td>
-                                <td>{{ $registro_resp->cantidad }}</td>
-                                <td>{{ $registro_resp->unidad }}</td>
-                                <td>{{ $registro_resp->costo }}</td>
-                                <td>{{ $registro_resp->total }}</td>
-                                <td>{{ $registro_resp->ue }}</td>
-                                <td>{{ $registro_resp->prog }}</td>
-                                <td>{{ $registro_resp->act }}</td>
-                                <td>{{ $registro_resp->justificacion }}</td>
-                                <td class="{{ (float) $registro_resp->saldo == 0 ? 'fondo_rojo' : '' }}">
-                                    {{ $registro_resp->total_actividad }}</td>
-                            </tr>
-                        @elseif ($index_responsable == 0 && $index_registro_rep == 0)
-                            <tr>
-                                <td rowspan="{{ $lugar['rowspan'] }}">{{ $lugar['lugar'] }}
-                                </td>
-                                <td rowspan="{{ $responsable['rowspan'] }}">{{ $responsable['responsable'] }}</td>
-                                <td>{{ $registro_resp->partida }}</td>
-                                <td>{{ $registro_resp->descripcion }}</td>
-                                <td>{{ $registro_resp->cantidad }}</td>
-                                <td>{{ $registro_resp->unidad }}</td>
-                                <td>{{ $registro_resp->costo }}</td>
-                                <td>{{ $registro_resp->total }}</td>
-                                <td>{{ $registro_resp->ue }}</td>
-                                <td>{{ $registro_resp->prog }}</td>
-                                <td>{{ $registro_resp->act }}</td>
-                                <td>{{ $registro_resp->justificacion }}</td>
-                                <td class="{{ (float) $registro_resp->saldo == 0 ? 'fondo_rojo' : '' }}">
-                                    {{ $registro_resp->total_actividad }}</td>
-                            </tr>
-                        @elseif ($index_registro_rep == 0)
-                            <tr>
-                                <td rowspan="{{ $responsable['rowspan'] }}">{{ $responsable['responsable'] }}</td>
-                                <td>{{ $registro_resp->partida }}</td>
-                                <td>{{ $registro_resp->descripcion }}</td>
-                                <td>{{ $registro_resp->cantidad }}</td>
-                                <td>{{ $registro_resp->unidad }}</td>
-                                <td>{{ $registro_resp->costo }}</td>
-                                <td>{{ $registro_resp->total }}</td>
-                                <td>{{ $registro_resp->ue }}</td>
-                                <td>{{ $registro_resp->prog }}</td>
-                                <td>{{ $registro_resp->act }}</td>
-                                <td>{{ $registro_resp->justificacion }}</td>
-                                <td class="{{ (float) $registro_resp->saldo == 0 ? 'fondo_rojo' : '' }}">
-                                    {{ $registro_resp->total_actividad }}</td>
-                            </tr>
-                        @else
-                            <tr>
-                                <td>{{ $registro_resp->partida }}</td>
-                                <td>{{ $registro_resp->descripcion }}</td>
-                                <td>{{ $registro_resp->cantidad }}</td>
-                                <td>{{ $registro_resp->unidad }}</td>
-                                <td>{{ $registro_resp->costo }}</td>
-                                <td>{{ $registro_resp->total }}</td>
-                                <td>{{ $registro_resp->ue }}</td>
-                                <td>{{ $registro_resp->prog }}</td>
-                                <td>{{ $registro_resp->act }}</td>
-                                <td>{{ $registro_resp->justificacion }}</td>
-                                <td class="{{ (float) $registro_resp->saldo == 0 ? 'fondo_rojo' : '' }}">
-                                    {{ $registro_resp->total_actividad }}</td>
-                            </tr>
-                        @endif
+                        @endforeach
                     @endforeach
                 @endforeach
             @endforeach

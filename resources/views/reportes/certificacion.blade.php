@@ -290,8 +290,8 @@
         </thead>
         <tbody>
             <tr>
-                <td class="bold">{!! str_replace(",","<br>",$certificacion->memoria_operacion->memoria->formulario->codigo_pei) !!}</td>
-                <td class="centreado">{{ $certificacion->memoria_operacion->memoria->formulario->accion_corto }}</td>
+                <td class="bold">{!! str_replace("|","<br>",$certificacion->memoria_operacion->memoria->formulario->codigo_poa_full) !!}</td>
+                <td class="centreado">{!! str_replace("|","<br>", $certificacion->memoria_operacion->memoria->formulario->accion_corto_full) !!}</td>
                 <td class="bold">{{ $certificacion->memoria_operacion->operacion->codigo_operacion }}</td>
                 <td>{{ $certificacion->memoria_operacion->operacion->operacion }}</td>
             </tr>
@@ -312,7 +312,7 @@
             <tr>
                 <td class="centreado">{{ $certificacion->memoria_operacion_detalle->m_partida->descripcion }}</td>
                 <td class="centreado">{{ $certificacion->memoria_operacion_detalle->partida }}</td>
-                <td class="centreado">{{ number_format($certificacion->memoria_operacion->presupuesto, 2) }}</td>
+                <td class="centreado">{{ number_format($certificacion->formulario->presupuesto, 2) }}</td>
                 <td class="centreado">{{ number_format($certificacion->presupuesto_usarse, 2) }}</td>
                 @php
                     $saldo = number_format((float) $certificacion->memoria_operacion_detalle->presupuesto - (float) $certificacion->presupuesto_usarse, 2);
@@ -343,7 +343,7 @@
         </thead>
         <tbody>
             <tr>
-                <td class="centreado">{{ $certificacion->personal_designado }}</td>
+                <td class="centreado">{{ $certificacion->o_personal_designado->full_name }}</td>
                 <td class="centreado">{{ $certificacion->departamento }}</td>
                 <td class="centreado">{{ $certificacion->municipio }}</td>
             </tr>
