@@ -1,0 +1,1 @@
+ALTER TABLE `formulario_cuatro` CHANGE `codigo_poa` `codigo_poa` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;
