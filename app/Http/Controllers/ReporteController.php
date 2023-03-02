@@ -321,9 +321,11 @@ class ReporteController extends Controller
                         $sheet->setCellValue('E' . $fila, number_format($mod->costo, 2) . " ");
                         $sheet->setCellValue('F' . $fila, number_format($mod->total, 2) . " ");
                         $cantidad_usado = Certificacion::where('mo_id', $operacion->id)
+                            ->where("anulado", 0)
                             ->where("mod_id", $mod->id)
                             ->sum('cantidad_usar');
                         $total_usado = Certificacion::where('mo_id', $operacion->id)
+                            ->where("anulado", 0)
                             ->where("mod_id", $mod->id)
                             ->sum('presupuesto_usarse');
                         $saldo = (float) $mod->total - (float) $total_usado;
@@ -777,6 +779,7 @@ class ReporteController extends Controller
                         foreach ($formulario->memoria_calculo->operacions as $operacion) {
                             foreach ($operacion->memoria_operacion_detalles as $mod) {
                                 $total_usado = Certificacion::where("mo_id", $operacion->id)
+                                    ->where("anulado", 0)
                                     ->where("mod_id", $mod->id)
                                     ->sum("presupuesto_usarse");
                                 $suma_ejecutados += (float)$total_usado;

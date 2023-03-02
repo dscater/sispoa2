@@ -139,6 +139,8 @@ Route::prefix('admin')->group(function () {
     Route::get("memoria_operacion_detalles/getDetalles", [MemoriaOperacionDetalleController::class, "getDetalles"]);
 
     // CERTIFICACION
+    Route::POST("certificacions/anular/{certificacion}", [CertificacionController::class, "anular"]);
+    Route::POST("certificacions/activar/{certificacion}", [CertificacionController::class, "activar"]);
     Route::get("certificacions/getNroCorrelativo", [CertificacionController::class, "getNroCorrelativo"]);
     Route::POST("certificacions/aprobar/{certificacion}", [CertificacionController::class, "aprobar"]);
     Route::POST("certificacions/pdf/{certificacion}", [CertificacionController::class, "pdf"]);

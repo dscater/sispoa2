@@ -171,25 +171,44 @@
                                                     }}
                                                 </template>
                                                 <template #cell(estado)="row">
-                                                    <span
-                                                        :title="row.item.estado"
-                                                        class="badge bg-danger"
+                                                    <template
                                                         v-if="
-                                                            row.item.estado ==
-                                                            'PENDIENTE'
+                                                            row.item.anulado ==
+                                                            0
                                                         "
-                                                        >{{
-                                                            row.item.estado
-                                                        }}</span
                                                     >
-                                                    <span
-                                                        :title="row.item.estado"
-                                                        class="badge bg-success"
-                                                        v-else
-                                                        >{{
-                                                            row.item.estado
-                                                        }}</span
-                                                    >
+                                                        <span
+                                                            :title="
+                                                                row.item.estado
+                                                            "
+                                                            class="badge bg-danger"
+                                                            v-if="
+                                                                row.item
+                                                                    .estado ==
+                                                                'PENDIENTE'
+                                                            "
+                                                            >{{
+                                                                row.item.estado
+                                                            }}</span
+                                                        >
+                                                        <span
+                                                            :title="
+                                                                row.item.estado
+                                                            "
+                                                            class="badge bg-success"
+                                                            v-else
+                                                            >{{
+                                                                row.item.estado
+                                                            }}</span
+                                                        >
+                                                    </template>
+                                                    <template v-else>
+                                                        <span
+                                                            :title="'ANULADO'"
+                                                            class="badge bg-success"
+                                                            >ANULADO</span
+                                                        >
+                                                    </template>
                                                 </template>
                                                 <template
                                                     #cell(fecha_registro)="row"
@@ -223,6 +242,11 @@
                                                         class="row justify-content-between"
                                                     >
                                                         <b-button
+                                                            v-if="
+                                                                row.item
+                                                                    .anulado ==
+                                                                0
+                                                            "
                                                             size="sm"
                                                             pill
                                                             variant="outline-primary"
@@ -238,6 +262,11 @@
                                                         </b-button>
 
                                                         <b-button
+                                                            v-if="
+                                                                row.item
+                                                                    .anulado ==
+                                                                0
+                                                            "
                                                             size="sm"
                                                             pill
                                                             variant="outline-warning"
@@ -255,6 +284,9 @@
                                                         </b-button>
                                                         <b-button
                                                             v-if="
+                                                                row.item
+                                                                    .anulado ==
+                                                                    0 &&
                                                                 row.item
                                                                     .estado ==
                                                                     'PENDIENTE' &&
@@ -288,6 +320,11 @@
                                                         </b-button>
 
                                                         <b-button
+                                                            v-if="
+                                                                row.item
+                                                                    .anulado ==
+                                                                0
+                                                            "
                                                             size="sm"
                                                             pill
                                                             variant="outline-danger"
@@ -310,6 +347,33 @@
                                                         >
                                                             <i
                                                                 class="fa fa-times"
+                                                            ></i>
+                                                        </b-button>
+
+                                                        <b-button
+                                                            v-else
+                                                            size="sm"
+                                                            pill
+                                                            variant="outline-success"
+                                                            class="btn-flat btn-block"
+                                                            title="Anular"
+                                                            @click="
+                                                                activarCertificacion(
+                                                                    row.item.id,
+                                                                    row.item
+                                                                        .formulario
+                                                                        .codigo_pei +
+                                                                        ' con fecha de registro ' +
+                                                                        formatoFecha(
+                                                                            row
+                                                                                .item
+                                                                                .fecha_registro
+                                                                        )
+                                                                )
+                                                            "
+                                                        >
+                                                            <i
+                                                                class="fa fa-check"
                                                             ></i>
                                                         </b-button>
                                                         <!-- <b-button
@@ -393,6 +457,11 @@ export default {
                 {
                     key: "formulario.codigo_pei",
                     label: "Código PEI",
+                    sortable: true,
+                },
+                {
+                    key: "formulario.unidad.nombre",
+                    label: "Unidad Organizacional",
                     sortable: true,
                 },
                 {
@@ -525,6 +594,45 @@ export default {
             }).then((result) => {
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
+                    axios
+                        .post("/admin/certificacions/anular/" + id, {})
+                        .then((res) => {
+                            this.getCertificacions();
+                            this.filter = "";
+                            Swal.fire({
+                                icon: "success",
+                                title: res.data.msj,
+                                showConfirmButton: false,
+                                timer: 1500,
+                            });
+                        });
+                }
+            });
+        },
+        activarCertificacion(id, descripcion) {
+            Swal.fire({
+                title: "¿Quierés reactivar este registro?",
+                html: `<strong>${descripcion}</strong>`,
+                showCancelButton: true,
+                confirmButtonColor: "#28a745",
+                confirmButtonText: "Si, reactivar",
+                cancelButtonText: "No, cancelar",
+                denyButtonText: `No, cancelar`,
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    axios
+                        .post("/admin/certificacions/activar/" + id, {})
+                        .then((res) => {
+                            this.getCertificacions();
+                            this.filter = "";
+                            Swal.fire({
+                                icon: "success",
+                                title: res.data.msj,
+                                showConfirmButton: false,
+                                timer: 1500,
+                            });
+                        });
                 }
             });
         },

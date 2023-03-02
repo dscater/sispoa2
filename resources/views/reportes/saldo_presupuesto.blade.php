@@ -231,8 +231,14 @@
                             <td class="centreado">{{ $operacion->costo }}</td>
                             <td class="centreado">{{ $operacion->total }}</td>
                             @php
-                                $cantidad_usado = $o_certificacion->where('mo_id', $operacion->id)->sum('cantidad_usar');
-                                $total_usado = $o_certificacion->where('mo_id', $operacion->id)->sum('presupuesto_usarse');
+                                $cantidad_usado = $o_certificacion
+                                    ->where('mo_id', $operacion->id)
+                                    ->where('anulado', 0)
+                                    ->sum('cantidad_usar');
+                                $total_usado = $o_certificacion
+                                    ->where('mo_id', $operacion->id)
+                                    ->where('anulado', 0)
+                                    ->sum('presupuesto_usarse');
                                 $saldo = (float) $operacion->total - (float) $total_usado;
                             @endphp
                             <td class="centreado">{{ $cantidad_usado }}</td>

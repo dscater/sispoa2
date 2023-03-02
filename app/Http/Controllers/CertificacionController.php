@@ -163,6 +163,50 @@ class CertificacionController extends Controller
         }
     }
 
+    public function anular(Certificacion $certificacion)
+    {
+
+        DB::beginTransaction();
+        try {
+            $certificacion->anulado = 1;
+            $certificacion->save();
+
+            $user = Auth::user();
+            Log::registrarLog("ANULACIÓN", "CERTIFICACIÓN POA", "EL USUARIO $user->id ANULÓ UNA CERTIFICACIÓN POA", $user);
+
+            DB::commit();
+            return response()->JSON(["sw" => true, "certificacion" => $certificacion, "msj" => "El registro se anuló correctamente"]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->JSON([
+                'sw' => false,
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function activar(Certificacion $certificacion)
+    {
+
+        DB::beginTransaction();
+        try {
+            $certificacion->anulado = 0;
+            $certificacion->save();
+
+            $user = Auth::user();
+            Log::registrarLog("ACTIVACIÓN", "CERTIFICACIÓN POA", "EL USUARIO $user->id REACTIVÓ UNA CERTIFICACIÓN POA", $user);
+
+            DB::commit();
+            return response()->JSON(["sw" => true, "certificacion" => $certificacion, "msj" => "El registro se reactivó correctamente"]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->JSON([
+                'sw' => false,
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
     public function aprobar(Certificacion $certificacion)
     {
         $certificacion->estado = "APROBADO";

@@ -240,10 +240,12 @@
                         $cantidad_usado = $o_certificacion
                             ->where('mo_id', $mod->memoria_operacion->id)
                             ->where('mod_id', $mod->id)
+                            ->where('anulado', 0)
                             ->sum('cantidad_usar');
                         $total_usado = $o_certificacion
                             ->where('mo_id', $mod->memoria_operacion->id)
                             ->where('mod_id', $mod->id)
+                            ->where('anulado', 0)
                             ->sum('presupuesto_usarse');
                         $saldo = (float) $mod->total - (float) $total_usado;
                     @endphp

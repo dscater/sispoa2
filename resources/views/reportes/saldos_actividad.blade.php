@@ -179,7 +179,7 @@
         <tbody>
             <tr class="bg_principal">
                 <td class="bold p-5" width="10%">Código PEI:</td>
-                    <td class="bold p-5">{!! str_replace(',', '<br>', $actividad->operacion->detalle_formulario->formulario->codigo_pei) !!}</td>
+                <td class="bold p-5">{!! str_replace(',', '<br>', $actividad->operacion->detalle_formulario->formulario->codigo_pei) !!}</td>
             </tr>
             <tr>
                 <td class="bold p-5">Código operación:</td>
@@ -245,10 +245,12 @@
                                     $cantidad_usado = $o_certificacion
                                         ->where('mo_id', $operacion->id)
                                         ->where('mod_id', $mod->id)
+                                        ->where('anulado', 0)
                                         ->sum('cantidad_usar');
                                     $total_usado = $o_certificacion
                                         ->where('mo_id', $operacion->id)
                                         ->where('mod_id', $mod->id)
+                                        ->where('anulado', 0)
                                         ->sum('presupuesto_usarse');
                                     $saldo = (float) $mod->total - (float) $total_usado;
                                 @endphp

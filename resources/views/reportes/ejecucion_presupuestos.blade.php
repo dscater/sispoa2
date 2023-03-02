@@ -233,10 +233,12 @@
                                 <td class="centreado">{{ $mod->total }}</td>
                                 @php
                                     $cantidad_usado = $o_certificacion
+                                        ->where('anulado', 0)
                                         ->where('mo_id', $operacion->id)
                                         ->where('mod_id', $mod->id)
                                         ->sum('cantidad_usar');
                                     $total_usado = $o_certificacion
+                                        ->where('anulado', 0)
                                         ->where('mo_id', $operacion->id)
                                         ->where('mod_id', $mod->id)
                                         ->sum('presupuesto_usarse');
