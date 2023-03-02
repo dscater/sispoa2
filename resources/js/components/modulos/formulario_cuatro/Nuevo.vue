@@ -366,7 +366,7 @@
                             </div>
                             <div
                                 class="form-group col-md-6"
-                                v-if="!user.unidad_id && user.unidad_id == ''"
+                                v-if="user.tipo=='SUPER USUARIO'"
                             >
                                 <label
                                     :class="{
@@ -405,7 +405,7 @@
                                 >
                                 <el-input
                                     class="w-100"
-                                    :value="user.unidad.nombre"
+                                    :value="unidadUsuario"
                                     readonly
                                 >
                                 </el-input>
@@ -498,6 +498,9 @@ export default {
             } else {
                 return "Actualizar";
             }
+        },
+        unidadUsuario() {
+            return this.user ? (this.user.unidad ? this.user.unidad.nombre : "") : "";
         },
     },
     data() {
