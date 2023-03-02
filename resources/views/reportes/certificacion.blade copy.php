@@ -25,7 +25,10 @@
         }
 
         .titulo {
+            margin-top: 2px;
+            position: absolute;
             border: solid 1px;
+            width: 350px;
             font-weight: bold;
             font-size: 1.5rem;
             text-align: center;
@@ -77,7 +80,6 @@
             height: 45px;
             width: 80%;
             margin: auto;
-            margin-bottom:0x;
             border: solid 1px;
         }
 
@@ -155,101 +157,16 @@
             margin-left: auto;
             text-align: right;
         }
-
-        table.header {
-            border-collapse: collapse;
-        }
-
-        table.header tbody tr td {
-            padding: 5px;
-        }
-
-        table.header tbody td.logo {
-            width: 200px;
-        }
-
-        table.header tbody td.logo img {
-            width: 100%;
-            height: 70px;
-        }
-
-        table.header tbody tr td.txt_correlativo {
-            padding-left: 7px;
-            padding-bottom: 0px;
-            vertical-align: bottom;
-        }
-
-        table.header tbody tr td.valor_correlativo {
-            vertical-align: top;
-            padding-top: 0px;
-            padding-left: 7px;
-        }
-
-        table.datos_personal {
-            margin-top: 15px;
-            border-collapse: collapse;
-        }
-
-        .td_txt_firma{
-            vertical-align: top;
-        }
-
-        .border_top {
-            border-top: solid 1px black;
-        }
-
-        .border_bottom {
-            border-bottom: solid 1px black;
-        }
-
-        .border_left {
-            border-left: solid 1px black;
-        }
-
-        .border_right {
-            border-right: solid 1px black;
-        }
-
-        table.codigos_fechas {
-            border-collapse: collapse;
-        }
     </style>
 </head>
 
 <body>
     @inject('configuracion', 'App\Models\Configuracion')
     @inject('verificacion_actividad', 'App\Models\VerificacionActividad')
-    <table class="header">
-        <tbody>
-            <tr>
-                <td class="logo" rowspan="4">
-                    <img class="logo" src="{{ asset('imgs/' . $configuracion->first()->logo) }}" alt="Logo">
-                </td>
-                <td class="td_titulo" rowspan="4">
-                    <div class="titulo">
-                        CERTIFICACIÓN POA<br />GESTIÓN {{ $verificacion_actividad->first()->gestion }}
-                    </div>
-                </td>
-                <td class="">
-                </td>
-            </tr>
-            <tr>
-                <td class="txt_correlativo">
-                    N° Correlativo
-                </td>
-            </tr>
-            <tr>
-                <td class="valor_correlativo">
-                    <div class="nro">{{ $certificacion->correlativo }}</div>
-                </td>
-            </tr>
-            <tr>
-                <td class="">
-                </td>
-            </tr>
-        </tbody>
-    </table>
-
+    <img class="logo" src="{{ asset('imgs/' . $configuracion->first()->logo) }}" alt="Logo">
+    <div class="titulo">CERTIFICACIÓN POA<br />GESTIÓN {{ $verificacion_actividad->first()->gestion }}</div>
+    <div class="correlativo">N° Correlativo<div class="nro">{{ $certificacion->correlativo }}</div>
+    </div>
     <table class="solicitante" border="1">
         <tbody>
             <tr>
@@ -259,101 +176,107 @@
         </tbody>
     </table>
 
-    <table class="datos_personal">
+    <table class="datos_solicitante">
         <tbody>
             <tr>
                 <td></td>
-                <td class="centreado bold" width="41%">Datos del solicitante</td>
-                <td></td>
-                <td></td>
-                <td class="centreado bold" width="41%">Datos del inmediato Superior que Aprueba</td>
+                <td class="centreado bold">Datos del solicitante</td>
             </tr>
             <tr>
-                <td width="5%">Nombre:</td>
+                <td>Nombre:</td>
                 <td class="gray border p-5">{{ $certificacion->solicitante->full_name }}</td>
-                <td></td>
-                <td width="5%">Nombre:</td>
-                <td class="gray border p-5">{{ $certificacion->superior->full_name }}</td>
             </tr>
             <tr>
                 <td>Cargo:</td>
                 <td class="gray border p-5">{{ $certificacion->solicitante->cargo }}</td>
+            </tr>
+            <tr>
                 <td></td>
+                <td class="p-5">
+                    <div class="firma"></div>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="p-0 centreado">Firma</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table class="datos_superior">
+        <tbody>
+            <tr>
+                <td></td>
+                <td class="centreado bold">Datos del inmediato Superior que Aprueba</td>
+            </tr>
+            <tr>
+                <td>Nombre:</td>
+                <td class="gray border p-5">{{ $certificacion->superior->full_name }}</td>
+            </tr>
+            <tr>
                 <td>Cargo:</td>
                 <td class="gray border p-5">{{ $certificacion->superior->cargo }}</td>
             </tr>
             <tr>
                 <td></td>
-                <td class="p-5" style="padding-bottom:0px;">
-                    <div class="firma"></div>
-                </td>
-                <td></td>
-                <td></td>
-                <td class="p-5" style="padding-bottom:0px;">
+                <td class="p-5">
                     <div class="firma"></div>
                 </td>
             </tr>
             <tr>
                 <td></td>
-                <td class="p-0 td_txt_firma centreado">Firma</td>
-                <td></td>
-                <td></td>
-                <td class="p-0 td_txt_firma centreado">Firma</td>
+                <td class="p-0 centreado">Firma</td>
             </tr>
         </tbody>
-
     </table>
 
-    <table class="codigos_fechas" style="margin-top:15px;">
+    <table class="sigep" border="1">
         <tbody>
             <tr>
-                <td class="centreado bold bg_principal border_top border_bottom border_left border_right"
-                    colspan="6">CÓDIGO SIGEP</td>
-                <td width="5%"></td>
-                <td width="5%"></td>
-                <td width="5%"></td>
-                <td width="20%"
-                    class="bold bg_principal centreado border_top border_bottom border_left border_right">Mes inicio
-                </td>
-                <td></td>
-                <td width="20%"
-                    class="bold bg_principal centreado border_top border_bottom border_left border_right">Mes final</td>
+                <td class="centreado bold bg_principal" colspan="6">CÓDIGO SIGEP</td>
             </tr>
             <tr>
-                <td class="centreado bold bg_principal border_left border_bottom">U.E.</td>
-                <td class="centreado bold bg_principal border_left border_bottom">PROG</td>
-                <td class="centreado bold bg_principal border_left border_bottom">PROY</td>
-                <td class="centreado bold bg_principal border_left border_bottom">ACT.</td>
-                <td class="centreado bold bg_principal border_left border_bottom">F.F.</td>
-                <td class="centreado bold bg_principal border_left border_bottom border_right">O.F.</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td class="centreado border_left border_bottom border_right">{{ date('d/m/Y', strtotime($certificacion->inicio)) }}</td>
-                <td></td>
-                <td class="centreado border_left border_bottom border_right">{{ date('d/m/Y', strtotime($certificacion->final)) }}</td>
-                </td>
+                <td class="centreado bold bg_principal">U.E.</td>
+                <td class="centreado bold bg_principal">PROG</td>
+                <td class="centreado bold bg_principal">PROY</td>
+                <td class="centreado bold bg_principal">ACT.</td>
+                <td class="centreado bold bg_principal">F.F.</td>
+                <td class="centreado bold bg_principal">O.F.</td>
             </tr>
             <tr>
-                <td class="centreado border_left border_bottom">{{ $certificacion->memoria_operacion_detalle->ue }}
-                </td>
-                <td class="centreado border_left border_bottom">{{ $certificacion->memoria_operacion_detalle->prog }}
-                </td>
-                <td class="centreado border_left border_bottom">00</td>
-                <td class="centreado border_left border_bottom">{{ $certificacion->memoria_operacion_detalle->act }}
-                </td>
-                <td class="centreado border_left border_bottom">42</td>
-                <td class="centreado border_left border_bottom border_right">230</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td class="centreado">{{ $certificacion->memoria_operacion_detalle->ue }}</td>
+                <td class="centreado">{{ $certificacion->memoria_operacion_detalle->prog }}</td>
+                <td class="centreado">00</td>
+                <td class="centreado">{{ $certificacion->memoria_operacion_detalle->act }}</td>
+                <td class="centreado">42</td>
+                <td class="centreado">230</td>
             </tr>
         </tbody>
     </table>
 
+    <table class="inicio" border="1">
+        <tbody>
+            <tr>
+                <td class="bold bg_principal centreado">Mes inicio</td>
+            </tr>
+            <tr>
+                <td class="centreado">
+                    {{ date('d/m/Y', strtotime($certificacion->inicio)) }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table class="final" border="1">
+        <tbody>
+            <tr>
+                <td class="bold bg_principal centreado">Mes final</td>
+            </tr>
+            <tr>
+                <td class="centreado">
+                    {{ date('d/m/Y', strtotime($certificacion->final)) }}</td>
+            </tr>
+        </tbody>
+    </table>
     <p class="titulo_desc bold" style="margin-bottom:0px;">DESCRIPCIÓN DE LA OPERACIÓN O ACTIVIDAD PROGRAMADA A SER
         EJECUTADA</p>
     <table class="collapse" border="1">
@@ -367,8 +290,8 @@
         </thead>
         <tbody>
             <tr>
-                <td class="bold">{!! str_replace('|', '<br>', $certificacion->memoria_operacion->memoria->formulario->codigo_poa_full) !!}</td>
-                <td class="centreado">{!! str_replace('|', '<br>', $certificacion->memoria_operacion->memoria->formulario->accion_corto_full) !!}</td>
+                <td class="bold">{!! str_replace("|","<br>",$certificacion->memoria_operacion->memoria->formulario->codigo_poa_full) !!}</td>
+                <td class="centreado">{!! str_replace("|","<br>", $certificacion->memoria_operacion->memoria->formulario->accion_corto_full) !!}</td>
                 <td class="bold">{{ $certificacion->memoria_operacion->operacion->codigo_operacion }}</td>
                 <td>{{ $certificacion->memoria_operacion->operacion->operacion }}</td>
             </tr>
@@ -409,7 +332,7 @@
         </tbody>
     </table>
 
-
+    
     <table class="collapse" border="1" style="margin-top:15px">
         <thead>
             <tr>
