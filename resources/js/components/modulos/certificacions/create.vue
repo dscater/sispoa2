@@ -132,7 +132,7 @@
                                                 v-for="item in listFormularios"
                                                 :key="item.id"
                                                 :value="item.id"
-                                                :label="item.codigo_poa_full"
+                                                :label="item.codigo_poa"
                                             >
                                             </el-option>
                                         </el-select>
@@ -300,7 +300,7 @@
                                     </div>
                                     <div
                                         v-if="nro_paso == 3"
-                                        class="form-group col-md-6 ml-auto mr-auto border border-1 p-3"
+                                        class="form-group col-md-3 ml-auto border border-1 border-right-0 p-3"
                                     >
                                         <label
                                             :class="{
@@ -328,6 +328,37 @@
                                             class="error invalid-feedback"
                                             v-if="errors.cantidad_usar"
                                             v-text="errors.cantidad_usar[0]"
+                                        ></span>
+                                    </div>
+                                    <div
+                                        v-if="nro_paso == 3"
+                                        class="form-group col-md-3 mr-auto border border-1 border-left-0 p-3"
+                                    >
+                                        <label
+                                            :class="{
+                                                'text-danger':
+                                                    errors.presupuesto_usarse,
+                                            }"
+                                            >Monto a utilizar*</label
+                                        >
+                                        <input
+                                            type="number"
+                                            class="form-control"
+                                            :class="{
+                                                'is-invalid':
+                                                    errors.presupuesto_usarse,
+                                            }"
+                                            step="0.01"
+                                            v-model="
+                                                oCertificacion.presupuesto_usarse
+                                            "
+                                        />
+                                        <span
+                                            class="error invalid-feedback"
+                                            v-if="errors.presupuesto_usarse"
+                                            v-text="
+                                                errors.presupuesto_usarse[0]
+                                            "
                                         ></span>
                                     </div>
                                     <div
@@ -635,7 +666,7 @@ export default {
                 mo_id: "",
                 mod_id: "",
                 cantidad_usar: "",
-                presupuesto_usarse: "",
+                presupuesto_usarse: 0,
                 archivo: null,
                 correlativo: "",
                 solicitante_id: "",
@@ -662,7 +693,7 @@ export default {
             listPasos: [
                 {
                     nro: 1,
-                    label: "Código PEI",
+                    label: "Código POA",
                     key: "formulario_id",
                     error: false,
                 },
@@ -912,7 +943,8 @@ export default {
                 (item) => item.id == this.oCertificacion.mod_id
             )[0];
             this.oMOperacion = operacion;
-            this.oCertificacion.cantidad_usar = this.oMOperacion.cantidad;
+            this.oCertificacion.cantidad_usar = this.oMOperacion.saldo_cantidad;
+            this.getMontoPartida();
         },
         cargaArchivo(e) {
             this.oCertificacion.archivo = e.target.files[0];
@@ -955,18 +987,31 @@ export default {
                 });
         },
         validaCantidadUsar() {
-            if (this.oCertificacion.cantidad_usar > this.oMOperacion.cantidad) {
-                this.oCertificacion.cantidad_usar = this.oMOperacion.cantidad;
+            if (
+                this.oCertificacion.cantidad_usar >
+                this.oMOperacion.saldo_cantidad
+            ) {
+                this.oCertificacion.cantidad_usar =
+                    this.oMOperacion.saldo_cantidad;
+                this.getMontoPartida();
                 Swal.fire({
                     icon: "error",
                     title: "Error",
                     html:
                         "La cantidad maxima permitida es de " +
-                        this.oMOperacion.cantidad,
+                        this.oMOperacion.saldo_cantidad,
                     showConfirmButton: false,
                     timer: 1500,
                 });
+            } else {
+                this.getMontoPartida();
             }
+        },
+        getMontoPartida() {
+            this.oCertificacion.presupuesto_usarse = parseFloat(
+                parseFloat(this.oCertificacion.cantidad_usar) *
+                    parseFloat(this.oMOperacion.costo)
+            ).toFixed(2);
         },
         ingresarEnter(valor) {
             return valor.replace(",", " | ");

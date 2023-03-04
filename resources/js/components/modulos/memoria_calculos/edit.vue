@@ -480,6 +480,7 @@ export default {
                 }).then((result) => {
                     /* Read more about isConfirmed, isDenied below */
                     if (result.isConfirmed) {
+                        this.next_pagina = next;
                         this.enviarRegistro();
                     } else {
                         next();

@@ -16,7 +16,7 @@ class MemoriaOperacionDetalle extends Model
         "ago", "sep", "oct", "nov", "dic", "total_actividad",
     ];
 
-    protected $appends = ["presupuesto", "saldo"];
+    protected $appends = ["presupuesto", "saldo", "saldo_cantidad"];
     public function getPresupuestoAttribute()
     {
         return (float)$this->cantidad * (float)$this->costo;
@@ -26,9 +26,20 @@ class MemoriaOperacionDetalle extends Model
     {
         $total_usado = Certificacion::where('mo_id', $this->memoria_operacion_id)
             ->where('mod_id', $this->id)
+            ->where("anulado", 0)
             ->sum('presupuesto_usarse');
         $saldo = (float) $this->total - (float) $total_usado;
         return number_format($saldo, 2, '.', '');
+    }
+
+    public function getSaldoCantidadAttribute()
+    {
+        $total_usado = Certificacion::where('mo_id', $this->memoria_operacion_id)
+            ->where('mod_id', $this->id)
+            ->where("anulado", 0)
+            ->sum('cantidad_usar');
+        $saldo = (float) $this->cantidad - (float) $total_usado;
+        return (float)(number_format($saldo, 2, ".", ""));
     }
 
     public function memoria_operacion()

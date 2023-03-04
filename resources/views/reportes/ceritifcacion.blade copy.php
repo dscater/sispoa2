@@ -77,7 +77,7 @@
             height: 45px;
             width: 80%;
             margin: auto;
-            margin-bottom:0x;
+            margin-bottom: 0x;
             border: solid 1px;
         }
 
@@ -190,7 +190,7 @@
             border-collapse: collapse;
         }
 
-        .td_txt_firma{
+        .td_txt_firma {
             vertical-align: top;
         }
 
@@ -329,9 +329,11 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td class="centreado border_left border_bottom border_right">{{ date('d/m/Y', strtotime($certificacion->inicio)) }}</td>
+                <td class="centreado border_left border_bottom border_right">
+                    {{ date('d/m/Y', strtotime($certificacion->inicio)) }}</td>
                 <td></td>
-                <td class="centreado border_left border_bottom border_right">{{ date('d/m/Y', strtotime($certificacion->final)) }}</td>
+                <td class="centreado border_left border_bottom border_right">
+                    {{ date('d/m/Y', strtotime($certificacion->final)) }}</td>
                 </td>
             </tr>
             <tr>
@@ -389,10 +391,11 @@
             <tr>
                 <td class="centreado">{{ $certificacion->memoria_operacion_detalle->m_partida->descripcion }}</td>
                 <td class="centreado">{{ $certificacion->memoria_operacion_detalle->partida }}</td>
-                <td class="centreado">{{ number_format($certificacion->memoria_operacion_detalle->total, 2) }}</td>
+                <td class="centreado">
+                    {{ number_format($certificacion->memoria_operacion_detalle->total_actividad, 2) }}</td>
                 <td class="centreado">{{ number_format($certificacion->presupuesto_usarse, 2) }}</td>
                 @php
-                    $saldo = number_format((float) $certificacion->memoria_operacion_detalle->presupuesto - (float) $certificacion->presupuesto_usarse, 2);
+                    $saldo = number_format((float) $certificacion->memoria_operacion_detalle->saldo, 2);
                     if ((float) $saldo == 0) {
                         $saldo = '-';
                     }

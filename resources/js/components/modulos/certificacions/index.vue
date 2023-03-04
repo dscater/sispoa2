@@ -455,8 +455,8 @@ export default {
             showOverlay: false,
             fields: [
                 {
-                    key: "formulario.codigo_pei",
-                    label: "Código PEI",
+                    key: "formulario.codigo_poa",
+                    label: "Código POA",
                     sortable: true,
                 },
                 {

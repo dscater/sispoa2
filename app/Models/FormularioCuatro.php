@@ -189,8 +189,8 @@ class FormularioCuatro extends Model
             $codigo2 = null;
             $codigo3 = null;
 
-            if (isset($array[0]) && isset(explode("-", $array[0])[0])) {
-                $codigo1 = "".explode("-", $array[0])[0];
+            if (isset($array[0]) && isset(explode("-", $array[0])[1])) {
+                $codigo1 = "".explode("-", $array[0])[1];
             }
             if (isset($array[1]) && isset(explode("-", $array[1])[1])) {
                 $codigo2 = "".explode("-", $array[1])[1];

@@ -36,9 +36,11 @@ class CertificacionController extends Controller
             $certificacions = Certificacion::with("memoria_operacion_detalle")->select("certificacions.*")
                 ->join("formulario_cuatro", "formulario_cuatro.id", "=", "certificacions.formulario_id")
                 ->where("formulario_cuatro.unidad_id", Auth::user()->unidad_id)
+                ->orderBy("created_at", "desc")
                 ->get();
         } else {
-            $certificacions = Certificacion::with("memoria_operacion_detalle")->get();
+            $certificacions = Certificacion::with("memoria_operacion_detalle")
+                ->orderBy("created_at", "desc")->get();
         }
         return response()->JSON(["certificacions" => $certificacions, "total" => count($certificacions)]);
     }
@@ -56,8 +58,8 @@ class CertificacionController extends Controller
             $request["estado"] = "PENDIENTE";
             $request["anulado"] = 0;
             $memoria_operacion_detalle = MemoriaOperacionDetalle::find($request->mod_id);
-            $presupuesto_usarse = (float)$request->cantidad_usar * (float)$memoria_operacion_detalle->costo;
-            $request["presupuesto_usarse"] = $presupuesto_usarse;
+            // $presupuesto_usarse = (float)$request->cantidad_usar * (float)$memoria_operacion_detalle->costo;
+            // $request["presupuesto_usarse"] = $presupuesto_usarse;
             $certificacion = Certificacion::create(array_map("mb_strtoupper", $request->except("archivo")));
             if ($request->hasFile('archivo')) {
                 $file = $request->archivo;
@@ -110,8 +112,8 @@ class CertificacionController extends Controller
         DB::beginTransaction();
         try {
             $memoria_operacion_detalle = MemoriaOperacionDetalle::find($request->mod_id);
-            $presupuesto_usarse = (float)$request->cantidad_usar * (float)$memoria_operacion_detalle->costo;
-            $request["presupuesto_usarse"] = $presupuesto_usarse;
+            // $presupuesto_usarse = (float)$request->cantidad_usar * (float)$memoria_operacion_detalle->costo;
+            // $request["presupuesto_usarse"] = $presupuesto_usarse;
             $certificacion->update(array_map("mb_strtoupper", $request->except("archivo")));
 
             if ($request->hasFile('archivo')) {

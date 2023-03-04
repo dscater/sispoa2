@@ -238,7 +238,7 @@ export default {
 
 <style>
 .login-page {
-    background: var(--principal);
+    /* background: var(--principal); */
 }
 
 .card {

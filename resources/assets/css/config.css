@@ -5,6 +5,14 @@
     --secondary: #da1900;
 }
 
+.login-page {
+    background-image: url('../imgs/fondo.jpeg')!important;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-position: center;
+}
+
+
 .bg-azul {
     background-color: #2198e7;
     color: white !important;
@@ -74,9 +82,9 @@ input.form-control {
 }
 
 .input-group-prepend textarea {
-    min-height: 38px!important;
+    min-height: 38px !important;
 }
 
-.input-group .texto{
+.input-group .texto {
     width: 50%;
 }
