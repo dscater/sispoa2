@@ -78,8 +78,8 @@
                                 <tr>
                                     <td rowspan="{{ $ar['rowspan'] }}">{{ $registro['codigo_operacion'] }}</td>
                                     <td rowspan="{{ $ar['rowspan'] }}">{{ $registro['operacion'] }}</td>
-                                    <td rowspan="{{ $ar['rowspan'] }}">{{ $registro['codigo_tarea'] }}</td>
-                                    <td rowspan="{{ $ar['rowspan'] }}">{{ $registro['tarea'] }}</td>
+                                    <td rowspan="{{ $registro['rowspan'] }}">{{ $registro['codigo_tarea'] }}</td>
+                                    <td rowspan="{{ $registro['rowspan'] }}">{{ $registro['tarea'] }}</td>
                                     <td rowspan="{{ $lugar['rowspan'] }}">{{ $lugar['lugar'] }}</td>
                                     <td rowspan="{{ $responsable['rowspan'] }}">{{ $responsable['responsable'] }}</td>
                                     <td>{{ $registro_resp->partida }}</td>
@@ -95,8 +95,10 @@
                                     <td class="{{ (float) $registro_resp->saldo == 0 ? 'fondo_rojo' : '' }}">
                                         {{ $registro_resp->total_actividad }}</td>
                                 </tr>
-                            @elseif ($index_responsable == 0 && $index_registro_rep == 0)
+                            @elseif ($index_lugar == 0 && $index_responsable == 0 && $index_registro_rep == 0)
                                 <tr>
+                                    <td rowspan="{{ $registro['rowspan'] }}">{{ $registro['codigo_tarea'] }}</td>
+                                    <td rowspan="{{ $registro['rowspan'] }}">{{ $registro['tarea'] }}</td>
                                     <td rowspan="{{ $lugar['rowspan'] }}">{{ $lugar['lugar'] }}
                                     </td>
                                     <td rowspan="{{ $responsable['rowspan'] }}">{{ $responsable['responsable'] }}</td>

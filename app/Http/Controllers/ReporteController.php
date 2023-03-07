@@ -1602,18 +1602,24 @@ class ReporteController extends Controller
                     if ($sheet->getCell('A' . $fila_rowspan)->getValue() == "") {
                         $sheet->setCellValue('A' . $fila_rowspan, $ar["codigo_operacion"]);
                         $sheet->setCellValue('B' . $fila_rowspan, $ar["operacion"]);
-                        $sheet->setCellValue('C' . $fila_rowspan, $operacion["codigo_tarea"]);
-                        $sheet->setCellValue('D' . $fila_rowspan, $operacion["tarea"]);
 
                         $sheet->mergeCells("A" . $fila . ":A" . ($fila + $ar["rowspan"] - 1));  //COMBINAR CELDAS
                         $sheet->mergeCells("B" . $fila . ":B" . ($fila + $ar["rowspan"] - 1));  //COMBINAR CELDAS
-                        $sheet->mergeCells("C" . $fila_rowspan . ":C" . ($fila_rowspan + $ar["rowspan"] - 1));  //COMBINAR CELDAS
-                        $sheet->mergeCells("D" . $fila_rowspan . ":D" . ($fila_rowspan + $ar["rowspan"] - 1));  //COMBINAR CELDAS
                     }
 
 
                     $sheet->getStyle('A' . $fila . ':Q' . $fila)->applyFromArray($estilo_conenido);
+                    $fila_actividad = $fila;
                     foreach ($operacion["lugares"] as $lugar) {
+                        if ($sheet->getCell('C' . $fila_actividad)->getValue() == "") {
+                            $sheet->setCellValue('C' . $fila_actividad, $operacion["codigo_tarea"]);
+                            $sheet->mergeCells("C" . $fila_actividad . ":C" . ($fila_actividad + $operacion["rowspan"] - 1));  //COMBINAR CELDAS
+                        }
+                        if ($sheet->getCell('D' . $fila_actividad)->getValue() == "") {
+                            $sheet->setCellValue('D' . $fila_actividad, $operacion["tarea"]);
+                            $sheet->mergeCells("D" . $fila_actividad . ":D" . ($fila_actividad + $operacion["rowspan"] - 1));  //COMBINAR CELDAS
+                        }
+
                         $sheet->setCellValue('E' . $fila, $lugar["lugar"]);
                         $sheet->mergeCells("E" . $fila . ":E" . ($fila + $lugar["rowspan"] - 1));  //COMBINAR CELDAS
 

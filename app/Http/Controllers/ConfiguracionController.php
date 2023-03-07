@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Configuracion;
+use App\Models\Log;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ConfiguracionController extends Controller
 {
