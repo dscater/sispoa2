@@ -273,7 +273,6 @@ class FormularioCincoController extends Controller
     {
         // armar repetidos
         $array_registros = FormularioCincoController::armaRepetidos($formulario_cinco);
-        // return $array_registros;
         $html = view("parcial.formulario_cinco", compact("array_registros", "formulario_cinco"))->render();
         return response()->JSON($html);
     }

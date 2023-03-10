@@ -40,6 +40,10 @@
             top: 20px;
         }
 
+        .fecha {
+            text-align: center;
+        }
+
         .correlativo {
             width: 120px;
             position: absolute;
@@ -185,6 +189,15 @@
     @foreach ($formularios as $formulario)
         <img class="logo" src="{{ asset('imgs/' . $configuracion->first()->logo) }}" alt="Logo">
         <div class="titulo">MEMORIAS DE CÁLCULO<br />GESTIÓN {{ date('Y') }}</div>
+
+        @if (Auth::user()->tipo != 'SUPER USUARIO' || $filtro == 'Unidad Organizacional')
+            @if ($filtro == 'Unidad Organizacional')
+                <h4 class="fecha">{{ $unidad->nombre }}</h4>
+            @else
+                <h4 class="fecha">{{ Auth::user()->unidad->nombre }}</h4>
+            @endif
+        @endif
+
         <table border="1" class="collapse">
             <tbody>
                 <tr class="bg_principal">

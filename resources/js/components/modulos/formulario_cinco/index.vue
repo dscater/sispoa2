@@ -82,10 +82,28 @@
                                                             pill
                                                             variant="outline-primary"
                                                             class="btn-flat btn-block"
+                                                            title="Descargar Pdf"
+                                                            @click="
+                                                                descargarExcel(
+                                                                    row.item.id,
+                                                                    'pdf'
+                                                                )
+                                                            "
+                                                        >
+                                                            <i
+                                                                class="fa fa-file-pdf"
+                                                            ></i>
+                                                        </b-button>
+                                                        <b-button
+                                                            size="sm"
+                                                            pill
+                                                            variant="outline-success"
+                                                            class="btn-flat btn-block"
                                                             title="Descargar Excel"
                                                             @click="
                                                                 descargarExcel(
-                                                                    row.item.id
+                                                                    row.item.id,
+                                                                    'excel'
                                                                 )
                                                             "
                                                         >
@@ -272,26 +290,37 @@ export default {
         formatoFecha(date) {
             return this.$moment(String(date)).format("DD/MM/YYYY");
         },
-        descargarExcel(id) {
+        descargarExcel(id, tipo) {
             let config = {
                 responseType: "blob",
             };
             axios
                 .post(
                     "/admin/reportes/formulario_cinco_excel",
-                    { id: id },
+                    { id: id, tipo: tipo },
                     config
                 )
                 .then((response) => {
-                    var fileURL = window.URL.createObjectURL(
-                        new Blob([response.data])
-                    );
-                    var fileLink = document.createElement("a");
-                    fileLink.href = fileURL;
-                    fileLink.setAttribute("download", "formulario_cinco.xlsx");
-                    document.body.appendChild(fileLink);
+                    if (tipo == "pdf") {
+                        let pdfBlob = new Blob([response.data], {
+                            type: "application/pdf",
+                        });
+                        let urlReporte = URL.createObjectURL(pdfBlob);
+                        window.open(urlReporte);
+                    } else {
+                        var fileURL = window.URL.createObjectURL(
+                            new Blob([response.data])
+                        );
+                        var fileLink = document.createElement("a");
+                        fileLink.href = fileURL;
+                        fileLink.setAttribute(
+                            "download",
+                            "formulario_cinco.xlsx"
+                        );
+                        document.body.appendChild(fileLink);
 
-                    fileLink.click();
+                        fileLink.click();
+                    }
                 })
                 .catch(async (error) => {
                     console.log(error);

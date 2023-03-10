@@ -26,7 +26,7 @@
 
         .titulo {
             position: absolute;
-            width: 350px;
+            width: 500px;
             font-weight: bold;
             font-size: 1.5rem;
             text-align: center;
@@ -34,6 +34,18 @@
             left: 35%;
             top: 20px;
         }
+
+        .titulo2 {
+            position: absolute;
+            width: 500px;
+            font-weight: bold;
+            font-size: 1.5rem;
+            text-align: center;
+            padding: 3px;
+            left: 35%;
+            top: 60px;
+        }
+
 
         .correlativo {
             width: 120px;
@@ -175,6 +187,7 @@
     @inject('o_certificacion', 'App\Models\Certificacion')
     <img class="logo" src="{{ asset('imgs/' . $configuracion->first()->logo) }}" alt="Logo">
     <div class="titulo">SALDOS DE PRESUPUESTOS POR ACTIVIDAD<br />GESTIÓN {{ date('Y') }}</div>
+    <div class="titulo2">{{ $unidad->nombre }}</div>
     <table border="1" class="collapse">
         <tbody>
             <tr class="bg_principal">
@@ -230,6 +243,10 @@
                         ->get();
                 @endphp
                 @if (count($existe) > 0)
+                    @php
+                        $suma_ejecutados = 0;
+                        $suma_saldos = 0;
+                    @endphp
                     @foreach ($existe as $operacion)
                         @foreach ($operacion->memoria_operacion_detalles as $mod)
                             <tr>
@@ -264,6 +281,11 @@
                             @endphp
                         @endforeach
                     @endforeach
+                    <tr>
+                        <td class="centreado bold" colspan="7">TOTAL</td>
+                        <td class="centreado bold">{{ number_format($suma_ejecutados, 2) }}</td>
+                        <td class="centreado bold">{{ number_format($suma_saldos, 2) }}</td>
+                    </tr>
                 @else
                     <tr>
                         <td colspan="9" class="centreado">NO SE ENCONTRARÓN REGISTROS</td>

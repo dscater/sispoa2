@@ -35,7 +35,11 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <div class="row" id="contenedor_tabla" v-html="tabla">
+                                <div
+                                    class="row"
+                                    id="contenedor_tabla"
+                                    v-html="tabla"
+                                >
                                     <!-- <table class="tabla_detalle">
                                         <thead class="bg-primary">
                                             <tr>
@@ -365,6 +369,13 @@ export default {
     width: 100%;
     border-collapse: collapse;
     height: 1px;
+}
+
+.cabecera th {
+    padding: 3px;
+    font-size: 0.7rem !important;
+    text-align: center;
+    border: solid 1px;
 }
 
 .tabla_detalle thead tr th,

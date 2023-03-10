@@ -1,19 +1,19 @@
-<table class="tabla_detalle">
-    <thead class="bg-primary">
-        <tr>
+<table class="tabla_detalle" border="1">
+    <tbody>
+        <tr class="bg-primary cabecera">
             <th colspan="17">
                 PLAN OPERATIVO ANUAL GESTIÓN
                 2022
             </th>
         </tr>
-        <tr>
-            <th rowspan="3">
+        <tr class="bg-primary cabecera">
+            <th rowspan="3" width="3%">
                 Código Operación(1)
             </th>
             <th rowspan="3">
                 Operación(2)
             </th>
-            <th rowspan="3">
+            <th rowspan="3" width="3%">
                 Código tarea(3)
             </th>
             <th rowspan="3">
@@ -31,14 +31,14 @@
                 Desglose Presupuestario
             </th>
         </tr>
-        <tr>
-            <th rowspan="2">Partida(7)</th>
+        <tr class="bg-primary cabecera">
+            <th rowspan="2" width="3%">Partida(7)</th>
             <th rowspan="2">
                 Descripción(8)
             </th>
-            <th rowspan="2">Cantidad(9)</th>
-            <th rowspan="2">Unida(10)</th>
-            <th rowspan="2">
+            <th rowspan="2" width="3%">Cantidad(9)</th>
+            <th rowspan="2" width="5%">Unidad(10)</th>
+            <th rowspan="2" width="6%">
                 Costo Unitario(11)
             </th>
             <th colspan="4">
@@ -49,15 +49,13 @@
                 TOTAL (por Operación)(14)
             </th>
         </tr>
-        <tr>
-            <th>PRESUPUESTO VIGENTE</th>
-            <th>UE</th>
-            <th>PROG</th>
-            <th>ACT</th>
+        <tr class="bg-primary cabecera">
+            <th width="6%">PRESUPUESTO VIGENTE</th>
+            <th width="2%">UE</th>
+            <th width="2%">PROG</th>
+            <th width="2%">ACT</th>
             <th>OTROS</th>
         </tr>
-    </thead>
-    <tbody>
         @php
             $tarea_actual = 0;
             $muestra = true;
@@ -153,7 +151,7 @@
             @endforeach
         @endforeach
         <tr class="bg-primary">
-            <th colspan="16">TOTAL</th>
+            <th colspan="16">TOTAL PRESUPUESTO DE LA UNIDAD DE PLANIFICACIÓN</th>
             <th class="text-center">{{ number_format($formulario_cinco->memoria->total_final, 2) }}</th>
         </tr>
     </tbody>

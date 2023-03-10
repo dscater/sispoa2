@@ -33,13 +33,13 @@ class CertificacionController extends Controller
     {
         $certificacions = [];
         if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "ENLACE") {
-            $certificacions = Certificacion::with("memoria_operacion_detalle")->select("certificacions.*")
+            $certificacions = Certificacion::with("memoria_operacion_detalle")->with("o_personal_designado")->select("certificacions.*")
                 ->join("formulario_cuatro", "formulario_cuatro.id", "=", "certificacions.formulario_id")
                 ->where("formulario_cuatro.unidad_id", Auth::user()->unidad_id)
                 ->orderBy("created_at", "desc")
                 ->get();
         } else {
-            $certificacions = Certificacion::with("memoria_operacion_detalle")
+            $certificacions = Certificacion::with("memoria_operacion_detalle")->with("o_personal_designado")
                 ->orderBy("created_at", "desc")->get();
         }
         return response()->JSON(["certificacions" => $certificacions, "total" => count($certificacions)]);
@@ -60,6 +60,10 @@ class CertificacionController extends Controller
             $memoria_operacion_detalle = MemoriaOperacionDetalle::find($request->mod_id);
             // $presupuesto_usarse = (float)$request->cantidad_usar * (float)$memoria_operacion_detalle->costo;
             // $request["presupuesto_usarse"] = $presupuesto_usarse;
+            $request["total_cantidad"] = 0;
+            $request["saldo_cantidad"] = 0;
+            $request["total"] = 0;
+            $request["saldo_total"] = 0;
             $certificacion = Certificacion::create(array_map("mb_strtoupper", $request->except("archivo")));
             if ($request->hasFile('archivo')) {
                 $file = $request->archivo;
@@ -68,6 +72,8 @@ class CertificacionController extends Controller
                 $file->move(public_path() . '/archivos/', $nom_archivo);
                 $certificacion->save();
             }
+
+            CertificacionController::calculaSaldo($certificacion);
 
             $user = Auth::user();
             Log::registrarLog("CREACIÓN", "CERTIFICACIÓN POA", "EL USUARIO $user->id REGISTRO UNA CERTIFICACIÓN POA", $user);
@@ -127,6 +133,7 @@ class CertificacionController extends Controller
                 $file->move(public_path() . '/archivos/', $nom_archivo);
                 $certificacion->save();
             }
+            CertificacionController::recalculaSaldosOperacion($certificacion->memoria_operacion_detalle->memoria_operacion_id, $certificacion->memoria_operacion_detalle->id);
 
             $user = Auth::user();
             Log::registrarLog("MODIFICACIÓN", "CERTIFICACIÓN POA", "EL USUARIO $user->id MODIFICÓ UNA CERTIFICACIÓN POA", $user);
@@ -227,5 +234,54 @@ class CertificacionController extends Controller
             return response()->JSON((int)$ultimo->correlativo + 1);
         }
         return response()->JSON(1);
+    }
+
+    public static function calculaSaldo($certificacion)
+    {
+        $ultimo = Certificacion::where("mod_id", $certificacion->mod_id)
+            ->where("mo_id", $certificacion->mo_id)
+            ->where("id", "<", $certificacion->id)
+            ->where("anulado", 0)
+            ->orderBy("created_at", "desc")->get()->last();
+        if ($ultimo) {
+            $certificacion->total_cantidad = $certificacion->memoria_operacion_detalle->cantidad;
+            $certificacion->saldo_cantidad = (float)$ultimo->saldo_cantidad - (float)$certificacion->cantidad_usar;
+            $certificacion->total = $certificacion->memoria_operacion_detalle->total;
+            $certificacion->saldo_total = (float)$ultimo->saldo_total - (float)$certificacion->presupuesto_usarse;
+        } else {
+            $certificacion->total_cantidad = $certificacion->memoria_operacion_detalle->cantidad;
+            $certificacion->saldo_cantidad = (float)$certificacion->memoria_operacion_detalle->cantidad - (float)$certificacion->cantidad_usar;
+            $certificacion->total = $certificacion->memoria_operacion_detalle->total;
+            $certificacion->saldo_total = (float)$certificacion->memoria_operacion_detalle->total - (float)$certificacion->presupuesto_usarse;
+        }
+        $certificacion->save();
+        return true;
+    }
+
+    public function corrige_certificacions()
+    {
+        CertificacionController::recalculaSaldos();
+        return 'Certificaciones corregidas<br><a href="/">Volver al inicio</a>';
+    }
+
+    public static function recalculaSaldos()
+    {
+        $certificacions = Certificacion::all();
+        foreach ($certificacions as $certificacion) {
+            CertificacionController::calculaSaldo($certificacion);
+        }
+        return true;
+    }
+
+    public static function recalculaSaldosOperacion($mo_id, $mod_id)
+    {
+        $certificacions = Certificacion::where('mo_id', $mo_id)
+            ->where('mod_id', $mod_id)
+            ->where("anulado", 0)
+            ->get();
+        foreach ($certificacions as $certificacion) {
+            CertificacionController::calculaSaldo($certificacion);
+        }
+        return true;
     }
 }

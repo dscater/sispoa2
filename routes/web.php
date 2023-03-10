@@ -46,6 +46,9 @@ Route::post('/logout', [LoginController::class, 'logout']);
 
 Route::post('/verifica_captcha', [LoginController::class, 'verifica_captcha']);
 
+Route::get('/corrige_certificacions', [CertificacionController::class, 'corrige_certificacions']);
+
+
 // CONFIGURACIÓN
 Route::get('/configuracion/getConfiguracion', [ConfiguracionController::class, 'getConfiguracion']);
 Route::post('/configuracion/update', [ConfiguracionController::class, 'update']);
@@ -93,6 +96,7 @@ Route::prefix('admin')->group(function () {
     ]);
 
     // FORMULARIO CUATRO
+    Route::get("formulario_cuatro/getPorUnidad", [FormularioCuatroController::class, "getPorUnidad"]);
     Route::get("formulario_cuatro/getOperaciones", [FormularioCuatroController::class, "getOperaciones"]);
     Route::resource('formulario_cuatro', FormularioCuatroController::class)->only([
         'index', 'store', 'update', 'destroy', 'show'

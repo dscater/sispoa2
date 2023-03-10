@@ -160,6 +160,13 @@
         </h2>
         <h4 class="texto">FORMULARIO 4</h4>
         <h4 class="fecha">Expedido: {{ date('d-m-Y') }}</h4>
+        @if (Auth::user()->tipo != 'SUPER USUARIO' || $filtro == 'Unidad Organizacional')
+            @if ($filtro == 'Unidad Organizacional')
+                <h4 class="fecha">{{ $unidad->nombre }}</h4>
+            @else
+                <h4 class="fecha">{{ Auth::user()->unidad->nombre }}</h4>
+            @endif
+        @endif
     </div>
     <table border="1">
         <thead>

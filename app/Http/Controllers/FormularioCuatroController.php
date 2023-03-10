@@ -145,6 +145,13 @@ class FormularioCuatroController extends Controller
         }
     }
 
+
+    public function getPorUnidad(Request $request)
+    {
+        $formularios = FormularioCuatro::where("unidad_id", $request->id)->get();
+        return response()->JSON($formularios);
+    }
+
     public function getOperaciones(Request $request)
     {
         $formulario_cuatro = FormularioCuatro::find($request->id);

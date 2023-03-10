@@ -165,6 +165,17 @@
         .salto_linea {
             page-break-after: always;
         }
+
+        .titulo2 {
+            width: 100%;
+            font-weight: bold;
+            font-size: 1.5rem;
+            text-align: center;
+            padding: 3px;
+            left: 35%;
+            top: 60px;
+            margin-top: -10px;
+        }
     </style>
 </head>
 
@@ -177,6 +188,13 @@
     @foreach ($formularios as $formulario)
         <img class="logo" src="{{ asset('imgs/' . $configuracion->first()->logo) }}" alt="Logo">
         <div class="titulo">EJECUCIÓN DE PRESUPUESTO<br />GESTIÓN {{ date('Y') }}</div>
+        @if (Auth::user()->tipo != 'SUPER USUARIO' || $filtro == 'Unidad Organizacional')
+            @if ($filtro == 'Unidad Organizacional')
+                <h4 class="titulo2">{{ $unidad->nombre }}</h4>
+            @else
+                <h4 class="titulo2">{{ Auth::user()->unidad->nombre }}</h4>
+            @endif
+        @endif
         <table border="1" class="collapse">
             <tbody>
                 <tr class="bg_principal">

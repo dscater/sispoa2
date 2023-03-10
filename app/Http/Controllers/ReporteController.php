@@ -400,6 +400,7 @@ class ReporteController extends Controller
 
 
         $formularios = [];
+        $unidad = null;
         if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS") {
             $formularios = FormularioCuatro::where("unidad_id", Auth::user()->unidad_id)->get();
             if ($filtro != "Todos") {
@@ -422,6 +423,7 @@ class ReporteController extends Controller
                 switch ($filtro) {
                     case "Unidad Organizacional":
                         $formularios = FormularioCuatro::where("unidad_id", $unidad_id)->get();
+                        $unidad = Unidad::find($unidad_id);
                         break;
                     case "Código PEI":
                         $formularios = FormularioCuatro::where("id", $formulario_id)->get();
@@ -433,7 +435,7 @@ class ReporteController extends Controller
             }
         }
 
-        $pdf = PDF::loadView('reportes.ejecucion_presupuestos', compact('formularios'))->setPaper('legal', 'landscape');
+        $pdf = PDF::loadView('reportes.ejecucion_presupuestos', compact('formularios', 'filtro', 'unidad'))->setPaper('legal', 'landscape');
         // ENUMERAR LAS PÁGINAS USANDO CANVAS
         $pdf->output();
         $dom_pdf = $pdf->getDomPDF();
@@ -454,6 +456,7 @@ class ReporteController extends Controller
         $fecha_fin =  $request->fecha_fin;
 
         $formularios = [];
+        $unidad = null;
         if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS") {
             $formularios = FormularioCuatro::where("unidad_id", Auth::user()->unidad_id)->get();
             if ($filtro != "Todos") {
@@ -476,6 +479,7 @@ class ReporteController extends Controller
                 switch ($filtro) {
                     case "Unidad Organizacional":
                         $formularios = FormularioCuatro::where("unidad_id", $unidad_id)->get();
+                        $unidad = Unidad::find($unidad_id);
                         break;
                     case "Código PEI":
                         $formularios = FormularioCuatro::where("id", $formulario_id)->get();
@@ -488,7 +492,8 @@ class ReporteController extends Controller
         }
 
 
-        $pdf = PDF::loadView('reportes.formulario_cuatro', compact('formularios'))->setPaper('legal', 'landscape');
+
+        $pdf = PDF::loadView('reportes.formulario_cuatro', compact('formularios', 'filtro', 'unidad'))->setPaper('legal', 'landscape');
         // ENUMERAR LAS PÁGINAS USANDO CANVAS
         $pdf->output();
         $dom_pdf = $pdf->getDomPDF();
@@ -508,7 +513,7 @@ class ReporteController extends Controller
         $fecha_fin =  $request->fecha_fin;
 
         $formularios = [];
-
+        $unidad = null;
         if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS") {
             $formularios = FormularioCuatro::where("unidad_id", Auth::user()->unidad_id)->get();
             if ($filtro != "Todos") {
@@ -531,6 +536,7 @@ class ReporteController extends Controller
                 switch ($filtro) {
                     case "Unidad Organizacional":
                         $formularios = FormularioCuatro::where("unidad_id", $unidad_id)->get();
+                        $unidad = Unidad::find($unidad_id);
                         break;
                     case "Código PEI":
                         $formularios = FormularioCuatro::where("id", $formulario_id)->get();
@@ -551,7 +557,7 @@ class ReporteController extends Controller
         //     $array_tablas[$formulario->id] = $tabla;
         // }
 
-        $pdf = PDF::loadView('reportes.formulario_cinco', compact('formularios', "array_tablas"))->setPaper('legal', 'landscape');
+        $pdf = PDF::loadView('reportes.formulario_cinco', compact('formularios', "array_tablas", "filtro", "unidad"))->setPaper('legal', 'landscape');
         // ENUMERAR LAS PÁGINAS USANDO CANVAS
         $pdf->output();
         $dom_pdf = $pdf->getDomPDF();
@@ -571,7 +577,7 @@ class ReporteController extends Controller
         $fecha_fin =  $request->fecha_fin;
 
         $formularios = [];
-
+        $unidad = null;
         if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS") {
             $formularios = FormularioCuatro::where("unidad_id", Auth::user()->unidad_id)->get();
             if ($filtro != "Todos") {
@@ -594,6 +600,7 @@ class ReporteController extends Controller
                 switch ($filtro) {
                     case "Unidad Organizacional":
                         $formularios = FormularioCuatro::where("unidad_id", $unidad_id)->get();
+                        $unidad = Unidad::find($unidad_id);
                         break;
                     case "Código PEI":
                         $formularios = FormularioCuatro::where("id", $formulario_id)->get();
@@ -606,7 +613,7 @@ class ReporteController extends Controller
         }
 
 
-        $pdf = PDF::loadView('reportes.memoria_calculos', compact('formularios'))->setPaper('legal', 'landscape');
+        $pdf = PDF::loadView('reportes.memoria_calculos', compact('formularios', "filtro", "unidad"))->setPaper('legal', 'landscape');
         // ENUMERAR LAS PÁGINAS USANDO CANVAS
         $pdf->output();
         $dom_pdf = $pdf->getDomPDF();
@@ -619,12 +626,14 @@ class ReporteController extends Controller
     }
     public function saldos_actividad(Request $request)
     {
+        $unidad_id =  $request->unidad_id;
         $formulario_id =  $request->formulario_id;
         $operacion_id =  $request->operacion_id;
         $actividad_id =  $request->actividad_id;
         $actividad = DetalleOperacion::find($actividad_id);
+        $unidad = Unidad::find($unidad_id);
 
-        $pdf = PDF::loadView('reportes.saldos_actividad', compact("actividad"))->setPaper('legal', 'landscape');
+        $pdf = PDF::loadView('reportes.saldos_actividad', compact("actividad", "unidad"))->setPaper('legal', 'landscape');
         // ENUMERAR LAS PÁGINAS USANDO CANVAS
         $pdf->output();
         $dom_pdf = $pdf->getDomPDF();
@@ -650,7 +659,9 @@ class ReporteController extends Controller
                 ->where("memoria_operacion_detalles.partida_id", $partida_id)
                 ->get();
         }
-        $pdf = PDF::loadView('reportes.saldos_partida', compact("memoria_operacion_detalles", "formulario", "partida"))->setPaper('legal', 'landscape');
+
+        $unidad = $formulario->unidad;
+        $pdf = PDF::loadView('reportes.saldos_partida', compact("memoria_operacion_detalles", "formulario", "partida", "unidad"))->setPaper('legal', 'landscape');
         // ENUMERAR LAS PÁGINAS USANDO CANVAS
         $pdf->output();
         $dom_pdf = $pdf->getDomPDF();
@@ -810,6 +821,21 @@ class ReporteController extends Controller
 
     public function formulario_cuatro_excel(Request $request)
     {
+        $formulario_cuatro = FormularioCuatro::find($request->id);
+        if ($request->tipo == 'pdf') {
+            $formulario = $formulario_cuatro;
+            $pdf = PDF::loadView('reportes.formulario_cuatro_solo', compact('formulario'))->setPaper('legal', 'landscape');
+            // ENUMERAR LAS PÁGINAS USANDO CANVAS
+            $pdf->output();
+            $dom_pdf = $pdf->getDomPDF();
+            $canvas = $dom_pdf->get_canvas();
+            $alto = $canvas->get_height();
+            $ancho = $canvas->get_width();
+            $canvas->page_text($ancho - 90, $alto - 25, "Página {PAGE_NUM} de {PAGE_COUNT}", null, 10, array(0, 0, 0));
+
+            return $pdf->download('formulario_cuatro_solo.pdf');
+        }
+
         $spreadsheet = new Spreadsheet();
         $spreadsheet->getProperties()
             ->setCreator("ADMIN")
@@ -936,8 +962,6 @@ class ReporteController extends Controller
                 'color' => ['rgb' => 'EEECE1']
             ],
         ];
-
-        $formulario_cuatro = FormularioCuatro::find($request->id);
 
         $fila = 1;
         $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
@@ -1292,6 +1316,23 @@ class ReporteController extends Controller
 
     public function formulario_cinco_excel(Request $request)
     {
+        $formulario_cinco = FormularioCinco::find($request->id);
+
+        if ($request->tipo == 'pdf') {
+            $formulario = $formulario_cinco->memoria->formulario;
+
+            $pdf = PDF::loadView('reportes.formulario_cinco_solo', compact('formulario'))->setPaper('legal', 'landscape');
+            // ENUMERAR LAS PÁGINAS USANDO CANVAS
+            $pdf->output();
+            $dom_pdf = $pdf->getDomPDF();
+            $canvas = $dom_pdf->get_canvas();
+            $alto = $canvas->get_height();
+            $ancho = $canvas->get_width();
+            $canvas->page_text($ancho - 90, $alto - 25, "Página {PAGE_NUM} de {PAGE_COUNT}", null, 10, array(0, 0, 0));
+
+            return $pdf->download('formulario_cinco.pdf');
+        }
+
         $spreadsheet = new Spreadsheet();
         $spreadsheet->getProperties()
             ->setCreator("ADMIN")
@@ -1439,7 +1480,6 @@ class ReporteController extends Controller
             ],
         ];
 
-        $formulario_cinco = FormularioCinco::find($request->id);
 
         $fila = 1;
         $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
@@ -1790,6 +1830,21 @@ class ReporteController extends Controller
 
     public function memoria_calculo_excel(Request $request)
     {
+        $memoria_calculo = MemoriaCalculo::find($request->id);
+        if ($request->tipo == 'pdf') {
+            $formulario = $memoria_calculo->formulario;
+            $pdf = PDF::loadView('reportes.memoria_calculo_solo', compact('formulario', 'memoria_calculo'))->setPaper('legal', 'landscape');
+            // ENUMERAR LAS PÁGINAS USANDO CANVAS
+            $pdf->output();
+            $dom_pdf = $pdf->getDomPDF();
+            $canvas = $dom_pdf->get_canvas();
+            $alto = $canvas->get_height();
+            $ancho = $canvas->get_width();
+            $canvas->page_text($ancho - 90, $alto - 25, "Página {PAGE_NUM} de {PAGE_COUNT}", null, 10, array(0, 0, 0));
+
+            return $pdf->download('memoria_calculo_solo.pdf');
+        }
+
         $spreadsheet = new Spreadsheet();
         $spreadsheet->getProperties()
             ->setCreator("ADMIN")
@@ -1962,8 +2017,6 @@ class ReporteController extends Controller
                 'color' => ['rgb' => '0062A5']
             ],
         ];
-
-        $memoria_calculo = MemoriaCalculo::find($request->id);
 
         $fila = 1;
         $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();

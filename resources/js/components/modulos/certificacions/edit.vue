@@ -174,10 +174,8 @@
                                                 :label="
                                                     item.codigo_operacion +
                                                     ' | ' +
-                                                    item.descripcion_operacion +
-                                                    ' | ' +
                                                     item.codigo_actividad +
-                                                    ' | ' +
+                                                    ': ' +
                                                     item.descripcion_actividad
                                                 "
                                             >
@@ -911,16 +909,33 @@ export default {
                     .catch((error) => {
                         this.enviando = false;
                         if (error.response) {
+                            if (
+                                error.response.status === 420 ||
+                                error.response.status === 419 ||
+                                error.response.status === 401
+                            ) {
+                                window.location = "/";
+                            }
                             if (error.response.status === 422) {
                                 this.errors = error.response.data.errors;
                                 this.muestraErrores();
                             } else {
-                                Swal.fire({
-                                    icon: "error",
-                                    title: error,
-                                    showConfirmButton: false,
-                                    timer: 2000,
-                                });
+                                if (error.response.status === 500) {
+                                    Swal.fire({
+                                        icon: "error",
+                                        title: "Error",
+                                        html: error.response.data.message,
+                                        showConfirmButton: false,
+                                        timer: 3000,
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        icon: "error",
+                                        title: error,
+                                        showConfirmButton: false,
+                                        timer: 2000,
+                                    });
+                                }
                             }
                         } else {
                             Swal.fire({

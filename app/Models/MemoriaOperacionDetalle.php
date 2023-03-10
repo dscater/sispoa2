@@ -28,7 +28,11 @@ class MemoriaOperacionDetalle extends Model
             ->where('mod_id', $this->id)
             ->where("anulado", 0)
             ->sum('presupuesto_usarse');
+
+        
         $saldo = (float) $this->total - (float) $total_usado;
+
+
         return number_format($saldo, 2, '.', '');
     }
 

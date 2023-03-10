@@ -10,8 +10,19 @@ class Certificacion extends Model
     use HasFactory;
 
     protected $fillable = [
-        "formulario_id", "mo_id", "mod_id", "cantidad_usar", "presupuesto_usarse", "archivo",
-        "correlativo", "solicitante_id", "superior_id", "inicio", "final", "personal_designado", "departamento", "municipio",
+        "formulario_id",
+        "mo_id", "mod_id",
+        "total_cantidad",
+        "cantidad_usar",
+        "saldo_cantidad",
+        "total",
+        "presupuesto_usarse",
+        "saldo_total",
+        "archivo",
+        "correlativo", "solicitante_id", "superior_id",
+        "inicio", "final",
+        "personal_designado",
+        "departamento", "municipio",
         "estado", "fecha_registro", "anulado"
     ];
 

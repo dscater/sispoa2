@@ -131,7 +131,7 @@
                                                         >Personal designado: </strong
                                                     >{{
                                                         row.item
-                                                            .personal_designado
+                                                            .o_personal_designado.full_name
                                                     }}<br />
                                                     <strong
                                                         >Departamento: </strong
@@ -290,9 +290,7 @@
                                                                 row.item
                                                                     .estado ==
                                                                     'PENDIENTE' &&
-                                                                row.item
-                                                                    .superior_id ==
-                                                                    user.id
+                                                                user.tipo == 'SUPER USUARIO'
                                                             "
                                                             size="sm"
                                                             pill

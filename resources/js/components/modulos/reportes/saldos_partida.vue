@@ -24,7 +24,7 @@
                                                         'text-danger':
                                                             errors.filtro,
                                                     }"
-                                                    >Cóidgo PEI*</label
+                                                    >Cóidgo POA*</label
                                                 >
                                                 <el-select
                                                     v-model="
@@ -44,7 +44,7 @@
                                                         :key="item.id"
                                                         :label="
                                                             ingresarEnter(
-                                                                item.codigo_pei
+                                                                item.codigo_poa
                                                             )
                                                         "
                                                         :value="item.id"
@@ -85,7 +85,11 @@
                                                         ) in listPartidas"
                                                         :key="index"
                                                         :value="item.id"
-                                                        :label="item.partida"
+                                                        :label="
+                                                            item.partida +
+                                                            ': ' +
+                                                            item.descripcion
+                                                        "
                                                     >
                                                     </el-option>
                                                 </el-select>

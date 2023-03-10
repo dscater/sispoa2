@@ -35,6 +35,18 @@
             top: 20px;
         }
 
+        .titulo2 {
+            width: 500px;
+            font-weight: bold;
+            font-size: 1.5rem;
+            text-align: center;
+            padding: 3px;
+            left: 35%;
+            top: 60px;
+            width: 100%;
+        }
+
+
         .correlativo {
             width: 120px;
             position: absolute;
@@ -175,6 +187,7 @@
     @inject('o_certificacion', 'App\Models\Certificacion')
     <img class="logo" src="{{ asset('imgs/' . $configuracion->first()->logo) }}" alt="Logo">
     <div class="titulo">SALDOS DE PRESUPUESTOS POR ACTIVIDAD<br />GESTIÓN {{ date('Y') }}</div>
+    <div class="titulo2">{{ $unidad->nombre }}</div>
     <table border="1" class="collapse">
         <tbody>
             <tr class="bg_principal">
@@ -254,6 +267,11 @@
                     <td class="centreado">{{ number_format($saldo, 2) }}</td>
                 </tr>
             @endforeach
+            <tr>
+                <td class="centreado bold" colspan="8">TOTAL</td>
+                <td class="centreado bold">{{ number_format($total_usado, 2) }}</td>
+                <td class="centreado bold">{{ number_format($saldo, 2) }}</td>
+            </tr>
 
         </tbody>
     </table>

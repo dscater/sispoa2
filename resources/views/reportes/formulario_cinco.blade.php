@@ -6,172 +6,198 @@
     <title>Formulario 5</title>
     <style type="text/css">
         * {
-            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            font-family: sans-serif;
         }
 
         @page {
             margin-top: 1.5cm;
-            margin-bottom: 1cm;
-            margin-left: 1cm;
-            margin-right: 1cm;
-            font-size: 9pt;
+            margin-bottom: 0.5cm;
+            margin-left: 0.5cm;
+            margin-right: 0.5cm;
+            border: 5px solid blue;
         }
 
-        .logo {
-            top: 0;
-            left: 0;
-            height: 100px;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+            margin-top: 20px;
+        }
+
+        table thead tr th,
+        tbody tr td {
+            font-size: 0.63em;
+            word-wrap: break-word;
+        }
+
+        .encabezado {
+            width: 100%;
+        }
+
+        .logo img {
+            position: absolute;
             width: 200px;
+            height: 90px;
+            top: -20px;
+            left: -20px;
         }
 
-        .fondo_rojo {
-            background: #DC3545;
+        h2.titulo {
+            width: 600px;
+            margin: auto;
+            margin-top: 15px;
+            margin-bottom: 15px;
+            text-align: center;
+            font-size: 11pt;
+        }
+
+        .texto {
+            width: 600px;
+            text-align: center;
+            margin: auto;
+            margin-top: 15px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .fecha {
+            width: 600px;
+            text-align: center;
+            margin: auto;
+            margin-top: 15px;
+            font-weight: normal;
+            font-size: 0.85em;
+        }
+
+        .total {
+            text-align: right;
+            padding-right: 15px;
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+        }
+
+        table thead tr,
+        table thead tr th,
+        table tbody tr,
+        table tbody tr td,
+        table tbody tr th,
+        table thead,
+        table tbody {
+            page-break-before: avoid;
+        }
+
+        table thead {
+            background: #0062A5;
+            color: white;
+            word-wrap: break-word;
+        }
+
+        table thead tr th {
+            padding: 3px;
+            font-size: 0.7em;
+            word-wrap: break-word;
+        }
+
+        table tbody tr td {
+            padding: 3px;
+            font-size: 0.55em;
+            word-wrap: break-word;
+        }
+
+        table tbody tr td.franco {
+            background: red;
             color: white;
         }
 
-        .titulo {
-            position: absolute;
-            width: 350px;
-            font-weight: bold;
-            font-size: 1.5rem;
+        .centreado {
+            padding-left: 0px;
             text-align: center;
-            padding: 3px;
-            left: 35%;
-            top: 20px;
         }
 
-        .correlativo {
-            width: 120px;
+        .datos {
+            margin-left: 15px;
+            border-top: solid 1px;
+            border-collapse: collapse;
+            width: 250px;
+        }
+
+        .txt {
+            font-weight: bold;
+            text-align: right;
+            padding-right: 5px;
+        }
+
+        .txt_center {
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .cumplimiento {
             position: absolute;
+            width: 150px;
             right: 0px;
-            top: 10px;
+            top: 86px;
         }
 
-        .nro {
-            border: solid 1px;
-            padding: 4px;
+        .p_cump {
+            color: red;
+            font-size: 1.2em;
+        }
+
+        .b_top {
+            border-top: solid 1px black;
         }
 
         .gray {
-            background: #F2F2F2;
+            background: rgb(202, 202, 202);
+        }
+
+        .azul {
+            background: #0062A5;
+            color: white;
+        }
+
+        .verde_claro {
+            background: #EBF1DE;
+        }
+
+        .txt_rojo {}
+
+        .img_celda img {
+            width: 45px;
+        }
+
+        .beis {
+            background: #EEECE1;
         }
 
         .bold {
             font-weight: bold;
         }
 
-        table {
-            width: 100%;
-            margin: auto;
+        .celeste {
+            background: #DAEEF3;
         }
 
-        .solicitante {
-            border-collapse: collapse;
+        table.tabla_detalle thead tr th {
+            font-size: 0.6em;
         }
 
-        .solicitante tbody tr td {
-            padding: 4px;
+        table.tabla_detalle tbody tr td {
+            font-size: 0.5em;
         }
 
-        .centreado {
-            text-align: center;
-        }
-
-        .border {
-            border: solid 1px black;
-        }
-
-        .firma {
-            height: 45px;
-            width: 80%;
-            margin: auto;
-            border: solid 1px;
-        }
-
-        .p-0 {
-            padding: 0px;
-        }
-
-        .p-5 {
-            padding: 5px;
-        }
-
-        .datos_solicitante {
-            width: 48%;
-            margin-left: 0px;
-            margin-top: 15px;
-        }
-
-        .datos_superior {
-            position: absolute;
-            width: 48%;
-            margin-right: 0px;
-            top: 147px;
-        }
-
-        .bg_principal {
+        .cabecera th {
             background: #0062A5;
             color: white;
-        }
-
-        .sigep {
-            border-collapse: collapse;
-            width: 35%;
-            margin-left: 0px;
-            margin-top: 15px;
-        }
-
-        .sigep tbody tr td {
-            padding: 5px;
-        }
-
-        .inicio,
-        .final {
-            position: absolute;
-            width: 20%;
-            border-collapse: collapse;
-        }
-
-        .inicio {
-            top: 350px;
-            right: -100px;
-        }
-
-        .final {
-            top: 350px;
-            right: -250px;
-        }
-
-        .collapse {
-            border-collapse: collapse;
-        }
-
-        .text_right {
-            text-align: right;
-        }
-
-        .texto_unidad {
-            width: 50%;
-            margin-top: 55px;
-            margin-left: auto;
-            text-align: right;
-        }
-
-        .tabla_detalle thead tr th,
-        .tabla_detalle tbody tr td {
-            font-size: 0.7rem;
-        }
-
-        .tabla_detalle tbody tr td {
-            padding: 2px;
-        }
-
-        .salto_linea {
-            page-break-after: always;
-        }
-
-        .tabla_detalle {
-            border-collapse: collapse;
+            padding: 3px;
+            font-size: 0.7rem !important;
+            text-align: center;
+            border: solid 1px;
+            word-wrap: break-word;
         }
     </style>
 </head>
@@ -184,8 +210,23 @@
     @inject('o_certificacion', 'App\Models\Certificacion')
     @inject('o_formulario_cinco_controller', 'App\Http\Controllers\FormularioCincoController')
     @foreach ($formularios as $formulario)
-        <img class="logo" src="{{ asset('imgs/' . $configuracion->first()->logo) }}" alt="Logo">
-        <div class="titulo">FORMULARIO 5<br />GESTIÓN {{ date('Y') }}</div>
+        <div class="encabezado">
+            <div class="logo">
+                <img src="{{ asset('imgs/' . $configuracion->first()->logo) }}">
+            </div>
+            <h2 class="titulo">
+                {{ $configuracion->first()->razon_social }}
+            </h2>
+            <h4 class="texto">FORMULARIO 5</h4>
+            <h4 class="fecha">Expedido: {{ date('d-m-Y') }}</h4>
+            @if (Auth::user()->tipo != 'SUPER USUARIO' || $filtro == 'Unidad Organizacional')
+                @if ($filtro == 'Unidad Organizacional')
+                    <h4 class="fecha">{{ $unidad->nombre }}</h4>
+                @else
+                    <h4 class="fecha">{{ Auth::user()->unidad->nombre }}</h4>
+                @endif
+            @endif
+        </div>
         <table border="1" class="collapse">
             <tbody>
                 <tr class="bg_principal">
@@ -205,139 +246,10 @@
             if ($formulario->memoria_calculo) {
                 $formulario_cinco = $formulario->memoria_calculo->formulario_cinco;
                 $array_registros = $o_formulario_cinco_controller::armaRepetidos($formulario_cinco);
-                $tabla = view('reportes.parcial.formulario_cinco', compact('array_registros', 'formulario_cinco'))->render();
+                $tabla = view('parcial.formulario_cinco2', compact('array_registros', 'formulario_cinco'))->render();
             }
         @endphp
         {!! $tabla !!}
-        {{-- <table class="tabla_detalle" border="1">
-            <thead class="bg-primary">
-                <tr>
-                    <th colspan="17">
-                        PLAN OPERATIVO ANUAL GESTIÓN
-                        2022
-                    </th>
-                </tr>
-                <tr>
-                    <th rowspan="3">
-                        Código Operación(1)
-                    </th>
-                    <th rowspan="3">
-                        Operación(2)
-                    </th>
-                    <th rowspan="3">
-                        Código tarea(3)
-                    </th>
-                    <th rowspan="3">
-                        Actividad/Tareas(4)
-                    </th>
-                    <th rowspan="3">
-                        Lugar de ejecución de la
-                        Operación(5)
-                    </th>
-                    <th rowspan="3">
-                        Responsable de ejecución de
-                        la Operación/Tarea (6)
-                    </th>
-                    <th colspan="11">
-                        Desglose Presupuestario
-                    </th>
-                </tr>
-                <tr>
-                    <th rowspan="2">Partida(7)</th>
-                    <th rowspan="2">
-                        Descripción(8)
-                    </th>
-                    <th rowspan="2">Cantidad(9)</th>
-                    <th rowspan="2">Unida(10)</th>
-                    <th rowspan="2">
-                        Costo Unitario(11)
-                    </th>
-                    <th colspan="4">
-                        Recursos Internos(12)
-                    </th>
-                    <th>Recursos externos(13)</th>
-                    <th rowspan="2">
-                        TOTAL (por Operación)(14)
-                    </th>
-                </tr>
-                <tr>
-                    <th>PRESUPUESTO VIGENTE</th>
-                    <th>UE</th>
-                    <th>PROG</th>
-                    <th>ACT</th>
-                    <th>OTROS</th>
-                </tr>
-            </thead>
-            <tbody>
-                @if ($formulario->memoria_calculo)
-                    @foreach ($formulario->memoria_calculo->operacions as $operacion)
-                        <tr>
-                            <td>
-                                {{ $operacion->codigo_operacion }}
-                            </td>
-                            <td>
-                                {{ $operacion->descripcion_operacion }}
-                            </td>
-                            <td>
-                                {{ $operacion->codigo_actividad }}
-                            </td>
-                            <td>
-                                {{ $operacion->descripcion_actividad }}
-                            </td>
-                            <td>
-                                {{ $operacion->lugar }}
-                            </td>
-                            <td>
-                                {{ $operacion->responsable }}
-                            </td>
-                            <td>
-                                {{ $operacion->partida }}
-                            </td>
-                            <td>
-                                {{ $operacion->descripcion }}
-                            </td>
-                            <td>
-                                {{ $operacion->cantidad }}
-                            </td>
-                            <td>
-                                {{ $operacion->unidad }}
-                            </td>
-                            <td>
-                                {{ $operacion->costo }}
-                            </td>
-                            <td>
-                                {{ $operacion->total }}
-                            </td>
-                            <td>
-                                {{ $operacion->ue }}
-                            </td>
-                            <td>
-                                {{ $operacion->prog }}
-                            </td>
-                            <td>
-                                {{ $operacion->act }}
-                            </td>
-                            <td>
-                                {{ $operacion->justificacion }}
-                            </td>
-                            <td>
-                                {{ $operacion->total_operacion }}
-                            </td>
-                        </tr>
-                    @endforeach
-                    <tr class="bg-primary">
-                        <th colspan="16">TOTAL</th>
-                        <th>
-                            {{ $formulario->memoria_calculo->total_final }}
-                        </th>
-                    </tr>
-                @else
-                    <tr>
-                        <td colspan="17" class="centreado">NO SE ENCONTRARON REGISTROS</td>
-                    </tr>
-                @endif
-            </tbody>
-        </table> --}}
         @php
             $contador++;
         @endphp

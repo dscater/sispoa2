@@ -362,7 +362,8 @@
                 <th class="bg_principal centreado">Cod.</th>
                 <th class="bg_principal centreado">Acción de Corto Plazo</th>
                 <th class="bg_principal centreado">Cod. Op.</th>
-                <th class="bg_principal centreado">Operación y/o Actividad</th>
+                <th class="bg_principal centreado">Operación</th>
+                <th class="bg_principal centreado">Cod. Act.</th>
             </tr>
         </thead>
         <tbody>
@@ -371,6 +372,7 @@
                 <td class="centreado">{!! str_replace('|', '<br>', $certificacion->memoria_operacion->memoria->formulario->accion_corto_full) !!}</td>
                 <td class="bold">{{ $certificacion->memoria_operacion->operacion->codigo_operacion }}</td>
                 <td>{{ $certificacion->memoria_operacion->operacion->operacion }}</td>
+                <td class="bold">{{ $certificacion->memoria_operacion->codigo_actividad }}</td>
             </tr>
         </tbody>
     </table>
@@ -392,10 +394,11 @@
                 <td class="centreado">{{ number_format($certificacion->memoria_operacion_detalle->total, 2) }}</td>
                 <td class="centreado">{{ number_format($certificacion->presupuesto_usarse, 2) }}</td>
                 @php
-                    $saldo = number_format((float) $certificacion->memoria_operacion_detalle->presupuesto - (float) $certificacion->presupuesto_usarse, 2);
+                    // $saldo = number_format((float) $certificacion->memoria_operacion_detalle->total - (float) $certificacion->presupuesto_usarse, 2);
+                    $saldo = number_format((float) $certificacion->saldo_total, 2);
                     if ((float) $saldo == 0) {
                         $saldo = '-';
-                    }
+                    }2
                 @endphp
                 <td class="centreado">
                     {{ $saldo }}
