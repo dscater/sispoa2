@@ -183,6 +183,38 @@
                                                     v-text="errors.fecha_fin[0]"
                                                 ></span>
                                             </div>
+                                            <div class="form-group col-md-12">
+                                                <label
+                                                    :class="{
+                                                        'text-danger':
+                                                            errors.filtro2,
+                                                    }"
+                                                    >Seleccione*</label
+                                                >
+                                                <el-select
+                                                    v-model="oReporte.filtro2"
+                                                    filterable
+                                                    placeholder="Seleccione"
+                                                    class="d-block"
+                                                    :class="{
+                                                        'is-invalid':
+                                                            errors.filtro2,
+                                                    }"
+                                                >
+                                                    <el-option
+                                                        v-for="item in ['Todos','Partidas utilizadas']"
+                                                        :key="item"
+                                                        :label="item"
+                                                        :value="item"
+                                                    >
+                                                    </el-option>
+                                                </el-select>
+                                                <span
+                                                    class="error invalid-feedback"
+                                                    v-if="errors.filtro2"
+                                                    v-text="errors.filtro2[0]"
+                                                ></span>
+                                            </div>
                                         </div>
                                     </form>
                                     <div class="row">
@@ -226,6 +258,7 @@ export default {
                 formulario_id: "",
                 fecha_ini: "",
                 fecha_fin: "",
+                filtro2: "Todos",
             },
             aFechas: [],
             enviando: false,

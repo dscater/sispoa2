@@ -24,6 +24,14 @@
             width: 200px;
         }
 
+        .logo2 {
+            position: absolute;
+            top: -20px;
+            right: 0;
+            height: 100px;
+            width: 200px;
+        }
+
         .fondo_rojo {
             background: #DC3545;
             color: white;
@@ -187,7 +195,8 @@
     @inject('configuracion', 'App\Models\Configuracion')
     @inject('o_certificacion', 'App\Models\Certificacion')
     @foreach ($formularios as $formulario)
-        <img class="logo" src="{{ asset('imgs/' . $configuracion->first()->logo) }}" alt="Logo">
+        <img class="logo" src="{{ asset('imgs/' . $configuracion->first()->logo2) }}" alt="Logo">
+        <img class="logo2" src="{{ asset('imgs/' . $configuracion->first()->logo) }}" alt="Logo">
         <div class="titulo">MEMORIAS DE CÁLCULO<br />GESTIÓN {{ date('Y') }}</div>
 
         @if (Auth::user()->tipo != 'SUPER USUARIO' || $filtro == 'Unidad Organizacional')

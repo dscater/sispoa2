@@ -42,6 +42,14 @@
             left: -20px;
         }
 
+        .logo2 img {
+            position: absolute;
+            width: 200px;
+            height: 90px;
+            top: -20px;
+            right: -20px;
+        }
+
         h2.titulo {
             width: 600px;
             margin: auto;
@@ -175,6 +183,9 @@
     @inject('configuracion', 'App\Models\Configuracion')
     <div class="encabezado">
         <div class="logo">
+            <img src="{{ asset('imgs/' . $configuracion->first()->logo2) }}">
+        </div>
+        <div class="logo2">
             <img src="{{ asset('imgs/' . $configuracion->first()->logo) }}">
         </div>
         <h2 class="titulo">
@@ -233,7 +244,7 @@
             <tr>
                 <th rowspan="3" width="3%">Código de Operación(1)</th>
                 <th rowspan="3">Operación (2)</th>
-                <th rowspan="3" width="2%">Ponderación %</th>
+                <th rowspan="3" width="3%">Ponderación %</th>
                 <th rowspan="3">Resultado intermedio(3)</th>
                 <th rowspan="3">Medios de verificación(4)</th>
                 <th rowspan="3" width="3%">Código Act. (5)</th>
@@ -360,7 +371,7 @@
     @endphp
     <table>
         <tr>
-            <td style="text-align:right; font-size:0.85em;">{{$fecha}}</td>
+            <td style="text-align:right; font-size:0.85em;">{{ $fecha }}</td>
         </tr>
     </table>
 </body>

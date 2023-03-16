@@ -24,6 +24,14 @@
             width: 200px;
         }
 
+        .logo2 {
+            position: absolute;
+            top: -20px;
+            right: 0;
+            height: 100px;
+            width: 200px;
+        }
+
         .titulo {
             position: absolute;
             border: solid 1px;
@@ -184,9 +192,10 @@
         $contador = 0;
     @endphp
     @inject('configuracion', 'App\Models\Configuracion')
-    @inject('o_certificacion', 'App\Models\Certificacion')
+    @inject('o_certificacion_detalles', 'App\Models\CertificacionDetalle')
     @foreach ($formularios as $formulario)
-        <img class="logo" src="{{ asset('imgs/' . $configuracion->first()->logo) }}" alt="Logo">
+        <img class="logo" src="{{ asset('imgs/' . $configuracion->first()->logo2) }}" alt="Logo">
+        <img class="logo2" src="{{ asset('imgs/' . $configuracion->first()->logo) }}" alt="Logo">
         <div class="titulo">EJECUCIÓN DE PRESUPUESTO<br />GESTIÓN {{ date('Y') }}</div>
         @if (Auth::user()->tipo != 'SUPER USUARIO' || $filtro == 'Unidad Organizacional')
             @if ($filtro == 'Unidad Organizacional')
@@ -216,6 +225,7 @@
                         Actividad/Tareas
                     </th>
                     <th rowspan="2">Partida</th>
+                    <th rowspan="2">Descripción</th>
                     <th colspan="3">
                         Presupuesto
                     </th>
@@ -229,7 +239,7 @@
                     <th>Costo Unitario</th>
                     <th>PRESUPUESTO VIGENTE</th>
                     <th>Cantidad</th>
-                    <th>PRESUPUESTO VIGENTE</th>
+                    <th>PRESUPUESTO</th>
                 </tr>
             </thead>
             <tbody>
@@ -240,35 +250,52 @@
                 @if ($formulario->memoria_calculo)
                     @foreach ($formulario->memoria_calculo->operacions as $operacion)
                         @foreach ($operacion->memoria_operacion_detalles as $mod)
-                            <tr>
-                                <td class="centreado">
-                                    {{ $operacion->codigo_actividad }}
-                                </td>
-                                <td>{{ $operacion->descripcion_actividad }}</td>
-                                <td class="centreado">{{ $mod->m_partida->partida }}</td>
-                                <td class="centreado">{{ $mod->cantidad }}</td>
-                                <td class="centreado">{{ $mod->costo }}</td>
-                                <td class="centreado">{{ $mod->total }}</td>
-                                @php
-                                    $cantidad_usado = $o_certificacion
-                                        ->where('anulado', 0)
-                                        ->where('mo_id', $operacion->id)
-                                        ->where('mod_id', $mod->id)
-                                        ->sum('cantidad_usar');
-                                    $total_usado = $o_certificacion
-                                        ->where('anulado', 0)
-                                        ->where('mo_id', $operacion->id)
-                                        ->where('mod_id', $mod->id)
-                                        ->sum('presupuesto_usarse');
-                                    $saldo = (float) $mod->total - (float) $total_usado;
-                                @endphp
-                                <td class="centreado">{{ $cantidad_usado }}</td>
-                                <td class="centreado">{{ $total_usado }}</td>
-                                <td class="centreado">{{ $saldo }}</td>
-                            </tr>
                             @php
-                                $suma_ejecutados += $total_usado;
-                                $suma_saldos += $saldo;
+                                $cantidad_usado = $o_certificacion_detalles
+                                    ->join('certificacions', 'certificacions.id', '=', 'certificacion_detalles.certificacion_id')
+                                    ->where('anulado', 0)
+                                    ->where('mo_id', $operacion->id)
+                                    ->where('mod_id', $mod->id)
+                                    ->sum('cantidad_usar');
+                                $total_usado = $o_certificacion_detalles
+                                    ->join('certificacions', 'certificacions.id', '=', 'certificacion_detalles.certificacion_id')
+                                    ->where('anulado', 0)
+                                    ->where('mo_id', $operacion->id)
+                                    ->where('mod_id', $mod->id)
+                                    ->sum('presupuesto_usarse');
+                                $saldo = (float) $mod->total - (float) $total_usado;
+                                $muestra_fila = true;
+                            @endphp
+                            @if ($filtro2 != 'Todos')
+                                @php
+                                    $muestra_fila = false;
+                                    if ($saldo == 0) {
+                                        $muestra_fila = true;
+                                    }
+                                @endphp
+                            @endif
+
+                            @if ($muestra_fila)
+                                <tr>
+                                    <td class="centreado">
+                                        {{ $operacion->codigo_actividad }}
+                                    </td>
+                                    <td>{{ $operacion->descripcion_actividad }}</td>
+                                    <td class="centreado">{{ $mod->m_partida->partida }}</td>
+                                    <td class="centreado">{{ $mod->m_partida->descripcion }}</td>
+                                    <td class="centreado">{{ $mod->cantidad }}</td>
+                                    <td class="centreado">{{ $mod->costo }}</td>
+                                    <td class="centreado">{{ $mod->total }}</td>
+                                    <td class="centreado">{{ $cantidad_usado }}</td>
+                                    <td class="centreado">{{ $total_usado }}</td>
+                                    <td class="centreado">{{ $saldo }}</td>
+                                </tr>
+                            @endif
+                            @php
+                                if ($muestra_fila) {
+                                    $suma_ejecutados += $total_usado;
+                                    $suma_saldos += $saldo;
+                                }
                             @endphp
                         @endforeach
                     @endforeach
@@ -280,9 +307,11 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <th colspan="5">TOTAL</th>
-                    @if ($formulario->memoria_calculo)
+                    <th colspan="6">TOTAL</th>
+                    @if ($formulario->memoria_calculo && $filtro2 == 'Todos')
                         <th>{{ number_format($formulario->memoria_calculo->total_final, 2) }}</th>
+                    @elseif($formulario->memoria_calculo)
+                        <th>{{ number_format($suma_ejecutados, 2) }}</th>
                     @else
                         <th>0.00</th>
                     @endif

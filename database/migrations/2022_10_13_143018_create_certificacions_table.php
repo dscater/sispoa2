@@ -16,7 +16,6 @@ class CreateCertificacionsTable extends Migration
         Schema::create('certificacions', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger("formulario_id");
-            $table->unsignedBigInteger("mo_id");
             $table->unsignedBigInteger("mod_id");
             $table->double("cantidad_usar");
             $table->decimal("presupuesto_usarse", 24, 2);

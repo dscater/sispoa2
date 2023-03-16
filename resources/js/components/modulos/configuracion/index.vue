@@ -120,6 +120,20 @@
                                                 :src="oConfiguracion.path_image"
                                             ></el-avatar>
                                         </el-descriptions-item>
+                                        <el-descriptions-item>
+                                            <template slot="label">
+                                                <i
+                                                    class="el-icon-picture-outline-round"
+                                                ></i>
+                                                Logo 2
+                                            </template>
+                                            <el-avatar
+                                                shape="square"
+                                                :size="120"
+                                                :fit="'fill'"
+                                                :src="oConfiguracion.path_image2"
+                                            ></el-avatar>
+                                        </el-descriptions-item>
                                     </el-descriptions>
                                 </div>
                             </div>
@@ -361,6 +375,26 @@
                                         v-text="errors.logo[0]"
                                     ></span>
                                 </div>
+                                <div class="form-group col-md-6">
+                                    <label
+                                        :class="{ 'text-danger': errors.logo2 }"
+                                        >Logo 2</label
+                                    >
+                                    <input
+                                        type="file"
+                                        class="form-control"
+                                        :class="{
+                                            'is-invalid': errors.logo2,
+                                        }"
+                                        ref="input_file"
+                                        @change="getFile2"
+                                    />
+                                    <span
+                                        class="error invalid-feedback"
+                                        v-if="errors.logo2"
+                                        v-text="errors.logo2[0]"
+                                    ></span>
+                                </div>
                             </div>
                         </form>
                     </div>
@@ -418,6 +452,7 @@ export default {
                 actividad: "",
                 correo: "",
                 logo: "",
+                logo2: "",
             },
             errors: [],
         };
@@ -429,6 +464,9 @@ export default {
     methods: {
         getFile(e) {
             this.oConfiguracion.logo = e.target.files[0];
+        },
+        getFile2(e) {
+            this.oConfiguracion.logo2 = e.target.files[0];
         },
         // Listar Usuarios
         getConfiguracion() {
@@ -471,6 +509,7 @@ export default {
                     this.oConfiguracion.correo ? this.oConfiguracion.correo : ""
                 );
                 formdata.append("logo", this.oConfiguracion.logo);
+                formdata.append("logo2", this.oConfiguracion.logo2);
 
                 let config = {
                     headers: {

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Certificacion;
+use App\Models\CertificacionDetalle;
 use App\Models\Configuracion;
 use App\Models\DetalleOperacion;
 use App\Models\Financiera;
@@ -128,7 +129,7 @@ class ReporteController extends Controller
             ],
             'borders' => [
                 'allBorders' => [
-                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_NONE,
                 ],
             ],
         ];
@@ -150,7 +151,7 @@ class ReporteController extends Controller
             ],
             'fill' => [
                 'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                'color' => ['rgb' => '0062A5']
+                'color' => ['rgb' => '203764']
             ],
         ];
 
@@ -171,13 +172,13 @@ class ReporteController extends Controller
             ],
             'fill' => [
                 'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                'color' => ['rgb' => '0062A5']
+                'color' => ['rgb' => '203764']
             ],
         ];
 
         $estilo_conenido = [
             'font' => [
-                'size' => 8,
+                'size' => 10,
             ],
             'alignment' => [
                 'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
@@ -207,21 +208,35 @@ class ReporteController extends Controller
             ],
             'fill' => [
                 'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                'color' => ['rgb' => '0062A5']
+                'color' => ['rgb' => '203764']
             ],
         ];
 
 
         $fila = 1;
-        $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
-        $drawing->setName('logo');
-        $drawing->setDescription('logo');
-        $drawing->setPath(public_path() . '/imgs/' . Configuracion::first()->logo); // put your path and image here
-        $drawing->setCoordinates('A' . $fila);
-        $drawing->setOffsetX(5);
-        $drawing->setOffsetY(0);
-        $drawing->setHeight(50);
-        $drawing->setWorksheet($sheet);
+        if (file_exists(public_path() . '/imgs/' . Configuracion::first()->logo2)) {
+            $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+            $drawing->setName('logo2');
+            $drawing->setDescription('logo2');
+            $drawing->setPath(public_path() . '/imgs/' . Configuracion::first()->logo2); // put your path and image here
+            $drawing->setCoordinates('A' . $fila);
+            $drawing->setOffsetX(5);
+            $drawing->setOffsetY(0);
+            $drawing->setHeight(50);
+            $drawing->setWorksheet($sheet);
+        }
+        if (file_exists(public_path() . '/imgs/' . Configuracion::first()->logo)) {
+            $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+            $drawing->setName('logo');
+            $drawing->setDescription('logo');
+            $drawing->setPath(public_path() . '/imgs/' . Configuracion::first()->logo); // put your path and image here
+            $drawing->setCoordinates('H' . $fila);
+            $drawing->setOffsetX(0);
+            $drawing->setOffsetY(0);
+            $drawing->setHeight(50);
+            $drawing->setWorksheet($sheet);
+        }
+
         $fila = 2;
 
         foreach ($formularios as $formulario_cuatro) {
@@ -234,6 +249,12 @@ class ReporteController extends Controller
             $sheet->setCellValue('A' . $fila, 'CÓDIGO PEI');
             $sheet->getStyle('A' . $fila)->applyFromArray($styleArray);
             $sheet->setCellValue('B' . $fila, str_replace(",", "\n", $formulario_cuatro->codigo_pei));
+            $enters = substr_count($formulario_cuatro->codigo_pei, ",");
+            $alto_fila = 25;
+            if($enters > 1){
+                $alto_fila = $enters * 25;
+            }
+            $sheet->getRowDimension($fila)->setRowHeight($alto_fila);
             $sheet->mergeCells("B" . $fila . ":I" . $fila);  //COMBINAR
             $sheet->getStyle('B' . $fila . ':I' . $fila)->applyFromArray($estilo_conenido);
             $fila++;
@@ -252,6 +273,12 @@ class ReporteController extends Controller
             $sheet->setCellValue('A' . $fila, 'CODIGO POA');
             $sheet->getStyle('A' . $fila)->applyFromArray($styleArray);
             $sheet->setCellValue('B' . $fila, str_replace(",", "\n", $formulario_cuatro->codigo_poa));
+            $enters = substr_count($formulario_cuatro->codigo_poa, ",");
+            $alto_fila = 25;
+            if($enters > 1){
+                $alto_fila = $enters * 25;
+            }
+            $sheet->getRowDimension($fila)->setRowHeight($alto_fila);
             $sheet->mergeCells("B" . $fila . ":I" . $fila);  //COMBINAR
             $sheet->getStyle('B' . $fila . ':I' . $fila)->applyFromArray($estilo_conenido);
             $fila++;
@@ -320,11 +347,15 @@ class ReporteController extends Controller
                         $sheet->setCellValue('D' . $fila, $mod->cantidad);
                         $sheet->setCellValue('E' . $fila, number_format($mod->costo, 2) . " ");
                         $sheet->setCellValue('F' . $fila, number_format($mod->total, 2) . " ");
-                        $cantidad_usado = Certificacion::where('mo_id', $operacion->id)
+                        $cantidad_usado = CertificacionDetalle::select("certificacion_detalles.*")
+                            ->join("certificacions", "certificacions.id", "=", "certificacion_detalles.certificacion_id")
+                            ->where('mo_id', $operacion->id)
                             ->where("anulado", 0)
                             ->where("mod_id", $mod->id)
                             ->sum('cantidad_usar');
-                        $total_usado = Certificacion::where('mo_id', $operacion->id)
+                        $total_usado = CertificacionDetalle::select("certificacion_detalles.*")
+                            ->join("certificacions", "certificacions.id", "=", "certificacion_detalles.certificacion_id")
+                            ->where('mo_id', $operacion->id)
                             ->where("anulado", 0)
                             ->where("mod_id", $mod->id)
                             ->sum('presupuesto_usarse');
@@ -357,8 +388,6 @@ class ReporteController extends Controller
             $sheet->getColumnDimension('H')->setWidth(10);
             $sheet->getColumnDimension('I')->setWidth(10);
             $fila++;
-            $fila++;
-            $fila++;
         }
         $sheet->setCellValue('G' . $fila, self::getFechaTexto());
         $sheet->mergeCells("G" . $fila . ":I" . $fila);  //COMBINAR CELDAS
@@ -366,6 +395,15 @@ class ReporteController extends Controller
         foreach (range('A', 'I') as $columnID) {
             $sheet->getStyle($columnID)->getAlignment()->setWrapText(true);
         }
+
+        $sheet->getPageSetup()->setOrientation(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_LANDSCAPE);
+        $sheet->getPageMargins()->setTop(0.5);
+        $sheet->getPageMargins()->setRight(0.1);
+        $sheet->getPageMargins()->setLeft(0.1);
+        $sheet->getPageMargins()->setBottom(0.1);
+        $sheet->getPageSetup()->setPrintArea('A:I');
+        $sheet->getPageSetup()->setFitToWidth(1);
+        $sheet->getPageSetup()->setFitToHeight(0);
 
         // DESCARGA DEL ARCHIVO
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
@@ -397,7 +435,7 @@ class ReporteController extends Controller
         $formulario_id =  $request->formulario_id;
         $fecha_ini =  $request->fecha_ini;
         $fecha_fin =  $request->fecha_fin;
-
+        $filtro2 =  $request->filtro2;
 
         $formularios = [];
         $unidad = null;
@@ -435,7 +473,7 @@ class ReporteController extends Controller
             }
         }
 
-        $pdf = PDF::loadView('reportes.ejecucion_presupuestos', compact('formularios', 'filtro', 'unidad'))->setPaper('legal', 'landscape');
+        $pdf = PDF::loadView('reportes.ejecucion_presupuestos', compact('formularios', 'filtro', 'filtro2', 'unidad'))->setPaper('legal', 'landscape');
         // ENUMERAR LAS PÁGINAS USANDO CANVAS
         $pdf->output();
         $dom_pdf = $pdf->getDomPDF();
@@ -789,7 +827,9 @@ class ReporteController extends Controller
                     if ($formulario->memoria_calculo) {
                         foreach ($formulario->memoria_calculo->operacions as $operacion) {
                             foreach ($operacion->memoria_operacion_detalles as $mod) {
-                                $total_usado = Certificacion::where("mo_id", $operacion->id)
+                                $total_usado = CertificacionDetalle::select("certificacion_detalles.*")
+                                    ->join("certificacions", "certificacions.id", "=", "certificacion_detalles.certificacion_id")
+                                    ->where("mo_id", $operacion->id)
                                     ->where("anulado", 0)
                                     ->where("mod_id", $mod->id)
                                     ->sum("presupuesto_usarse");
@@ -854,10 +894,11 @@ class ReporteController extends Controller
             'font' => [
                 'bold' => true,
                 'size' => 12,
+                'family' => 'Times New Roman'
             ],
             'borders' => [
                 'allBorders' => [
-                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_NONE,
                 ],
             ],
         ];
@@ -872,7 +913,7 @@ class ReporteController extends Controller
         $styleArray = [
             'font' => [
                 'bold' => true,
-                'size' => 9,
+                'size' => 10,
                 'color' => ['argb' => 'ffffff'],
             ],
             'borders' => [
@@ -882,7 +923,7 @@ class ReporteController extends Controller
             ],
             'fill' => [
                 'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                'color' => ['rgb' => '0062A5']
+                'color' => ['rgb' => '203764']
             ],
         ];
 
@@ -890,7 +931,7 @@ class ReporteController extends Controller
         $styleArray2 = [
             'font' => [
                 'bold' => true,
-                'size' => 9,
+                'size' => 10,
                 'color' => ['argb' => 'ffffff'],
             ],
             'alignment' => [
@@ -904,13 +945,13 @@ class ReporteController extends Controller
             ],
             'fill' => [
                 'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                'color' => ['rgb' => '0062A5']
+                'color' => ['rgb' => '203764']
             ],
         ];
 
         $estilo_conenido = [
             'font' => [
-                'size' => 8,
+                'size' => 10,
             ],
             'alignment' => [
                 'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
@@ -925,7 +966,7 @@ class ReporteController extends Controller
 
         $estilo_conenido2 = [
             'font' => [
-                'size' => 8,
+                'size' => 10,
                 'bold' => true
             ],
             'alignment' => [
@@ -945,7 +986,7 @@ class ReporteController extends Controller
 
         $estilo_conenido3 = [
             'font' => [
-                'size' => 8,
+                'size' => 10,
                 'bold' => true
             ],
             'alignment' => [
@@ -964,15 +1005,28 @@ class ReporteController extends Controller
         ];
 
         $fila = 1;
-        $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
-        $drawing->setName('logo');
-        $drawing->setDescription('logo');
-        $drawing->setPath(public_path() . '/imgs/' . Configuracion::first()->logo); // put your path and image here
-        $drawing->setCoordinates('A' . $fila);
-        $drawing->setOffsetX(5);
-        $drawing->setOffsetY(0);
-        $drawing->setHeight(60);
-        $drawing->setWorksheet($sheet);
+        if (file_exists(public_path() . '/imgs/' . Configuracion::first()->logo2)) {
+            $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+            $drawing->setName('logo2');
+            $drawing->setDescription('logo2');
+            $drawing->setPath(public_path() . '/imgs/' . Configuracion::first()->logo2); // put your path and image here
+            $drawing->setCoordinates('A' . $fila);
+            $drawing->setOffsetX(5);
+            $drawing->setOffsetY(0);
+            $drawing->setHeight(60);
+            $drawing->setWorksheet($sheet);
+        }
+        if (file_exists(public_path() . '/imgs/' . Configuracion::first()->logo)) {
+            $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+            $drawing->setName('logo');
+            $drawing->setDescription('logo');
+            $drawing->setPath(public_path() . '/imgs/' . Configuracion::first()->logo); // put your path and image here
+            $drawing->setCoordinates('T' . $fila);
+            $drawing->setOffsetX(5);
+            $drawing->setOffsetY(0);
+            $drawing->setHeight(60);
+            $drawing->setWorksheet($sheet);
+        }
 
         $fila = 2;
         $sheet->setCellValue('A' . $fila, "MATRIZ - PROGRAMACIÓN OPERATIVA ANUAL - GESTIÓN " . date("Y"));
@@ -985,16 +1039,22 @@ class ReporteController extends Controller
         $sheet->getStyle('A' . $fila . ':U' . $fila)->getAlignment()->setHorizontal('center');
         $sheet->getStyle('A' . $fila . ':U' . $fila)->applyFromArray($styleTexto);
         $fila++;
-        $sheet->setCellValue('L' . $fila, "FORMULARIO 4");
-        $sheet->mergeCells("L" . $fila . ":M" . $fila);  //COMBINAR CELDAS
-        $sheet->getStyle('L' . $fila . ':M' . $fila)->getAlignment()->setHorizontal('center');
-        $sheet->getStyle('L' . $fila . ':M' . $fila)->applyFromArray($styleTextoForm);
+        $sheet->setCellValue('A' . $fila, "FORMULARIO 4");
+        $sheet->mergeCells("A" . $fila . ":U" . $fila);  //COMBINAR CELDAS
+        $sheet->getStyle('A' . $fila . ':U' . $fila)->getAlignment()->setHorizontal('center');
+        $sheet->getStyle('A' . $fila . ':U' . $fila)->applyFromArray($styleTextoForm);
 
         $fila++;
         $sheet->setCellValue('A' . $fila, 'CÓDIGO PEI');
         $sheet->mergeCells("A" . $fila . ":C" . $fila);  //COMBINAR CELDAS
         $sheet->getStyle('A' . $fila . ":C" . $fila)->applyFromArray($styleArray);
         $sheet->setCellValue('D' . $fila, str_replace(",", "\n", $formulario_cuatro->codigo_pei));
+        $enters = substr_count($formulario_cuatro->codigo_pei, ",");
+        $alto_fila = 25;
+        if($enters > 1){
+            $alto_fila = $enters * 25;
+        }
+        $sheet->getRowDimension($fila)->setRowHeight($alto_fila);
         $sheet->mergeCells("D" . $fila . ":U" . $fila);  //COMBINAR
         $sheet->getStyle('D' . $fila . ':U' . $fila)->applyFromArray($estilo_conenido2);
         $fila++;
@@ -1005,7 +1065,7 @@ class ReporteController extends Controller
         $sheet->mergeCells("D" . $fila . ":U" . $fila);  //COMBINAR
         $sheet->getStyle('D' . $fila . ':U' . $fila)->applyFromArray($estilo_conenido2);
         $fila++;
-        $sheet->setCellValue('A' . $fila, 'INDICADOR');
+        $sheet->setCellValue('A' . $fila, 'INDICADOR DE PROCESO');
         $sheet->mergeCells("A" . $fila . ":C" . $fila);  //COMBINAR CELDAS
         $sheet->getStyle('A' . $fila . ":C" . $fila)->applyFromArray($styleArray);
         $sheet->setCellValue('D' . $fila, $formulario_cuatro->indicador);
@@ -1016,8 +1076,13 @@ class ReporteController extends Controller
         $sheet->mergeCells("A" . $fila . ":C" . $fila);  //COMBINAR CELDAS
         $sheet->getStyle('A' . $fila . ":C" . $fila)->applyFromArray($styleArray);
         $sheet->setCellValue('D' . $fila, str_replace(",", "\n", $formulario_cuatro->codigo_poa));
+        $enters = substr_count($formulario_cuatro->codigo_poa, ",");
+        $alto_fila = 25;
+        if($enters > 1){
+            $alto_fila = $enters * 25;
+        }
+        $sheet->getRowDimension($fila)->setRowHeight($alto_fila);
         $sheet->mergeCells("D" . $fila . ":U" . $fila);  //COMBINAR
-        $sheet->getRowDimension($fila)->setRowHeight(-1);
         $sheet->getStyle('D' . $fila . ':U' . $fila)->applyFromArray($estilo_conenido2);
         $fila++;
         $sheet->setCellValue('A' . $fila, 'ACCIÓN DE CORTO PLAZO DE GESTIÓN');
@@ -1179,7 +1244,7 @@ class ReporteController extends Controller
         $styleArray = [
             'font' => [
                 'bold' => true,
-                'size' => 9,
+                'size' => 10,
             ],
             'borders' => [
                 'allBorders' => [
@@ -1194,7 +1259,7 @@ class ReporteController extends Controller
         $styleArray2 = [
             'font' => [
                 'bold' => true,
-                'size' => 9,
+                'size' => 10,
             ],
             'borders' => [
                 'allBorders' => [
@@ -1203,7 +1268,7 @@ class ReporteController extends Controller
             ],
             'fill' => [
                 'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                'color' => ['rgb' => 'DAEEF3']
+                'color' => ['rgb' => 'B4C6E7']
             ],
             'alignment' => [
                 'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
@@ -1214,7 +1279,7 @@ class ReporteController extends Controller
         $styleArray3 = [
             'font' => [
                 'bold' => true,
-                'size' => 9,
+                'size' => 10,
             ],
             'borders' => [
                 'allBorders' => [
@@ -1239,7 +1304,7 @@ class ReporteController extends Controller
         $sheet->mergeCells("I" . $fila . ":U" . $fila);  //COMBINAR CELDAS
         $sheet->getStyle('A' . $fila . ':U' . $fila)->applyFromArray($styleArray2);
         $fila++;
-        $sheet->getRowDimension($fila)->setRowHeight(40);
+        $sheet->getRowDimension($fila)->setRowHeight(80);
         $sheet->setCellValue('A' . $fila, "FIRMA");
         $sheet->mergeCells("A" . $fila . ":B" . $fila);  //COMBINAR CELDAS
         $sheet->setCellValue('C' . $fila, "");
@@ -1251,7 +1316,7 @@ class ReporteController extends Controller
         $sheet->mergeCells("I" . $fila . ":U" . $fila);  //COMBINAR CELDAS
         $sheet->getStyle('A' . $fila . ':U' . $fila)->applyFromArray($styleArray);
         $fila++;
-        $sheet->getRowDimension($fila)->setRowHeight(40);
+        $sheet->getRowDimension($fila)->setRowHeight(30);
         $sheet->setCellValue('A' . $fila, "NOMBRE");
         $sheet->mergeCells("A" . $fila . ":B" . $fila);  //COMBINAR CELDAS
         $sheet->setCellValue('C' . $fila, "");
@@ -1262,7 +1327,7 @@ class ReporteController extends Controller
         $sheet->mergeCells("I" . $fila . ":U" . $fila);  //COMBINAR CELDAS
         $sheet->getStyle('A' . $fila . ':U' . $fila)->applyFromArray($styleArray);
         $fila++;
-        $sheet->getRowDimension($fila)->setRowHeight(40);
+        $sheet->getRowDimension($fila)->setRowHeight(30);
         $sheet->setCellValue('A' . $fila, "CARGO");
         $sheet->mergeCells("A" . $fila . ":B" . $fila);  //COMBINAR CELDAS
         $sheet->setCellValue('C' . $fila, "");
@@ -1275,12 +1340,11 @@ class ReporteController extends Controller
         $sheet->getStyle('A' . $fila . ':U' . $fila)->applyFromArray($styleArray);
         $sheet->getStyle('H' . $fila . ':U' . $fila)->applyFromArray($styleArray3);
         $fila++;
-        $fila++;
         $sheet->setCellValue('S' . $fila, self::getFechaTexto());
         $sheet->mergeCells("S" . $fila . ":U" . $fila);  //COMBINAR CELDAS
 
 
-        $sheet->getColumnDimension('A')->setWidth(5);
+        $sheet->getColumnDimension('A')->setWidth(6);
         $sheet->getColumnDimension('B')->setWidth(20);
         $sheet->getColumnDimension('C')->setWidth(5);
         $sheet->getColumnDimension('D')->setWidth(20);
@@ -1305,6 +1369,15 @@ class ReporteController extends Controller
         foreach (range('A', 'U') as $columnID) {
             $sheet->getStyle($columnID)->getAlignment()->setWrapText(true);
         }
+
+        $sheet->getPageSetup()->setOrientation(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_LANDSCAPE);
+        $sheet->getPageMargins()->setTop(0.5);
+        $sheet->getPageMargins()->setRight(0.1);
+        $sheet->getPageMargins()->setLeft(0.1);
+        $sheet->getPageMargins()->setBottom(0.1);
+        $sheet->getPageSetup()->setPrintArea('A:U');
+        $sheet->getPageSetup()->setFitToWidth(1);
+        $sheet->getPageSetup()->setFitToHeight(0);
 
         // DESCARGA DEL ARCHIVO
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
@@ -1354,7 +1427,7 @@ class ReporteController extends Controller
             ],
             'borders' => [
                 'allBorders' => [
-                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_NONE,
                 ],
             ],
         ];
@@ -1365,11 +1438,10 @@ class ReporteController extends Controller
                 'size' => 10,
             ],
         ];
-
         $styleArray = [
             'font' => [
                 'bold' => true,
-                'size' => 9,
+                'size' => 10,
                 'color' => ['argb' => 'ffffff'],
             ],
             'borders' => [
@@ -1379,7 +1451,7 @@ class ReporteController extends Controller
             ],
             'fill' => [
                 'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                'color' => ['rgb' => '0062A5']
+                'color' => ['rgb' => '203764']
             ],
         ];
 
@@ -1387,7 +1459,7 @@ class ReporteController extends Controller
         $styleArray2 = [
             'font' => [
                 'bold' => true,
-                'size' => 9,
+                'size' => 10,
                 'color' => ['argb' => 'ffffff'],
             ],
             'alignment' => [
@@ -1401,13 +1473,13 @@ class ReporteController extends Controller
             ],
             'fill' => [
                 'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                'color' => ['rgb' => '0062A5']
+                'color' => ['rgb' => '203764']
             ],
         ];
 
         $estilo_conenido = [
             'font' => [
-                'size' => 8,
+                'size' => 10,
             ],
             'alignment' => [
                 'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
@@ -1422,7 +1494,7 @@ class ReporteController extends Controller
 
         $estilo_conenido_rojo = [
             'font' => [
-                'size' => 8,
+                'size' => 10,
                 'color' => ['argb' => 'ffffff'],
             ],
             'alignment' => [
@@ -1442,7 +1514,7 @@ class ReporteController extends Controller
 
         $estilo_conenido2 = [
             'font' => [
-                'size' => 8,
+                'size' => 10,
                 'bold' => true
             ],
             'alignment' => [
@@ -1462,7 +1534,7 @@ class ReporteController extends Controller
 
         $estilo_total = [
             'font' => [
-                'size' => 11,
+                'size' => 9,
                 'bold' => true,
             ],
             'alignment' => [
@@ -1482,15 +1554,29 @@ class ReporteController extends Controller
 
 
         $fila = 1;
-        $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
-        $drawing->setName('logo');
-        $drawing->setDescription('logo');
-        $drawing->setPath(public_path() . '/imgs/' . Configuracion::first()->logo); // put your path and image here
-        $drawing->setCoordinates('A' . $fila);
-        $drawing->setOffsetX(5);
-        $drawing->setOffsetY(0);
-        $drawing->setHeight(60);
-        $drawing->setWorksheet($sheet);
+
+        if (file_exists(public_path() . "/imgs/" . Configuracion::first()->logo2)) {
+            $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+            $drawing->setName('logo2');
+            $drawing->setDescription('logo2');
+            $drawing->setPath(public_path() . '/imgs/' . Configuracion::first()->logo2); // put your path and image here
+            $drawing->setCoordinates('A' . $fila);
+            $drawing->setOffsetX(5);
+            $drawing->setOffsetY(0);
+            $drawing->setHeight(60);
+            $drawing->setWorksheet($sheet);
+        }
+        if (file_exists(public_path() . "/imgs/" . Configuracion::first()->logo)) {
+            $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+            $drawing->setName('logo');
+            $drawing->setDescription('logo');
+            $drawing->setPath(public_path() . '/imgs/' . Configuracion::first()->logo); // put your path and image here
+            $drawing->setCoordinates('O' . $fila);
+            $drawing->setOffsetX(5);
+            $drawing->setOffsetY(0);
+            $drawing->setHeight(60);
+            $drawing->setWorksheet($sheet);
+        }
 
         $fila = 2;
         $sheet->setCellValue('A' . $fila, "MATRIZ - PROGRAMACIÓN OPERATIVA ANUAL - GESTIÓN " . date("Y"));
@@ -1503,8 +1589,8 @@ class ReporteController extends Controller
         $sheet->getStyle('A' . $fila . ':Q' . $fila)->getAlignment()->setHorizontal('center');
         $sheet->getStyle('A' . $fila . ':Q' . $fila)->applyFromArray($styleTexto);
         $fila++;
-        $sheet->setCellValue('L' . $fila, "FORMULARIO 5");
-        $sheet->mergeCells("L" . $fila . ":M" . $fila);  //COMBINAR CELDAS
+        $sheet->setCellValue('A' . $fila, "FORMULARIO 5");
+        $sheet->mergeCells("A" . $fila . ":Q" . $fila);  //COMBINAR CELDAS
         $sheet->getStyle('L' . $fila . ':M' . $fila)->getAlignment()->setHorizontal('center');
         $sheet->getStyle('L' . $fila . ':M' . $fila)->applyFromArray($styleTextoForm);
         $fila++;
@@ -1726,7 +1812,7 @@ class ReporteController extends Controller
             ],
             'fill' => [
                 'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                'color' => ['rgb' => 'DAEEF3']
+                'color' => ['rgb' => 'B4C6E7']
             ],
             'alignment' => [
                 'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
@@ -1752,41 +1838,45 @@ class ReporteController extends Controller
 
 
         $sheet->setCellValue('A' . $fila, "");
-        $sheet->setCellValue('B' . $fila, "ELABORADO POR:");
-        $sheet->mergeCells("B" . $fila . ":G" . $fila);  //COMBINAR CELDAS
-        $sheet->getStyle('B' . $fila . ':G' . $fila)->applyFromArray($styleArray3);
+        $sheet->mergeCells("A" . $fila . ":B" . $fila);  //COMBINAR CELDAS
+        $sheet->setCellValue('C' . $fila, "ELABORADO POR:");
+        $sheet->mergeCells("C" . $fila . ":G" . $fila);  //COMBINAR CELDAS
+        $sheet->getStyle('C' . $fila . ':G' . $fila)->applyFromArray($styleArray3);
         $sheet->setCellValue('H' . $fila, "REVISADO POR:");
         $sheet->mergeCells("H" . $fila . ":L" . $fila);  //COMBINAR CELDAS
         $sheet->setCellValue('M' . $fila, "APROBADO");
         $sheet->mergeCells("M" . $fila . ":Q" . $fila);  //COMBINAR CELDAS
         $sheet->getStyle('A' . $fila . ':Q' . $fila)->applyFromArray($styleArray2);
         $fila++;
-        $sheet->getRowDimension($fila)->setRowHeight(40);
+        $sheet->getRowDimension($fila)->setRowHeight(80);
         $sheet->setCellValue('A' . $fila, "FIRMA");
-        $sheet->setCellValue('B' . $fila, "");
-        $sheet->mergeCells("B" . $fila . ":G" . $fila);  //COMBINAR CELDAS
-        $sheet->getStyle('B' . $fila . ':G' . $fila)->applyFromArray($styleArray3);
+        $sheet->mergeCells("A" . $fila . ":B" . $fila);  //COMBINAR CELDAS
+        $sheet->setCellValue('C' . $fila, "");
+        $sheet->mergeCells("C" . $fila . ":G" . $fila);  //COMBINAR CELDAS
+        $sheet->getStyle('C' . $fila . ':G' . $fila)->applyFromArray($styleArray3);
         $sheet->setCellValue('H' . $fila, "");
         $sheet->mergeCells("H" . $fila . ":L" . $fila);  //COMBINAR CELDAS
         $sheet->setCellValue('M' . $fila, "");
         $sheet->mergeCells("M" . $fila . ":Q" . $fila);  //COMBINAR CELDAS
         $sheet->getStyle('A' . $fila . ':Q' . $fila)->applyFromArray($styleArray);
         $fila++;
-        $sheet->getRowDimension($fila)->setRowHeight(40);
+        $sheet->getRowDimension($fila)->setRowHeight(30);
         $sheet->setCellValue('A' . $fila, "NOMBRE");
-        $sheet->setCellValue('B' . $fila, "");
-        $sheet->mergeCells("B" . $fila . ":G" . $fila);  //COMBINAR CELDAS
+        $sheet->mergeCells("A" . $fila . ":B" . $fila);  //COMBINAR CELDAS
+        $sheet->setCellValue('C' . $fila, "");
+        $sheet->mergeCells("C" . $fila . ":G" . $fila);  //COMBINAR CELDAS
         $sheet->setCellValue('H' . $fila, "");
         $sheet->mergeCells("H" . $fila . ":L" . $fila);  //COMBINAR CELDAS
         $sheet->setCellValue('M' . $fila, "");
         $sheet->mergeCells("M" . $fila . ":Q" . $fila);  //COMBINAR CELDAS
         $sheet->getStyle('A' . $fila . ':Q' . $fila)->applyFromArray($styleArray);
         $fila++;
-        $sheet->getRowDimension($fila)->setRowHeight(40);
+        $sheet->getRowDimension($fila)->setRowHeight(30);
         $sheet->setCellValue('A' . $fila, "CARGO");
-        $sheet->setCellValue('B' . $fila, "");
-        $sheet->getStyle('B' . $fila . ':G' . $fila)->applyFromArray($styleArray3);
-        $sheet->mergeCells("B" . $fila . ":G" . $fila);  //COMBINAR CELDAS
+        $sheet->mergeCells("A" . $fila . ":B" . $fila);  //COMBINAR CELDAS
+        $sheet->setCellValue('C' . $fila, "");
+        $sheet->getStyle('C' . $fila . ':G' . $fila)->applyFromArray($styleArray3);
+        $sheet->mergeCells("C" . $fila . ":G" . $fila);  //COMBINAR CELDAS
         $sheet->setCellValue('H' . $fila, "");
         $sheet->mergeCells("H" . $fila . ":L" . $fila);  //COMBINAR CELDAS
         $sheet->setCellValue('M' . $fila, "");
@@ -1794,11 +1884,10 @@ class ReporteController extends Controller
         $sheet->getStyle('A' . $fila . ':Q' . $fila)->applyFromArray($styleArray);
         $sheet->getStyle('H' . $fila . ':Q' . $fila)->applyFromArray($styleArray3);
         $fila++;
-        $fila++;
         $sheet->setCellValue('O' . $fila, self::getFechaTexto());
         $sheet->mergeCells("O" . $fila . ":Q" . $fila);  //COMBINAR CELDAS
 
-        $sheet->getColumnDimension('A')->setWidth(4);
+        $sheet->getColumnDimension('A')->setWidth(7);
         $sheet->getColumnDimension('B')->setWidth(20);
         $sheet->getColumnDimension('C')->setWidth(6);
         $sheet->getColumnDimension('D')->setWidth(20);
@@ -1819,6 +1908,15 @@ class ReporteController extends Controller
         foreach (range('A', 'Q') as $columnID) {
             $sheet->getStyle($columnID)->getAlignment()->setWrapText(true);
         }
+
+        $sheet->getPageSetup()->setOrientation(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_LANDSCAPE);
+        $sheet->getPageMargins()->setTop(0.5);
+        $sheet->getPageMargins()->setRight(0.1);
+        $sheet->getPageMargins()->setLeft(0.1);
+        $sheet->getPageMargins()->setBottom(0.1);
+        $sheet->getPageSetup()->setPrintArea('A:Q');
+        $sheet->getPageSetup()->setFitToWidth(1);
+        $sheet->getPageSetup()->setFitToHeight(0);
 
         // DESCARGA DEL ARCHIVO
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
@@ -1866,7 +1964,7 @@ class ReporteController extends Controller
             ],
             'borders' => [
                 'allBorders' => [
-                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_NONE,
                 ],
             ],
         ];
@@ -1874,7 +1972,7 @@ class ReporteController extends Controller
         $estilo1 = [
             'font' => [
                 'bold' => true,
-                'size' => 9,
+                'size' => 10,
             ],
             'alignment' => [
                 'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
@@ -1892,7 +1990,7 @@ class ReporteController extends Controller
         $estilo2 = [
             'font' => [
                 'bold' => true,
-                'size' => 9,
+                'size' => 10,
             ],
             'alignment' => [
                 'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
@@ -1912,7 +2010,7 @@ class ReporteController extends Controller
         $styleArray2 = [
             'font' => [
                 'bold' => true,
-                'size' => 9,
+                'size' => 10,
                 'color' => ['argb' => 'ffffff'],
             ],
             'alignment' => [
@@ -1926,13 +2024,13 @@ class ReporteController extends Controller
             ],
             'fill' => [
                 'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                'color' => ['rgb' => '0062A5']
+                'color' => ['rgb' => '203764']
             ],
         ];
 
         $estilo_conenido = [
             'font' => [
-                'size' => 8,
+                'size' => 10,
             ],
             'alignment' => [
                 'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
@@ -1947,7 +2045,7 @@ class ReporteController extends Controller
 
         $estilo_conenido_rojo = [
             'font' => [
-                'size' => 8,
+                'size' => 10,
                 'color' => ['argb' => 'ffffff'],
             ],
             'alignment' => [
@@ -1967,7 +2065,7 @@ class ReporteController extends Controller
 
         $estilo_conenido1 = [
             'font' => [
-                'size' => 8,
+                'size' => 10,
                 'bold' => true,
             ],
             'alignment' => [
@@ -1983,7 +2081,7 @@ class ReporteController extends Controller
 
         $estilo_conenido2 = [
             'font' => [
-                'size' => 8,
+                'size' => 10,
                 'bold' => true,
             ],
             'alignment' => [
@@ -2000,7 +2098,7 @@ class ReporteController extends Controller
         $estilo_total = [
             'font' => [
                 'bold' => true,
-                'size' => 11,
+                'size' => 10,
                 'color' => ['argb' => 'ffffff'],
             ],
             'alignment' => [
@@ -2014,20 +2112,33 @@ class ReporteController extends Controller
             ],
             'fill' => [
                 'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                'color' => ['rgb' => '0062A5']
+                'color' => ['rgb' => '203764']
             ],
         ];
 
         $fila = 1;
-        $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
-        $drawing->setName('logo');
-        $drawing->setDescription('logo');
-        $drawing->setPath(public_path() . '/imgs/' . Configuracion::first()->logo); // put your path and image here
-        $drawing->setCoordinates('A' . $fila);
-        $drawing->setOffsetX(5);
-        $drawing->setOffsetY(0);
-        $drawing->setHeight(60);
-        $drawing->setWorksheet($sheet);
+        if (file_exists(public_path() . '/imgs/' . Configuracion::first()->logo2)) {
+            $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+            $drawing->setName('logo2');
+            $drawing->setDescription('logo2');
+            $drawing->setPath(public_path() . '/imgs/' . Configuracion::first()->logo2); // put your path and image here
+            $drawing->setCoordinates('A' . $fila);
+            $drawing->setOffsetY(0);
+            $drawing->setOffsetX(5);
+            $drawing->setHeight(60);
+            $drawing->setWorksheet($sheet);
+        }
+        if (file_exists(public_path() . '/imgs/' . Configuracion::first()->logo)) {
+            $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+            $drawing->setName('logo');
+            $drawing->setDescription('logo');
+            $drawing->setPath(public_path() . '/imgs/' . Configuracion::first()->logo); // put your path and image here
+            $drawing->setCoordinates('X' . $fila);
+            $drawing->setOffsetY(0);
+            $drawing->setOffsetX(5);
+            $drawing->setHeight(60);
+            $drawing->setWorksheet($sheet);
+        }
         $sheet->setCellValue('A' . $fila, "Formulario 9");
         $sheet->mergeCells("A" . $fila . ":AA" . $fila);  //COMBINAR CELDAS
         $sheet->getStyle('A' . $fila . ':AA' . $fila)->getAlignment()->setHorizontal('center');
@@ -2277,7 +2388,7 @@ class ReporteController extends Controller
         $styleArray = [
             'font' => [
                 'bold' => true,
-                'size' => 9,
+                'size' => 10,
             ],
             'borders' => [
                 'allBorders' => [
@@ -2292,7 +2403,7 @@ class ReporteController extends Controller
         $styleArray2 = [
             'font' => [
                 'bold' => true,
-                'size' => 9,
+                'size' => 10,
             ],
             'borders' => [
                 'allBorders' => [
@@ -2301,7 +2412,7 @@ class ReporteController extends Controller
             ],
             'fill' => [
                 'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                'color' => ['rgb' => 'DAEEF3']
+                'color' => ['rgb' => 'B4C6E7']
             ],
             'alignment' => [
                 'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
@@ -2312,7 +2423,7 @@ class ReporteController extends Controller
         $styleArray3 = [
             'font' => [
                 'bold' => true,
-                'size' => 9,
+                'size' => 10,
             ],
             'borders' => [
                 'allBorders' => [
@@ -2326,49 +2437,52 @@ class ReporteController extends Controller
         ];
 
         $sheet->setCellValue('A' . $fila, "");
-        $sheet->setCellValue('B' . $fila, "ELABORADO POR:");
-        $sheet->mergeCells("B" . $fila . ":I" . $fila);  //COMBINAR CELDAS
-        $sheet->getStyle('B' . $fila . ':I' . $fila)->applyFromArray($styleArray3);
+        $sheet->mergeCells("A" . $fila . ":B" . $fila);  //COMBINAR CELDAS
+        $sheet->setCellValue('C' . $fila, "ELABORADO POR:");
+        $sheet->mergeCells("C" . $fila . ":I" . $fila);  //COMBINAR CELDAS
+        $sheet->getStyle('C' . $fila . ':I' . $fila)->applyFromArray($styleArray3);
         $sheet->setCellValue('J' . $fila, "REVISADO POR:");
         $sheet->mergeCells("J" . $fila . ":Q" . $fila);  //COMBINAR CELDAS
         $sheet->setCellValue('R' . $fila, "APROBADO");
         $sheet->mergeCells("R" . $fila . ":AA" . $fila);  //COMBINAR CELDAS
         $sheet->getStyle('A' . $fila . ':AA' . $fila)->applyFromArray($styleArray2);
         $fila++;
-        $sheet->getRowDimension($fila)->setRowHeight(40);
+        $sheet->getRowDimension($fila)->setRowHeight(80);
         $sheet->setCellValue('A' . $fila, "FIRMA");
-        $sheet->setCellValue('B' . $fila, "");
-        $sheet->mergeCells("B" . $fila . ":I" . $fila);  //COMBINAR CELDAS
-        $sheet->getStyle('B' . $fila . ':I' . $fila)->applyFromArray($styleArray3);
+        $sheet->mergeCells("A" . $fila . ":B" . $fila);  //COMBINAR CELDAS
+        $sheet->setCellValue('C' . $fila, "");
+        $sheet->mergeCells("C" . $fila . ":I" . $fila);  //COMBINAR CELDAS
+        $sheet->getStyle('C' . $fila . ':I' . $fila)->applyFromArray($styleArray3);
         $sheet->setCellValue('E' . $fila, "");
         $sheet->mergeCells("J" . $fila . ":Q" . $fila);  //COMBINAR CELDAS
         $sheet->setCellValue('H' . $fila, "");
         $sheet->mergeCells("R" . $fila . ":AA" . $fila);  //COMBINAR CELDAS
         $sheet->getStyle('A' . $fila . ':AA' . $fila)->applyFromArray($styleArray);
         $fila++;
-        $sheet->getRowDimension($fila)->setRowHeight(40);
+        $sheet->getRowDimension($fila)->setRowHeight(30);
         $sheet->setCellValue('A' . $fila, "NOMBRE");
-        $sheet->setCellValue('B' . $fila, "");
-        $sheet->mergeCells("B" . $fila . ":I" . $fila);  //COMBINAR CELDAS
+        $sheet->mergeCells("A" . $fila . ":B" . $fila);  //COMBINAR CELDAS
+        $sheet->setCellValue('C' . $fila, "");
+        $sheet->mergeCells("C" . $fila . ":I" . $fila);  //COMBINAR CELDAS
         $sheet->setCellValue('E' . $fila, "");
         $sheet->mergeCells("J" . $fila . ":Q" . $fila);  //COMBINAR CELDAS
         $sheet->setCellValue('H' . $fila, "");
         $sheet->mergeCells("R" . $fila . ":AA" . $fila);  //COMBINAR CELDAS
         $sheet->getStyle('A' . $fila . ':AA' . $fila)->applyFromArray($styleArray);
         $fila++;
-        $sheet->getRowDimension($fila)->setRowHeight(40);
+        $sheet->getRowDimension($fila)->setRowHeight(30);
         $sheet->setCellValue('A' . $fila, "CARGO");
-        $sheet->setCellValue('B' . $fila, "Jefe de Unidad de Planificación");
-        $sheet->getStyle('B' . $fila . ':I' . $fila)->applyFromArray($styleArray3);
-        $sheet->mergeCells("B" . $fila . ":I" . $fila);  //COMBINAR CELDAS
-        $sheet->getStyle('B' . $fila . ':I' . $fila)->applyFromArray($styleArray3);
+        $sheet->mergeCells("A" . $fila . ":B" . $fila);  //COMBINAR CELDAS
+        $sheet->setCellValue('C' . $fila, "Jefe de Unidad de Planificación");
+        $sheet->getStyle('C' . $fila . ':I' . $fila)->applyFromArray($styleArray3);
+        $sheet->mergeCells("C" . $fila . ":I" . $fila);  //COMBINAR CELDAS
+        $sheet->getStyle('C' . $fila . ':I' . $fila)->applyFromArray($styleArray3);
         $sheet->setCellValue('E' . $fila, "");
         $sheet->mergeCells("J" . $fila . ":Q" . $fila);  //COMBINAR CELDAS
         $sheet->setCellValue('R' . $fila, "Director General Ejecutivo");
         $sheet->mergeCells("R" . $fila . ":AA" . $fila);  //COMBINAR CELDAS
         $sheet->getStyle('A' . $fila . ':AA' . $fila)->applyFromArray($styleArray);
         $sheet->getStyle('R' . $fila . ':AA' . $fila)->applyFromArray($styleArray3);
-        $fila++;
         $fila++;
         $sheet->setCellValue('X' . $fila, self::getFechaTexto());
         $sheet->mergeCells("X" . $fila . ":AA" . $fila);  //COMBINAR CELDAS
@@ -2386,7 +2500,7 @@ class ReporteController extends Controller
         $sheet->getColumnDimension('K')->setWidth(10);
         $sheet->getColumnDimension('L')->setWidth(9);
         $sheet->getColumnDimension('M')->setWidth(10);
-        $sheet->getColumnDimension('N')->setWidth(10);
+        $sheet->getColumnDimension('N')->setWidth(15);
         $sheet->getColumnDimension('O')->setWidth(6);
         $sheet->getColumnDimension('P')->setWidth(6);
         $sheet->getColumnDimension('Q')->setWidth(6);
@@ -2401,9 +2515,22 @@ class ReporteController extends Controller
         $sheet->getColumnDimension('Z')->setWidth(6);
         $sheet->getColumnDimension('AA')->setWidth(10);
 
-        foreach (range('A', 'Z') as $columnID) {
-            $sheet->getStyle($columnID)->getAlignment()->setWrapText(true);
-        }
+
+        $sheet->getStyle('A:AA')->getAlignment()->setWrapText(true);
+
+        // foreach (range('A', 'AA') as $columnID) {
+        //     $sheet->getStyle($columnID)->getAlignment()->setWrapText(true);
+        // }
+
+        $sheet->getRowDimension(1)->setRowHeight(-1);
+        $sheet->getPageSetup()->setOrientation(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_LANDSCAPE);
+        $sheet->getPageMargins()->setTop(0.5);
+        $sheet->getPageMargins()->setRight(0.1);
+        $sheet->getPageMargins()->setLeft(0.1);
+        $sheet->getPageMargins()->setBottom(0.1);
+        $sheet->getPageSetup()->setPrintArea('A:AA');
+        $sheet->getPageSetup()->setFitToWidth(1);
+        $sheet->getPageSetup()->setFitToHeight(0);
 
         // DESCARGA DEL ARCHIVO
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');

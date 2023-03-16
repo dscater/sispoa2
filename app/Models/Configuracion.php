@@ -11,12 +11,16 @@ class Configuracion extends Model
 
     protected $fillable = [
         'nombre_sistema', 'alias', 'razon_social', 'ciudad', 'dir',
-        'fono', 'web', 'actividad', 'correo', 'logo',
+        'fono', 'web', 'actividad', 'correo', 'logo', 'logo2',
     ];
 
-    protected $appends = ['path_image'];
+    protected $appends = ['path_image', 'path_image2'];
     public function getPathImageAttribute()
     {
         return asset('imgs/' . $this->logo);
+    }
+    public function getPathImage2Attribute()
+    {
+        return asset('imgs/' . $this->logo2);
     }
 }

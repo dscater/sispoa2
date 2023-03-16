@@ -24,6 +24,14 @@
             width: 200px;
         }
 
+        .logo2 {
+            position: absolute;
+            top: -20px;
+            right: 0;
+            height: 100px;
+            width: 200px;
+        }
+
         .titulo {
             position: absolute;
             width: 350px;
@@ -184,8 +192,9 @@
         $contador = 0;
     @endphp
     @inject('configuracion', 'App\Models\Configuracion')
-    @inject('o_certificacion', 'App\Models\Certificacion')
-    <img class="logo" src="{{ asset('imgs/' . $configuracion->first()->logo) }}" alt="Logo">
+    @inject('o_certificacion_detalles', 'App\Models\CertificacionDetalle')
+    <img class="logo" src="{{ asset('imgs/' . $configuracion->first()->logo2) }}" alt="Logo">
+    <img class="logo2" src="{{ asset('imgs/' . $configuracion->first()->logo) }}" alt="Logo">
     <div class="titulo">SALDOS DE PRESUPUESTOS POR ACTIVIDAD<br />GESTIÓN {{ date('Y') }}</div>
     <div class="titulo2">{{ $unidad->nombre }}</div>
     <table border="1" class="collapse">
@@ -234,6 +243,7 @@
             @php
                 $suma_ejecutados = 0;
                 $suma_saldos = 0;
+                $suma_usados = 0;
             @endphp
 
             @foreach ($memoria_operacion_detalles as $mod)
@@ -250,27 +260,31 @@
                     <td class="centreado">{{ $mod->costo }}</td>
                     <td class="centreado">{{ $mod->total }}</td>
                     @php
-                        $cantidad_usado = $o_certificacion
+                        $cantidad_usado = $o_certificacion_detalles
+                            ->join('certificacions', 'certificacions.id', '=', 'certificacion_detalles.certificacion_id')
                             ->where('mo_id', $mod->memoria_operacion->id)
                             ->where('mod_id', $mod->id)
                             ->where('anulado', 0)
                             ->sum('cantidad_usar');
-                        $total_usado = $o_certificacion
+                        $total_usado = $o_certificacion_detalles
+                            ->join('certificacions', 'certificacions.id', '=', 'certificacion_detalles.certificacion_id')
                             ->where('mo_id', $mod->memoria_operacion->id)
                             ->where('mod_id', $mod->id)
                             ->where('anulado', 0)
                             ->sum('presupuesto_usarse');
                         $saldo = (float) $mod->total - (float) $total_usado;
+                        $suma_usados += (float) $total_usado;
+                        $suma_saldos += (float) $saldo;
                     @endphp
-                    <td class="centreado">{{ number_format($cantidad_usado, 2) }}</td>
+                    <td class="centreado">{{ $cantidad_usado }}</td>
                     <td class="centreado">{{ number_format($total_usado, 2) }}</td>
                     <td class="centreado">{{ number_format($saldo, 2) }}</td>
                 </tr>
             @endforeach
             <tr>
                 <td class="centreado bold" colspan="8">TOTAL</td>
-                <td class="centreado bold">{{ number_format($total_usado, 2) }}</td>
-                <td class="centreado bold">{{ number_format($saldo, 2) }}</td>
+                <td class="centreado bold">{{ number_format($suma_usados, 2) }}</td>
+                <td class="centreado bold">{{ number_format($suma_saldos, 2) }}</td>
             </tr>
 
         </tbody>

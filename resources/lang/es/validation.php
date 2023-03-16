@@ -152,7 +152,7 @@ return [
         'name'                  => 'nombre',
         'user_id'                  => 'Personal',
         'formulario_id'                  => 'formulario',
-        'mo_id'                  => 'Operación | Tarea/Actividad',
+        'mo_id'                  => 'Operación | Tarea/Actividad | Patida',
         'solicitante_id'                  => 'solicitante',
         'superior_id'                  => 'superior',
         'programa_academico_id'                  => 'Programa académico',

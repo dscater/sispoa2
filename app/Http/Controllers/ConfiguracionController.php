@@ -69,6 +69,16 @@ class ConfiguracionController extends Controller
                 $configuracion->save();
             }
 
+            if ($request->hasFile('logo2')) {
+                $antiguo = $configuracion->logo2;
+                \File::delete(public_path() . '/imgs/' . $antiguo);
+                $file = $request->logo2;
+                $nombre = time() . '_logo2.' . $file->getClientOriginalExtension();
+                $file->move(public_path() . '/imgs/', $nombre);
+                $configuracion->logo2 = $nombre;
+                $configuracion->save();
+            }
+
             $user = Auth::user();
             Log::registrarLog("MODIFICACIÓN", "CONFIGURACIÓN", "EL USUARIO $user->id MODIFICÓ LA CONFIGURACIÓN DEL SISTEMA", $user);
 

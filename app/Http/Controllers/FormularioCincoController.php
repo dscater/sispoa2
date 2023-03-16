@@ -12,6 +12,7 @@ use App\Models\MemoriaOperacion;
 use App\Models\MemoriaOperacionDetalle;
 use App\Models\Operacion;
 use App\Models\Partida;
+use App\Models\VerificacionActividad;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -273,7 +274,8 @@ class FormularioCincoController extends Controller
     {
         // armar repetidos
         $array_registros = FormularioCincoController::armaRepetidos($formulario_cinco);
-        $html = view("parcial.formulario_cinco", compact("array_registros", "formulario_cinco"))->render();
+        $verificacion_actividad = VerificacionActividad::get()->first();
+        $html = view("parcial.formulario_cinco", compact("array_registros", "formulario_cinco", "verificacion_actividad"))->render();
         return response()->JSON($html);
     }
 

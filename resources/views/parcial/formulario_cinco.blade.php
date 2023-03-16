@@ -3,7 +3,7 @@
         <tr class="bg-primary cabecera">
             <th colspan="17">
                 PLAN OPERATIVO ANUAL GESTIÓN
-                2022
+                {{ $verificacion_actividad ? $verificacion_actividad->gestion : date('Y') }}
             </th>
         </tr>
         <tr class="bg-primary cabecera">

@@ -94,69 +94,76 @@
                                                     ></span>
                                                 </template>
                                                 <template #cell(mo_id)="row">
-                                                    <strong
-                                                        >Código de operación: </strong
-                                                    >{{
-                                                        row.item
-                                                            .memoria_operacion
-                                                            .codigo_operacion
-                                                    }}<br />
-                                                    <strong>Operación: </strong
-                                                    >{{
-                                                        row.item
-                                                            .memoria_operacion
-                                                            .descripcion_operacion
-                                                    }}<br />
-                                                    <strong
-                                                        >Código de tarea: </strong
-                                                    >{{
-                                                        row.item
-                                                            .memoria_operacion
-                                                            .codigo_actividad
-                                                    }}<br />
-                                                    <strong
-                                                        >Actividad/Tarea: </strong
-                                                    >{{
-                                                        row.item
-                                                            .memoria_operacion
-                                                            .descripcion_actividad
-                                                    }}<br />
-                                                    <strong>Partida: </strong
-                                                    >{{
-                                                        row.item
-                                                            .memoria_operacion_detalle
-                                                            .partida
-                                                    }}<br />
-                                                    <strong
-                                                        >Personal designado: </strong
-                                                    >{{
-                                                        row.item
-                                                            .o_personal_designado.full_name
-                                                    }}<br />
-                                                    <strong
-                                                        >Departamento: </strong
-                                                    >{{ row.item.departamento
-                                                    }}<br />
-                                                    <strong>Municipio: </strong
-                                                    >{{ row.item.municipio }}
+                                                    <div
+                                                        v-for="(
+                                                            cd, index_cd
+                                                        ) in row.item
+                                                            .certificacion_detalles"
+                                                        :key="cd.id"
+                                                    >
+                                                        <hr
+                                                            v-if="index_cd > 0"
+                                                        />
+                                                        <strong
+                                                            >Código de
+                                                            operación: </strong
+                                                        >{{
+                                                            cd.memoria_operacion
+                                                                .codigo_operacion
+                                                        }}<br />
+                                                        <strong
+                                                            >Operación: </strong
+                                                        >{{
+                                                            cd.memoria_operacion
+                                                                .descripcion_operacion
+                                                        }}<br />
+                                                        <strong
+                                                            >Código de tarea: </strong
+                                                        >{{
+                                                            cd.memoria_operacion
+                                                                .codigo_actividad
+                                                        }}<br />
+                                                        <strong
+                                                            >Actividad/Tarea: </strong
+                                                        >{{
+                                                            cd.memoria_operacion
+                                                                .descripcion_actividad
+                                                        }}<br />
+                                                        <strong
+                                                            >Partida: </strong
+                                                        >{{
+                                                            cd
+                                                                .memoria_operacion_detalle
+                                                                .partida
+                                                        }}<br />
+                                                    </div>
                                                 </template>
 
                                                 <template
                                                     #cell(cantidad_usar)="row"
                                                 >
-                                                    <strong
-                                                        >Cantidad a usar: </strong
-                                                    >{{
-                                                        row.item.cantidad_usar
-                                                    }}
-                                                    <br />
-                                                    <strong
-                                                        >Total a usar: </strong
-                                                    >{{
-                                                        row.item
-                                                            .presupuesto_usarse
-                                                    }}
-                                                    <br />
+                                                    <div
+                                                        v-for="(
+                                                            cd, index_cd
+                                                        ) in row.item
+                                                            .certificacion_detalles"
+                                                        :key="cd.id"
+                                                    >
+                                                        <hr
+                                                            v-if="index_cd > 0"
+                                                        />
+                                                        <strong
+                                                            >Cantidad a usar: </strong
+                                                        >{{ cd.cantidad_usar }}
+                                                        <br />
+                                                        <strong
+                                                            >Total a usar: </strong
+                                                        >{{
+                                                            cd.presupuesto_usarse
+                                                        }}
+                                                    </div>
+                                                </template>
+                                                <template #cell(fechas)="row">
                                                     <strong>Inicio: </strong
                                                     >{{
                                                         formatoFecha(
@@ -265,7 +272,10 @@
                                                             v-if="
                                                                 row.item
                                                                     .anulado ==
-                                                                0
+                                                                    0 &&
+                                                                row.item
+                                                                    .estado !=
+                                                                    'APROBADO'
                                                             "
                                                             size="sm"
                                                             pill
@@ -290,7 +300,8 @@
                                                                 row.item
                                                                     .estado ==
                                                                     'PENDIENTE' &&
-                                                                user.tipo == 'SUPER USUARIO'
+                                                                user.tipo ==
+                                                                    'SUPER USUARIO'
                                                             "
                                                             size="sm"
                                                             pill
@@ -317,63 +328,82 @@
                                                             ></i>
                                                         </b-button>
 
-                                                        <b-button
+                                                        <template
                                                             v-if="
                                                                 row.item
                                                                     .anulado ==
-                                                                0
-                                                            "
-                                                            size="sm"
-                                                            pill
-                                                            variant="outline-danger"
-                                                            class="btn-flat btn-block"
-                                                            title="Anular"
-                                                            @click="
-                                                                anularCertificacion(
-                                                                    row.item.id,
-                                                                    row.item
-                                                                        .formulario
-                                                                        .codigo_pei +
-                                                                        ' con fecha de registro ' +
-                                                                        formatoFecha(
-                                                                            row
-                                                                                .item
-                                                                                .fecha_registro
-                                                                        )
-                                                                )
+                                                                    0 &&
+                                                                row.item
+                                                                    .estado !=
+                                                                    'APROBADO'
                                                             "
                                                         >
-                                                            <i
-                                                                class="fa fa-times"
-                                                            ></i>
-                                                        </b-button>
+                                                            <b-button
+                                                                size="sm"
+                                                                pill
+                                                                variant="outline-danger"
+                                                                class="btn-flat btn-block"
+                                                                title="Anular"
+                                                                @click="
+                                                                    anularCertificacion(
+                                                                        row.item
+                                                                            .id,
+                                                                        row.item
+                                                                            .formulario
+                                                                            .codigo_pei +
+                                                                            ' con fecha de registro ' +
+                                                                            formatoFecha(
+                                                                                row
+                                                                                    .item
+                                                                                    .fecha_registro
+                                                                            )
+                                                                    )
+                                                                "
+                                                            >
+                                                                <i
+                                                                    class="fa fa-times"
+                                                                ></i>
+                                                            </b-button>
+                                                        </template>
+                                                        <template v-else>
+                                                            <template
+                                                                v-if="
+                                                                    row.item
+                                                                        .estado !=
+                                                                    'APROBADO'
+                                                                "
+                                                            >
+                                                                <b-button
+                                                                    size="sm"
+                                                                    pill
+                                                                    variant="outline-success"
+                                                                    class="btn-flat btn-block"
+                                                                    title="Activar certificación"
+                                                                    @click="
+                                                                        activarCertificacion(
+                                                                            row
+                                                                                .item
+                                                                                .id,
+                                                                            row
+                                                                                .item
+                                                                                .formulario
+                                                                                .codigo_pei +
+                                                                                ' con fecha de registro ' +
+                                                                                formatoFecha(
+                                                                                    row
+                                                                                        .item
+                                                                                        .fecha_registro
+                                                                                )
+                                                                        )
+                                                                    "
+                                                                >
+                                                                    <i
+                                                                        class="fa fa-check"
+                                                                    ></i>
+                                                                </b-button>
+                                                            </template>
+                                                        </template>
 
-                                                        <b-button
-                                                            v-else
-                                                            size="sm"
-                                                            pill
-                                                            variant="outline-success"
-                                                            class="btn-flat btn-block"
-                                                            title="Anular"
-                                                            @click="
-                                                                activarCertificacion(
-                                                                    row.item.id,
-                                                                    row.item
-                                                                        .formulario
-                                                                        .codigo_pei +
-                                                                        ' con fecha de registro ' +
-                                                                        formatoFecha(
-                                                                            row
-                                                                                .item
-                                                                                .fecha_registro
-                                                                        )
-                                                                )
-                                                            "
-                                                        >
-                                                            <i
-                                                                class="fa fa-check"
-                                                            ></i>
-                                                        </b-button>
                                                         <!-- <b-button
                                                             size="sm"
                                                             pill
@@ -463,6 +493,21 @@ export default {
                     sortable: true,
                 },
                 {
+                    key: "o_personal_designado.full_name",
+                    label: "Personal designado",
+                    sortable: true,
+                },
+                {
+                    key: "departamento",
+                    label: "Departamento",
+                    sortable: true,
+                },
+                {
+                    key: "municipio",
+                    label: "Municipio",
+                    sortable: true,
+                },
+                {
                     key: "mo_id",
                     label: "Descripción Operación",
                     sortable: true,
@@ -470,6 +515,11 @@ export default {
                 {
                     key: "cantidad_usar",
                     label: "Certificación",
+                    sortable: true,
+                },
+                {
+                    key: "fechas",
+                    label: "Fechas",
                     sortable: true,
                 },
                 {

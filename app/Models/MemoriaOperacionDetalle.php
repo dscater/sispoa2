@@ -24,10 +24,12 @@ class MemoriaOperacionDetalle extends Model
 
     public function getSaldoAttribute()
     {
-        $total_usado = Certificacion::where('mo_id', $this->memoria_operacion_id)
+        $total_usado = CertificacionDetalle::select("certificacion_detalles.*")
+            ->join("certificacions","certificacions.id","=","certificacion_detalles.certificacion_id")
+            ->where('mo_id', $this->memoria_operacion_id)
             ->where('mod_id', $this->id)
-            ->where("anulado", 0)
-            ->sum('presupuesto_usarse');
+            ->where("certificacions.anulado", 0)
+            ->sum('certificacion_detalles.presupuesto_usarse');
 
         
         $saldo = (float) $this->total - (float) $total_usado;
@@ -38,10 +40,12 @@ class MemoriaOperacionDetalle extends Model
 
     public function getSaldoCantidadAttribute()
     {
-        $total_usado = Certificacion::where('mo_id', $this->memoria_operacion_id)
+        $total_usado = CertificacionDetalle::select("certificacion_detalles.*")
+            ->join("certificacions","certificacions.id","=","certificacion_detalles.certificacion_id")
+            ->where('mo_id', $this->memoria_operacion_id)
             ->where('mod_id', $this->id)
-            ->where("anulado", 0)
-            ->sum('cantidad_usar');
+            ->where("certificacions.anulado", 0)
+            ->sum('certificacion_detalles.cantidad_usar');
         $saldo = (float) $this->cantidad - (float) $total_usado;
         return (float)(number_format($saldo, 2, ".", ""));
     }

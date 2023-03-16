@@ -11,13 +11,14 @@ class Certificacion extends Model
 
     protected $fillable = [
         "formulario_id",
-        "mo_id", "mod_id",
-        "total_cantidad",
-        "cantidad_usar",
-        "saldo_cantidad",
-        "total",
-        "presupuesto_usarse",
-        "saldo_total",
+        // "mo_id",
+        // "mod_id",
+        // "total_cantidad",
+        // "cantidad_usar",
+        // "saldo_cantidad",
+        // "total",
+        // "presupuesto_usarse",
+        // "saldo_total",
         "archivo",
         "correlativo", "solicitante_id", "superior_id",
         "inicio", "final",
@@ -26,21 +27,16 @@ class Certificacion extends Model
         "estado", "fecha_registro", "anulado"
     ];
 
-    protected $with = ["formulario", "memoria_operacion"];
+    protected $with = ["formulario"];
+
+    public function certificacion_detalles()
+    {
+        return $this->hasMany(CertificacionDetalle::class, 'certificacion_id');
+    }
 
     public function formulario()
     {
         return $this->belongsTo(FormularioCuatro::class, 'formulario_id');
-    }
-
-    public function memoria_operacion()
-    {
-        return $this->belongsTo(MemoriaOperacion::class, 'mo_id');
-    }
-
-    public function memoria_operacion_detalle()
-    {
-        return $this->belongsTo(MemoriaOperacionDetalle::class, 'mod_id');
     }
 
     public function o_personal_designado()

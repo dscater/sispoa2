@@ -77,7 +77,7 @@
             height: 45px;
             width: 80%;
             margin: auto;
-            margin-bottom:0x;
+            margin-bottom: 0x;
             border: solid 1px;
         }
 
@@ -190,7 +190,7 @@
             border-collapse: collapse;
         }
 
-        .td_txt_firma{
+        .td_txt_firma {
             vertical-align: top;
         }
 
@@ -329,28 +329,32 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td class="centreado border_left border_bottom border_right">{{ date('d/m/Y', strtotime($certificacion->inicio)) }}</td>
+                <td class="centreado border_left border_bottom border_right">
+                    {{ date('d/m/Y', strtotime($certificacion->inicio)) }}</td>
                 <td></td>
-                <td class="centreado border_left border_bottom border_right">{{ date('d/m/Y', strtotime($certificacion->final)) }}</td>
+                <td class="centreado border_left border_bottom border_right">
+                    {{ date('d/m/Y', strtotime($certificacion->final)) }}</td>
                 </td>
             </tr>
-            <tr>
-                <td class="centreado border_left border_bottom">{{ $certificacion->memoria_operacion_detalle->ue }}
-                </td>
-                <td class="centreado border_left border_bottom">{{ $certificacion->memoria_operacion_detalle->prog }}
-                </td>
-                <td class="centreado border_left border_bottom">00</td>
-                <td class="centreado border_left border_bottom">{{ $certificacion->memoria_operacion_detalle->act }}
-                </td>
-                <td class="centreado border_left border_bottom">42</td>
-                <td class="centreado border_left border_bottom border_right">230</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
+            @foreach ($certificacion->certificacion_detalles as $cd)
+                <tr>
+                    <td class="centreado border_left border_bottom">{{ $cd->memoria_operacion_detalle->ue }}
+                    </td>
+                    <td class="centreado border_left border_bottom">{{ $cd->memoria_operacion_detalle->prog }}
+                    </td>
+                    <td class="centreado border_left border_bottom">00</td>
+                    <td class="centreado border_left border_bottom">{{ $cd->memoria_operacion_detalle->act }}
+                    </td>
+                    <td class="centreado border_left border_bottom">42</td>
+                    <td class="centreado border_left border_bottom border_right">230</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            @endforeach
         </tbody>
     </table>
 
@@ -367,13 +371,15 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td class="bold">{!! str_replace('|', '<br>', $certificacion->memoria_operacion->memoria->formulario->codigo_poa_full) !!}</td>
-                <td class="centreado">{!! str_replace('|', '<br>', $certificacion->memoria_operacion->memoria->formulario->accion_corto_full) !!}</td>
-                <td class="bold">{{ $certificacion->memoria_operacion->operacion->codigo_operacion }}</td>
-                <td>{{ $certificacion->memoria_operacion->operacion->operacion }}</td>
-                <td class="bold">{{ $certificacion->memoria_operacion->codigo_actividad }}</td>
-            </tr>
+            @foreach ($certificacion->certificacion_detalles as $cd)
+                <tr>
+                    <td class="bold">{!! str_replace('|', '<br>', $cd->memoria_operacion->memoria->formulario->codigo_poa_full) !!}</td>
+                    <td class="centreado">{!! str_replace('|', '<br>', $cd->memoria_operacion->memoria->formulario->accion_corto_full) !!}</td>
+                    <td class="bold">{{ $cd->memoria_operacion->operacion->codigo_operacion }}</td>
+                    <td>{{ $cd->memoria_operacion->operacion->operacion }}</td>
+                    <td class="bold">{{ $cd->memoria_operacion->codigo_actividad }}</td>
+                </tr>
+            @endforeach
         </tbody>
     </table>
 
@@ -388,26 +394,40 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td class="centreado">{{ $certificacion->memoria_operacion_detalle->m_partida->descripcion }}</td>
-                <td class="centreado">{{ $certificacion->memoria_operacion_detalle->partida }}</td>
-                <td class="centreado">{{ number_format($certificacion->memoria_operacion_detalle->total, 2) }}</td>
-                <td class="centreado">{{ number_format($certificacion->presupuesto_usarse, 2) }}</td>
+            @php
+                $total_ejecutarse = 0;
+                $total_saldo = 0;
+            @endphp
+            @foreach ($certificacion->certificacion_detalles as $cd)
+                <tr>
+                    <td class="centreado">{{ $cd->memoria_operacion_detalle->m_partida->descripcion }}</td>
+                    <td class="centreado">{{ $cd->memoria_operacion_detalle->partida }}</td>
+                    <td class="centreado">{{ number_format($cd->memoria_operacion_detalle->total, 2) }}</td>
+                    <td class="centreado">{{ number_format($cd->presupuesto_usarse, 2) }}</td>
+                    @php
+                        // $saldo = number_format((float) $cd->memoria_operacion_detalle->total - (float) $cd->presupuesto_usarse, 2);
+                        $saldo = (float) $cd->saldo_total;
+                        if ((float) $saldo == 0) {
+                            $saldo = '-';
+                        } else {
+                            $saldo = number_format($saldo, 2);
+                        }
+                    @endphp
+                    <td class="centreado">
+                        {{ $saldo }}
+                    </td>
+                </tr>
                 @php
-                    // $saldo = number_format((float) $certificacion->memoria_operacion_detalle->total - (float) $certificacion->presupuesto_usarse, 2);
-                    $saldo = number_format((float) $certificacion->saldo_total, 2);
-                    if ((float) $saldo == 0) {
-                        $saldo = '-';
-                    }2
+                    $total_ejecutarse += (float) $cd->presupuesto_usarse;
+                    if ($saldo != '-') {
+                        $total_saldo += (float) $cd->saldo_total;
+                    }
                 @endphp
-                <td class="centreado">
-                    {{ $saldo }}
-                </td>
-            </tr>
+            @endforeach
             <tr>
                 <td class="bg_principal bold text_right" colspan="3">TOTAL MONTO CERTIFICADO</td>
-                <td class="centreado bg_principal bold">{{ number_format($certificacion->presupuesto_usarse, 2) }}</td>
-                <td class="centreado bg_principal bold">{{ $saldo }}</td>
+                <td class="centreado bg_principal bold">{{ number_format($total_ejecutarse, 2) }}</td>
+                <td class="centreado bg_principal bold">{{ number_format($total_saldo, 2) }}</td>
             </tr>
         </tbody>
     </table>
@@ -470,11 +490,7 @@
                         '|' .
                         date('d/m/Y', strtotime($certificacion->final)) .
                         '|' .
-                        $certificacion->memoria_operacion->operacion->codigo_operacion .
-                        '|' .
-                        number_format($certificacion->memoria_operacion->presupuesto, 2) .
-                        '|' .
-                        number_format($certificacion->presupuesto_usarse, 2),
+                        number_format($total_ejecutarse, 2),
                 ),
         ) !!}">
     </div>

@@ -11,9 +11,9 @@
 
         @page {
             margin-top: 1.5cm;
-            margin-bottom: 0.5cm;
-            margin-left: 0.5cm;
-            margin-right: 0.5cm;
+            margin-bottom: 0.7cm;
+            margin-left: 0.7cm;
+            margin-right: 0.7cm;
             border: 5px solid blue;
         }
 
@@ -40,6 +40,14 @@
             height: 90px;
             top: -20px;
             left: -20px;
+        }
+
+        .logo2 img {
+            position: absolute;
+            width: 200px;
+            height: 90px;
+            top: -20px;
+            right: -20px;
         }
 
         h2.titulo {
@@ -212,6 +220,9 @@
     @foreach ($formularios as $formulario)
         <div class="encabezado">
             <div class="logo">
+                <img src="{{ asset('imgs/' . $configuracion->first()->logo2) }}">
+            </div>
+            <div class="logo2">
                 <img src="{{ asset('imgs/' . $configuracion->first()->logo) }}">
             </div>
             <h2 class="titulo">
