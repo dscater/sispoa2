@@ -20,7 +20,7 @@ class CertificacionDetalle extends Model
         "presupuesto_usarse",
         "saldo_total",
     ];
-
+    
     public function memoria_operacion()
     {
         return $this->belongsTo(MemoriaOperacion::class, 'mo_id');

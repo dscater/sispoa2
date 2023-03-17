@@ -371,15 +371,13 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($certificacion->certificacion_detalles as $cd)
-                <tr>
-                    <td class="bold">{!! str_replace('|', '<br>', $cd->memoria_operacion->memoria->formulario->codigo_poa_full) !!}</td>
-                    <td class="centreado">{!! str_replace('|', '<br>', $cd->memoria_operacion->memoria->formulario->accion_corto_full) !!}</td>
-                    <td class="bold">{{ $cd->memoria_operacion->operacion->codigo_operacion }}</td>
-                    <td>{{ $cd->memoria_operacion->operacion->operacion }}</td>
-                    <td class="bold">{{ $cd->memoria_operacion->codigo_actividad }}</td>
-                </tr>
-            @endforeach
+            <tr>
+                <td class="bold">{!! str_replace('|', '<br>', $certificacion->memoria_operacion->memoria->formulario->codigo_poa_full) !!}</td>
+                <td class="centreado">{!! str_replace('|', '<br>', $certificacion->memoria_operacion->memoria->formulario->accion_corto_full) !!}</td>
+                <td class="bold">{{ $certificacion->memoria_operacion->operacion->codigo_operacion }}</td>
+                <td>{{ $certificacion->memoria_operacion->operacion->operacion }}</td>
+                <td class="bold">{{ $certificacion->memoria_operacion->codigo_actividad }}</td>
+            </tr>
         </tbody>
     </table>
 

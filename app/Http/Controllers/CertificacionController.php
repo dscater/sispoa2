@@ -35,13 +35,13 @@ class CertificacionController extends Controller
     {
         $certificacions = [];
         if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "ENLACE") {
-            $certificacions = Certificacion::with("certificacion_detalles.memoria_operacion","certificacion_detalles.memoria_operacion_detalle")->with("o_personal_designado")->select("certificacions.*")
+            $certificacions = Certificacion::with("certificacion_detalles.memoria_operacion", "certificacion_detalles.memoria_operacion_detalle")->with("o_personal_designado")->select("certificacions.*")
                 ->join("formulario_cuatro", "formulario_cuatro.id", "=", "certificacions.formulario_id")
                 ->where("formulario_cuatro.unidad_id", Auth::user()->unidad_id)
                 ->orderBy("created_at", "desc")
                 ->get();
         } else {
-            $certificacions = Certificacion::with("certificacion_detalles.memoria_operacion","certificacion_detalles.memoria_operacion_detalle")->with("o_personal_designado")
+            $certificacions = Certificacion::with("certificacion_detalles.memoria_operacion", "certificacion_detalles.memoria_operacion_detalle")->with("o_personal_designado")
                 ->orderBy("created_at", "desc")->get();
         }
         return response()->JSON(["certificacions" => $certificacions, "total" => count($certificacions)]);
@@ -62,15 +62,14 @@ class CertificacionController extends Controller
             $memoria_operacion_detalle = MemoriaOperacionDetalle::find($request->mod_id);
             // $presupuesto_usarse = (float)$request->cantidad_usar * (float)$memoria_operacion_detalle->costo;
             // $request["presupuesto_usarse"] = $presupuesto_usarse;
-            $certificacion = Certificacion::create(array_map("mb_strtoupper", $request->except("archivo", "mo_id", "mod_id", "cantidad_usar", "presupuesto_usarse", "ids")));
+            $certificacion = Certificacion::create(array_map("mb_strtoupper", $request->except("archivo", "mod_id", "cantidad_usar", "presupuesto_usarse", "ids")));
 
-            $mo_id = $request->mo_id;
             $mod_id = $request->mod_id;
             $cantidad_usar = $request->cantidad_usar;
             $presupuesto_usarse = $request->presupuesto_usarse;
-            for ($i = 0; $i < count($mo_id); $i++) {
+            for ($i = 0; $i < count($mod_id); $i++) {
                 $certificacion_detalle = $certificacion->certificacion_detalles()->create([
-                    "mo_id" => $mo_id[$i],
+                    "mo_id" => $certificacion->mo_id,
                     "mod_id" => $mod_id[$i],
                     "total_cantidad" => 0,
                     "cantidad_usar" => $cantidad_usar[$i],
@@ -132,8 +131,8 @@ class CertificacionController extends Controller
         $request->validate($this->validacion);
         DB::beginTransaction();
         try {
-            $certificacion->update(array_map("mb_strtoupper", $request->except("archivo", "mo_id", "mod_id", "cantidad_usar", "presupuesto_usarse", "eliminados", "ids")));
-            if($request->eliminados){
+            $certificacion->update(array_map("mb_strtoupper", $request->except("archivo", "mod_id", "cantidad_usar", "presupuesto_usarse", "eliminados", "ids")));
+            if ($request->eliminados) {
                 $eliminados = $request->eliminados;
                 for ($i = 0; $i < count($eliminados); $i++) {
                     $certificacion_detalle = CertificacionDetalle::find($eliminados[$i]);
@@ -144,18 +143,17 @@ class CertificacionController extends Controller
                 }
             }
             $ids = $request->ids;
-            $mo_id = $request->mo_id;
             $mod_id = $request->mod_id;
             $cantidad_usar = $request->cantidad_usar;
             $presupuesto_usarse = $request->presupuesto_usarse;
             for ($i = 0; $i < count($ids); $i++) {
-                    if ($ids[$i] != 0) {
+                if ($ids[$i] != 0) {
                     // update
                     $certificacion_detalle = CertificacionDetalle::find($ids[$i]);
                     $valor_mo_id = $certificacion_detalle->memoria_operacion_detalle->memoria_operacion_id;
                     $valor_mod_id = $certificacion_detalle->memoria_operacion_detalle->id;
                     $certificacion_detalle->update([
-                        "mo_id" => $mo_id[$i],
+                        "mo_id" => $certificacion->mo_id,
                         "mod_id" => $mod_id[$i],
                         "total_cantidad" => 0,
                         "cantidad_usar" => $cantidad_usar[$i],
@@ -164,11 +162,12 @@ class CertificacionController extends Controller
                         "presupuesto_usarse" => $presupuesto_usarse[$i],
                         "saldo_total" => 0,
                     ]);
+                    // FacadesLog::debug("0: " . $certificacion_detalle->saldo_cantidad);
                     CertificacionController::recalculaSaldosOperacion($valor_mo_id, $valor_mod_id);
                 } else {
                     // create
                     $certificacion_detalle = $certificacion->certificacion_detalles()->create([
-                        "mo_id" => $mo_id[$i],
+                        "mo_id" => $certificacion->mo_id,
                         "mod_id" => $mod_id[$i],
                         "total_cantidad" => 0,
                         "cantidad_usar" => $cantidad_usar[$i],
@@ -296,10 +295,11 @@ class CertificacionController extends Controller
 
     public static function calculaSaldo($certificacion_detalle)
     {
+        // FacadesLog::debug("1: " . $certificacion_detalle->saldo_cantidad);
         $ultimo = CertificacionDetalle::select("certificacion_detalles.*")
             ->join("certificacions", "certificacions.id", "=", "certificacion_detalles.certificacion_id")
             ->where("mod_id", $certificacion_detalle->mod_id)
-            ->where("mo_id", $certificacion_detalle->mo_id)
+            ->where("certificacion_detalles.mo_id", $certificacion_detalle->mo_id)
             ->where("certificacion_detalles.id", "<", $certificacion_detalle->id)
             ->where("anulado", 0)
             ->orderBy("certificacion_detalles.created_at", "desc")->get()->last();
@@ -308,13 +308,17 @@ class CertificacionController extends Controller
             $certificacion_detalle->saldo_cantidad = (float)$ultimo->saldo_cantidad - (float)$certificacion_detalle->cantidad_usar;
             $certificacion_detalle->total = $certificacion_detalle->memoria_operacion_detalle->total;
             $certificacion_detalle->saldo_total = (float)$ultimo->saldo_total - (float)$certificacion_detalle->presupuesto_usarse;
+            // FacadesLog::debug("AAAA");
         } else {
             $certificacion_detalle->total_cantidad = $certificacion_detalle->memoria_operacion_detalle->cantidad;
             $certificacion_detalle->saldo_cantidad = (float)$certificacion_detalle->memoria_operacion_detalle->cantidad - (float)$certificacion_detalle->cantidad_usar;
             $certificacion_detalle->total = $certificacion_detalle->memoria_operacion_detalle->total;
             $certificacion_detalle->saldo_total = (float)$certificacion_detalle->memoria_operacion_detalle->total - (float)$certificacion_detalle->presupuesto_usarse;
+            // FacadesLog::debug("BBBB");
         }
         $certificacion_detalle->save();
+        // FacadesLog::debug("2: " . $certificacion_detalle->saldo_cantidad);
+        // FacadesLog::debug("------------------------------------------");
         return true;
     }
 
@@ -337,7 +341,7 @@ class CertificacionController extends Controller
     {
         $certificacion_detalles = CertificacionDetalle::select("certificacion_detalles.*")
             ->join("certificacions", "certificacions.id", "=", "certificacion_detalles.certificacion_id")
-            ->where('mo_id', $mo_id)
+            ->where('certificacion_detalles.mo_id', $mo_id)
             ->where('mod_id', $mod_id)
             ->where("anulado", 0)
             ->get();

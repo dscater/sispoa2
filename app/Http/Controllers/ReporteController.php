@@ -349,13 +349,13 @@ class ReporteController extends Controller
                         $sheet->setCellValue('F' . $fila, number_format($mod->total, 2) . " ");
                         $cantidad_usado = CertificacionDetalle::select("certificacion_detalles.*")
                             ->join("certificacions", "certificacions.id", "=", "certificacion_detalles.certificacion_id")
-                            ->where('mo_id', $operacion->id)
+                            ->where('certificacions.mo_id', $operacion->id)
                             ->where("anulado", 0)
                             ->where("mod_id", $mod->id)
                             ->sum('cantidad_usar');
                         $total_usado = CertificacionDetalle::select("certificacion_detalles.*")
                             ->join("certificacions", "certificacions.id", "=", "certificacion_detalles.certificacion_id")
-                            ->where('mo_id', $operacion->id)
+                            ->where('certificacions.mo_id', $operacion->id)
                             ->where("anulado", 0)
                             ->where("mod_id", $mod->id)
                             ->sum('presupuesto_usarse');
@@ -829,7 +829,7 @@ class ReporteController extends Controller
                             foreach ($operacion->memoria_operacion_detalles as $mod) {
                                 $total_usado = CertificacionDetalle::select("certificacion_detalles.*")
                                     ->join("certificacions", "certificacions.id", "=", "certificacion_detalles.certificacion_id")
-                                    ->where("mo_id", $operacion->id)
+                                    ->where("certificacions.mo_id", $operacion->id)
                                     ->where("anulado", 0)
                                     ->where("mod_id", $mod->id)
                                     ->sum("presupuesto_usarse");

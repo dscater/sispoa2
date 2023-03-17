@@ -96,6 +96,49 @@
                     v-if="nro_paso == 2"
                     class="form-group col-md-6 ml-auto mr-auto border border-1 p-3"
                 >
+                    <label
+                        :class="{
+                            'text-danger': errors.mo_id,
+                        }"
+                        >Seleccionar código de operación*</label
+                    >
+                    <el-select
+                        filterable
+                        class="w-100 d-block"
+                        :class="{
+                            'is-invalid': errors.mo_id,
+                        }"
+                        v-model="oCertificacion.mo_id"
+                        clearable
+                        @change="
+                            getDetalles();
+                            oCertificacion.certificacion_detalles.map(
+                                (elem) => {
+                                    elem.mod_id = '';
+                                }
+                            );
+                            listDetalles = [];
+                        "
+                    >
+                        <el-option
+                            v-for="item in listOperaciones"
+                            :key="item.id"
+                            :value="item.id"
+                            :label="
+                                item.codigo_operacion +
+                                ' | ' +
+                                item.codigo_actividad +
+                                ': ' +
+                                item.descripcion_actividad
+                            "
+                        >
+                        </el-option>
+                    </el-select>
+                    <span
+                        class="error invalid-feedback"
+                        v-if="errors.mo_id"
+                        v-text="errors.mo_id[0]"
+                    ></span>
                     <template
                         v-for="(
                             certificacion_detalle, index
@@ -103,53 +146,17 @@
                     >
                         <label
                             :class="{
-                                'text-danger': errors.mo_id,
-                            }"
-                            >Seleccionar código de operación*</label
-                        >
-                        <el-select
-                            filterable
-                            class="w-100 d-block"
-                            :class="{
-                                'is-invalid': errors.mo_id,
-                            }"
-                            v-model="certificacion_detalle.mo_id"
-                            clearable
-                            @change="
-                                getDetalles(
-                                    index,
-                                    certificacion_detalle.mod_id,
-                                    certificacion_detalle.id
-                                );
-                                certificacion_detalle.mod_id = '';
-                                certificacion_detalle.listDetalles = [];
-                            "
-                        >
-                            <el-option
-                                v-for="item in listOperaciones"
-                                :key="item.id"
-                                :value="item.id"
-                                :label="
-                                    item.codigo_operacion +
-                                    ' | ' +
-                                    item.codigo_actividad +
-                                    ': ' +
-                                    item.descripcion_actividad
-                                "
-                            >
-                            </el-option>
-                        </el-select>
-                        <span
-                            class="error invalid-feedback"
-                            v-if="errors.mo_id"
-                            v-text="errors.mo_id[0]"
-                        ></span>
-
-                        <label
-                            :class="{
                                 'text-danger': errors.mod_id,
                             }"
-                            >Seleccionar detalle*</label
+                            >Seleccionar detalle {{index + 1}}*
+                            <button
+                                type="button"
+                                v-if="index > 0"
+                                class="btn btn-danger btn-xs btn-flat"
+                                @click="quitarDetalle(index)"
+                            >
+                                <i class="fa fa-times"></i>
+                            </button></label
                         >
                         <el-select
                             filterable
@@ -160,10 +167,7 @@
                             v-model="certificacion_detalle.mod_id"
                             clearable
                             @change="
-                                getDetalleOperacion(
-                                    index,
-                                    certificacion_detalle.id
-                                );
+                                getDetalleOperacion(index);
                                 if (accion != 'edit') {
                                     certificacion_detalle.cantidad_usar =
                                         certificacion_detalle.oMOperacion.saldo_cantidad;
@@ -171,7 +175,7 @@
                             "
                         >
                             <el-option
-                                v-for="item in certificacion_detalle.listDetalles"
+                                v-for="item in listDetalles"
                                 :key="item.id"
                                 :value="item.id"
                                 :label="item.partida + ' - ' + item.descripcion"
@@ -183,19 +187,9 @@
                             v-if="errors.mod_id"
                             v-text="errors.mod_id[0]"
                         ></span>
-                        <div class="row col-md-12 mt-1">
-                            <button
-                                type="button"
-                                v-if="index > 0"
-                                class="btn btn-danger"
-                                @click="quitarDetalle(index)"
-                            >
-                                Quitar
-                            </button>
-                        </div>
                         <div
                             class="row mt-1"
-                            v-if="certificacion_detalle.mo_id != ''"
+                            v-if="oCertificacion.mo_id != ''"
                         >
                             <div class="col-md-12">
                                 <div class="card">
@@ -821,13 +815,11 @@ export default {
                 });
         },
         // textos codigos
-        getDetalleOperacion(index, id) {
+        getDetalleOperacion(index) {
             let id_mod =
                 this.oCertificacion.certificacion_detalles[index].mod_id;
             if (id_mod && id_mod != 0) {
-                let operacion = this.oCertificacion.certificacion_detalles[
-                    index
-                ].listDetalles.filter((item) => item.id == id_mod)[0];
+                let operacion = this.listDetalles.filter((item) => item.id == id_mod)[0];
                 this.oCertificacion.certificacion_detalles[index].oMOperacion =
                     operacion;
                 let valor_saldo_cantidad =
@@ -835,9 +827,9 @@ export default {
                         .oMOperacion.saldo_cantidad;
 
                 if (this.accion == "edit") {
-                    this.oCertificacion.certificacion_detalles[
-                        index
-                    ].cantidad_usar = valor_saldo_cantidad;
+                    // this.oCertificacion.certificacion_detalles[
+                    //     index
+                    // ].cantidad_usar = valor_saldo_cantidad;
                 } else {
                     // create
                     this.oCertificacion.certificacion_detalles[
@@ -870,20 +862,22 @@ export default {
                             },
                         })
                         .then((response) => {
-                            this.oCertificacion.certificacion_detalles[
-                                index
-                            ].listDetalles = response.data;
-                            if (elem.mod_id != "" && elem.mo_id != "") {
-                                this.getDetalleOperacion(index, elem.id);
-                            }
+                            this.listDetalles = response.data;
+                            this.oCertificacion.certificacion_detalles.forEach(
+                                (elem, index) => {
+                                    if (elem.mod_id != "" && elem.mo_id != "") {
+                                        this.getDetalleOperacion(index);
+                                    }
+                                }
+                            );
                         });
                 });
             } else {
                 this.agregarDetalle();
             }
         },
-        getDetalles(index, mod_id, id) {
-            let id_mo = this.oCertificacion.certificacion_detalles[index].mo_id;
+        getDetalles() {
+            let id_mo = this.oCertificacion.mo_id;
             axios
                 .get("/admin/memoria_operacion_detalles/getDetalles", {
                     params: {
@@ -891,12 +885,14 @@ export default {
                     },
                 })
                 .then((response) => {
-                    this.oCertificacion.certificacion_detalles[
-                        index
-                    ].listDetalles = response.data;
-                    if (mod_id && mod_id != 0) {
-                        this.getDetalleOperacion(index, id);
-                    }
+                    this.listDetalles = response.data;
+                    this.oCertificacion.certificacion_detalles.forEach(
+                        (elem, index) => {
+                            if (elem.mod_id && elem.mod_id != 0) {
+                                this.getDetalleOperacion(index);
+                            }
+                        }
+                    );
                 });
         },
 
@@ -1024,7 +1020,6 @@ export default {
                 // array_valores
                 this.oCertificacion.certificacion_detalles.forEach((elem) => {
                     formdata.append("ids[]", elem.id);
-                    formdata.append("mo_id[]", elem.mo_id);
                     formdata.append("mod_id[]", elem.mod_id);
                     formdata.append("cantidad_usar[]", elem.cantidad_usar);
                     formdata.append(
@@ -1045,6 +1040,10 @@ export default {
                     this.oCertificacion.correlativo
                         ? this.oCertificacion.correlativo
                         : ""
+                );
+                formdata.append(
+                    "mo_id",
+                    this.oCertificacion.mo_id ? this.oCertificacion.mo_id : ""
                 );
                 formdata.append(
                     "solicitante_id",

@@ -271,13 +271,13 @@
                                 @php
                                     $cantidad_usado = $o_certificacion_detalles
                                         ->join('certificacions', 'certificacions.id', '=', 'certificacion_detalles.certificacion_id')
-                                        ->where('mo_id', $operacion->id)
+                                        ->where('certificacion_detalles.mo_id', $operacion->id)
                                         ->where('mod_id', $mod->id)
                                         ->where('anulado', 0)
                                         ->sum('cantidad_usar');
                                     $total_usado = $o_certificacion_detalles
                                         ->join('certificacions', 'certificacions.id', '=', 'certificacion_detalles.certificacion_id')
-                                        ->where('mo_id', $operacion->id)
+                                        ->where('certificacion_detalles.mo_id', $operacion->id)
                                         ->where('mod_id', $mod->id)
                                         ->where('anulado', 0)
                                         ->sum('presupuesto_usarse');

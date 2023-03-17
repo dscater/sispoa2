@@ -173,7 +173,7 @@
         $contador = 0;
     @endphp
     @inject('configuracion', 'App\Models\Configuracion')
-    @inject('o_certificacion', 'App\Models\Certificacion')
+    @inject('o_certificacion_detalles', 'App\Models\CertificacionDetalle')
     @foreach ($formularios as $formulario)
         <img class="logo" src="{{ asset('imgs/' . $configuracion->first()->logo) }}" alt="Logo">
         <div class="titulo">SALDO PRESUPUESTARIO<br />GESTIÓN {{ date('Y') }}</div>
@@ -231,12 +231,14 @@
                             <td class="centreado">{{ $operacion->costo }}</td>
                             <td class="centreado">{{ $operacion->total }}</td>
                             @php
-                                $cantidad_usado = $o_certificacion
-                                    ->where('mo_id', $operacion->id)
+                                $cantidad_usado = $o_certificacion_detalles
+                                    ->join('certificacions', 'certificacions.id', '=', 'certificacion_detalles.certificacion_id')
+                                    ->where('certificacion_detalles.mo_id', $operacion->id)
                                     ->where('anulado', 0)
                                     ->sum('cantidad_usar');
-                                $total_usado = $o_certificacion
-                                    ->where('mo_id', $operacion->id)
+                                $total_usado = $o_certificacion_detalles
+                                    ->join('certificacions', 'certificacions.id', '=', 'certificacion_detalles.certificacion_id')
+                                    ->where('certificacion_detalles.mo_id', $operacion->id)
                                     ->where('anulado', 0)
                                     ->sum('presupuesto_usarse');
                                 $saldo = (float) $operacion->total - (float) $total_usado;

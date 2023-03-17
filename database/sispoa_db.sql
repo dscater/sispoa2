@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 16-03-2023 a las 16:08:33
+-- Tiempo de generación: 17-03-2023 a las 14:57:05
 -- Versión del servidor: 5.7.33
 -- Versión de PHP: 7.4.19
 
@@ -67,6 +67,7 @@ INSERT INTO `aprobacions` (`id`, `unidad_id`, `estado`, `created_at`, `updated_a
 CREATE TABLE `certificacions` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `formulario_id` bigint(20) UNSIGNED NOT NULL,
+  `mo_id` bigint(20) UNSIGNED NOT NULL,
   `archivo` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `correlativo` bigint(20) NOT NULL,
   `solicitante_id` bigint(20) UNSIGNED NOT NULL,
@@ -87,9 +88,10 @@ CREATE TABLE `certificacions` (
 -- Volcado de datos para la tabla `certificacions`
 --
 
-INSERT INTO `certificacions` (`id`, `formulario_id`, `archivo`, `correlativo`, `solicitante_id`, `superior_id`, `inicio`, `final`, `personal_designado`, `departamento`, `municipio`, `estado`, `anulado`, `fecha_registro`, `created_at`, `updated_at`) VALUES
-(5, 1, NULL, 5, 13, 12, '2023-03-13', '2023-03-31', 9, 'COCHABAMBA', 'CHAPARE', 'APROBADO', 0, '2023-03-13', '2023-03-13 21:59:39', '2023-03-16 14:22:34'),
-(6, 1, NULL, 6, 15, 16, '2023-01-01', '2023-12-12', 9, '', '', 'PENDIENTE', 0, '2023-03-16', '2023-03-16 13:56:12', '2023-03-16 14:26:06');
+INSERT INTO `certificacions` (`id`, `formulario_id`, `mo_id`, `archivo`, `correlativo`, `solicitante_id`, `superior_id`, `inicio`, `final`, `personal_designado`, `departamento`, `municipio`, `estado`, `anulado`, `fecha_registro`, `created_at`, `updated_at`) VALUES
+(5, 1, 1, NULL, 5, 13, 12, '2023-03-13', '2023-03-31', 9, 'COCHABAMBA', 'CHAPARE', 'APROBADO', 0, '2023-03-13', '2023-03-13 21:59:39', '2023-03-16 14:22:34'),
+(6, 1, 3, NULL, 6, 15, 16, '2023-01-01', '2023-12-12', 9, '', '', 'PENDIENTE', 0, '2023-03-16', '2023-03-16 13:56:12', '2023-03-16 14:26:06'),
+(9, 1, 2, NULL, 7, 16, 16, '2023-01-01', '2023-12-02', 3, '', '', 'PENDIENTE', 0, '2023-03-17', '2023-03-17 14:27:07', '2023-03-17 14:27:07');
 
 -- --------------------------------------------------------
 
@@ -120,7 +122,9 @@ INSERT INTO `certificacion_detalles` (`id`, `certificacion_id`, `mo_id`, `mod_id
 (13, 5, 1, 1, 2, 2, 0, '2484.00', '2484.00', '0.00', '2023-03-15 23:20:24', '2023-03-15 23:56:29'),
 (14, 5, 1, 2, 3, 3, 0, '1113.00', '1113.00', '0.00', '2023-03-15 23:20:24', '2023-03-15 23:56:29'),
 (15, 6, 3, 5, 4, 2, 2, '4882.00', '2441.00', '2441.00', '2023-03-16 13:56:12', '2023-03-16 13:56:12'),
-(16, 6, 3, 6, 7, 3, 4, '2597.00', '1113.00', '1484.00', '2023-03-16 13:56:12', '2023-03-16 13:56:12');
+(16, 6, 3, 6, 7, 3, 4, '2597.00', '1113.00', '1484.00', '2023-03-16 13:56:12', '2023-03-16 13:56:12'),
+(18, 9, 2, 3, 1, 1, 0, '772.00', '772.00', '0.00', '2023-03-17 14:27:07', '2023-03-17 14:52:50'),
+(19, 9, 2, 4, 2, 1.99, 0.01, '742.00', '738.29', '3.71', '2023-03-17 14:27:07', '2023-03-17 14:52:50');
 
 -- --------------------------------------------------------
 
@@ -510,7 +514,24 @@ INSERT INTO `logs` (`id`, `accion`, `modulo`, `detalle`, `user_id`, `fecha`, `ho
 (161, 'ACTIVACIÓN', 'CERTIFICACIÓN POA', 'EL USUARIO 1 REACTIVÓ UNA CERTIFICACIÓN POA', 1, '2023-03-16', '10:23:38'),
 (162, 'ANULACIÓN', 'CERTIFICACIÓN POA', 'EL USUARIO 1 ANULÓ UNA CERTIFICACIÓN POA', 1, '2023-03-16', '10:26:03'),
 (163, 'ACTIVACIÓN', 'CERTIFICACIÓN POA', 'EL USUARIO 1 REACTIVÓ UNA CERTIFICACIÓN POA', 1, '2023-03-16', '10:26:06'),
-(164, 'MODIFICACIÓN', 'CONFIGURACIÓN', 'EL USUARIO 1 MODIFICÓ LA CONFIGURACIÓN DEL SISTEMA', 1, '2023-03-16', '10:42:25');
+(164, 'MODIFICACIÓN', 'CONFIGURACIÓN', 'EL USUARIO 1 MODIFICÓ LA CONFIGURACIÓN DEL SISTEMA', 1, '2023-03-16', '10:42:25'),
+(165, 'CREACIÓN', 'CERTIFICACIÓN POA', 'EL USUARIO 1 REGISTRO UNA CERTIFICACIÓN POA', 1, '2023-03-17', '10:27:07'),
+(166, 'MODIFICACIÓN', 'CERTIFICACIÓN POA', 'EL USUARIO 1 MODIFICÓ UNA CERTIFICACIÓN POA', 1, '2023-03-17', '10:30:06'),
+(167, 'MODIFICACIÓN', 'CERTIFICACIÓN POA', 'EL USUARIO 1 MODIFICÓ UNA CERTIFICACIÓN POA', 1, '2023-03-17', '10:30:37'),
+(168, 'MODIFICACIÓN', 'CERTIFICACIÓN POA', 'EL USUARIO 1 MODIFICÓ UNA CERTIFICACIÓN POA', 1, '2023-03-17', '10:32:11'),
+(169, 'MODIFICACIÓN', 'CERTIFICACIÓN POA', 'EL USUARIO 1 MODIFICÓ UNA CERTIFICACIÓN POA', 1, '2023-03-17', '10:38:37'),
+(170, 'MODIFICACIÓN', 'CERTIFICACIÓN POA', 'EL USUARIO 1 MODIFICÓ UNA CERTIFICACIÓN POA', 1, '2023-03-17', '10:39:01'),
+(171, 'MODIFICACIÓN', 'CERTIFICACIÓN POA', 'EL USUARIO 1 MODIFICÓ UNA CERTIFICACIÓN POA', 1, '2023-03-17', '10:40:10'),
+(172, 'MODIFICACIÓN', 'CERTIFICACIÓN POA', 'EL USUARIO 1 MODIFICÓ UNA CERTIFICACIÓN POA', 1, '2023-03-17', '10:40:15'),
+(173, 'MODIFICACIÓN', 'CERTIFICACIÓN POA', 'EL USUARIO 1 MODIFICÓ UNA CERTIFICACIÓN POA', 1, '2023-03-17', '10:41:25'),
+(174, 'MODIFICACIÓN', 'CERTIFICACIÓN POA', 'EL USUARIO 1 MODIFICÓ UNA CERTIFICACIÓN POA', 1, '2023-03-17', '10:41:52'),
+(175, 'MODIFICACIÓN', 'CERTIFICACIÓN POA', 'EL USUARIO 1 MODIFICÓ UNA CERTIFICACIÓN POA', 1, '2023-03-17', '10:47:00'),
+(176, 'MODIFICACIÓN', 'CERTIFICACIÓN POA', 'EL USUARIO 1 MODIFICÓ UNA CERTIFICACIÓN POA', 1, '2023-03-17', '10:47:07'),
+(177, 'MODIFICACIÓN', 'CERTIFICACIÓN POA', 'EL USUARIO 1 MODIFICÓ UNA CERTIFICACIÓN POA', 1, '2023-03-17', '10:48:09'),
+(178, 'MODIFICACIÓN', 'CERTIFICACIÓN POA', 'EL USUARIO 1 MODIFICÓ UNA CERTIFICACIÓN POA', 1, '2023-03-17', '10:49:02'),
+(179, 'MODIFICACIÓN', 'CERTIFICACIÓN POA', 'EL USUARIO 1 MODIFICÓ UNA CERTIFICACIÓN POA', 1, '2023-03-17', '10:49:14'),
+(180, 'MODIFICACIÓN', 'CERTIFICACIÓN POA', 'EL USUARIO 1 MODIFICÓ UNA CERTIFICACIÓN POA', 1, '2023-03-17', '10:50:07'),
+(181, 'MODIFICACIÓN', 'CERTIFICACIÓN POA', 'EL USUARIO 1 MODIFICÓ UNA CERTIFICACIÓN POA', 1, '2023-03-17', '10:52:50');
 
 -- --------------------------------------------------------
 
@@ -1168,13 +1189,13 @@ ALTER TABLE `aprobacions`
 -- AUTO_INCREMENT de la tabla `certificacions`
 --
 ALTER TABLE `certificacions`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `certificacion_detalles`
 --
 ALTER TABLE `certificacion_detalles`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT de la tabla `configuracions`
@@ -1228,7 +1249,7 @@ ALTER TABLE `formulario_cuatro`
 -- AUTO_INCREMENT de la tabla `logs`
 --
 ALTER TABLE `logs`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=165;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=182;
 
 --
 -- AUTO_INCREMENT de la tabla `memoria_calculos`

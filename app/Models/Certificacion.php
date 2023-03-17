@@ -11,7 +11,7 @@ class Certificacion extends Model
 
     protected $fillable = [
         "formulario_id",
-        // "mo_id",
+        "mo_id",
         // "mod_id",
         // "total_cantidad",
         // "cantidad_usar",
@@ -28,6 +28,11 @@ class Certificacion extends Model
     ];
 
     protected $with = ["formulario"];
+
+    public function memoria_operacion()
+    {
+        return $this->belongsTo(MemoriaOperacion::class, 'mo_id');
+    }
 
     public function certificacion_detalles()
     {

@@ -26,7 +26,7 @@ class MemoriaOperacionDetalle extends Model
     {
         $total_usado = CertificacionDetalle::select("certificacion_detalles.*")
             ->join("certificacions","certificacions.id","=","certificacion_detalles.certificacion_id")
-            ->where('mo_id', $this->memoria_operacion_id)
+            ->where('certificacions.mo_id', $this->memoria_operacion_id)
             ->where('mod_id', $this->id)
             ->where("certificacions.anulado", 0)
             ->sum('certificacion_detalles.presupuesto_usarse');
@@ -42,7 +42,7 @@ class MemoriaOperacionDetalle extends Model
     {
         $total_usado = CertificacionDetalle::select("certificacion_detalles.*")
             ->join("certificacions","certificacions.id","=","certificacion_detalles.certificacion_id")
-            ->where('mo_id', $this->memoria_operacion_id)
+            ->where('certificacions.mo_id', $this->memoria_operacion_id)
             ->where('mod_id', $this->id)
             ->where("certificacions.anulado", 0)
             ->sum('certificacion_detalles.cantidad_usar');
