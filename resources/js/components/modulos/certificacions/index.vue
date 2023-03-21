@@ -137,6 +137,23 @@
                                                                 .partida
                                                         }}<br />
                                                     </div>
+                                                    <template
+                                                        v-if="
+                                                            row.item.url_archivo
+                                                        "
+                                                    >
+                                                        <strong
+                                                            >Archivo:
+                                                        </strong>
+                                                        <a
+                                                            :href="
+                                                                row.item
+                                                                    .url_archivo
+                                                            "
+                                                            target="_blank"
+                                                            >Descargar</a
+                                                        >
+                                                    </template>
                                                 </template>
 
                                                 <template

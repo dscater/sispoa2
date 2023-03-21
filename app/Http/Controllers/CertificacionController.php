@@ -350,4 +350,8 @@ class CertificacionController extends Controller
         }
         return true;
     }
+
+    public function archivo(Certificacion $certificacion){
+
+    }
 }

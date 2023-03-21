@@ -27,7 +27,18 @@ class Certificacion extends Model
         "estado", "fecha_registro", "anulado"
     ];
 
+    protected $appends = ["url_archivo"];
+
     protected $with = ["formulario"];
+
+    public function getUrlArchivoAttribute()
+    {
+        $url = null;
+        if ($this->archivo && $this->archivo != "" && $this->archivo != NULL) {
+            $url = asset("archivos/" . $this->archivo);
+        }
+        return $url;
+    }
 
     public function memoria_operacion()
     {

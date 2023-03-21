@@ -148,16 +148,15 @@
                             :class="{
                                 'text-danger': errors.mod_id,
                             }"
-                            >Seleccionar detalle {{index + 1}}*
+                            >Seleccionar detalle {{ index + 1 }}*
                             <button
                                 type="button"
                                 v-if="index > 0"
                                 class="btn btn-danger btn-xs btn-flat"
                                 @click="quitarDetalle(index)"
                             >
-                                <i class="fa fa-times"></i>
-                            </button></label
-                        >
+                                <i class="fa fa-times"></i></button
+                        ></label>
                         <el-select
                             filterable
                             class="w-100 d-block"
@@ -187,10 +186,7 @@
                             v-if="errors.mod_id"
                             v-text="errors.mod_id[0]"
                         ></span>
-                        <div
-                            class="row mt-1"
-                            v-if="oCertificacion.mo_id != ''"
-                        >
+                        <div class="row mt-1" v-if="oCertificacion.mo_id != ''">
                             <div class="col-md-12">
                                 <div class="card">
                                     <div class="card-body">
@@ -271,67 +267,82 @@
                 </div>
                 <div
                     v-if="nro_paso == 3"
-                    class="form-group col-md-3 ml-auto border border-1 border-right-0 p-3"
+                    class="form-group col-md-6 ml-auto mr-auto border border-1 border-right-0 p-3"
                 >
-                    <template
+                    <div
+                        class="row mt-2"
                         v-for="(
                             certificacion_detalle, index_cantidad
                         ) in oCertificacion.certificacion_detalles"
                     >
-                        <label
-                            :class="{
-                                'text-danger': errors.cantidad_usar,
-                            }"
-                            >Ingresar cantidad a utilizar*</label
-                        >
-                        <input
-                            type="number"
-                            class="form-control"
-                            :class="{
-                                'is-invalid': errors.cantidad_usar,
-                            }"
-                            step="0.01"
-                            v-model="certificacion_detalle.cantidad_usar"
-                            @change="validaCantidadUsar(index_cantidad)"
-                            @keyup="validaCantidadUsar(index_cantidad)"
-                        />
-                        <span
-                            class="error invalid-feedback"
-                            v-if="errors.cantidad_usar"
-                            v-text="errors.cantidad_usar[0]"
-                        ></span>
-                    </template>
-                </div>
-                <div
-                    v-if="nro_paso == 3"
-                    class="form-group col-md-3 mr-auto border border-1 border-left-0 p-3"
-                >
-                    <template
-                        v-for="(
-                            certificacion_detalle, index_monto
-                        ) in oCertificacion.certificacion_detalles"
-                    >
-                        <label
-                            :class="{
-                                'text-danger': errors.presupuesto_usarse,
-                            }"
-                            >Monto a utilizar*</label
-                        >
-                        <input
-                            type="number"
-                            class="form-control"
-                            :class="{
-                                'is-invalid': errors.presupuesto_usarse,
-                            }"
-                            step="0.01"
-                            v-model="certificacion_detalle.presupuesto_usarse"
-                        />
-                        <span
-                            class="error invalid-feedback"
-                            v-if="errors.presupuesto_usarse"
-                            v-text="errors.presupuesto_usarse[0]"
-                        ></span>
-                    </template>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label class="mb-0">{{
+                                        certificacion_detalle.oMOperacion
+                                            .descripcion
+                                    }}</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <!-- CANTIDAD -->
+                                    <label
+                                        :class="{
+                                            'text-danger': errors.cantidad_usar,
+                                        }"
+                                        >Ingresar cantidad a utilizar*</label
+                                    >
+                                    <input
+                                        type="number"
+                                        class="form-control"
+                                        :class="{
+                                            'is-invalid': errors.cantidad_usar,
+                                        }"
+                                        step="0.01"
+                                        v-model="
+                                            certificacion_detalle.cantidad_usar
+                                        "
+                                        @change="
+                                            validaCantidadUsar(index_cantidad)
+                                        "
+                                        @keyup="
+                                            validaCantidadUsar(index_cantidad)
+                                        "
+                                    />
+                                    <span
+                                        class="error invalid-feedback"
+                                        v-if="errors.cantidad_usar"
+                                        v-text="errors.cantidad_usar[0]"
+                                    ></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label
+                                        :class="{
+                                            'text-danger':
+                                                errors.presupuesto_usarse,
+                                        }"
+                                        >Monto a utilizar*</label
+                                    >
+                                    <input
+                                        type="number"
+                                        class="form-control"
+                                        :class="{
+                                            'is-invalid':
+                                                errors.presupuesto_usarse,
+                                        }"
+                                        step="0.01"
+                                        v-model="
+                                            certificacion_detalle.presupuesto_usarse
+                                        "
+                                    />
+                                    <span
+                                        class="error invalid-feedback"
+                                        v-if="errors.presupuesto_usarse"
+                                        v-text="errors.presupuesto_usarse[0]"
+                                    ></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div
                     v-if="nro_paso == 4"
@@ -819,7 +830,9 @@ export default {
             let id_mod =
                 this.oCertificacion.certificacion_detalles[index].mod_id;
             if (id_mod && id_mod != 0) {
-                let operacion = this.listDetalles.filter((item) => item.id == id_mod)[0];
+                let operacion = this.listDetalles.filter(
+                    (item) => item.id == id_mod
+                )[0];
                 this.oCertificacion.certificacion_detalles[index].oMOperacion =
                     operacion;
                 let valor_saldo_cantidad =
@@ -985,7 +998,7 @@ export default {
                     this.listPasos[1].error = true;
                     return false;
                 }
-                if (this.validaSaldos()) {
+                if (this.validaDetalleOperacion()) {
                     Swal.fire({
                         icon: "error",
                         title: "ERROR",
@@ -995,6 +1008,18 @@ export default {
                         confirmButtonColor: "#0069d9",
                     });
                     this.listPasos[1].error = true;
+                    return false;
+                }
+                if (this.validaPartida()) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "ERROR",
+                        html: `Debes seleccionar un archivo para la partida 22210`,
+                        showConfirmButton: true,
+                        confirmButtonText: "Aceptar",
+                        confirmButtonColor: "#0069d9",
+                    });
+                    this.listPasos[3].error = true;
                     return false;
                 }
             }
@@ -1161,6 +1186,22 @@ export default {
             this.oCertificacion.certificacion_detalles.forEach((elem) => {
                 if (elem.oMOperacion == null) {
                     sw = true;
+                }
+            });
+
+            return sw;
+        },
+        validaPartida() {
+            let sw = false;
+            this.oCertificacion.certificacion_detalles.forEach((elem) => {
+                if (elem.oMOperacion.partida == "22210") {
+                    if (
+                        !this.oCertificacion.archivo ||
+                        this.oCertificacion.archivo == null ||
+                        this.oCertificacion.archivo == ""
+                    ) {
+                        sw = true;
+                    }
                 }
             });
 

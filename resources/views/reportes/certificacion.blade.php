@@ -336,25 +336,23 @@
                     {{ date('d/m/Y', strtotime($certificacion->final)) }}</td>
                 </td>
             </tr>
-            @foreach ($certificacion->certificacion_detalles as $cd)
-                <tr>
-                    <td class="centreado border_left border_bottom">{{ $cd->memoria_operacion_detalle->ue }}
-                    </td>
-                    <td class="centreado border_left border_bottom">{{ $cd->memoria_operacion_detalle->prog }}
-                    </td>
-                    <td class="centreado border_left border_bottom">00</td>
-                    <td class="centreado border_left border_bottom">{{ $cd->memoria_operacion_detalle->act }}
-                    </td>
-                    <td class="centreado border_left border_bottom">42</td>
-                    <td class="centreado border_left border_bottom border_right">230</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-            @endforeach
+            <tr>
+                <td class="centreado border_left border_bottom">{{ $certificacion->certificacion_detalles[0]->memoria_operacion_detalle->ue }}
+                </td>
+                <td class="centreado border_left border_bottom">{{ $certificacion->certificacion_detalles[0]->memoria_operacion_detalle->prog }}
+                </td>
+                <td class="centreado border_left border_bottom">00</td>
+                <td class="centreado border_left border_bottom">{{ $certificacion->certificacion_detalles[0]->memoria_operacion_detalle->act }}
+                </td>
+                <td class="centreado border_left border_bottom">42</td>
+                <td class="centreado border_left border_bottom border_right">230</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
         </tbody>
     </table>
 
