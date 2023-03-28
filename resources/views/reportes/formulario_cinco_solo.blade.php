@@ -188,7 +188,7 @@
         }
 
         table.tabla_detalle tbody tr td {
-            font-size: 0.5em;
+            font-size: 0.65em;
         }
 
         .cabecera th {
@@ -200,12 +200,34 @@
             border: solid 1px;
             word-wrap: break-word;
         }
+
+        .fondo_rojo {
+            background: #bd1526;
+            color: white;
+        }
+
+        .border_top {
+            border-top: solid 0.2px black;
+        }
+
+        .border_bottom {
+            border-bottom: solid 0.2px black;
+        }
+
+        .border_right {
+            border-right: solid 0.2px black;
+        }
+
+        .border_left {
+            border-left: solid 0.2px black;
+        }
     </style>
 </head>
 
 <body>
     @inject('configuracion', 'App\Models\Configuracion')
     @inject('o_certificacion', 'App\Models\Certificacion')
+    @inject('o_verificacion_actividad', 'App\Models\VerificacionActividad')
     @inject('o_formulario_cinco_controller', 'App\Http\Controllers\FormularioCincoController')
     <div class="encabezado">
         <div class="logo">
@@ -270,7 +292,8 @@
         if ($formulario->memoria_calculo) {
             $formulario_cinco = $formulario->memoria_calculo->formulario_cinco;
             $array_registros = $o_formulario_cinco_controller::armaRepetidos($formulario_cinco);
-            $tabla = view('parcial.formulario_cinco2', compact('array_registros', 'formulario_cinco'))->render();
+            $verificacion_actividad = $o_verificacion_actividad::get()->first();
+            $tabla = view('parcial.formulario_cinco2', compact('array_registros', 'formulario_cinco', 'verificacion_actividad'))->render();
         }
     @endphp
     {!! $tabla !!}
