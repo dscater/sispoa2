@@ -251,7 +251,7 @@ class ReporteController extends Controller
             $sheet->setCellValue('B' . $fila, str_replace(",", "\n", $formulario_cuatro->codigo_pei));
             $enters = substr_count($formulario_cuatro->codigo_pei, ",");
             $alto_fila = 25;
-            if($enters > 1){
+            if ($enters > 1) {
                 $alto_fila = $enters * 25;
             }
             $sheet->getRowDimension($fila)->setRowHeight($alto_fila);
@@ -275,7 +275,7 @@ class ReporteController extends Controller
             $sheet->setCellValue('B' . $fila, str_replace(",", "\n", $formulario_cuatro->codigo_poa));
             $enters = substr_count($formulario_cuatro->codigo_poa, ",");
             $alto_fila = 25;
-            if($enters > 1){
+            if ($enters > 1) {
                 $alto_fila = $enters * 25;
             }
             $sheet->getRowDimension($fila)->setRowHeight($alto_fila);
@@ -1051,7 +1051,7 @@ class ReporteController extends Controller
         $sheet->setCellValue('D' . $fila, str_replace(",", "\n", $formulario_cuatro->codigo_pei));
         $enters = substr_count($formulario_cuatro->codigo_pei, ",");
         $alto_fila = 25;
-        if($enters > 1){
+        if ($enters > 1) {
             $alto_fila = $enters * 25;
         }
         $sheet->getRowDimension($fila)->setRowHeight($alto_fila);
@@ -1078,7 +1078,7 @@ class ReporteController extends Controller
         $sheet->setCellValue('D' . $fila, str_replace(",", "\n", $formulario_cuatro->codigo_poa));
         $enters = substr_count($formulario_cuatro->codigo_poa, ",");
         $alto_fila = 25;
-        if($enters > 1){
+        if ($enters > 1) {
             $alto_fila = $enters * 25;
         }
         $sheet->getRowDimension($fila)->setRowHeight($alto_fila);
@@ -1777,7 +1777,7 @@ class ReporteController extends Controller
                 }
             }
         }
-        $sheet->setCellValue('A' . $fila, 'TOTAL PRESUPUESTO DE LA UNIDAD DE PLANIFICACIÓN');
+        $sheet->setCellValue('A' . $fila, 'TOTAL PRESUPUESTO DE LA/EL ' . $formulario_cinco->memoria->formulario->unidad->nombre);
         $sheet->mergeCells("A" . $fila . ":P" . $fila);  //COMBINAR CELDAS
         $sheet->setCellValue('Q' . $fila, number_format($formulario_cinco->memoria->total_final, 2));
         $sheet->getStyle('A' . $fila . ':Q' . $fila)->applyFromArray($estilo_total);

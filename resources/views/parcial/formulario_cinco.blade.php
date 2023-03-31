@@ -151,7 +151,8 @@
             @endforeach
         @endforeach
         <tr class="bg-primary">
-            <th colspan="16">TOTAL PRESUPUESTO DE LA UNIDAD DE PLANIFICACIÓN</th>
+            <th colspan="16">TOTAL PRESUPUESTO DE LA/EL {{ $formulario_cinco->memoria->formulario->unidad->nombre }}
+            </th>
             <th class="text-center">{{ number_format($formulario_cinco->memoria->total_final, 2) }}</th>
         </tr>
     </tbody>
