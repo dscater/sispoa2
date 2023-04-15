@@ -62,7 +62,7 @@ class Certificacion extends Model
 
     public function solicitante()
     {
-        return $this->belongsTo(User::class, 'solicitante_id');
+        return $this->belongsTo(Personal::class, 'solicitante_id');
     }
 
     public function superior()

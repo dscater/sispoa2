@@ -25,7 +25,7 @@ class FormularioCuatro extends Model
     protected $appends = [
         "estado_aprobado", "sw_aprobado",
         "codigo_pei1", "objetivo_estrategico1", "codigo_pei2", "objetivo_estrategico2", "codigo_pei3", "objetivo_estrategico3",
-        "codigo_poa1", "accion_corto1", "codigo_poa2", "accion_corto2", "codigo_poa3", "accion_corto3", "codigo_poa_full","accion_corto_full"
+        "codigo_poa1", "accion_corto1", "codigo_poa2", "accion_corto2", "codigo_poa3", "accion_corto3", "codigo_poa_full", "accion_corto_full"
     ];
 
     // PEI's
@@ -42,7 +42,7 @@ class FormularioCuatro extends Model
     {
         try {
             $array = explode(" | ", $this->codigo_pei);
-            return isset(explode("-", $array[0])[1]) ? explode("-", $array[0])[1] : "";
+            return isset(explode("-", $array[0])[1]) ? explode("-", $array[0], 2)[1] : "";
         } catch (\Exception $e) {
             return "";
         }
@@ -61,7 +61,7 @@ class FormularioCuatro extends Model
     {
         try {
             $array = explode(" | ", $this->codigo_pei);
-            return isset(explode("-", $array[1])[1]) ? explode("-", $array[1])[1] : "";
+            return isset(explode("-", $array[1])[1]) ? explode("-", $array[1], 2)[1] : "";
         } catch (\Exception $e) {
             return "";
         }
@@ -80,7 +80,7 @@ class FormularioCuatro extends Model
     {
         try {
             $array = explode(" | ", $this->codigo_pei);
-            return isset(explode("-", $array[2])[1]) ? explode("-", $array[2])[1] : "";
+            return isset(explode("-", $array[2])[1]) ? explode("-", $array[2], 2)[1] : "";
         } catch (\Exception $e) {
             return "";
         }
@@ -100,7 +100,7 @@ class FormularioCuatro extends Model
     {
         try {
             $array = explode(" | ", $this->codigo_poa);
-            return isset(explode("-", $array[0])[1]) ? explode("-", $array[0])[1] : "";
+            return isset(explode("-", $array[0])[1]) ? explode("-", $array[0], 2)[1] : "";
         } catch (\Exception $e) {
             return "";
         }
@@ -119,7 +119,7 @@ class FormularioCuatro extends Model
     {
         try {
             $array = explode(" | ", $this->codigo_poa);
-            return isset(explode("-", $array[1])[1]) ? explode("-", $array[1])[1] : "";
+            return isset(explode("-", $array[1])[1]) ? explode("-", $array[1], 2)[1] : "";
         } catch (\Exception $e) {
             return "";
         }
@@ -138,7 +138,7 @@ class FormularioCuatro extends Model
     {
         try {
             $array = explode(" | ", $this->codigo_poa);
-            return isset(explode("-", $array[2])[1]) ? explode("-", $array[2])[1] : "";
+            return isset(explode("-", $array[2])[1]) ? explode("-", $array[2], 2)[1] : "";
         } catch (\Exception $e) {
             return "";
         }
@@ -155,13 +155,13 @@ class FormularioCuatro extends Model
             $codigo3 = null;
 
             if (isset($array[0]) && isset(explode("-", $array[0])[0])) {
-                $codigo1 = "".explode("-", $array[0])[0];
+                $codigo1 = "" . explode("-", $array[0])[0];
             }
             if (isset($array[1]) && isset(explode("-", $array[1])[0])) {
-                $codigo2 = "".explode("-", $array[1])[0];
+                $codigo2 = "" . explode("-", $array[1])[0];
             }
             if (isset($array[2]) && isset(explode("-", $array[2])[0])) {
-                $codigo3 = "".explode("-", $array[2])[0];
+                $codigo3 = "" . explode("-", $array[2])[0];
             }
 
             if ($codigo1) {
@@ -190,13 +190,13 @@ class FormularioCuatro extends Model
             $codigo3 = null;
 
             if (isset($array[0]) && isset(explode("-", $array[0])[1])) {
-                $codigo1 = "".explode("-", $array[0])[1];
+                $codigo1 = "" . explode("-", $array[0])[1];
             }
             if (isset($array[1]) && isset(explode("-", $array[1])[1])) {
-                $codigo2 = "".explode("-", $array[1])[1];
+                $codigo2 = "" . explode("-", $array[1])[1];
             }
             if (isset($array[2]) && isset(explode("-", $array[2])[2])) {
-                $codigo3 = "".explode("-", $array[2])[2];
+                $codigo3 = "" . explode("-", $array[2])[2];
             }
 
             if ($codigo1) {

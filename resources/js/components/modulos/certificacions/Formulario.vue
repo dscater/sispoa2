@@ -79,8 +79,8 @@
                         @change="getOperacionesMemoriaCalculo"
                     >
                         <el-option
-                            v-for="item in listFormularios"
-                            :key="item.id"
+                            v-for="(item, index_form) in listFormularios"
+                            :key="index_form"
                             :value="item.id"
                             :label="item.codigo_poa"
                         >
@@ -398,7 +398,24 @@
                         }"
                         >Seleccionar datos del solicitante*</label
                     >
+                    
                     <el-select
+                        filterable
+                        class="w-100 d-block"
+                        :class="{
+                            'is-invalid': errors.solicitante_id,
+                        }"
+                        v-model="oCertificacion.solicitante_id"
+                    >
+                        <el-option
+                            v-for="item in listPersonals"
+                            :key="item.id"
+                            :value="item.id"
+                            :label="item.full_name"
+                        >
+                        </el-option>
+                    </el-select>
+                    <!-- <el-select
                         filterable
                         class="w-100 d-block"
                         :class="{
@@ -414,7 +431,7 @@
                             :label="item.full_name"
                         >
                         </el-option>
-                    </el-select>
+                    </el-select> -->
                     <span
                         class="error invalid-feedback"
                         v-if="errors.solicitante_id"
@@ -546,16 +563,23 @@
                         }"
                         >Departamento</label
                     >
-                    <el-input
+                    
+                    <el-select
                         filterable
                         class="w-100 d-block"
                         :class="{
                             'is-invalid': errors.departamento,
                         }"
                         v-model="oCertificacion.departamento"
-                        clearable
                     >
-                    </el-input>
+                        <el-option
+                            v-for="item,index in ['LA PAZ','COCHABAMBA','SANTA CRUZ','BENI','PANDO','POTOSÍ','ORURO','CHUQUISACA','TARIJA']"
+                            :key="index"
+                            :value="item"
+                            :label="item"
+                        >
+                        </el-option>
+                    </el-select>
                     <span
                         class="error invalid-feedback"
                         v-if="errors.departamento"
@@ -736,7 +760,27 @@ export default {
         // Obtener la lista de los formularios cuatro
         getFormularios() {
             axios.get("/admin/formulario_cuatro").then((response) => {
-                this.listFormularios = response.data.listado;
+                // console.log(response.data.listado);
+                let listado_aux = response.data.listado;
+                let nuevo_listado = [];
+                listado_aux.forEach((item, index) => {
+                    let array = item.codigo_poa.split("|");
+                    if (array.length > 1) {
+                        array.forEach((item_array, index_array) => {
+                            nuevo_listado.push({
+                                id: item.id,
+                                codigo_poa: item_array.trim(),
+                            });
+                        });
+                    } else {
+                        nuevo_listado.push({
+                            id: item.id,
+                            codigo_poa: array[0].trim(),
+                        });
+                    }
+                });
+                // console.log(nuevo_listado);
+                this.listFormularios = nuevo_listado;
             });
         },
         getUsuarios() {

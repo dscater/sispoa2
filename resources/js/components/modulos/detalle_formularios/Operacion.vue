@@ -173,6 +173,8 @@
                                 <div class="form-group col-md-4">
                                     <label>Medios de verificación</label>
                                     <el-input
+                                        type="textarea"
+                                        autosize
                                         placeholder="Medios de verificación"
                                         :class="{
                                             'is-invalid':
@@ -182,8 +184,6 @@
                                                 ],
                                         }"
                                         v-model="detalle.medios_verificacion"
-                                        clearable
-                                        maxlength="200"
                                     >
                                     </el-input>
                                     <span
@@ -215,7 +215,6 @@
                                         }"
                                         v-model="detalle.codigo_tarea"
                                         clearable
-                                        maxlength="200"
                                     >
                                     </el-input>
                                     <span
@@ -352,7 +351,7 @@
                                                 <td class="text-center">
                                                     <label>E</label>
                                                     <input
-                                                        type="text"
+                                                        type="number"
                                                         v-model="detalle.pt_e"
                                                         class="form-control"
                                                         :class="{
@@ -369,7 +368,7 @@
                                                 <td class="text-center">
                                                     <label>F</label>
                                                     <input
-                                                        type="text"
+                                                        type="number"
                                                         v-model="detalle.pt_f"
                                                         class="form-control"
                                                         :class="{
@@ -386,7 +385,7 @@
                                                 <td class="text-center">
                                                     <label>M</label>
                                                     <input
-                                                        type="text"
+                                                        type="number"
                                                         v-model="detalle.pt_m"
                                                         class="form-control"
                                                         :class="{
@@ -403,7 +402,7 @@
                                                 <td class="text-center">
                                                     <label>A</label>
                                                     <input
-                                                        type="text"
+                                                        type="number"
                                                         v-model="detalle.st_a"
                                                         class="form-control"
                                                         :class="{
@@ -420,7 +419,7 @@
                                                 <td class="text-center">
                                                     <label>M</label>
                                                     <input
-                                                        type="text"
+                                                        type="number"
                                                         v-model="detalle.st_m"
                                                         class="form-control"
                                                         :class="{
@@ -437,7 +436,7 @@
                                                 <td class="text-center">
                                                     <label>J</label>
                                                     <input
-                                                        type="text"
+                                                        type="number"
                                                         v-model="detalle.st_j"
                                                         class="form-control"
                                                         :class="{
@@ -454,7 +453,7 @@
                                                 <td class="text-center">
                                                     <label>J</label>
                                                     <input
-                                                        type="text"
+                                                        type="number"
                                                         v-model="detalle.tt_j"
                                                         class="form-control"
                                                         :class="{
@@ -471,7 +470,7 @@
                                                 <td class="text-center">
                                                     <label>A</label>
                                                     <input
-                                                        type="text"
+                                                        type="number"
                                                         v-model="detalle.tt_a"
                                                         class="form-control"
                                                         :class="{
@@ -488,7 +487,7 @@
                                                 <td class="text-center">
                                                     <label>S</label>
                                                     <input
-                                                        type="text"
+                                                        type="number"
                                                         v-model="detalle.tt_s"
                                                         class="form-control"
                                                         :class="{
@@ -505,7 +504,7 @@
                                                 <td class="text-center">
                                                     <label>O</label>
                                                     <input
-                                                        type="text"
+                                                        type="number"
                                                         v-model="detalle.ct_o"
                                                         class="form-control"
                                                         :class="{
@@ -522,7 +521,7 @@
                                                 <td class="text-center">
                                                     <label>N</label>
                                                     <input
-                                                        type="text"
+                                                        type="number"
                                                         v-model="detalle.ct_n"
                                                         class="form-control"
                                                         :class="{
@@ -539,7 +538,7 @@
                                                 <td class="text-center">
                                                     <label>D</label>
                                                     <input
-                                                        type="text"
+                                                        type="number"
                                                         v-model="detalle.ct_d"
                                                         class="form-control"
                                                         :class="{

@@ -6,7 +6,7 @@
 }
 
 .login-page {
-    background-image: url('../imgs/fondo.jpeg')!important;
+    background-image: url('../imgs/fondo.jpeg') !important;
     background-repeat: no-repeat;
     background-size: 100% 100%;
     background-position: center;
@@ -87,4 +87,9 @@ input.form-control {
 
 .input-group .texto {
     width: 50%;
+}
+
+.el-select-dropdown__item {
+    text-overflow: ellipsis;
+    max-width: 88vw !important;
 }

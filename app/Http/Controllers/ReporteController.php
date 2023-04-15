@@ -18,6 +18,7 @@ use App\Models\Partida;
 use App\Models\Semaforo;
 use App\Models\Unidad;
 use App\Models\User;
+use App\Models\VerificacionActividad;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -248,11 +249,11 @@ class ReporteController extends Controller
             $fila++;
             $sheet->setCellValue('A' . $fila, 'CÓDIGO PEI');
             $sheet->getStyle('A' . $fila)->applyFromArray($styleArray);
-            $sheet->setCellValue('B' . $fila, str_replace(",", "\n", $formulario_cuatro->codigo_pei));
-            $enters = substr_count($formulario_cuatro->codigo_pei, ",");
+            $sheet->setCellValue('B' . $fila, str_replace("|", "\n", $formulario_cuatro->codigo_pei));
+            $enters = substr_count($formulario_cuatro->codigo_pei, "|");
             $alto_fila = 25;
             if ($enters > 1) {
-                $alto_fila = $enters * 25;
+                $alto_fila = $enters * 26;
             }
             $sheet->getRowDimension($fila)->setRowHeight($alto_fila);
             $sheet->mergeCells("B" . $fila . ":I" . $fila);  //COMBINAR
@@ -272,11 +273,11 @@ class ReporteController extends Controller
             $fila++;
             $sheet->setCellValue('A' . $fila, 'CODIGO POA');
             $sheet->getStyle('A' . $fila)->applyFromArray($styleArray);
-            $sheet->setCellValue('B' . $fila, str_replace(",", "\n", $formulario_cuatro->codigo_poa));
-            $enters = substr_count($formulario_cuatro->codigo_poa, ",");
+            $sheet->setCellValue('B' . $fila, str_replace("|", "\n", $formulario_cuatro->codigo_poa));
+            $enters = substr_count($formulario_cuatro->codigo_poa, "|");
             $alto_fila = 25;
             if ($enters > 1) {
-                $alto_fila = $enters * 25;
+                $alto_fila = $enters * 26;
             }
             $sheet->getRowDimension($fila)->setRowHeight($alto_fila);
             $sheet->mergeCells("B" . $fila . ":I" . $fila);  //COMBINAR
@@ -916,6 +917,9 @@ class ReporteController extends Controller
                 'size' => 10,
                 'color' => ['argb' => 'ffffff'],
             ],
+            'alignment' => [
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+            ],
             'borders' => [
                 'allBorders' => [
                     'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
@@ -1048,54 +1052,87 @@ class ReporteController extends Controller
         $sheet->setCellValue('A' . $fila, 'CÓDIGO PEI');
         $sheet->mergeCells("A" . $fila . ":C" . $fila);  //COMBINAR CELDAS
         $sheet->getStyle('A' . $fila . ":C" . $fila)->applyFromArray($styleArray);
-        $sheet->setCellValue('D' . $fila, str_replace(",", "\n", $formulario_cuatro->codigo_pei));
-        $enters = substr_count($formulario_cuatro->codigo_pei, ",");
+        $sheet->setCellValue('D' . $fila, str_replace("|", "\n", $formulario_cuatro->codigo_pei));
+        $enters = substr_count($formulario_cuatro->codigo_pei, "|");
         $alto_fila = 25;
         if ($enters > 1) {
-            $alto_fila = $enters * 25;
+            $alto_fila = $enters * 26;
         }
         $sheet->getRowDimension($fila)->setRowHeight($alto_fila);
         $sheet->mergeCells("D" . $fila . ":U" . $fila);  //COMBINAR
         $sheet->getStyle('D' . $fila . ':U' . $fila)->applyFromArray($estilo_conenido2);
         $fila++;
-        $sheet->setCellValue('A' . $fila, 'OBJETIVO ESTRATÉGICO INSTITUCIONAL');
+        $sheet->setCellValue('A' . $fila, 'RESULTADO INSTITUCIONAL');
         $sheet->mergeCells("A" . $fila . ":C" . $fila);  //COMBINAR CELDAS
         $sheet->getStyle('A' . $fila . ":C" . $fila)->applyFromArray($styleArray);
-        $sheet->setCellValue('D' . $fila, $formulario_cuatro->meta);
+        $sheet->setCellValue('D' . $fila, $formulario_cuatro->resultado_institucional);
         $sheet->mergeCells("D" . $fila . ":U" . $fila);  //COMBINAR
         $sheet->getStyle('D' . $fila . ':U' . $fila)->applyFromArray($estilo_conenido2);
         $fila++;
         $sheet->setCellValue('A' . $fila, 'INDICADOR DE PROCESO');
         $sheet->mergeCells("A" . $fila . ":C" . $fila);  //COMBINAR CELDAS
         $sheet->getStyle('A' . $fila . ":C" . $fila)->applyFromArray($styleArray);
-        $sheet->setCellValue('D' . $fila, $formulario_cuatro->indicador);
+        $enters = substr_count(nl2br($formulario_cuatro->indicador), "<br />");
+        $alto_fila = 25;
+        if ($enters > 1) {
+            $alto_fila = $enters * 26;
+        }
+        $sheet->getRowDimension($fila)->setRowHeight($alto_fila);
+        $sheet->setCellValue('D' . $fila, str_replace("<br />", "\n", nl2br($formulario_cuatro->indicador)));
         $sheet->mergeCells("D" . $fila . ":U" . $fila);  //COMBINAR
         $sheet->getStyle('D' . $fila . ':U' . $fila)->applyFromArray($estilo_conenido2);
         $fila++;
-        $sheet->setCellValue('A' . $fila, 'CODIGO POA');
+        $sheet->setCellValue('A' . $fila, 'CÓDIGO POA');
         $sheet->mergeCells("A" . $fila . ":C" . $fila);  //COMBINAR CELDAS
         $sheet->getStyle('A' . $fila . ":C" . $fila)->applyFromArray($styleArray);
-        $sheet->setCellValue('D' . $fila, str_replace(",", "\n", $formulario_cuatro->codigo_poa));
-        $enters = substr_count($formulario_cuatro->codigo_poa, ",");
+        $sheet->setCellValue('D' . $fila, str_replace("|", "\n", $formulario_cuatro->codigo_pei));
+        $enters = substr_count($formulario_cuatro->codigo_poa, "|");
         $alto_fila = 25;
         if ($enters > 1) {
-            $alto_fila = $enters * 25;
+            $alto_fila = $enters * 26;
         }
         $sheet->getRowDimension($fila)->setRowHeight($alto_fila);
         $sheet->mergeCells("D" . $fila . ":U" . $fila);  //COMBINAR
         $sheet->getStyle('D' . $fila . ':U' . $fila)->applyFromArray($estilo_conenido2);
         $fila++;
-        $sheet->setCellValue('A' . $fila, 'ACCIÓN DE CORTO PLAZO DE GESTIÓN');
+        $verificacion_actividad = VerificacionActividad::first();
+        $sheet->setCellValue('A' . $fila, 'ACCIÓN DE CORTO PLAZO DE GESTIÓN ' .   ($verificacion_actividad ? $verificacion_actividad->gestion : date('Y')));
         $sheet->mergeCells("A" . $fila . ":C" . $fila);  //COMBINAR CELDAS
         $sheet->getStyle('A' . $fila . ":C" . $fila)->applyFromArray($styleArray);
         $sheet->setCellValue('D' . $fila, $formulario_cuatro->accion_corto);
         $sheet->mergeCells("D" . $fila . ":U" . $fila);  //COMBINAR
         $sheet->getStyle('D' . $fila . ':U' . $fila)->applyFromArray($estilo_conenido2);
         $fila++;
-        $sheet->setCellValue('A' . $fila, 'RESULTADO ESPERADO GESTIÓN');
+        $sheet->setCellValue('A' . $fila, 'INDICADOR DE PROCESO POA');
         $sheet->mergeCells("A" . $fila . ":C" . $fila);  //COMBINAR CELDAS
         $sheet->getStyle('A' . $fila . ":C" . $fila)->applyFromArray($styleArray);
-        $sheet->setCellValue('D' . $fila, $formulario_cuatro->resultado_institucional);
+        $sheet->setCellValue('D' . $fila, $formulario_cuatro->indicador_proceso);
+        $sheet->mergeCells("D" . $fila . ":U" . $fila);  //COMBINAR
+        $sheet->getStyle('D' . $fila . ':U' . $fila)->applyFromArray($estilo_conenido2);
+        $fila++;
+        $sheet->setCellValue('A' . $fila, 'LINEA DE BASE');
+        $sheet->mergeCells("A" . $fila . ":C" . $fila);  //COMBINAR CELDAS
+        $sheet->getStyle('A' . $fila . ":C" . $fila)->applyFromArray($styleArray);
+        $enters = substr_count(nl2br($formulario_cuatro->linea_base), "<br />");
+        $alto_fila = 25;
+        if ($enters > 1) {
+            $alto_fila = $enters * 26;
+        }
+        $sheet->getRowDimension($fila)->setRowHeight($alto_fila);
+        $sheet->setCellValue('D' . $fila, str_replace("<br />", "\n", nl2br($formulario_cuatro->linea_base)));
+        $sheet->mergeCells("D" . $fila . ":U" . $fila);  //COMBINAR
+        $sheet->getStyle('D' . $fila . ':U' . $fila)->applyFromArray($estilo_conenido2);
+        $fila++;
+        $sheet->setCellValue('A' . $fila, 'META');
+        $sheet->mergeCells("A" . $fila . ":C" . $fila);  //COMBINAR CELDAS
+        $sheet->getStyle('A' . $fila . ":C" . $fila)->applyFromArray($styleArray);
+        $enters = substr_count(nl2br($formulario_cuatro->meta), "<br />");
+        $alto_fila = 25;
+        if ($enters > 1) {
+            $alto_fila = $enters * 26;
+        }
+        $sheet->getRowDimension($fila)->setRowHeight($alto_fila);
+        $sheet->setCellValue('D' . $fila, str_replace("<br />", "\n", nl2br($formulario_cuatro->meta)));
         $sheet->mergeCells("D" . $fila . ":U" . $fila);  //COMBINAR
         $sheet->getStyle('D' . $fila . ':U' . $fila)->applyFromArray($estilo_conenido2);
         $fila++;
@@ -1109,7 +1146,7 @@ class ReporteController extends Controller
         $sheet->setCellValue('A' . $fila, 'PONDERACIÓN %');
         $sheet->mergeCells("A" . $fila . ":C" . $fila);  //COMBINAR CELDAS
         $sheet->getStyle('A' . $fila . ":C" . $fila)->applyFromArray($styleArray);
-        $sheet->setCellValue('D' . $fila, number_format($formulario_cuatro->ponderacion, 2) . " ");
+        $sheet->setCellValue('D' . $fila, $formulario_cuatro->ponderacion . "%");
         $sheet->mergeCells("D" . $fila . ":U" . $fila);  //COMBINAR
         $sheet->getStyle('D' . $fila . ':U' . $fila)->applyFromArray($estilo_conenido2);
         $fila++;

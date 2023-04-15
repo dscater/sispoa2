@@ -275,6 +275,30 @@
                             <div class="form-group col-md-6">
                                 <label
                                     :class="{
+                                        'text-danger': errors.indicador_proceso,
+                                    }"
+                                    >Indicador de proceso POA*</label
+                                >
+                                <el-input
+                                    type="textarea"
+                                    autosize
+                                    placeholder="Indicador de proceso POA"
+                                    :class="{
+                                        'is-invalid': errors.indicador_proceso,
+                                    }"
+                                    v-model="formulario_cuatro.indicador_proceso"
+                                    clearable
+                                >
+                                </el-input>
+                                <span
+                                    class="error invalid-feedback"
+                                    v-if="errors.indicador_proceso"
+                                    v-text="errors.indicador_proceso[0]"
+                                ></span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label
+                                    :class="{
                                         'text-danger': errors.linea_base,
                                     }"
                                     >Línea de base*</label

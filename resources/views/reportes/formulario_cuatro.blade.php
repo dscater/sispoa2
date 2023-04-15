@@ -183,10 +183,9 @@
         <thead>
             <tr>
                 <th width="7%">Código PEI</th>
-                <th>Acción Institucional específica</th>
                 <th>Indicador de Proceso</th>
                 <th>Código POA</th>
-                <th>Acción de Corto Plazo de Gestión</th>
+                <th>Indicador de Proceso POA</th>
                 <th>Resultado Esperado Gestión</th>
                 <th>Presupuesto Programado Gestión</th>
                 <th>Ponderación %</th>
@@ -201,11 +200,10 @@
             @foreach ($formularios as $formulario)
                 <tr>
                     <td class="centreado">{!! str_replace(',', '<br>', $formulario->codigo_pei) !!}</td>
-                    <td>{{ $formulario->accion_institucional }}</td>
                     <td>{{ $formulario->indicador }}</td>
                     <td class="centreado">{{ $formulario->codigo_poa }}</td>
-                    <td>{{ $formulario->accion_corto }}</td>
-                    <td>{{ $formulario->resultado_esperado }}</td>
+                    <td>{{ $formulario->indicador_proceso }}</td>
+                    <td>{{ $formulario->resultado_institucional }}</td>
                     <td class="centreado">{{ $formulario->presupuesto }}</td>
                     <td class="centreado">{{ $formulario->ponderacion }}%</td>
                     <td>{{ $formulario->unidad->nombre }}</td>

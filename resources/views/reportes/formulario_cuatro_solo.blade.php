@@ -181,6 +181,7 @@
 
 <body>
     @inject('configuracion', 'App\Models\Configuracion')
+    @inject('verificacion_actividad', 'App\Models\VerificacionActividad')
     <div class="encabezado">
         <div class="logo">
             <img src="{{ asset('imgs/' . $configuracion->first()->logo2) }}">
@@ -205,24 +206,38 @@
                     <td class="verde_claro bold">{{ $formulario->codigo_pei }}</td>
                 </tr>
                 <tr>
-                    <td class="azul bold">OBJETIVO ESTRATÉGICO INSTITUCIONAL</td>
-                    <td class="verde_claro bold">{{ $formulario->meta }}</td>
+                    <td class="azul bold" width="15%">RESULTADO INSTITUCIONAL</td>
+                    <td class="verde_claro bold">{{ $formulario->resultado_institucional }}</td>
                 </tr>
                 <tr>
-                    <td class="azul bold">INDICADOR</td>
-                    <td class="verde_claro bold">{{ $formulario->indicador }}</td>
+                    <td class="azul bold">INDICADOR DE PROCESO</td>
+                    <td class="verde_claro bold">{!! nl2br($formulario->indicador) !!}</td>
                 </tr>
                 <tr>
                     <td class="azul bold">CÓDIGO POA</td>
                     <td class="verde_claro bold">{{ $formulario->codigo_poa }}</td>
                 </tr>
                 <tr>
-                    <td class="azul bold">ACCIÓN DE CORTO PLAZO DE GESTIÓN</td>
+                    <td class="azul bold">ACCIÓN DE CORTO PLAZO DE GESTIÓN
+                        {{ $verificacion_actividad->first() ? $verificacion_actividad->first()->gestion : date('Y') }}
+                    </td>
                     <td class="verde_claro bold">{{ $formulario->accion_corto }}</td>
                 </tr>
                 <tr>
-                    <td class="azul bold">RESULTADO ESPERADO GESTIÓN</td>
-                    <td class="verde_claro bold">{{ $formulario->resultado_institucional }}</td>
+                    <td class="azul bold">INDICADOR DE PROCESO POA</td>
+                    <td class="verde_claro bold">{{ $formulario->indicador_proceso }}</td>
+                </tr>
+                <tr>
+                    <td class="azul bold">LINEA DE BASE
+                        {{ $verificacion_actividad->first() ? $verificacion_actividad->first()->gestion : date('Y') }}
+                    </td>
+                    <td class="verde_claro bold">{!! nl2br($formulario->linea_base) !!}</td>
+                </tr>
+                <tr>
+                    <td class="azul bold">META
+                        {{ $verificacion_actividad->first() ? $verificacion_actividad->first()->gestion : date('Y') }}
+                    </td>
+                    <td class="verde_claro bold">{!! nl2br($formulario->meta) !!}</td>
                 </tr>
                 <tr>
                     <td class="azul bold">PRESUPUESTO PROGRAMADO GESTIÓN</td>
@@ -230,7 +245,7 @@
                 </tr>
                 <tr>
                     <td class="azul bold">PONDERACIÓN %</td>
-                    <td class="verde_claro bold">{{ number_format($formulario->ponderacion, 2) }}</td>
+                    <td class="verde_claro bold">{{ $formulario->ponderacion }}%</td>
                 </tr>
                 <tr>
                     <td class="azul bold">UNIDAD ORGANIZACIONAL</td>
