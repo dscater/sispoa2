@@ -71,7 +71,7 @@
                                             rounded="sm"
                                         >
                                             <b-table
-                                                :fields="fields"
+                                                :fields="fields_certificacions"
                                                 :items="listRegistros"
                                                 show-empty
                                                 stacked="md"
@@ -154,6 +154,23 @@
                                                             >Descargar</a
                                                         >
                                                     </template>
+                                                </template>
+
+                                                <template
+                                                    #cell(descargar)="row"
+                                                >
+                                                    <a
+                                                        v-if="
+                                                            row.item.url_archivo
+                                                        "
+                                                        :href="
+                                                            row.item.url_archivo
+                                                        "
+                                                        class="btn btn-primary"
+                                                        target="_blank"
+                                                        >Descargar</a
+                                                    >
+                                                    <button class="btn btn-sm btn-flat" v-else disabled>No se cargo ningún archivo</button>
                                                 </template>
 
                                                 <template
@@ -566,6 +583,68 @@ export default {
             totalRows: 10,
             filter: null,
         };
+    },
+    computed: {
+        fields_certificacions() {
+            if (this.user.tipo == "SUPER USUARIO") {
+                return [
+                    {
+                        key: "formulario.codigo_poa",
+                        label: "Código POA",
+                        sortable: true,
+                    },
+                    {
+                        key: "formulario.unidad.nombre",
+                        label: "Unidad Organizacional",
+                        sortable: true,
+                    },
+                    {
+                        key: "o_personal_designado.full_name",
+                        label: "Personal designado",
+                        sortable: true,
+                    },
+                    {
+                        key: "departamento",
+                        label: "Departamento",
+                        sortable: true,
+                    },
+                    {
+                        key: "municipio",
+                        label: "Municipio",
+                        sortable: true,
+                    },
+                    {
+                        key: "mo_id",
+                        label: "Descripción Operación",
+                        sortable: true,
+                    },
+                    {
+                        key: "cantidad_usar",
+                        label: "Certificación",
+                        sortable: true,
+                    },
+                    {
+                        key: "descargar",
+                        label: "Descargar",
+                        sortable: true,
+                    },
+                    {
+                        key: "fechas",
+                        label: "Fechas",
+                        sortable: true,
+                    },
+                    {
+                        key: "estado",
+                        label: "Estado",
+                        sortable: true,
+                    },
+                    { key: "fecha_registro", label: "Fecha de registro" },
+                    // { key: "detalles", label: "Ver más" },
+                    { key: "accion", label: "Acción" },
+                ];
+            }
+            return this.fields;
+        },
     },
     mounted() {
         console.log(this.user);
