@@ -83,6 +83,15 @@
                                                 empty-filtered-text="Sin resultados"
                                                 :filter="filter"
                                             >
+                                                <template #cell(codigo)="row">
+                                                    <span
+                                                        v-html="
+                                                            row.item.codigo +
+                                                            '-' +
+                                                            row.item.accion
+                                                        "
+                                                    ></span>
+                                                </template>
                                                 <template
                                                     #cell(formulario.codigo_pei)="row"
                                                 >
@@ -170,7 +179,14 @@
                                                         target="_blank"
                                                         >Descargar</a
                                                     >
-                                                    <button class="btn btn-sm btn-flat" v-else disabled>No se cargo ningún archivo</button>
+                                                    <button
+                                                        class="btn btn-sm btn-flat"
+                                                        v-else
+                                                        disabled
+                                                    >
+                                                        No se cargo ningún
+                                                        archivo
+                                                    </button>
                                                 </template>
 
                                                 <template
@@ -517,7 +533,7 @@ export default {
             showOverlay: false,
             fields: [
                 {
-                    key: "formulario.codigo_poa",
+                    key: "codigo",
                     label: "Código POA",
                     sortable: true,
                 },
@@ -589,7 +605,7 @@ export default {
             if (this.user.tipo == "SUPER USUARIO") {
                 return [
                     {
-                        key: "formulario.codigo_poa",
+                        key: "codigo",
                         label: "Código POA",
                         sortable: true,
                     },

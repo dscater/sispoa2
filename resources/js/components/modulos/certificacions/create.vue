@@ -49,6 +49,7 @@ export default {
             oCertificacion: {
                 id: 0,
                 formulario_id: "",
+                poa_seleccionado:"",
                 mo_id: "",
                 mod_id: "",
                 cantidad_usar: "",

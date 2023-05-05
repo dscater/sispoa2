@@ -25,5 +25,3 @@ mix.js('resources/js/app.js', 'public/js')
     ], 'public/js/plantilla.js')
     .copy('resources/assets/imgs', 'public/imgs')
     .copy('resources/assets/webfonts', 'public/webfonts');
-
-mix.disableNotifications();

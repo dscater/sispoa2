@@ -19,6 +19,7 @@ class CertificacionController extends Controller
 {
     public $validacion = [
         'formulario_id' => 'required',
+        'poa_seleccionado' => 'required',
         "mo_id" => "required",
         "mod_id" => "required",
         "cantidad_usar" => "required",

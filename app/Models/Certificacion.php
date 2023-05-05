@@ -11,6 +11,9 @@ class Certificacion extends Model
 
     protected $fillable = [
         "formulario_id",
+        "poa_seleccionado",
+        "codigo",
+        "accion",
         "mo_id",
         // "mod_id",
         // "total_cantidad",

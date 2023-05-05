@@ -72,24 +72,24 @@
                         filterable
                         class="w-100 d-block"
                         :class="{
-                            'is-invalid': errors.formulario_id,
+                            'is-invalid': errors.poa_seleccionado,
                         }"
-                        v-model="oCertificacion.formulario_id"
+                        v-model="oCertificacion.poa_seleccionado"
                         clearable
                         @change="getOperacionesMemoriaCalculo"
                     >
                         <el-option
                             v-for="(item, index_form) in listFormularios"
                             :key="index_form"
-                            :value="item.id"
+                            :value="item.poa_seleccionado"
                             :label="item.codigo_poa"
                         >
                         </el-option>
                     </el-select>
                     <span
                         class="error invalid-feedback"
-                        v-if="errors.formulario_id"
-                        v-text="errors.formulario_id[0]"
+                        v-if="errors.poa_seleccionado"
+                        v-text="errors.poa_seleccionado[0]"
                     ></span>
                 </div>
                 <div
@@ -398,7 +398,7 @@
                         }"
                         >Seleccionar datos del solicitante*</label
                     >
-                    
+
                     <el-select
                         filterable
                         class="w-100 d-block"
@@ -563,7 +563,7 @@
                         }"
                         >Departamento</label
                     >
-                    
+
                     <el-select
                         filterable
                         class="w-100 d-block"
@@ -573,7 +573,17 @@
                         v-model="oCertificacion.departamento"
                     >
                         <el-option
-                            v-for="item,index in ['LA PAZ','COCHABAMBA','SANTA CRUZ','BENI','PANDO','POTOSÍ','ORURO','CHUQUISACA','TARIJA']"
+                            v-for="(item, index) in [
+                                'LA PAZ',
+                                'COCHABAMBA',
+                                'SANTA CRUZ',
+                                'BENI',
+                                'PANDO',
+                                'POTOSÍ',
+                                'ORURO',
+                                'CHUQUISACA',
+                                'TARIJA',
+                            ]"
                             :key="index"
                             :value="item"
                             :label="item"
@@ -759,29 +769,12 @@ export default {
         },
         // Obtener la lista de los formularios cuatro
         getFormularios() {
-            axios.get("/admin/formulario_cuatro").then((response) => {
-                // console.log(response.data.listado);
-                let listado_aux = response.data.listado;
-                let nuevo_listado = [];
-                listado_aux.forEach((item, index) => {
-                    let array = item.codigo_poa.split("|");
-                    if (array.length > 1) {
-                        array.forEach((item_array, index_array) => {
-                            nuevo_listado.push({
-                                id: item.id,
-                                codigo_poa: item_array.trim(),
-                            });
-                        });
-                    } else {
-                        nuevo_listado.push({
-                            id: item.id,
-                            codigo_poa: array[0].trim(),
-                        });
-                    }
+            axios
+                .get("/admin/formulario_cuatro/listado_index")
+                .then((response) => {
+                    console.log(response.data.listado);
+                    this.listFormularios = response.data.listado;
                 });
-                // console.log(nuevo_listado);
-                this.listFormularios = nuevo_listado;
-            });
         },
         getUsuarios() {
             axios.get("/admin/usuarios").then((response) => {
@@ -858,6 +851,11 @@ export default {
         },
         // lista de operaciones deacuerdo al formulario cuatro seleccionado
         getOperacionesMemoriaCalculo() {
+            let array_formulario_id =
+                this.oCertificacion.poa_seleccionado.split("|");
+            this.oCertificacion.formulario_id = array_formulario_id[1];
+            console.log(this.oCertificacion.formulario_id);
+            console.log(this.oCertificacion.poa_seleccionado);
             axios
                 .get("/admin/memoria_calculos/getOperaciones", {
                     params: {
@@ -899,13 +897,13 @@ export default {
                 this.getMontoPartida(index);
                 this.obtieneSaldo(index);
             }
-            console.log("AA");
-            console.log(
-                "Cantidad usar: " +
-                    this.oCertificacion.certificacion_detalles[index]
-                        .cantidad_usar
-            );
-            console.log("BVB");
+            // console.log("AA");
+            // console.log(
+            // "Cantidad usar: " +
+            // this.oCertificacion.certificacion_detalles[index]
+            // .cantidad_usar
+            // );
+            // console.log("BVB");
         },
         cargaDetallesCertificacion() {
             let certificacion_detalles =
@@ -1085,6 +1083,20 @@ export default {
                     "formulario_id",
                     this.oCertificacion.formulario_id
                 );
+                formdata.append(
+                    "poa_seleccionado",
+                    this.oCertificacion.poa_seleccionado
+                );
+
+                let elemento_seleccionado = this.listFormularios.filter(
+                    (elem) =>
+                        elem.poa_seleccionado ==
+                        this.oCertificacion.poa_seleccionado
+                )[0];
+
+                formdata.append("codigo", elemento_seleccionado.codigo);
+
+                formdata.append("accion", elemento_seleccionado.accion);
 
                 // array_valores
                 this.oCertificacion.certificacion_detalles.forEach((elem) => {
