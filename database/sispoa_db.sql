@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 15-04-2023 a las 16:27:04
+-- Tiempo de generación: 05-05-2023 a las 03:28:53
 -- Versión del servidor: 8.0.30
 -- Versión de PHP: 7.4.19
 
@@ -84,6 +84,9 @@ INSERT INTO `aprobacions` (`id`, `unidad_id`, `estado`, `created_at`, `updated_a
 CREATE TABLE `certificacions` (
   `id` bigint UNSIGNED NOT NULL,
   `formulario_id` bigint UNSIGNED NOT NULL,
+  `poa_seleccionado` varchar(155) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `codigo` text COLLATE utf8mb4_unicode_ci,
+  `accion` text COLLATE utf8mb4_unicode_ci,
   `mo_id` bigint UNSIGNED NOT NULL,
   `archivo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `correlativo` bigint NOT NULL,
@@ -105,10 +108,12 @@ CREATE TABLE `certificacions` (
 -- Volcado de datos para la tabla `certificacions`
 --
 
-INSERT INTO `certificacions` (`id`, `formulario_id`, `mo_id`, `archivo`, `correlativo`, `solicitante_id`, `superior_id`, `inicio`, `final`, `personal_designado`, `departamento`, `municipio`, `estado`, `anulado`, `fecha_registro`, `created_at`, `updated_at`) VALUES
-(18, 1, 1, NULL, 1, 14, 12, '2023-04-06', '2023-04-07', 6, 'LA PAZ', 'LA PAZ', 'PENDIENTE', 0, '2023-04-05', '2023-04-05 21:33:43', '2023-04-05 21:33:43'),
-(19, 6, 78, NULL, 2, 20, 11, '2023-04-04', '2023-04-15', 3, 'BENI', 'TRINIDAD', 'PENDIENTE', 0, '2023-04-05', '2023-04-05 21:35:38', '2023-04-05 21:35:38'),
-(20, 8, 57, NULL, 3, 4, 11, '2023-04-06', '2023-04-08', 4, 'COCHABAMBA', 'TOROTORO', 'PENDIENTE', 0, '2023-04-05', '2023-04-05 21:47:34', '2023-04-15 16:21:34');
+INSERT INTO `certificacions` (`id`, `formulario_id`, `poa_seleccionado`, `codigo`, `accion`, `mo_id`, `archivo`, `correlativo`, `solicitante_id`, `superior_id`, `inicio`, `final`, `personal_designado`, `departamento`, `municipio`, `estado`, `anulado`, `fecha_registro`, `created_at`, `updated_at`) VALUES
+(18, 1, '0|1', '11.7.1.7.1.4.', 'CONSOLIDAR LA ESTRUCTURA INSTITUCIONAL TÉCNICA, ADMINISTRATIVA, FINANCIERA Y JURÍDICA DE LA AUTORIDAD DE SUPERVISIÓN DE LA SEGURIDAD SOCIAL DE CORTO PLAZO A NIVEL NACIONAL, REGIONAL Y DEPARTAMENTAL.', 1, '1682121934_18.pdf', 1, 14, 12, '2023-04-06', '2023-04-07', 6, 'LA PAZ', 'LA PAZ', 'PENDIENTE', 0, '2023-04-05', '2023-04-05 21:33:43', '2023-04-22 00:05:34'),
+(19, 6, '0|6', '6.3.6.2.5.1.2', 'REALIZAR EL CONTROL DE LA CORRECTA PRESTACIÓN DE LOS SERVICIOS DE SALUD EN LA SEGURIDAD SOCIAL DE CORTO PLAZO, MEDIANTE PROCESOS DE SEGUIMIENTO, MONITOREO, SUPERVISIÓN Y EVALUACIÓN DE LA CALIDAD DE LOS SERVICIOS,', 78, NULL, 2, 20, 11, '2023-04-04', '2023-04-15', 3, 'BENI', 'TRINIDAD', 'PENDIENTE', 0, '2023-04-05', '2023-04-05 21:35:38', '2023-04-05 21:35:38'),
+(20, 8, '0|8', '11.7.1.7.1.4.', 'CONSOLIDAR LA ESTRUCTURA INSTITUCIONAL TÉCNICA, ADMINISTRATIVA, FINANCIERA Y JURÍDICA DE LA AUTORIDAD DE', 57, '1682121876_20.pdf', 3, 4, 11, '2023-04-06', '2023-04-08', 4, 'COCHABAMBA', 'TOROTORO', 'PENDIENTE', 0, '2023-04-05', '2023-04-05 21:47:34', '2023-05-05 00:38:51'),
+(21, 10, '1|10', '1.1.3.1.1.1.', 'FISCALIZAR Y CONTROLAR EL CORRECTO CUMPLIMIENTO DE LA NORMATIVA DEL SUBSIDIO', 115, NULL, 4, 7, 16, '2023-01-01', '2023-12-12', 8, 'PANDO', 'MUNICIPIO', 'PENDIENTE', 0, '2023-05-04', '2023-05-05 03:14:50', '2023-05-05 03:19:21'),
+(22, 8, '0|8', '11.7.1.7.1.4.', 'CONSOLIDAR LA ESTRUCTURA INSTITUCIONAL TÉCNICA, ADMINISTRATIVA, FINANCIERA Y JURÍDICA DE LA AUTORIDAD DE', 57, NULL, 5, 8, 12, '2023-03-03', '2023-02-12', 4, 'COCHABAMBA', '', 'PENDIENTE', 0, '2023-05-04', '2023-05-05 03:20:01', '2023-05-05 03:20:01');
 
 -- --------------------------------------------------------
 
@@ -136,9 +141,11 @@ CREATE TABLE `certificacion_detalles` (
 --
 
 INSERT INTO `certificacion_detalles` (`id`, `certificacion_id`, `mo_id`, `mod_id`, `total_cantidad`, `cantidad_usar`, `saldo_cantidad`, `total`, `presupuesto_usarse`, `saldo_total`, `created_at`, `updated_at`) VALUES
-(20, 18, 1, 1, 2, 1, 1, 2484.00, 1242.00, 1242.00, '2023-04-05 21:33:43', '2023-04-05 21:33:43'),
+(20, 18, 1, 1, 2, 1, 1, 2484.00, 1242.00, 1242.00, '2023-04-05 21:33:43', '2023-04-22 00:05:34'),
 (21, 19, 78, 175, 50, 10, 40, 750.00, 150.00, 600.00, '2023-04-05 21:35:38', '2023-04-15 16:17:59'),
-(22, 20, 57, 113, 12, 1, 11, 4452.00, 371.00, 4081.00, '2023-04-05 21:47:34', '2023-04-15 16:21:34');
+(22, 20, 57, 113, 12, 1, 11, 4452.00, 371.00, 4081.00, '2023-04-05 21:47:34', '2023-05-05 00:38:51'),
+(23, 21, 115, 284, 10, 10, 0, 8845.00, 8845.00, 0.00, '2023-05-05 03:14:50', '2023-05-05 03:19:21'),
+(24, 22, 57, 112, 10, 10, 0, 12839.00, 12839.00, 0.00, '2023-05-05 03:20:01', '2023-05-05 03:20:01');
 
 -- --------------------------------------------------------
 
@@ -1703,7 +1710,14 @@ INSERT INTO `logs` (`id`, `accion`, `modulo`, `detalle`, `user_id`, `fecha`, `ho
 (694, 'MODIFICACIÓN', 'CERTIFICACIÓN POA', 'EL USUARIO 1 MODIFICÓ UNA CERTIFICACIÓN POA', 1, '2023-04-15', '12:17:49'),
 (695, 'MODIFICACIÓN', 'CERTIFICACIÓN POA', 'EL USUARIO 1 MODIFICÓ UNA CERTIFICACIÓN POA', 1, '2023-04-15', '12:17:55'),
 (696, 'MODIFICACIÓN', 'CERTIFICACIÓN POA', 'EL USUARIO 1 MODIFICÓ UNA CERTIFICACIÓN POA', 1, '2023-04-15', '12:17:59'),
-(697, 'MODIFICACIÓN', 'CERTIFICACIÓN POA', 'EL USUARIO 1 MODIFICÓ UNA CERTIFICACIÓN POA', 1, '2023-04-15', '12:21:34');
+(697, 'MODIFICACIÓN', 'CERTIFICACIÓN POA', 'EL USUARIO 1 MODIFICÓ UNA CERTIFICACIÓN POA', 1, '2023-04-15', '12:21:34'),
+(698, 'MODIFICACIÓN', 'CERTIFICACIÓN POA', 'EL USUARIO 1 MODIFICÓ UNA CERTIFICACIÓN POA', 1, '2023-04-21', '20:04:36'),
+(699, 'MODIFICACIÓN', 'CERTIFICACIÓN POA', 'EL USUARIO 12 MODIFICÓ UNA CERTIFICACIÓN POA', 12, '2023-04-21', '20:05:34'),
+(700, 'MODIFICACIÓN', 'CERTIFICACIÓN POA', 'EL USUARIO 1 MODIFICÓ UNA CERTIFICACIÓN POA', 1, '2023-05-04', '20:38:51'),
+(701, 'CREACIÓN', 'CERTIFICACIÓN POA', 'EL USUARIO 1 REGISTRO UNA CERTIFICACIÓN POA', 1, '2023-05-04', '23:14:50'),
+(702, 'MODIFICACIÓN', 'CERTIFICACIÓN POA', 'EL USUARIO 1 MODIFICÓ UNA CERTIFICACIÓN POA', 1, '2023-05-04', '23:16:03'),
+(703, 'MODIFICACIÓN', 'CERTIFICACIÓN POA', 'EL USUARIO 1 MODIFICÓ UNA CERTIFICACIÓN POA', 1, '2023-05-04', '23:19:21'),
+(704, 'CREACIÓN', 'CERTIFICACIÓN POA', 'EL USUARIO 1 REGISTRO UNA CERTIFICACIÓN POA', 1, '2023-05-04', '23:20:02');
 
 -- --------------------------------------------------------
 
@@ -3392,13 +3406,13 @@ ALTER TABLE `aprobacions`
 -- AUTO_INCREMENT de la tabla `certificacions`
 --
 ALTER TABLE `certificacions`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT de la tabla `certificacion_detalles`
 --
 ALTER TABLE `certificacion_detalles`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT de la tabla `configuracions`
@@ -3452,7 +3466,7 @@ ALTER TABLE `formulario_cuatro`
 -- AUTO_INCREMENT de la tabla `logs`
 --
 ALTER TABLE `logs`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=698;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=705;
 
 --
 -- AUTO_INCREMENT de la tabla `memoria_calculos`
