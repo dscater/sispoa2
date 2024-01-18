@@ -20,7 +20,20 @@ class CertificacionDetalle extends Model
         "presupuesto_usarse",
         "saldo_total",
     ];
-    
+
+
+    protected $appends = ["cantidad_usar_aux", "presupuesto_usarse_aux"];
+
+    public function getCantidadUsarAuxAttribute()
+    {
+        return $this->cantidad_usar;
+    }
+
+    public function getPresupuestoUsarseAuxAttribute()
+    {
+        return $this->presupuesto_usarse;
+    }
+
     public function memoria_operacion()
     {
         return $this->belongsTo(MemoriaOperacion::class, 'mo_id');

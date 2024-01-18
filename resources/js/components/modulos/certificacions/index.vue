@@ -102,67 +102,111 @@
                                                         "
                                                     ></span>
                                                 </template>
+
                                                 <template #cell(mo_id)="row">
-                                                    <div
-                                                        v-for="(
-                                                            cd, index_cd
-                                                        ) in row.item
-                                                            .certificacion_detalles"
-                                                        :key="cd.id"
-                                                    >
-                                                        <hr
-                                                            v-if="index_cd > 0"
-                                                        />
-                                                        <strong
-                                                            >Código de
-                                                            operación: </strong
-                                                        >{{
-                                                            cd.memoria_operacion
-                                                                .codigo_operacion
-                                                        }}<br />
-                                                        <strong
-                                                            >Operación: </strong
-                                                        >{{
-                                                            cd.memoria_operacion
-                                                                .descripcion_operacion
-                                                        }}<br />
-                                                        <strong
-                                                            >Código de tarea: </strong
-                                                        >{{
-                                                            cd.memoria_operacion
-                                                                .codigo_actividad
-                                                        }}<br />
-                                                        <strong
-                                                            >Actividad/Tarea: </strong
-                                                        >{{
-                                                            cd.memoria_operacion
-                                                                .descripcion_actividad
-                                                        }}<br />
-                                                        <strong
-                                                            >Partida: </strong
-                                                        >{{
-                                                            cd
-                                                                .memoria_operacion_detalle
-                                                                .partida
-                                                        }}<br />
-                                                    </div>
-                                                    <template
-                                                        v-if="
-                                                            row.item.url_archivo
+                                                    <b-button
+                                                        variant="primary"
+                                                        size="sm"
+                                                        @click="
+                                                            row.toggleDetails
                                                         "
                                                     >
-                                                        <strong
-                                                            >Archivo:
-                                                        </strong>
-                                                        <a
-                                                            :href="
-                                                                row.item
-                                                                    .url_archivo
+                                                        {{
+                                                            row.detailsShowing
+                                                                ? "Ocultar"
+                                                                : "Mostrar"
+                                                        }}
+                                                        Descripción
+                                                    </b-button>
+                                                </template>
+
+                                                <template #row-details="row">
+                                                    <b-card>
+                                                        <b-row
+                                                            class="mb-2"
+                                                            style="
+                                                                overflow: auto;
                                                             "
-                                                            target="_blank"
-                                                            >Descargar</a
                                                         >
-                                                    </template>
+                                                            <div
+                                                                v-for="(
+                                                                    cd, index_cd
+                                                                ) in row.item
+                                                                    .certificacion_detalles"
+                                                                :key="cd.id"
+                                                            >
+                                                                <hr
+                                                                    v-if="
+                                                                        index_cd >
+                                                                        0
+                                                                    "
+                                                                />
+                                                                <strong
+                                                                    >Código de
+                                                                    operación: </strong
+                                                                >{{
+                                                                    cd
+                                                                        .memoria_operacion
+                                                                        .codigo_operacion
+                                                                }}<br />
+                                                                <strong
+                                                                    >Operación: </strong
+                                                                >{{
+                                                                    cd
+                                                                        .memoria_operacion
+                                                                        .descripcion_operacion
+                                                                }}<br />
+                                                                <strong
+                                                                    >Código de
+                                                                    tarea: </strong
+                                                                >{{
+                                                                    cd
+                                                                        .memoria_operacion
+                                                                        .codigo_actividad
+                                                                }}<br />
+                                                                <strong
+                                                                    >Actividad/Tarea: </strong
+                                                                >{{
+                                                                    cd
+                                                                        .memoria_operacion
+                                                                        .descripcion_actividad
+                                                                }}<br />
+                                                                <strong
+                                                                    >Partida: </strong
+                                                                >{{
+                                                                    cd
+                                                                        .memoria_operacion_detalle
+                                                                        .partida
+                                                                }}<br />
+                                                            </div>
+                                                            <template
+                                                                v-if="
+                                                                    row.item
+                                                                        .url_archivo
+                                                                "
+                                                            >
+                                                                <strong
+                                                                    >Archivo:
+                                                                </strong>
+                                                                <a
+                                                                    :href="
+                                                                        row.item
+                                                                            .url_archivo
+                                                                    "
+                                                                    target="_blank"
+                                                                    >Descargar</a
+                                                                >
+                                                            </template>
+                                                        </b-row>
+                                                        <b-button
+                                                            size="sm"
+                                                            variant="primary"
+                                                            @click="
+                                                                row.toggleDetails
+                                                            "
+                                                            >Ocultar</b-button
+                                                        >
+                                                    </b-card>
                                                 </template>
 
                                                 <template
@@ -262,7 +306,7 @@
                                                     <template v-else>
                                                         <span
                                                             :title="'ANULADO'"
-                                                            class="badge bg-success"
+                                                            class="badge bg-secondary"
                                                             >ANULADO</span
                                                         >
                                                     </template>
@@ -389,6 +433,11 @@
                                                             "
                                                         >
                                                             <b-button
+                                                                v-if="
+                                                                    permisos.includes(
+                                                                        'certificacions.destroy'
+                                                                    )
+                                                                "
                                                                 size="sm"
                                                                 pill
                                                                 variant="outline-danger"
@@ -420,7 +469,10 @@
                                                                 v-if="
                                                                     row.item
                                                                         .estado !=
-                                                                    'APROBADO'
+                                                                        'APROBADO' &&
+                                                                    permisos.includes(
+                                                                        'certificacions.destroy'
+                                                                    )
                                                                 "
                                                             >
                                                                 <b-button
@@ -526,7 +578,10 @@
 export default {
     data() {
         return {
-            permisos: localStorage.getItem("permisos"),
+            permisos:
+                typeof localStorage.getItem("permisos") == "string"
+                    ? JSON.parse(localStorage.getItem("permisos"))
+                    : localStorage.getItem("permisos"),
             user: JSON.parse(localStorage.getItem("user")),
             search: "",
             listRegistros: [],

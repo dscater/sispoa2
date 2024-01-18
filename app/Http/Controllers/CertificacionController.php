@@ -8,12 +8,13 @@ use App\Models\Log;
 use App\Models\MemoriaOperacion;
 use App\Models\MemoriaOperacionDetalle;
 use App\Models\Partida;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log as FacadesLog;
 use PDF;
-
+use PhpOffice\PhpSpreadsheet\Calculation\MathTrig\Exp;
 
 class CertificacionController extends Controller
 {
@@ -50,10 +51,19 @@ class CertificacionController extends Controller
 
     public function store(Request $request)
     {
-        if ($request->hasFile('archivo')) {
-            $this->validacion['archivo'] = 'file';
-        }
+        // if ($request->hasFile('archivo')) {
+        //     $this->validacion['archivo'] = 'file';
+        // }
         $request->validate($this->validacion);
+        if (!isset($request->cantidad_usar) || !isset($request->presupuesto_usarse) || count($request->cantidad_usar) <= 0 || count($request->presupuesto_usarse) <= 0) {
+            throw new Exception("Debes seleccionar/ingresar al menos una Operación|Tarea/actividad|Partida");
+        }
+        $errors = self::validaDetallesOperacion($request->cantidad_usar, $request->presupuesto_usarse);
+        if (count($errors) > 0) {
+            return response()->JSON([
+                "errors" => $errors,
+            ], 422);
+        }
 
         DB::beginTransaction();
         try {
@@ -107,7 +117,7 @@ class CertificacionController extends Controller
 
     public function show(Certificacion $certificacion)
     {
-        return response()->JSON($certificacion->load("certificacion_detalles"));
+        return response()->JSON($certificacion->load("certificacion_detalles.memoria_operacion_detalle"));
     }
 
     public function pdf(Certificacion $certificacion)
@@ -130,6 +140,17 @@ class CertificacionController extends Controller
             $this->validacion['archivo'] = 'file';
         }
         $request->validate($this->validacion);
+        if (!isset($request->cantidad_usar) || !isset($request->presupuesto_usarse) || count($request->cantidad_usar) <= 0 || count($request->presupuesto_usarse) <= 0) {
+            throw new Exception("Debes seleccionar/ingresar al menos una Operación|Tarea/actividad|Partida");
+        }
+
+        $errors = self::validaDetallesOperacion($request->cantidad_usar, $request->presupuesto_usarse);
+        if (count($errors) > 0) {
+            return response()->JSON([
+                "errors" => $errors,
+            ], 422);
+        }
+
         DB::beginTransaction();
         try {
             $certificacion->update(array_map("mb_strtoupper", $request->except("archivo", "mod_id", "cantidad_usar", "presupuesto_usarse", "eliminados", "ids")));
@@ -352,7 +373,28 @@ class CertificacionController extends Controller
         return true;
     }
 
-    public function archivo(Certificacion $certificacion){
+    public function archivo(Certificacion $certificacion)
+    {
+    }
 
+    public static function validaDetallesOperacion($cantidad_usar, $presupuesto_usarse)
+    {
+        $errors = [];
+        for ($i = 0; $i < count($cantidad_usar); $i++) {
+            if ((float)$cantidad_usar[$i] <= 0) {
+                // FacadesLog::debug($cantidad_usar[$i]);
+                $errors["cantidad_usar"] = ["Las cantidades ingresadas no pueden ser menores o iguales a 0"];
+                $errors["cantidad_usar_" . $i] = ["Las cantidad ingresada debe ser mayor a 0"];
+            }
+
+            if ((float)$presupuesto_usarse[$i] <= 0) {
+                // FacadesLog::debug($presupuesto_usarse[$i]);
+                $errors["cantidad_usar"] = ["Los montos ingresados no pueden ser menores o iguales a 0"];
+                $errors["presupuesto_usarse_" . $i] = ["El monto ingresa debe ser mayor a 0"];
+            }
+        }
+        // FacadesLog::debug($errors);
+
+        return $errors;
     }
 }
