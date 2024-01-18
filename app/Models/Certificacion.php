@@ -30,9 +30,15 @@ class Certificacion extends Model
         "estado", "fecha_registro", "anulado"
     ];
 
-    protected $appends = ["url_archivo"];
+    protected $appends = ["url_archivo", "array_dptos"];
 
     protected $with = ["formulario"];
+
+    public function getArrayDptosAttribute()
+    {
+        $array = explode(", ", $this->departamento);
+        return $array;
+    }
 
     public function getUrlArchivoAttribute()
     {

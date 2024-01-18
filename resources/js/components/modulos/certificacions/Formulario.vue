@@ -37,7 +37,7 @@
                     <div class="row">
                         <div class="col-md-6 p-0 mb-3">
                             <el-button
-                                v-if="nro_paso > 1"
+                                v-show="nro_paso > 1"
                                 class="btn btn-primary bg-light btn-flat btn-block"
                                 :loading="enviando"
                                 @click="cambiaPaso(nro_paso - 1)"
@@ -47,7 +47,7 @@
                         </div>
                         <div class="col-md-6 p-0 mb-3">
                             <el-button
-                                v-if="nro_paso < listPasos.length"
+                                v-show="nro_paso < listPasos.length"
                                 class="btn btn-primary bg-light btn-flat btn-block"
                                 :loading="enviando"
                                 @click="cambiaPaso(nro_paso + 1)"
@@ -59,7 +59,7 @@
             </div>
             <div class="row">
                 <div
-                    v-if="nro_paso == 1"
+                    v-show="nro_paso == 1"
                     class="form-group col-md-6 ml-auto mr-auto border border-1 p-3"
                 >
                     <label
@@ -93,7 +93,7 @@
                     ></span>
                 </div>
                 <div
-                    v-if="nro_paso == 2"
+                    v-show="nro_paso == 2"
                     class="form-group col-md-6 ml-auto mr-auto border border-1 p-3"
                 >
                     <label
@@ -199,6 +199,27 @@
                                             Detalle
                                         </h4>
                                         <p>
+                                            <strong
+                                                >U. E. | Prog. | Act.: </strong
+                                            ><span>{{
+                                                certificacion_detalle
+                                                    .memoria_operacion_detalle
+                                                    .ue
+                                            }}</span>
+                                            |
+                                            <span>{{
+                                                certificacion_detalle
+                                                    .memoria_operacion_detalle
+                                                    .prog
+                                            }}</span>
+                                            |
+                                            <span>{{
+                                                certificacion_detalle
+                                                    .memoria_operacion_detalle
+                                                    .act
+                                            }}</span>
+                                        </p>
+                                        <p>
                                             <strong>Descripción: </strong
                                             >{{
                                                 certificacion_detalle
@@ -277,7 +298,7 @@
                     </div>
                 </div>
                 <div
-                    v-if="nro_paso == 3"
+                    v-show="nro_paso == 3"
                     class="form-group col-md-6 ml-auto mr-auto border border-1 border-right-0 p-3"
                 >
                     <div
@@ -395,7 +416,7 @@
                     </div>
                 </div>
                 <div
-                    v-if="nro_paso == 4"
+                    v-show="nro_paso == 4"
                     class="form-group col-md-6 ml-auto mr-auto border border-1 p-3"
                 >
                     <label
@@ -417,7 +438,7 @@
                     ></span>
                 </div>
                 <div
-                    v-if="nro_paso == 5"
+                    v-show="nro_paso == 5"
                     class="form-group col-md-6 ml-auto mr-auto border border-1 p-3"
                 >
                     <label
@@ -439,7 +460,7 @@
                     ></span>
                 </div>
                 <div
-                    v-if="nro_paso == 6"
+                    v-show="nro_paso == 6"
                     class="form-group col-md-6 ml-auto mr-auto border border-1 p-3"
                 >
                     <label
@@ -489,7 +510,7 @@
                     ></span>
                 </div>
                 <div
-                    v-if="nro_paso == 7"
+                    v-show="nro_paso == 7"
                     class="form-group col-md-6 ml-auto mr-auto border border-1 p-3"
                 >
                     <label
@@ -523,7 +544,7 @@
                     ></span>
                 </div>
                 <div
-                    v-if="nro_paso == 8"
+                    v-show="nro_paso == 8"
                     class="form-group col-md-6 ml-auto mr-auto border border-1 p-3"
                 >
                     <div class="row">
@@ -572,7 +593,7 @@
                     </div>
                 </div>
                 <div
-                    v-if="nro_paso == 9"
+                    v-show="nro_paso == 9"
                     class="form-group col-md-6 ml-auto mr-auto border border-1 p-3"
                 >
                     <label
@@ -604,7 +625,7 @@
                     ></span>
                 </div>
                 <div
-                    v-if="nro_paso == 10"
+                    v-show="nro_paso == 10"
                     class="form-group col-md-6 ml-auto mr-auto border border-1 p-3"
                 >
                     <label
@@ -615,28 +636,18 @@
                     >
 
                     <el-select
-                        filterable
                         class="w-100 d-block"
                         :class="{
                             'is-invalid': errors.departamento,
                         }"
-                        v-model="oCertificacion.departamento"
+                        v-model="oCertificacion.array_dptos"
+                        multiple
                     >
                         <el-option
-                            v-for="(item, index) in [
-                                'LA PAZ',
-                                'COCHABAMBA',
-                                'SANTA CRUZ',
-                                'BENI',
-                                'PANDO',
-                                'POTOSÍ',
-                                'ORURO',
-                                'CHUQUISACA',
-                                'TARIJA',
-                            ]"
-                            :key="index"
-                            :value="item"
-                            :label="item"
+                            v-for="(item_dpto, index_dpto) in listDptos"
+                            :key="index_dpto"
+                            :value="item_dpto"
+                            :label="item_dpto"
                         >
                         </el-option>
                     </el-select>
@@ -647,7 +658,7 @@
                     ></span>
                 </div>
                 <div
-                    v-if="nro_paso == 11"
+                    v-show="nro_paso == 11"
                     class="form-group col-md-6 ml-auto mr-auto border border-1 p-3"
                 >
                     <label
@@ -772,6 +783,17 @@ export default {
             enviando: false,
             eliminados: [],
             saldos_aux: {},
+            listDptos: [
+                "LA PAZ",
+                "COCHABAMBA",
+                "SANTA CRUZ",
+                "BENI",
+                "PANDO",
+                "POTOSÍ",
+                "ORURO",
+                "CHUQUISACA",
+                "TARIJA",
+            ],
         };
     },
     watch: {
@@ -1055,7 +1077,6 @@ export default {
                         .cantidad_usar_aux ||
                 this.accion != "edit"
             ) {
-                console.log("asd");
                 this.oCertificacion.certificacion_detalles[
                     index
                 ].presupuesto_usarse = monto_usarse;
@@ -1259,12 +1280,14 @@ export default {
                         ? this.oCertificacion.personal_designado
                         : ""
                 );
-                formdata.append(
-                    "departamento",
-                    this.oCertificacion.departamento
-                        ? this.oCertificacion.departamento
-                        : ""
-                );
+                if (this.oCertificacion.array_dptos.length > 0) {
+                    formdata.append(
+                        "departamento",
+                        this.oCertificacion.array_dptos.join(", ")
+                    );
+                } else {
+                    formdata.append("departamento", "");
+                }
                 formdata.append(
                     "municipio",
                     this.oCertificacion.municipio

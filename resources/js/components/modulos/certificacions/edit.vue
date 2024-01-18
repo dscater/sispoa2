@@ -48,7 +48,7 @@ export default {
             }),
             oCertificacion: {
                 formulario_id: "",
-                poa_seleccionado:"",
+                poa_seleccionado: "",
                 mo_id: "",
                 mod_id: "",
                 cantidad_usar: "",
@@ -64,6 +64,7 @@ export default {
                 municipio: "",
                 estado: "PENDIENTE",
                 certificacion_detalles: [],
+                array_dptos: [],
             },
             errors: [],
             enviando: false,
