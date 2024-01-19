@@ -675,6 +675,11 @@ export default {
                         sortable: true,
                     },
                     {
+                        key: "correlativo",
+                        label: "Nro. Correlativo",
+                        sortable: true,
+                    },
+                    {
                         key: "o_personal_designado.full_name",
                         label: "Personal designado",
                         sortable: true,
