@@ -19,9 +19,12 @@
                                     <div class="col-md-3">
                                         <button
                                             v-if="
-                                                permisos.includes(
+                                                (permisos.includes(
                                                     'formulario_cuatro.create'
-                                                )
+                                                ) &&
+                                                    oConfiguracionModuloForm4.crear ==
+                                                        1) ||
+                                                user.tipo == 'SUPER USUARIO'
                                             "
                                             class="btn btn-outline-primary bg-lightblue btn-flat btn-block"
                                             @click="
@@ -433,12 +436,19 @@ export default {
             filter: null,
             muestra_configuracion_modulo: false,
             muestra_aprobar_formularios: false,
+            oConfiguracionModuloForm4: {
+                modulo: "FORMULARIO 4",
+                crear: 0,
+                editar: 0,
+                eliminar: 0,
+            },
         };
     },
     mounted() {
         this.loadingWindow.close();
         this.getFormularioCuatros();
         this.obtienePermisos();
+        this.getConfiguracionFormulario4();
     },
     methods: {
         // Seleccionar Opciones de Tabla
@@ -658,6 +668,18 @@ export default {
         },
         muestraAprobarFormularios() {
             this.muestra_aprobar_formularios = true;
+        },
+        getConfiguracionFormulario4() {
+            axios
+                .get("/admin/configuracion_modulos/byModulo", {
+                    params: {
+                        modulo: "FORMULARIO 4",
+                    },
+                })
+                .then((response) => {
+                    this.oConfiguracionModuloForm4 =
+                        response.data.configuracion_modulo;
+                });
         },
     },
 };

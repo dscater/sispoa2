@@ -62,6 +62,7 @@ Route::prefix('admin')->group(function () {
 
     // CONFIGURACION MODULOS
     Route::get('/configuracion_modulos', [ConfiguracionModuloController::class, 'index']);
+    Route::get('/configuracion_modulos/byModulo', [ConfiguracionModuloController::class, 'byModulo']);
     Route::put('/configuracion_modulos/{configuracion_modulo}', [ConfiguracionModuloController::class, 'update']);
 
     // APROBAR FORMULARIOS

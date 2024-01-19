@@ -10,6 +10,6 @@ class ConfiguracionModulo extends Model
     use HasFactory;
 
     protected $fillable = [
-        "modulo", "editar", "eliminar",
+        "modulo", "crear", "editar", "eliminar",
     ];
 }

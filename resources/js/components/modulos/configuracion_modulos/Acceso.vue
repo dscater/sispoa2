@@ -7,7 +7,41 @@
                         {{ o_modulo.modulo }}
                     </p>
                 </div>
-                <div class="form-group col-md-6">
+                <div
+                    class="form-group"
+                    :class="[
+                        o_modulo.modulo == 'FORMULARIO 4'
+                            ? 'col-md-4'
+                            : 'col-md-6',
+                    ]"
+                    v-if="o_modulo.modulo == 'FORMULARIO 4'"
+                >
+                    <label
+                        :class="{
+                            'text-danger': errors.acceso,
+                        }"
+                        >Nuevo</label
+                    >
+                    <el-switch
+                        :disabled="enviando"
+                        style="display: block"
+                        v-model="sw_crear"
+                        active-color="#13ce66"
+                        inactive-color="#ff4949"
+                        active-text="HABILITADO"
+                        inactive-text="DESHABILITADO"
+                        @change="actualizaModulo"
+                    >
+                    </el-switch>
+                </div>
+                <div
+                    class="form-group"
+                    :class="[
+                        o_modulo.modulo == 'FORMULARIO 4'
+                            ? 'col-md-4'
+                            : 'col-md-6',
+                    ]"
+                >
                     <label
                         :class="{
                             'text-danger': errors.acceso,
@@ -26,7 +60,14 @@
                     >
                     </el-switch>
                 </div>
-                <div class="form-group col-md-6">
+                <div
+                    class="form-group"
+                    :class="[
+                        o_modulo.modulo == 'FORMULARIO 4'
+                            ? 'col-md-4'
+                            : 'col-md-6',
+                    ]"
+                >
                     <label
                         :class="{
                             'text-danger': errors.acceso,
@@ -56,6 +97,7 @@ export default {
         return {
             o_modulo: this.modulo,
             errors: [],
+            sw_crear: this.modulo.crear == 1 ? true : false,
             sw_editar: this.modulo.editar == 1 ? true : false,
             sw_eliminar: this.modulo.eliminar == 1 ? true : false,
             enviando: false,
@@ -64,6 +106,7 @@ export default {
     watch: {
         modulo(newVal, oldVal) {
             this.o_modulo = newVal;
+            this.sw_crear = this.o_modulo.crear == 1 ? true : false;
             this.sw_editar = this.o_modulo.editar == 1 ? true : false;
             this.sw_eliminar = this.o_modulo.eliminar == 1 ? true : false;
         },
@@ -75,6 +118,7 @@ export default {
                 let url = "/admin/configuracion_modulos/" + this.modulo.id;
                 let datos = {
                     _method: "put",
+                    crear: this.sw_crear ? 1 : 0,
                     editar: this.sw_editar ? 1 : 0,
                     eliminar: this.sw_eliminar ? 1 : 0,
                 };

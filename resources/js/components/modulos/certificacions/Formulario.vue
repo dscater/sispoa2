@@ -845,7 +845,7 @@ export default {
             axios
                 .get("/admin/formulario_cuatro/listado_index")
                 .then((response) => {
-                    console.log(response.data.listado);
+                    // console.log(response.data.listado);
                     this.listFormularios = response.data.listado;
                 });
         },
@@ -962,8 +962,8 @@ export default {
             let array_formulario_id =
                 this.oCertificacion.poa_seleccionado.split("|");
             this.oCertificacion.formulario_id = array_formulario_id[1];
-            console.log(this.oCertificacion.formulario_id);
-            console.log(this.oCertificacion.poa_seleccionado);
+            // console.log(this.oCertificacion.formulario_id);
+            // console.log(this.oCertificacion.poa_seleccionado);
             axios
                 .get("/admin/memoria_calculos/getOperaciones", {
                     params: {
@@ -1006,13 +1006,6 @@ export default {
                 this.getMontoPartida(index);
                 this.obtieneSaldo(index);
             }
-            // console.log("AA");
-            // console.log(
-            // "Cantidad usar: " +
-            // this.oCertificacion.certificacion_detalles[index]
-            // .cantidad_usar
-            // );
-            // console.log("BVB");
         },
         cargaDetallesCertificacion() {
             let certificacion_detalles =
@@ -1147,7 +1140,7 @@ export default {
         cargaArchivo(e) {
             this.oCertificacion.archivo = e.target.files[0];
             console.log(e);
-            console.log(this.oCertificacion.archivo);
+            // console.log(this.oCertificacion.archivo);
         },
         // ENVIAR FORMULARIO
         enviaRegistro() {
@@ -1356,8 +1349,8 @@ export default {
         validaSaldos() {
             let sw = false;
             this.oCertificacion.certificacion_detalles.forEach((elem) => {
-                console.log(elem);
-                console.log(elem.memoria_operacion_detalle.saldo);
+                // console.log(elem);
+                // console.log(elem.memoria_operacion_detalle.saldo);
                 if (parseFloat(elem.memoria_operacion_detalle.saldo) < 0) {
                     sw = true;
                 }
@@ -1379,13 +1372,13 @@ export default {
             let sw = false;
             this.oCertificacion.certificacion_detalles.forEach((elem) => {
                 if (elem.memoria_operacion_detalle.partida == "22210") {
-                    if (
-                        !this.oCertificacion.archivo ||
-                        this.oCertificacion.archivo == null ||
-                        this.oCertificacion.archivo == ""
-                    ) {
-                        sw = true;
-                    }
+                    // if (
+                    //     !this.oCertificacion.archivo ||
+                    //     this.oCertificacion.archivo == null ||
+                    //     this.oCertificacion.archivo == ""
+                    // ) {
+                    //     sw = true;
+                    // }
                 }
             });
 

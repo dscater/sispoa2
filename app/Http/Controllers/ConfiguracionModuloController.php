@@ -15,6 +15,16 @@ class ConfiguracionModuloController extends Controller
         return response()->JSON(["configuracion_modulos" => $configuracion_modulos, "total" => count($configuracion_modulos)]);
     }
 
+    public function byModulo(Request $request)
+    {
+        $configuracion_modulo = ConfiguracionModulo::where("modulo", $request->modulo)->get()->first();
+
+        if ($configuracion_modulo) {
+            return response()->JSON(["configuracion_modulo" => $configuracion_modulo], 200);
+        }
+        return response()->JSON(["message" => "No se encontró el modulo " . $request->modulo], 500);
+    }
+
     public function update(Request $request, ConfiguracionModulo $configuracion_modulo)
     {
         $configuracion_modulo->update($request->all());
