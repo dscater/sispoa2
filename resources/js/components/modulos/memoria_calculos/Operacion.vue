@@ -109,6 +109,118 @@
                     >
                     </el-input>
                 </div>
+
+                <div class="form-group col-md-2">
+                    <label
+                        :class="{
+                            'text-danger': errors.ue,
+                        }"
+                        >Unidad ejecutora*</label
+                    >
+                    <el-input
+                        class="w-100"
+                        :class="{
+                            'is-invalid': errors.ue,
+                        }"
+                        v-model="o_Operacion.ue"
+                        clearable
+                    >
+                    </el-input>
+                    <span
+                        class="error invalid-feedback"
+                        v-if="errors.ue"
+                        v-text="errors.ue[0]"
+                    ></span>
+                </div>
+                <div class="form-group col-md-2">
+                    <label
+                        :class="{
+                            'text-danger': errors.prog,
+                        }"
+                        >Programa*</label
+                    >
+                    <el-input
+                        class="w-100"
+                        :class="{
+                            'is-invalid': errors.prog,
+                        }"
+                        v-model="o_Operacion.prog"
+                        clearable
+                    >
+                    </el-input>
+                    <span
+                        class="error invalid-feedback"
+                        v-if="errors.prog"
+                        v-text="errors.prog[0]"
+                    ></span>
+                </div>
+                <div class="form-group col-md-2">
+                    <label
+                        :class="{
+                            'text-danger': errors.act,
+                        }"
+                        >Actividad*</label
+                    >
+                    <el-input
+                        class="w-100"
+                        :class="{
+                            'is-invalid': errors.act,
+                        }"
+                        v-model="o_Operacion.act"
+                        clearable
+                    >
+                    </el-input>
+                    <span
+                        class="error invalid-feedback"
+                        v-if="errors.act"
+                        v-text="errors.act[0]"
+                    ></span>
+                </div>
+                <div class="form-group col-md-3">
+                    <label
+                        :class="{
+                            'text-danger': errors.lugar,
+                        }"
+                        >Lugar de Ejecución de la Operación*</label
+                    >
+                    <el-input
+                        class="w-100"
+                        :class="{
+                            'is-invalid': errors.lugar,
+                        }"
+                        v-model="o_Operacion.lugar"
+                        clearable
+                    >
+                    </el-input>
+                    <span
+                        class="error invalid-feedback"
+                        v-if="errors.lugar"
+                        v-text="errors.lugar[0]"
+                    ></span>
+                </div>
+                <div class="form-group col-md-3">
+                    <label
+                        :class="{
+                            'text-danger': errors.responsable,
+                        }"
+                        >Responsable de Ejecución de la Operación /
+                        Tarea*</label
+                    >
+                    <el-input
+                        class="w-100"
+                        :class="{
+                            'is-invalid': errors.responsable,
+                        }"
+                        v-model="o_Operacion.responsable"
+                        clearable
+                    >
+                    </el-input>
+                    <span
+                        class="error invalid-feedback"
+                        v-if="errors.responsable"
+                        v-text="errors.responsable[0]"
+                    ></span>
+                </div>
             </div>
             <div
                 class="row detalle"
@@ -132,118 +244,6 @@
                         </button>
                         <div class="card-body">
                             <div class="row">
-                                <div class="form-group col-md-2">
-                                    <label
-                                        :class="{
-                                            'text-danger': errors.ue,
-                                        }"
-                                        >Unidad ejecutora*</label
-                                    >
-                                    <el-input
-                                        class="w-100"
-                                        :class="{
-                                            'is-invalid': errors.ue,
-                                        }"
-                                        v-model="item_mod.ue"
-                                        clearable
-                                    >
-                                    </el-input>
-                                    <span
-                                        class="error invalid-feedback"
-                                        v-if="errors.ue"
-                                        v-text="errors.ue[0]"
-                                    ></span>
-                                </div>
-                                <div class="form-group col-md-2">
-                                    <label
-                                        :class="{
-                                            'text-danger': errors.prog,
-                                        }"
-                                        >Programa*</label
-                                    >
-                                    <el-input
-                                        class="w-100"
-                                        :class="{
-                                            'is-invalid': errors.prog,
-                                        }"
-                                        v-model="item_mod.prog"
-                                        clearable
-                                    >
-                                    </el-input>
-                                    <span
-                                        class="error invalid-feedback"
-                                        v-if="errors.prog"
-                                        v-text="errors.prog[0]"
-                                    ></span>
-                                </div>
-                                <div class="form-group col-md-2">
-                                    <label
-                                        :class="{
-                                            'text-danger': errors.act,
-                                        }"
-                                        >Actividad*</label
-                                    >
-                                    <el-input
-                                        class="w-100"
-                                        :class="{
-                                            'is-invalid': errors.act,
-                                        }"
-                                        v-model="item_mod.act"
-                                        clearable
-                                    >
-                                    </el-input>
-                                    <span
-                                        class="error invalid-feedback"
-                                        v-if="errors.act"
-                                        v-text="errors.act[0]"
-                                    ></span>
-                                </div>
-                                <div class="form-group col-md-3">
-                                    <label
-                                        :class="{
-                                            'text-danger': errors.lugar,
-                                        }"
-                                        >Lugar de Ejecución de la
-                                        Operación*</label
-                                    >
-                                    <el-input
-                                        class="w-100"
-                                        :class="{
-                                            'is-invalid': errors.lugar,
-                                        }"
-                                        v-model="item_mod.lugar"
-                                        clearable
-                                    >
-                                    </el-input>
-                                    <span
-                                        class="error invalid-feedback"
-                                        v-if="errors.lugar"
-                                        v-text="errors.lugar[0]"
-                                    ></span>
-                                </div>
-                                <div class="form-group col-md-3">
-                                    <label
-                                        :class="{
-                                            'text-danger': errors.responsable,
-                                        }"
-                                        >Responsable de Ejecución de la
-                                        Operación / Tarea*</label
-                                    >
-                                    <el-input
-                                        class="w-100"
-                                        :class="{
-                                            'is-invalid': errors.responsable,
-                                        }"
-                                        v-model="item_mod.responsable"
-                                        clearable
-                                    >
-                                    </el-input>
-                                    <span
-                                        class="error invalid-feedback"
-                                        v-if="errors.responsable"
-                                        v-text="errors.responsable[0]"
-                                    ></span>
-                                </div>
                                 <div class="form-group col-md-3">
                                     <label
                                         :class="{
@@ -311,6 +311,7 @@
                                         }"
                                         v-model="item_mod.nro"
                                         clearable
+                                        readonly
                                     >
                                     </el-input>
                                     <span
@@ -319,7 +320,7 @@
                                         v-text="errors.nro[0]"
                                     ></span>
                                 </div>
-                                <div class="form-group col-md-4">
+                                <!-- <div class="form-group col-md-4">
                                     <label
                                         :class="{
                                             'text-danger':
@@ -344,8 +345,8 @@
                                         v-if="errors.descripcion_detallada"
                                         v-text="errors.descripcion_detallada[0]"
                                     ></span>
-                                </div>
-                                <div class="form-group col-md-3">
+                                </div> -->
+                                <div class="form-group col-md-2">
                                     <label
                                         :class="{
                                             'text-danger': errors.cantidad,
@@ -370,7 +371,7 @@
                                         v-text="errors.cantidad[0]"
                                     ></span>
                                 </div>
-                                <div class="form-group col-md-3">
+                                <div class="form-group col-md-2">
                                     <label
                                         :class="{
                                             'text-danger': errors.unidad,
@@ -443,7 +444,7 @@
                                         v-text="errors.total[0]"
                                     ></span>
                                 </div>
-                                <div class="form-group col-md-3">
+                                <div class="form-group col-md-6">
                                     <label
                                         :class="{
                                             'text-danger': errors.justificacion,
@@ -827,6 +828,11 @@ export default {
                 memoria_id: "",
                 operacion_id: "",
                 detalle_operacion_id: "",
+                ue: "",
+                prog: "",
+                act: "",
+                lugar: "",
+                responsable: "",
                 total_operacion: 0,
                 memoria_operacion_detalles: [
                     {
@@ -901,6 +907,9 @@ export default {
         },
         operacion(newVal, oldVal) {
             this.o_Operacion = newVal;
+            setTimeout(() => {
+                this.ennumerarDetalles();
+            });
         },
     },
     methods: {
@@ -1028,11 +1037,27 @@ export default {
                 dic: "",
                 total_actividad: 0,
             });
+            setTimeout(() => {
+                this.ennumerarDetalles();
+            }, 300);
         },
         quitarDetalle(index_mod, id) {
             this.o_Operacion.memoria_operacion_detalles.splice(index_mod, 1);
             if (id != 0) {
                 this.$emit("quitar_detalle", id);
+            }
+
+            setTimeout(() => {
+                this.ennumerarDetalles();
+            }, 300);
+        },
+        ennumerarDetalles() {
+            for (
+                let i = 0;
+                i < this.o_Operacion.memoria_operacion_detalles.length;
+                i++
+            ) {
+                this.o_Operacion.memoria_operacion_detalles[i].nro = i + 1;
             }
         },
         // FIN DETALLES

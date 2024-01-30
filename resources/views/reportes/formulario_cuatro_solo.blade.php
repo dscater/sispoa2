@@ -203,7 +203,7 @@
             <tbody>
                 <tr>
                     <td class="azul bold" width="15%">CÓDIGO PEI</td>
-                    <td class="verde_claro bold">{{ $formulario->codigo_pei }}</td>
+                    <td class="verde_claro bold">{!! str_replace('|', '<br/>', $formulario->codigo_pei) !!}</td>
                 </tr>
                 <tr>
                     <td class="azul bold" width="15%">RESULTADO INSTITUCIONAL</td>
@@ -215,7 +215,7 @@
                 </tr>
                 <tr>
                     <td class="azul bold">CÓDIGO POA</td>
-                    <td class="verde_claro bold">{{ $formulario->codigo_poa }}</td>
+                    <td class="verde_claro bold">{!! str_replace('|', '<br/>', $formulario->codigo_poa) !!}</td>
                 </tr>
                 <tr>
                     <td class="azul bold">ACCIÓN DE CORTO PLAZO DE GESTIÓN
@@ -225,7 +225,7 @@
                 </tr>
                 <tr>
                     <td class="azul bold">INDICADOR DE PROCESO POA</td>
-                    <td class="verde_claro bold">{{ $formulario->indicador_proceso }}</td>
+                    <td class="verde_claro bold">{!! str_replace(',', '<br/>', $formulario->indicador_proceso) !!}</td>
                 </tr>
                 <tr>
                     <td class="azul bold">LINEA DE BASE
@@ -381,7 +381,7 @@
             '11' => 'noviembre',
             '12' => 'diciembre',
         ];
-        
+
         $fecha = 'La Paz ' . date('d') . ' de ' . $meses_text[date('m')] . ' de ' . date('Y');
     @endphp
     <table>

@@ -77,6 +77,61 @@
                         v-text="errors.operacion[0]"
                     ></span>
                 </div>
+                <div class="form-group col-md-2">
+                    <label>Ponderación %</label>
+                    <input
+                        type="number"
+                        placeholder="Ponderación %"
+                        v-model="o_Operacion.ponderacion"
+                        class="form-control"
+                        step="0.01"
+                        :class="{
+                            'is-invalid': errors['ponderacion'],
+                        }"
+                    />
+                    <span
+                        class="error invalid-feedback"
+                        v-if="errors['ponderacion']"
+                        v-text="errors['ponderacion'][0]"
+                    ></span>
+                </div>
+                <div class="form-group col-md-4">
+                    <label>Resultado intermedio esperado</label>
+                    <el-input
+                        type="textarea"
+                        autosize
+                        placeholder="Resultado intermedio esperado"
+                        :class="{
+                            'is-invalid': errors['resultado_esperado'],
+                        }"
+                        v-model="o_Operacion.resultado_esperado"
+                        clearable
+                    >
+                    </el-input>
+                    <span
+                        class="error invalid-feedback"
+                        v-if="errors['resultado_esperado']"
+                        v-text="errors['resultado_esperado'][0]"
+                    ></span>
+                </div>
+                <div class="form-group col-md-4">
+                    <label>Medios de verificación</label>
+                    <el-input
+                        type="textarea"
+                        autosize
+                        placeholder="Medios de verificación"
+                        :class="{
+                            'is-invalid': errors['medios_verificacion'],
+                        }"
+                        v-model="o_Operacion.medios_verificacion"
+                    >
+                    </el-input>
+                    <span
+                        class="error invalid-feedback"
+                        v-if="errors['medios_verificacion']"
+                        v-text="errors['medios_verificacion'][0]"
+                    ></span>
+                </div>
             </div>
             <div
                 class="row detalle"
@@ -107,101 +162,6 @@
                                 X
                             </button>
                             <div class="row mt-3">
-                                <div class="form-group col-md-2">
-                                    <label>Ponderación %</label>
-                                    <input
-                                        type="number"
-                                        placeholder="Ponderación %"
-                                        v-model="detalle.ponderacion"
-                                        class="form-control"
-                                        step="0.01"
-                                        :class="{
-                                            'is-invalid':
-                                                errors[
-                                                    'ponderacion.' +
-                                                        index_detalle
-                                                ],
-                                        }"
-                                    />
-                                    <span
-                                        class="error invalid-feedback"
-                                        v-if="
-                                            errors[
-                                                'ponderacion.' + index_detalle
-                                            ]
-                                        "
-                                        v-text="
-                                            errors[
-                                                'ponderacion.' + index_detalle
-                                            ][0]
-                                        "
-                                    ></span>
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label>Resultado intermedio esperado</label>
-                                    <el-input
-                                        type="textarea"
-                                        autosize
-                                        placeholder="Resultado intermedio esperado"
-                                        :class="{
-                                            'is-invalid':
-                                                errors[
-                                                    'resultado_esperado.' +
-                                                        index_detalle
-                                                ],
-                                        }"
-                                        v-model="detalle.resultado_esperado"
-                                        clearable
-                                    >
-                                    </el-input>
-                                    <span
-                                        class="error invalid-feedback"
-                                        v-if="
-                                            errors[
-                                                'resultado_esperado.' +
-                                                    index_detalle
-                                            ]
-                                        "
-                                        v-text="
-                                            errors[
-                                                'resultado_esperado.' +
-                                                    index_detalle
-                                            ][0]
-                                        "
-                                    ></span>
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label>Medios de verificación</label>
-                                    <el-input
-                                        type="textarea"
-                                        autosize
-                                        placeholder="Medios de verificación"
-                                        :class="{
-                                            'is-invalid':
-                                                errors[
-                                                    'medios_verificacion.' +
-                                                        index_detalle
-                                                ],
-                                        }"
-                                        v-model="detalle.medios_verificacion"
-                                    >
-                                    </el-input>
-                                    <span
-                                        class="error invalid-feedback"
-                                        v-if="
-                                            errors[
-                                                'medios_verificacion.' +
-                                                    index_detalle
-                                            ]
-                                        "
-                                        v-text="
-                                            errors[
-                                                'medios_verificacion.' +
-                                                    index_detalle
-                                            ][0]
-                                        "
-                                    ></span>
-                                </div>
                                 <div class="form-group col-md-2">
                                     <label>Código tarea</label>
                                     <el-input
@@ -264,7 +224,7 @@
                                         "
                                     ></span>
                                 </div>
-                                <div class="form-group col-md-4">
+                                <div class="form-group col-md-3">
                                     <label>Inicio</label>
                                     <input
                                         type="date"
@@ -285,7 +245,7 @@
                                         "
                                     ></span>
                                 </div>
-                                <div class="form-group col-md-4">
+                                <div class="form-group col-md-3">
                                     <label>Final</label>
                                     <input
                                         type="date"
@@ -596,6 +556,9 @@ export default {
                 subdireccion_id: "",
                 codigo_operacion: "",
                 operacion: "",
+                ponderacion: "",
+                resultado_esperado: "",
+                medios_verificacion: "",
                 fecha_registro: "",
                 detalle_operaciones: [],
             },

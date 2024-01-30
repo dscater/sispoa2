@@ -11,6 +11,7 @@ class Operacion extends Model
 
     protected $fillable = [
         "detalle_formulario_id", 'subdireccion_id', "codigo_operacion", "operacion",
+        "ponderacion", "resultado_esperado", "medios_verificacion",
     ];
 
     protected $with = ["detalle_operaciones"];

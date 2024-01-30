@@ -16,16 +16,18 @@
                         <div class="card">
                             <div class="card-header">
                                 <div class="row">
-                                    <div class="col-md-3">
+                                    <div
+                                        class="col-md-3"
+                                        v-if="
+                                            (permisos.includes(
+                                                'formulario_cuatro.create'
+                                            ) &&
+                                                oConfiguracionModuloForm4.crear ==
+                                                    1) ||
+                                            user.tipo == 'SUPER USUARIO'
+                                        "
+                                    >
                                         <button
-                                            v-if="
-                                                (permisos.includes(
-                                                    'formulario_cuatro.create'
-                                                ) &&
-                                                    oConfiguracionModuloForm4.crear ==
-                                                        1) ||
-                                                user.tipo == 'SUPER USUARIO'
-                                            "
                                             class="btn btn-outline-primary bg-lightblue btn-flat btn-block"
                                             @click="
                                                 abreModal('nuevo');

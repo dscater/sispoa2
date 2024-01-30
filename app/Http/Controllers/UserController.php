@@ -160,7 +160,7 @@ class UserController extends Controller
             'formulario_tres.index',
 
             'formulario_cuatro.index',
-            'formulario_cuatro.create',
+            // 'formulario_cuatro.create',
             'formulario_cuatro.edit',
             'formulario_cuatro.destroy',
 
@@ -176,7 +176,7 @@ class UserController extends Controller
 
             'memoria_calculos.index',
             'memoria_calculos.create',
-            'memoria_calculos.edit',
+            // 'memoria_calculos.edit',
             'memoria_calculos.destroy',
 
             'saldo_presupuesto.index',
@@ -232,7 +232,7 @@ class UserController extends Controller
             "seguimiento_trimestral.index",
 
             'formulario_cuatro.index',
-            'formulario_cuatro.create',
+            // 'formulario_cuatro.create',
             'formulario_cuatro.edit',
             'formulario_cuatro.destroy',
 
@@ -248,7 +248,7 @@ class UserController extends Controller
 
             'memoria_calculos.index',
             'memoria_calculos.create',
-            'memoria_calculos.edit',
+            // 'memoria_calculos.edit',
             'memoria_calculos.destroy',
 
             'aprobar.modulos',
@@ -270,7 +270,7 @@ class UserController extends Controller
             "seguimiento_trimestral.index",
 
             'formulario_cuatro.index',
-            'formulario_cuatro.create',
+            // 'formulario_cuatro.create',
             'formulario_cuatro.edit',
             'formulario_cuatro.destroy',
 
@@ -286,7 +286,7 @@ class UserController extends Controller
 
             'memoria_calculos.index',
             'memoria_calculos.create',
-            'memoria_calculos.edit',
+            // 'memoria_calculos.edit',
             'memoria_calculos.destroy',
 
             'aprobar.modulos',
@@ -308,7 +308,7 @@ class UserController extends Controller
             "seguimiento_trimestral.index",
 
             'formulario_cuatro.index',
-            'formulario_cuatro.create',
+            // 'formulario_cuatro.create',
             'formulario_cuatro.edit',
             'formulario_cuatro.destroy',
 
@@ -324,7 +324,7 @@ class UserController extends Controller
 
             'memoria_calculos.index',
             'memoria_calculos.create',
-            'memoria_calculos.edit',
+            // 'memoria_calculos.edit',
             'memoria_calculos.destroy',
 
             'aprobar.modulos',
@@ -345,7 +345,7 @@ class UserController extends Controller
 
             'memoria_calculos.index',
             'memoria_calculos.create',
-            'memoria_calculos.edit',
+            // 'memoria_calculos.edit',
             'memoria_calculos.destroy',
         ],
         'MAE' => [
@@ -542,7 +542,7 @@ class UserController extends Controller
         $conf_mcalculo = ConfiguracionModulo::where("modulo", "MEMORIA DE CÁLCULO")->get()->first();
         if ($conf_mcalculo->editar == 0) {
             // agregar index permiso
-            $index[] = array_search("memoria_calculos.edit", $permisos);
+            // $index[] = array_search("memoria_calculos.edit", $permisos);
         }
         if ($conf_mcalculo->eliminar == 0) {
             // agregar index permiso

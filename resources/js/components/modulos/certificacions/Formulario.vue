@@ -5,62 +5,16 @@
                 <div class="col-md-12">
                     <h3 class="card-title w-full font-weight-bold">
                         <i class="fas fa-edit"></i>
-                        Editar Registro
+                        <span v-if="accion == 'edit'">Editar Registro</span>
+                        <span v-else>Formulario Registro</span>
                     </h3>
-                </div>
-            </div>
-            <div class="row mt-3">
-                <div class="col-md-12">
-                    <div class="contenedor_pasos text-center">
-                        <button
-                            class="paso"
-                            v-for="(paso, index) in listPasos"
-                            :key="index"
-                            :class="{
-                                active: nro_paso == paso.nro,
-                                error: paso.error,
-                            }"
-                            @click="cambiaPaso(paso.nro)"
-                        >
-                            <div class="nro_paso" v-text="paso.nro"></div>
-                            <div class="txt">
-                                {{ paso.label }}
-                            </div>
-                        </button>
-                    </div>
                 </div>
             </div>
         </div>
         <div class="card-body">
             <div class="row">
-                <div class="col-md-6 ml-auto mr-auto">
-                    <div class="row">
-                        <div class="col-md-6 p-0 mb-3">
-                            <el-button
-                                v-show="nro_paso > 1"
-                                class="btn btn-primary bg-light btn-flat btn-block"
-                                :loading="enviando"
-                                @click="cambiaPaso(nro_paso - 1)"
-                                ><i class="fa fa-arrow-left"></i>
-                                Anterior</el-button
-                            >
-                        </div>
-                        <div class="col-md-6 p-0 mb-3">
-                            <el-button
-                                v-show="nro_paso < listPasos.length"
-                                class="btn btn-primary bg-light btn-flat btn-block"
-                                :loading="enviando"
-                                @click="cambiaPaso(nro_paso + 1)"
-                                >Siguiente <i class="fa fa-arrow-right"></i
-                            ></el-button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
                 <div
-                    v-show="nro_paso == 1"
-                    class="form-group col-md-6 ml-auto mr-auto border border-1 p-3"
+                    class="form-group col-12 border border-1 p-3"
                 >
                     <label
                         :class="{
@@ -93,7 +47,6 @@
                     ></span>
                 </div>
                 <div
-                    v-show="nro_paso == 2"
                     class="form-group col-md-6 ml-auto mr-auto border border-1 p-3"
                 >
                     <label
@@ -298,7 +251,6 @@
                     </div>
                 </div>
                 <div
-                    v-show="nro_paso == 3"
                     class="form-group col-md-6 ml-auto mr-auto border border-1 border-right-0 p-3"
                 >
                     <div
@@ -416,7 +368,6 @@
                     </div>
                 </div>
                 <div
-                    v-show="nro_paso == 4"
                     class="form-group col-md-6 ml-auto mr-auto border border-1 p-3"
                 >
                     <label
@@ -438,7 +389,6 @@
                     ></span>
                 </div>
                 <div
-                    v-show="nro_paso == 5"
                     class="form-group col-md-6 ml-auto mr-auto border border-1 p-3"
                 >
                     <label
@@ -460,7 +410,6 @@
                     ></span>
                 </div>
                 <div
-                    v-show="nro_paso == 6"
                     class="form-group col-md-6 ml-auto mr-auto border border-1 p-3"
                 >
                     <label
@@ -510,7 +459,6 @@
                     ></span>
                 </div>
                 <div
-                    v-show="nro_paso == 7"
                     class="form-group col-md-6 ml-auto mr-auto border border-1 p-3"
                 >
                     <label
@@ -544,7 +492,6 @@
                     ></span>
                 </div>
                 <div
-                    v-show="nro_paso == 8"
                     class="form-group col-md-6 ml-auto mr-auto border border-1 p-3"
                 >
                     <div class="row">
@@ -593,7 +540,6 @@
                     </div>
                 </div>
                 <div
-                    v-show="nro_paso == 9"
                     class="form-group col-md-6 ml-auto mr-auto border border-1 p-3"
                 >
                     <label
@@ -625,7 +571,6 @@
                     ></span>
                 </div>
                 <div
-                    v-show="nro_paso == 10"
                     class="form-group col-md-6 ml-auto mr-auto border border-1 p-3"
                 >
                     <label
@@ -658,7 +603,6 @@
                     ></span>
                 </div>
                 <div
-                    v-show="nro_paso == 11"
                     class="form-group col-md-6 ml-auto mr-auto border border-1 p-3"
                 >
                     <label
@@ -813,12 +757,13 @@ export default {
             return this.accion == "edit" ? "Editar registro" : "Nuevo registro";
         },
         muestraBoton() {
-            if (this.accion == "edit") {
-                return true;
-            } else {
-                if (this.nro_paso == this.listPasos.length) return true;
-            }
-            return false;
+            return true;
+            // if (this.accion == "edit") {
+            //     return true;
+            // } else {
+            //     if (this.nro_paso == this.listPasos.length) return true;
+            // }
+            // return false;
         },
     },
     mounted() {

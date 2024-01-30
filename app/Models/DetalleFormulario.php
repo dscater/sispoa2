@@ -11,7 +11,7 @@ class DetalleFormulario extends Model
     use HasFactory;
 
     protected $fillable = [
-        'formulario_id', 'fecha_registro',
+        'formulario_id', 'formulario_seleccionado', 'fecha_registro',
     ];
 
     protected $with = ["formulario", "operacions"];

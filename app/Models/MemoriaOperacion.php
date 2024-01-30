@@ -13,6 +13,7 @@ class MemoriaOperacion extends Model
         "memoria_id",
         "operacion_id",
         "detalle_operacion_id",
+        "ue", "prog", "act", "lugar", "responsable",
         "total_operacion",
         "fecha_registro",
     ];

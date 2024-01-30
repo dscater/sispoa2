@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\DB;
 class DetalleFormularioController extends Controller
 {
     public $validacion = [
-        'formulario_id' => 'required||unique:detalle_formularios,formulario_id',
+        'formulario_seleccionado' => 'required||unique:detalle_formularios,formulario_seleccionado',
     ];
 
     public $mensajes = [];
@@ -40,6 +40,8 @@ class DetalleFormularioController extends Controller
         DB::beginTransaction();
         try {
             $request['fecha_registro'] = date('Y-m-d');
+            $array_form_seleccionado = explode("|", $request["formulario_seleccionado"]);
+            $request["formulario_id"] = $array_form_seleccionado[1];
             $nuevo_detalle_formulario = DetalleFormulario::create(array_map('mb_strtoupper', $request->except("data")));
 
             $data = $request->data;
@@ -48,12 +50,15 @@ class DetalleFormularioController extends Controller
                     "codigo_operacion" => mb_strtoupper($d["codigo_operacion"]),
                     "subdireccion_id" => $d["subdireccion_id"] ? $d["subdireccion_id"] : null,
                     "operacion" => mb_strtoupper($d["operacion"]),
+                    "ponderacion" => $d["ponderacion"],
+                    "resultado_esperado" => mb_strtoupper($d["resultado_esperado"]),
+                    "medios_verificacion" => mb_strtoupper($d["medios_verificacion"]),
                 ]);
                 foreach ($d["detalle_operaciones"] as $do) {
                     $nueva_operacion->detalle_operaciones()->create([
-                        "ponderacion" => $do["ponderacion"],
-                        "resultado_esperado" => mb_strtoupper($do["resultado_esperado"]),
-                        "medios_verificacion" => mb_strtoupper($do["medios_verificacion"]),
+                        "ponderacion" => $nueva_operacion->ponderacion,
+                        "resultado_esperado" => mb_strtoupper($nueva_operacion->resultado_esperado),
+                        "medios_verificacion" => mb_strtoupper($nueva_operacion->medios_verificacion),
                         "codigo_tarea" => mb_strtoupper($do["codigo_tarea"]),
                         "actividad_tarea" => mb_strtoupper($do["actividad_tarea"]),
                         "pt_e" => mb_strtoupper($do["pt_e"]),
@@ -94,7 +99,7 @@ class DetalleFormularioController extends Controller
 
     public function update(Request $request, DetalleFormulario $detalle_formulario)
     {
-        $this->validacion['formulario_id'] = 'required||unique:detalle_formularios,formulario_id,' . $detalle_formulario->id;
+        $this->validacion['formulario_seleccionado'] = 'required||unique:detalle_formularios,formulario_seleccionado,' . $detalle_formulario->id;
         $request->validate($this->validacion, $this->mensajes);
 
         DB::beginTransaction();
@@ -124,6 +129,9 @@ class DetalleFormularioController extends Controller
                         "subdireccion_id" => $d["subdireccion_id"] ? $d["subdireccion_id"] : null,
                         "codigo_operacion" => mb_strtoupper($d["codigo_operacion"]),
                         "operacion" => mb_strtoupper($d["operacion"]),
+                        "ponderacion" => $d["ponderacion"],
+                        "resultado_esperado" => mb_strtoupper($d["resultado_esperado"]),
+                        "medios_verificacion" => mb_strtoupper($d["medios_verificacion"]),
                     ]);
                 } else {
                     $operacion = Operacion::find($d["id"]);
@@ -132,6 +140,9 @@ class DetalleFormularioController extends Controller
                         "subdireccion_id" => $d["subdireccion_id"] ? $d["subdireccion_id"] : null,
                         "codigo_operacion" => mb_strtoupper($d["codigo_operacion"]),
                         "operacion" => mb_strtoupper($d["operacion"]),
+                        "ponderacion" => $d["ponderacion"],
+                        "resultado_esperado" => mb_strtoupper($d["resultado_esperado"]),
+                        "medios_verificacion" => mb_strtoupper($d["medios_verificacion"]),
                     ]);
                 }
 
@@ -139,9 +150,9 @@ class DetalleFormularioController extends Controller
                 foreach ($d["detalle_operaciones"] as $do) {
                     if ($do["id"] == 0 || $do["id"] == "") {
                         $nueva_operacion->detalle_operaciones()->create([
-                            "ponderacion" => $do["ponderacion"],
-                            "resultado_esperado" => mb_strtoupper($do["resultado_esperado"]),
-                            "medios_verificacion" => mb_strtoupper($do["medios_verificacion"]),
+                            "ponderacion" => $nueva_operacion->ponderacion,
+                            "resultado_esperado" => mb_strtoupper($nueva_operacion->resultado_esperado),
+                            "medios_verificacion" => mb_strtoupper($nueva_operacion->medios_verificacion),
                             "codigo_tarea" => mb_strtoupper($do["codigo_tarea"]),
                             "actividad_tarea" => mb_strtoupper($do["actividad_tarea"]),
                             "pt_e" => mb_strtoupper($do["pt_e"]),
@@ -162,9 +173,9 @@ class DetalleFormularioController extends Controller
                     } else {
                         $detalle_operacion = DetalleOperacion::find($do["id"]);
                         $detalle_operacion->update([
-                            "ponderacion" => $do["ponderacion"],
-                            "resultado_esperado" => mb_strtoupper($do["resultado_esperado"]),
-                            "medios_verificacion" => mb_strtoupper($do["medios_verificacion"]),
+                            "ponderacion" => $nueva_operacion->ponderacion,
+                            "resultado_esperado" => mb_strtoupper($nueva_operacion->resultado_esperado),
+                            "medios_verificacion" => mb_strtoupper($nueva_operacion->medios_verificacion),
                             "codigo_tarea" => mb_strtoupper($do["codigo_tarea"]),
                             "actividad_tarea" => mb_strtoupper($do["actividad_tarea"]),
                             "pt_e" => mb_strtoupper($do["pt_e"]),

@@ -1106,7 +1106,7 @@ class ReporteController extends Controller
         $sheet->setCellValue('A' . $fila, 'INDICADOR DE PROCESO POA');
         $sheet->mergeCells("A" . $fila . ":C" . $fila);  //COMBINAR CELDAS
         $sheet->getStyle('A' . $fila . ":C" . $fila)->applyFromArray($styleArray);
-        $sheet->setCellValue('D' . $fila, $formulario_cuatro->indicador_proceso);
+        $sheet->setCellValue('D' . $fila, str_replace(',', "\n", $formulario_cuatro->indicador_proceso));
         $sheet->mergeCells("D" . $fila . ":U" . $fila);  //COMBINAR
         $sheet->getStyle('D' . $fila . ':U' . $fila)->applyFromArray($estilo_conenido2);
         $fila++;

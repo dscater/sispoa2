@@ -426,7 +426,7 @@ export default {
                         lugar: "",
                         responsable: "",
                         partida: "",
-                        nro: "",
+                        nro: 1,
                         descripcion: "",
                         cantidad: "",
                         unidad: "",

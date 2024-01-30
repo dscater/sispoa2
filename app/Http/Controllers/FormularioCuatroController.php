@@ -186,4 +186,32 @@ class FormularioCuatroController extends Controller
 
         return response()->JSON(["listado" => $listado_final]);
     }
+
+    public function listado_pei_index()
+    {
+        $listado = [];
+        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "ENLACE") {
+            $listado = FormularioCuatro::where("unidad_id", Auth::user()->unidad_id)->get();
+        } else {
+            $listado = FormularioCuatro::all();
+        }
+
+        $listado_final = [];
+        foreach ($listado as $list) {
+            $array_completo = explode("|", $list->codigo_pei); // el array que contiene todos los codigos poa y sus acciones
+            foreach ($array_completo as $index => $value) {
+                $array_codigo_accion = explode("-", $value, 2);
+                $nuevo_elemento = [
+                    "codigo_pei" => $value,
+                    "poa_seleccionado" => $index . '|' . $list->id,
+                    "codigo" => trim($array_codigo_accion[0]),
+                    "accion" => trim($array_codigo_accion[1]),
+                ];
+                // recorremos los codigos y accione para formar el nuevo listado
+                $listado_final[] = $nuevo_elemento;
+            }
+        }
+
+        return response()->JSON(["listado" => $listado_final]);
+    }
 }
