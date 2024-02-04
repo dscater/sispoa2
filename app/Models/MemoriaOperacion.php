@@ -29,7 +29,10 @@ class MemoriaOperacion extends Model
     public function getCodigoActividadAttribute()
     {
         $detalle_operacion = DetalleOperacion::find($this->detalle_operacion_id);
-        return $detalle_operacion->codigo_tarea;
+        if ($detalle_operacion) {
+            return $detalle_operacion->codigo_tarea;
+        }
+        return "";
     }
 
     public function getCodigoOperacionAttribute()
@@ -41,7 +44,10 @@ class MemoriaOperacion extends Model
     public function getDescripcionActividadAttribute()
     {
         $detalle_operacion = DetalleOperacion::find($this->detalle_operacion_id);
-        return $detalle_operacion->actividad_tarea;
+        if ($detalle_operacion) {
+            return $detalle_operacion->actividad_tarea;
+        }
+        return "";
     }
 
     public function getDescripcionOperacionAttribute()

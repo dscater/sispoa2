@@ -77,7 +77,7 @@ class MemoriaCalculoController extends Controller
             foreach ($data as $d) {
                 $nueva_operacion = $nuevo_memoria_calculo->operacions()->create([
                     "operacion_id" => mb_strtoupper($d["operacion_id"]),
-                    "detalle_operacion_id" => mb_strtoupper($d["detalle_operacion_id"]),
+                    // "detalle_operacion_id" => mb_strtoupper($d["detalle_operacion_id"]),
                     "ue" => mb_strtoupper($d["ue"]),
                     "prog" => mb_strtoupper($d["prog"]),
                     "act" => mb_strtoupper($d["act"]),
@@ -98,7 +98,7 @@ class MemoriaCalculoController extends Controller
                         "partida" => mb_strtoupper($mod["partida"]),
                         "nro" => mb_strtoupper($mod["nro"]),
                         "descripcion" => mb_strtoupper($mod["descripcion"]),
-                        "descripcion_detallada" => mb_strtoupper($mod["descripcion_detallada"]),
+                        // "descripcion_detallada" => mb_strtoupper($mod["descripcion_detallada"]),
                         "cantidad" => $mod["cantidad"],
                         "unidad" => mb_strtoupper($mod["unidad"]),
                         "costo" => mb_strtoupper($mod["costo"]),
@@ -234,7 +234,7 @@ class MemoriaCalculoController extends Controller
                 if (!isset($d["id"]) || $d["id"] == 0 || $d["id"] == "") {
                     $nueva_operacion = $memoria_calculo->operacions()->create([
                         "operacion_id" => mb_strtoupper($d["operacion_id"]),
-                        "detalle_operacion_id" => mb_strtoupper($d["detalle_operacion_id"]),
+                        // "detalle_operacion_id" => mb_strtoupper($d["detalle_operacion_id"]),
                         "ue" => mb_strtoupper($d["ue"]),
                         "prog" => mb_strtoupper($d["prog"]),
                         "act" => mb_strtoupper($d["act"]),
@@ -248,7 +248,7 @@ class MemoriaCalculoController extends Controller
                     $memoria_operacion = MemoriaOperacion::find($d["id"]);
                     $memoria_operacion->update([
                         "operacion_id" => mb_strtoupper($d["operacion_id"]),
-                        "detalle_operacion_id" => mb_strtoupper($d["detalle_operacion_id"]),
+                        // "detalle_operacion_id" => mb_strtoupper($d["detalle_operacion_id"]),
                         "ue" => mb_strtoupper($d["ue"]),
                         "prog" => mb_strtoupper($d["prog"]),
                         "act" => mb_strtoupper($d["act"]),
@@ -271,7 +271,7 @@ class MemoriaCalculoController extends Controller
                             "partida" => mb_strtoupper($mod["partida"]),
                             "nro" => mb_strtoupper($mod["nro"]),
                             "descripcion" => mb_strtoupper($mod["descripcion"]),
-                            "descripcion_detallada" => mb_strtoupper($mod["descripcion_detallada"]),
+                            // "descripcion_detallada" => mb_strtoupper($mod["descripcion_detallada"]),
                             "cantidad" => $mod["cantidad"],
                             "unidad" => mb_strtoupper($mod["unidad"]),
                             "costo" => mb_strtoupper($mod["costo"]),
@@ -303,7 +303,7 @@ class MemoriaCalculoController extends Controller
                             "partida" => mb_strtoupper($mod["partida"]),
                             "nro" => mb_strtoupper($mod["nro"]),
                             "descripcion" => mb_strtoupper($mod["descripcion"]),
-                            "descripcion_detallada" => mb_strtoupper($mod["descripcion_detallada"]),
+                            // "descripcion_detallada" => mb_strtoupper($mod["descripcion_detallada"]),
                             "cantidad" => $mod["cantidad"],
                             "unidad" => mb_strtoupper($mod["unidad"]),
                             "costo" => mb_strtoupper($mod["costo"]),

@@ -13,9 +13,7 @@
         </div>
         <div class="card-body">
             <div class="row">
-                <div
-                    class="form-group col-12 border border-1 p-3"
-                >
+                <div class="form-group col-12 border border-1 p-3">
                     <label
                         :class="{
                             'text-danger': errors.formulario_id,
@@ -128,6 +126,8 @@
                                 if (accion != 'edit') {
                                     certificacion_detalle.cantidad_usar =
                                         certificacion_detalle.memoria_operacion_detalle.saldo_cantidad;
+                                    certificacion_detalle.memoria_operacion_detalle.saldo = 0;
+                                    certificacion_detalle.memoria_operacion_detalle.saldo_cantidad = 0;
                                 }
                             "
                         >
@@ -181,13 +181,31 @@
                                             }}
                                         </p>
                                         <p>
-                                            <strong
-                                                >Cantidad requerida actual: </strong
+                                            <strong>Cantidad requerida: </strong
                                             >{{
                                                 certificacion_detalle
                                                     .memoria_operacion_detalle
                                                     .cantidad
                                             }}
+                                        </p>
+                                        <p>
+                                            <strong>Cantidad restante: </strong>
+                                            <span
+                                                :class="{
+                                                    'text-danger font-weight-bold':
+                                                        parseFloat(
+                                                            certificacion_detalle
+                                                                .memoria_operacion_detalle
+                                                                .saldo_cantidad
+                                                        ) <= 0,
+                                                }"
+                                            >
+                                                {{
+                                                    certificacion_detalle
+                                                        .memoria_operacion_detalle
+                                                        .saldo_cantidad
+                                                }}
+                                            </span>
                                         </p>
                                         <p>
                                             <strong>Unidad: </strong
@@ -727,6 +745,7 @@ export default {
             enviando: false,
             eliminados: [],
             saldos_aux: {},
+            saldos_cantidad_aux: {},
             listDptos: [
                 "LA PAZ",
                 "COCHABAMBA",
@@ -828,7 +847,7 @@ export default {
                         icon: "error",
                         title: "Error",
                         html:
-                            "La cantidad maxima permitida es de " +
+                            "La cantidad disponible es de " +
                             this.oCertificacion.certificacion_detalles[index]
                                 .saldo_form,
                         showConfirmButton: false,
@@ -842,23 +861,22 @@ export default {
                     this.oCertificacion.certificacion_detalles[index]
                         .cantidad_usar >
                     this.oCertificacion.certificacion_detalles[index]
-                        .memoria_operacion_detalle.saldo_cantidad
+                        .memoria_operacion_detalle.saldo_cantidad_aux
                 ) {
                     this.oCertificacion.certificacion_detalles[
                         index
                     ].cantidad_usar =
                         this.oCertificacion.certificacion_detalles[
                             index
-                        ].memoria_operacion_detalle.saldo_cantidad;
-
+                        ].memoria_operacion_detalle.saldo_cantidad_aux;
                     this.getMontoPartida(index);
                     Swal.fire({
                         icon: "error",
                         title: "Error",
                         html:
-                            "La cantidad maxima permitida es de " +
+                            "La cantidad disponible es de " +
                             this.oCertificacion.certificacion_detalles[index]
-                                .memoria_operacion_detalle.saldo_cantidad,
+                                .memoria_operacion_detalle.saldo_cantidad_aux,
                         showConfirmButton: false,
                         timer: 1500,
                     });
@@ -874,18 +892,33 @@ export default {
                     this.saldos_aux[index] =
                         parseFloat(
                             this.oCertificacion.certificacion_detalles[index]
-                                .memoria_operacion_detalle.saldo
+                                .memoria_operacion_detalle.saldo_aux
                         ) +
                         parseFloat(
                             this.oCertificacion.certificacion_detalles[index]
                                 .presupuesto_usarse_aux
                         );
                 }
+                if (!this.saldos_cantidad_aux[index]) {
+                    this.saldos_cantidad_aux[index] =
+                        parseFloat(
+                            this.oCertificacion.certificacion_detalles[index]
+                                .memoria_operacion_detalle.saldo_cantidad_aux
+                        ) +
+                        parseFloat(
+                            this.oCertificacion.certificacion_detalles[index]
+                                .cantidad_usar_aux
+                        );
+                }
             } else {
                 this.saldos_aux[index] =
                     this.oCertificacion.certificacion_detalles[
                         index
-                    ].memoria_operacion_detalle.saldo;
+                    ].memoria_operacion_detalle.saldo_aux;
+                this.saldos_cantidad_aux[index] =
+                    this.oCertificacion.certificacion_detalles[
+                        index
+                    ].memoria_operacion_detalle.saldo_cantidad_aux;
             }
 
             this.oCertificacion.certificacion_detalles[
@@ -899,6 +932,22 @@ export default {
                         .presupuesto_usarse
                         ? this.oCertificacion.certificacion_detalles[index]
                               .presupuesto_usarse
+                        : 0
+                );
+
+            this.oCertificacion.certificacion_detalles[
+                index
+            ].memoria_operacion_detalle.saldo_cantidad =
+                parseFloat(
+                    this.saldos_cantidad_aux[index]
+                        ? this.saldos_cantidad_aux[index]
+                        : 0
+                ) -
+                parseFloat(
+                    this.oCertificacion.certificacion_detalles[index]
+                        .cantidad_usar
+                        ? this.oCertificacion.certificacion_detalles[index]
+                              .cantidad_usar
                         : 0
                 );
         },
@@ -1018,6 +1067,10 @@ export default {
                 this.oCertificacion.certificacion_detalles[
                     index
                 ].presupuesto_usarse = monto_usarse;
+            } else {
+                this.oCertificacion.certificacion_detalles[
+                    index
+                ].presupuesto_usarse = monto_usarse;
             }
         },
         obtieneSaldo(index) {
@@ -1069,6 +1122,8 @@ export default {
                     costo: 0,
                     total: 0,
                     saldo: 0,
+                    saldo_aux: 0,
+                    saldo_cantidad_aux: 0,
                 },
                 listDetalles: [],
                 cantidad_usar_aux: 0,
@@ -1101,6 +1156,19 @@ export default {
                 this.listPasos[1].error = true;
                 return false;
             }
+            if (this.validaMontos()) {
+                Swal.fire({
+                    icon: "error",
+                    title: "ERROR",
+                    html: `Existen montos o cantidades vacias o con valor 0. Debes ingresar la cantidad y el monto a utilizar en cada detalle`,
+                    showConfirmButton: true,
+                    confirmButtonText: "Aceptar",
+                    confirmButtonColor: "#0069d9",
+                });
+                this.listPasos[1].error = true;
+                return false;
+            }
+
             if (this.accion != "edit") {
                 if (this.validaDetalleOperacion()) {
                     Swal.fire({
@@ -1290,6 +1358,26 @@ export default {
                 this.enviando = false;
                 console.log(e);
             }
+        },
+        validaMontos() {
+            let sw = false;
+            this.oCertificacion.certificacion_detalles.forEach((elem) => {
+                console.log(elem);
+                if (
+                    ("" + elem.cantidad_usar).trim() == "" ||
+                    parseFloat(elem.cantidad_usar) <= 0
+                ) {
+                    sw = true;
+                }
+                if (
+                    ("" + elem.presupuesto_usarse).trim() == "" ||
+                    parseFloat(elem.presupuesto_usarse) <= 0
+                ) {
+                    sw = true;
+                }
+            });
+
+            return sw;
         },
         validaSaldos() {
             let sw = false;

@@ -176,7 +176,7 @@ class UserController extends Controller
 
             'memoria_calculos.index',
             'memoria_calculos.create',
-            // 'memoria_calculos.edit',
+            'memoria_calculos.edit',
             'memoria_calculos.destroy',
 
             'saldo_presupuesto.index',
@@ -248,7 +248,7 @@ class UserController extends Controller
 
             'memoria_calculos.index',
             'memoria_calculos.create',
-            // 'memoria_calculos.edit',
+            'memoria_calculos.edit',
             'memoria_calculos.destroy',
 
             'aprobar.modulos',
@@ -286,7 +286,7 @@ class UserController extends Controller
 
             'memoria_calculos.index',
             'memoria_calculos.create',
-            // 'memoria_calculos.edit',
+            'memoria_calculos.edit',
             'memoria_calculos.destroy',
 
             'aprobar.modulos',
@@ -324,7 +324,7 @@ class UserController extends Controller
 
             'memoria_calculos.index',
             'memoria_calculos.create',
-            // 'memoria_calculos.edit',
+            'memoria_calculos.edit',
             'memoria_calculos.destroy',
 
             'aprobar.modulos',
@@ -345,7 +345,7 @@ class UserController extends Controller
 
             'memoria_calculos.index',
             'memoria_calculos.create',
-            // 'memoria_calculos.edit',
+            'memoria_calculos.edit',
             'memoria_calculos.destroy',
         ],
         'MAE' => [

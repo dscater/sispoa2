@@ -263,15 +263,15 @@ export default {
                             (index + 1)
                     );
                 }
-                if (
-                    item.detalle_operacion_id == null ||
-                    item.detalle_operacion_id == ""
-                ) {
-                    array_errors.push(
-                        "Debes seleccionar un <b>código de Actividad/Tarea</b> en el elemento " +
-                            (index + 1)
-                    );
-                }
+                // if (
+                //     item.detalle_operacion_id == null ||
+                //     item.detalle_operacion_id == ""
+                // ) {
+                //     array_errors.push(
+                //         "Debes seleccionar un <b>código de Actividad/Tarea</b> en el elemento " +
+                //             (index + 1)
+                //     );
+                // }
                 item.memoria_operacion_detalles.forEach(
                     (elem_detalle, index_detalle) => {
                         if (elem_detalle.ue == null || elem_detalle.ue == "") {
@@ -348,17 +348,17 @@ export default {
                                     (index_detalle + 1)
                             );
                         }
-                        if (
-                            elem_detalle.descripcion_detallada == null ||
-                            elem_detalle.descripcion_detallada == ""
-                        ) {
-                            array_errors.push(
-                                "Debes ingresar una <b>Descripción detallada por item (bien o servicio)</b> en el detalle " +
-                                    (index + 1) +
-                                    "-" +
-                                    (index_detalle + 1)
-                            );
-                        }
+                        // if (
+                        //     elem_detalle.descripcion_detallada == null ||
+                        //     elem_detalle.descripcion_detallada == ""
+                        // ) {
+                        //     array_errors.push(
+                        //         "Debes ingresar una <b>Descripción detallada por item (bien o servicio)</b> en el detalle " +
+                        //             (index + 1) +
+                        //             "-" +
+                        //             (index_detalle + 1)
+                        //     );
+                        // }
                         if (
                             elem_detalle.cantidad == null ||
                             elem_detalle.cantidad == ""
