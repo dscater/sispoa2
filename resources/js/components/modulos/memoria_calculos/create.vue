@@ -40,7 +40,7 @@
                                         <label
                                             :class="{
                                                 'text-danger':
-                                                    errors.formulario_id,
+                                                    errors.formulario_seleccionado,
                                             }"
                                             >Seleccionar código PEI*</label
                                         >
@@ -49,23 +49,30 @@
                                             class="w-100 d-block"
                                             :class="{
                                                 'is-invalid':
-                                                    errors.formulario_id,
+                                                    errors.formulario_seleccionado,
                                             }"
-                                            v-model="formulario_id"
+                                            v-model="formulario_seleccionado"
                                             clearable
                                         >
                                             <el-option
-                                                v-for="item in listFormularios"
-                                                :key="item.id"
-                                                :value="item.id"
+                                                v-for="(
+                                                    item, index_form
+                                                ) in listFormularios"
+                                                :key="index_form"
+                                                :value="item.pei_seleccionado"
                                                 :label="item.codigo_pei"
                                             >
                                             </el-option>
                                         </el-select>
                                         <span
                                             class="error invalid-feedback"
-                                            v-if="errors.formulario_id"
-                                            v-text="errors.formulario_id[0]"
+                                            v-if="
+                                                errors.formulario_seleccionado
+                                            "
+                                            v-text="
+                                                errors
+                                                    .formulario_seleccionado[0]
+                                            "
                                         ></span>
                                     </div>
                                 </div>
@@ -73,7 +80,7 @@
                         </div>
                         <Operacion
                             v-for="(operacion, index) in listOperacions"
-                            :formulario_id="formulario_id.toString()"
+                            :formulario_seleccionado="formulario_seleccionado"
                             :operacion="operacion"
                             :index="index"
                             @quitar="quitarOperacion"
@@ -135,7 +142,7 @@ export default {
             listOperacions: [],
             cantidad_registrados: 0,
             errors: [],
-            formulario_id: "",
+            formulario_seleccionado: "",
             cambioPagina: true,
         };
     },
@@ -147,7 +154,7 @@ export default {
                 this.enviable = false;
             }
         },
-        formulario_id(newVal, oldVal) {
+        formulario_seleccionado(newVal, oldVal) {
             if (newVal != "") {
                 this.agregaOperacion = true;
             } else {
@@ -163,9 +170,11 @@ export default {
     methods: {
         // OBTENER LA LISTA DE FORMULARIO
         getFormularios() {
-            axios.get("/admin/formulario_cuatro").then((response) => {
-                this.listFormularios = response.data.listado;
-            });
+            axios
+                .get("/admin/formulario_cuatro/listado_pei_index")
+                .then((response) => {
+                    this.listFormularios = response.data.listado;
+                });
         },
 
         // ENVIAR OPERACIONES
@@ -173,7 +182,7 @@ export default {
             let a_errores = this.validaData();
             if (a_errores.length == 0) {
                 let data = {
-                    formulario_id: this.formulario_id,
+                    formulario_seleccionado: this.formulario_seleccionado,
                     data: this.listOperacions,
                 };
                 axios
@@ -275,6 +284,12 @@ export default {
                 if (item.responsable == null || item.responsable == "") {
                     array_errors.push(
                         "Debes ingresar un <b>Responsable de Ejecución de la Operación / Tarea</b> en el elemento " +
+                            (index + 1)
+                    );
+                }
+                if (item.justificacion == null || item.justificacion == "") {
+                    array_errors.push(
+                        "Debes ingresar una <b>Justificación</b> en el elemento " +
                             (index + 1)
                     );
                 }
@@ -398,17 +413,17 @@ export default {
                                     (index_detalle + 1)
                             );
                         }
-                        if (
-                            elem_detalle.justificacion == null ||
-                            elem_detalle.justificacion == ""
-                        ) {
-                            array_errors.push(
-                                "Debes ingresar una <b>Justificación</b> en el detalle " +
-                                    (index + 1) +
-                                    "-" +
-                                    (index_detalle + 1)
-                            );
-                        }
+                        // if (
+                        //     elem_detalle.justificacion == null ||
+                        //     elem_detalle.justificacion == ""
+                        // ) {
+                        //     array_errors.push(
+                        //         "Debes ingresar una <b>Justificación</b> en el detalle " +
+                        //             (index + 1) +
+                        //             "-" +
+                        //             (index_detalle + 1)
+                        //     );
+                        // }
                     }
                 );
             });
@@ -424,6 +439,12 @@ export default {
                 operacion_id: "",
                 detalle_operacion_id: "",
                 total_operacion: 0,
+                ue: "",
+                prog: "",
+                act: "",
+                lugar: "",
+                responsable: "",
+                justificacion: "",
                 memoria_operacion_detalles: [
                     {
                         ue: "",

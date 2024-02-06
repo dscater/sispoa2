@@ -60,7 +60,7 @@
                                                     item, index_form
                                                 ) in listFormularios"
                                                 :key="index_form"
-                                                :value="item.poa_seleccionado"
+                                                :value="item.pei_seleccionado"
                                                 :label="item.codigo_pei"
                                             >
                                             </el-option>

@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Log as Debug;
 class MemoriaCalculoController extends Controller
 {
     public $validacion = [
-        'formulario_id' => 'required||unique:memoria_calculos,formulario_id',
+        'formulario_seleccionado' => 'required||unique:memoria_calculos,formulario_seleccionado',
     ];
 
     public $mensajes = [];
@@ -83,6 +83,7 @@ class MemoriaCalculoController extends Controller
                     "act" => mb_strtoupper($d["act"]),
                     "lugar" => mb_strtoupper($d["lugar"]),
                     "responsable" => mb_strtoupper($d["responsable"]),
+                    "justificacion" => mb_strtoupper($d["justificacion"]),
                     "total_operacion" => $d["total_operacion"],
                     "fecha_registro" => date("Y-m-d")
                 ]);
@@ -94,6 +95,7 @@ class MemoriaCalculoController extends Controller
                         "act" => mb_strtoupper($nueva_operacion->act),
                         "lugar" => mb_strtoupper($nueva_operacion->lugar),
                         "responsable" => mb_strtoupper($nueva_operacion->responsable),
+                        "justificacion" => mb_strtoupper($d["justificacion"]),
                         "partida_id" => mb_strtoupper($mod["partida_id"]),
                         "partida" => mb_strtoupper($mod["partida"]),
                         "nro" => mb_strtoupper($mod["nro"]),
@@ -174,7 +176,7 @@ class MemoriaCalculoController extends Controller
 
     public function update(Request $request, MemoriaCalculo $memoria_calculo)
     {
-        $this->validacion['formulario_id'] = 'required|unique:memoria_calculos,formulario_id,' . $memoria_calculo->id;
+        $this->validacion['formulario_seleccionado'] = 'required|unique:memoria_calculos,formulario_seleccionado,' . $memoria_calculo->id;
         $request->validate($this->validacion, $this->mensajes);
 
 
@@ -240,6 +242,7 @@ class MemoriaCalculoController extends Controller
                         "act" => mb_strtoupper($d["act"]),
                         "lugar" => mb_strtoupper($d["lugar"]),
                         "responsable" => mb_strtoupper($d["responsable"]),
+                        "justificacion" => mb_strtoupper($d["justificacion"]),
                         "total_operacion" => $d["total_operacion"],
                         "fecha_registro" => date("Y-m-d")
                     ]);
@@ -254,6 +257,7 @@ class MemoriaCalculoController extends Controller
                         "act" => mb_strtoupper($d["act"]),
                         "lugar" => mb_strtoupper($d["lugar"]),
                         "responsable" => mb_strtoupper($d["responsable"]),
+                        "justificacion" => mb_strtoupper($d["justificacion"]),
                         "total_operacion" => $d["total_operacion"],
                     ]);
                     $nueva_operacion = $memoria_operacion;
@@ -267,6 +271,7 @@ class MemoriaCalculoController extends Controller
                             "act" => mb_strtoupper($nueva_operacion->act),
                             "lugar" => mb_strtoupper($nueva_operacion->lugar),
                             "responsable" => mb_strtoupper($nueva_operacion->responsable),
+                            "justificacion" => mb_strtoupper($d["justificacion"]),
                             "partida_id" => mb_strtoupper($mod["partida_id"]),
                             "partida" => mb_strtoupper($mod["partida"]),
                             "nro" => mb_strtoupper($mod["nro"]),
@@ -299,6 +304,7 @@ class MemoriaCalculoController extends Controller
                             "act" => mb_strtoupper($nueva_operacion->act),
                             "lugar" => mb_strtoupper($nueva_operacion->lugar),
                             "responsable" => mb_strtoupper($nueva_operacion->responsable),
+                            "justificacion" => mb_strtoupper($d["justificacion"]),
                             "partida_id" => mb_strtoupper($mod["partida_id"]),
                             "partida" => mb_strtoupper($mod["partida"]),
                             "nro" => mb_strtoupper($mod["nro"]),

@@ -14,11 +14,12 @@ class MemoriaOperacion extends Model
         "operacion_id",
         "detalle_operacion_id",
         "ue", "prog", "act", "lugar", "responsable",
+        "justificacion",
         "total_operacion",
         "fecha_registro",
     ];
 
-    protected $appends = ["presupuesto", "descripcion_actividad", "descripcion_operacion", "codigo_operacion", "codigo_actividad"];
+    protected $appends = ["presupuesto", "descripcion_actividad", "descripcion_operacion", "codigo_operacion", "operacion_txt", "codigo_actividad"];
     protected $with = ["detalle_operacion"];
 
     public function getPresupuestoAttribute()
@@ -39,6 +40,12 @@ class MemoriaOperacion extends Model
     {
         $operacion = Operacion::find($this->operacion_id);
         return $operacion->codigo_operacion;
+    }
+
+    public function getOperacionTxtAttribute()
+    {
+        $operacion = Operacion::find($this->operacion_id);
+        return $operacion->operacion;
     }
 
     public function getDescripcionActividadAttribute()

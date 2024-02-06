@@ -221,6 +221,30 @@
                         v-text="errors.responsable[0]"
                     ></span>
                 </div>
+                <div class="form-group col-md-12" style="margin-bottom: 20px;">
+                    <label
+                        :class="{
+                            'text-danger': errors.justificacion,
+                        }"
+                        >Justificación*</label
+                    >
+                    <el-input
+                        type="textarea"
+                        autosize
+                        class="w-100"
+                        :class="{
+                            'is-invalid': errors.justificacion,
+                        }"
+                        v-model="o_Operacion.justificacion"
+                        clearable
+                    >
+                    </el-input>
+                    <span
+                        class="error invalid-feedback"
+                        v-if="errors.justificacion"
+                        v-text="errors.justificacion[0]"
+                    ></span>
+                </div>
             </div>
             <div
                 class="row detalle"
@@ -442,30 +466,6 @@
                                         class="error invalid-feedback"
                                         v-if="errors.total"
                                         v-text="errors.total[0]"
-                                    ></span>
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label
-                                        :class="{
-                                            'text-danger': errors.justificacion,
-                                        }"
-                                        >Justificación*</label
-                                    >
-                                    <el-input
-                                        type="textarea"
-                                        autosize
-                                        class="w-100"
-                                        :class="{
-                                            'is-invalid': errors.justificacion,
-                                        }"
-                                        v-model="item_mod.justificacion"
-                                        clearable
-                                    >
-                                    </el-input>
-                                    <span
-                                        class="error invalid-feedback"
-                                        v-if="errors.justificacion"
-                                        v-text="errors.justificacion[0]"
                                     ></span>
                                 </div>
                             </div>
@@ -817,7 +817,7 @@ export default {
             type: Number,
             default: 0,
         },
-        formulario_id: {
+        formulario_seleccionado: {
             type: String,
             default: "",
         },
@@ -828,12 +828,13 @@ export default {
                 memoria_id: "",
                 operacion_id: "",
                 detalle_operacion_id: "",
+                total_operacion: 0,
                 ue: "",
                 prog: "",
                 act: "",
                 lugar: "",
                 responsable: "",
-                total_operacion: 0,
+                justificacion: "",
                 memoria_operacion_detalles: [
                     {
                         ue: "",
@@ -876,7 +877,7 @@ export default {
             sw_accion: this.accion,
             errors: [],
             o_Operacion: this.operacion,
-            formulario_cuatro_id: this.formulario_id,
+            formulario_cuatro_id: this.formulario_seleccionado,
             listOperaciones: [],
             listPartidas: [],
             texto_operacion: "",
@@ -899,7 +900,7 @@ export default {
         }
     },
     watch: {
-        formulario_id(newVal, oldVal) {
+        formulario_seleccionado(newVal, oldVal) {
             this.formulario_cuatro_id = newVal;
             this.getOperacionesFormulario();
             this.o_Operacion.operacion_id = "";
@@ -950,7 +951,7 @@ export default {
         // OBTENER LAS OPERACIONES DEL FORMULARIO CUATRO
         getOperacionesFormulario() {
             axios
-                .get("/admin/formulario_cuatro/getOperaciones", {
+                .get("/admin/formulario_cuatro/getOperacionesFormularioSeleccionado", {
                     params: { id: this.formulario_cuatro_id },
                 })
                 .then((response) => {

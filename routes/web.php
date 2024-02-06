@@ -101,6 +101,7 @@ Route::prefix('admin')->group(function () {
     Route::get("formulario_cuatro/listado_index", [FormularioCuatroController::class, "listado_index"]);
     Route::get("formulario_cuatro/getPorUnidad", [FormularioCuatroController::class, "getPorUnidad"]);
     Route::get("formulario_cuatro/getOperaciones", [FormularioCuatroController::class, "getOperaciones"]);
+    Route::get("formulario_cuatro/getOperacionesFormularioSeleccionado", [FormularioCuatroController::class, "getOperacionesFormularioSeleccionado"]);
     Route::resource('formulario_cuatro', FormularioCuatroController::class)->only([
         'index', 'store', 'update', 'destroy', 'show'
     ]);

@@ -159,6 +159,14 @@ class FormularioCuatroController extends Controller
         return response()->JSON($operaciones);
     }
 
+    public function getOperacionesFormularioSeleccionado(Request $request)
+    {
+        $array = explode("|", $request->id);
+        $formulario_cuatro = FormularioCuatro::find($array[1]);
+        $operaciones = $formulario_cuatro->detalle_formulario->operacions;
+        return response()->JSON($operaciones);
+    }
+
     public function listado_index()
     {
         $listado = [];
@@ -203,7 +211,7 @@ class FormularioCuatroController extends Controller
                 $array_codigo_accion = explode("-", $value, 2);
                 $nuevo_elemento = [
                     "codigo_pei" => $value,
-                    "poa_seleccionado" => $index . '|' . $list->id,
+                    "pei_seleccionado" => $index . '|' . $list->id,
                     "codigo" => trim($array_codigo_accion[0]),
                     "accion" => trim($array_codigo_accion[1]),
                 ];
@@ -213,5 +221,35 @@ class FormularioCuatroController extends Controller
         }
 
         return response()->JSON(["listado" => $listado_final]);
+    }
+
+    public static function getPeiIndividual($pei_seleccionado)
+    {
+        $array_id = explode("|", $pei_seleccionado);
+        $formulario_cuatro = FormularioCuatro::find($array_id[1]);
+        $array_completo = explode("|", $formulario_cuatro->codigo_pei);
+        $codigo_pei = "";
+        foreach ($array_completo as $index => $value) {
+            if ($pei_seleccionado == $index . '|' . $formulario_cuatro->id) {
+                $codigo_pei = $value;
+                break;
+            }
+        }
+        return $codigo_pei;
+    }
+
+    public static function getPoaIndividual($poa_seleccionado)
+    {
+        $array_id = explode("|", $poa_seleccionado);
+        $formulario_cuatro = FormularioCuatro::find($array_id[1]);
+        $array_completo = explode("|", $formulario_cuatro->codigo_pei);
+        $codigo_pei = "";
+        foreach ($array_completo as $index => $value) {
+            if ($poa_seleccionado == $index . '|' . $formulario_cuatro->id) {
+                $codigo_pei = $value;
+                break;
+            }
+        }
+        return $codigo_pei;
     }
 }

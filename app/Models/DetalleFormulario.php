@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Controllers\FormularioCuatroController;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
@@ -15,7 +16,12 @@ class DetalleFormulario extends Model
     ];
 
     protected $with = ["formulario", "operacions"];
-    protected $appends = ["estado_aprobado", "sw_aprobado"];
+    protected $appends = ["estado_aprobado", "sw_aprobado", "pei_text"];
+
+    public function getPeiTextAttribute()
+    {
+        return FormularioCuatroController::getPeiIndividual($this->formulario_seleccionado);
+    }
 
     public function formulario()
     {

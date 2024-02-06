@@ -135,8 +135,7 @@
                                                 >
                                                     <span
                                                         v-html="
-                                                            row.item.formulario
-                                                                .codigo_pei
+                                                            row.item.pei_text
                                                         "
                                                     ></span>
                                                 </template>

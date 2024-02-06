@@ -77,10 +77,8 @@
                             :value="item.id"
                             :label="
                                 item.codigo_operacion +
-                                ' | ' +
-                                item.codigo_actividad +
                                 ': ' +
-                                item.descripcion_actividad
+                                item.operacion_txt
                             "
                         >
                         </el-option>
@@ -125,7 +123,7 @@
                                 getDetalleOperacion(index);
                                 if (accion != 'edit') {
                                     certificacion_detalle.cantidad_usar =
-                                        certificacion_detalle.memoria_operacion_detalle.saldo_cantidad;
+                                        certificacion_detalle.memoria_operacion_detalle.saldo_cantidad_aux;
                                     certificacion_detalle.memoria_operacion_detalle.saldo = 0;
                                     certificacion_detalle.memoria_operacion_detalle.saldo_cantidad = 0;
                                 }
@@ -180,7 +178,7 @@
                                                     .descripcion
                                             }}
                                         </p>
-                                        <p>
+                                        <!-- <p>
                                             <strong>Cantidad requerida: </strong
                                             >{{
                                                 certificacion_detalle
@@ -222,7 +220,7 @@
                                                     .memoria_operacion_detalle
                                                     .costo
                                             }}
-                                        </p>
+                                        </p> -->
                                         <p>
                                             <strong>Total: </strong
                                             >{{
@@ -286,8 +284,8 @@
                                             .descripcion
                                     }}</label>
                                 </div>
-                                <div class="col-md-6">
-                                    <!-- CANTIDAD -->
+                                <!-- CANTIDAD -->
+                                <!-- <div class="col-md-6">
                                     <label
                                         :class="{
                                             'text-danger':
@@ -334,8 +332,8 @@
                                             ][0]
                                         "
                                     ></span>
-                                </div>
-                                <div class="col-md-6">
+                                </div> -->
+                                <div class="col-md-12">
                                     <label
                                         :class="{
                                             'text-danger':
@@ -921,6 +919,34 @@ export default {
                     ].memoria_operacion_detalle.saldo_cantidad_aux;
             }
 
+            // calculo cantidad
+            this.oCertificacion.certificacion_detalles[index].cantidad_usar =
+                (parseFloat(
+                    this.oCertificacion.certificacion_detalles[index]
+                        .presupuesto_usarse
+                ) *
+                    parseFloat(
+                        this.oCertificacion.certificacion_detalles[index]
+                            .memoria_operacion_detalle.cantidad
+                    )) /
+                parseFloat(
+                    this.oCertificacion.certificacion_detalles[index]
+                        .memoria_operacion_detalle.total
+                );
+
+            this.oCertificacion.certificacion_detalles[index].cantidad_usar =
+                parseFloat(
+                    this.oCertificacion.certificacion_detalles[index]
+                        .cantidad_usar
+                        ? this.oCertificacion.certificacion_detalles[index]
+                              .cantidad_usar
+                        : 0
+                ).toFixed(2);
+            console.log(
+                this.oCertificacion.certificacion_detalles[index].cantidad_usar
+            );
+            // fin
+
             this.oCertificacion.certificacion_detalles[
                 index
             ].memoria_operacion_detalle.saldo =
@@ -950,6 +976,29 @@ export default {
                               .cantidad_usar
                         : 0
                 );
+            if (
+                this.oCertificacion.certificacion_detalles[index]
+                    .memoria_operacion_detalle.saldo < 0
+            ) {
+                this.oCertificacion.certificacion_detalles[
+                    index
+                ].memoria_operacion_detalle.saldo = 0;
+
+                this.oCertificacion.certificacion_detalles[
+                    index
+                ].presupuesto_usarse =
+                    this.oCertificacion.certificacion_detalles[
+                        index
+                    ].memoria_operacion_detalle.saldo_aux;
+
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    html: "El monto ingresado no puede superar al saldo actual",
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
+            }
         },
         // lista de operaciones deacuerdo al formulario cuatro seleccionado
         getOperacionesMemoriaCalculo() {
@@ -982,7 +1031,7 @@ export default {
                 ].memoria_operacion_detalle = operacion;
                 let valor_saldo_cantidad =
                     this.oCertificacion.certificacion_detalles[index]
-                        .memoria_operacion_detalle.saldo_cantidad;
+                        .memoria_operacion_detalle.saldo_cantidad_aux;
 
                 if (this.accion == "edit") {
                     // this.oCertificacion.certificacion_detalles[
@@ -995,7 +1044,7 @@ export default {
                     ].cantidad_usar =
                         this.oCertificacion.certificacion_detalles[
                             index
-                        ].memoria_operacion_detalle.saldo_cantidad;
+                        ].memoria_operacion_detalle.saldo_cantidad_aux;
                 }
                 this.getMontoPartida(index);
                 this.obtieneSaldo(index);
@@ -1086,7 +1135,7 @@ export default {
                 this.oCertificacion.certificacion_detalles[index].saldo_form =
                     parseFloat(
                         this.oCertificacion.certificacion_detalles[index]
-                            .memoria_operacion_detalle.saldo_cantidad
+                            .memoria_operacion_detalle.saldo_cantidad_aux
                     ) +
                     parseFloat(
                         this.oCertificacion.certificacion_detalles[index]
@@ -1096,7 +1145,7 @@ export default {
                 this.oCertificacion.certificacion_detalles[index].saldo_form =
                     this.oCertificacion.certificacion_detalles[
                         index
-                    ].memoria_operacion_detalle.saldo_cantidad;
+                    ].memoria_operacion_detalle.saldo_cantidad_aux;
             }
         },
         ingresarEnter(valor) {
