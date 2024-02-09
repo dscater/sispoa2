@@ -306,6 +306,17 @@ class CertificacionController extends Controller
         return response()->JSON(["sw" => true, "certificacion" => $certificacion, "msj" => "El registro se aprobó correctamente"]);
     }
 
+    public function desaprobar(Certificacion $certificacion)
+    {
+        $certificacion->estado = "PENDIENTE";
+        $certificacion->save();
+
+        $user = Auth::user();
+        Log::registrarLog("MODIFICACIÓN", "CERTIFICACIÓN POA", "EL USUARIO $user->id MODIFICÓ EL ESTADO DE UNA CERTIFICACIÓN POA A " . $certificacion->estado, $user);
+
+        return response()->JSON(["sw" => true, "certificacion" => $certificacion, "msj" => "El registro se modificó correctamente"]);
+    }
+
     public function getNroCorrelativo()
     {
         $ultimo = Certificacion::get()->last();

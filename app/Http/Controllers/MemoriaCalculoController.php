@@ -56,6 +56,8 @@ class MemoriaCalculoController extends Controller
             $request["total_nov"] = 0;
             $request["total_dic"] = 0;
             $request["total_final"] = 0;
+            $array_form_seleccionado = explode("|", $request["formulario_seleccionado"]);
+            $request["formulario_id"] = $array_form_seleccionado[1];
             $nuevo_memoria_calculo = MemoriaCalculo::create(array_map('mb_strtoupper', $request->except("data")));
 
             $total_actividades = 0;
@@ -196,7 +198,8 @@ class MemoriaCalculoController extends Controller
             $request["total_nov"] = 0;
             $request["total_dic"] = 0;
             $request["total_final"] = 0;
-
+            $array_form_seleccionado = explode("|", $request["formulario_seleccionado"]);
+            $request["formulario_id"] = $array_form_seleccionado[1];
             $memoria_calculo->update(array_map('mb_strtoupper', $request->except("data", "eliminados", "tareas_eliminados", "partidas_eliminados", "mod_eliminados")));
 
             $eliminados = $request->eliminados;

@@ -421,6 +421,32 @@
                                                                 class="fa fa-check"
                                                             ></i>
                                                         </b-button>
+                                                        <b-button
+                                                            v-else
+                                                            size="sm"
+                                                            pill
+                                                            variant="outline-info"
+                                                            class="btn-flat btn-block"
+                                                            title="Desaprobar"
+                                                            @click="
+                                                                desaprobarCertificacion(
+                                                                    row.item.id,
+                                                                    row.item
+                                                                        .formulario
+                                                                        .codigo_pei +
+                                                                        ' con fecha de registro ' +
+                                                                        formatoFecha(
+                                                                            row
+                                                                                .item
+                                                                                .fecha_registro
+                                                                        )
+                                                                )
+                                                            "
+                                                        >
+                                                            <i
+                                                                class="fa fa-times-circle"
+                                                            ></i>
+                                                        </b-button>
 
                                                         <template
                                                             v-if="
@@ -794,6 +820,33 @@ export default {
                 if (result.isConfirmed) {
                     axios
                         .post("/admin/certificacions/aprobar/" + id)
+                        .then((res) => {
+                            this.getCertificacions();
+                            this.filter = "";
+                            Swal.fire({
+                                icon: "success",
+                                title: res.data.msj,
+                                showConfirmButton: false,
+                                timer: 1500,
+                            });
+                        });
+                }
+            });
+        },
+        desaprobarCertificacion(id, descripcion) {
+            Swal.fire({
+                title: "¿Quierés desaprobar este registro?",
+                html: `<strong>${descripcion}</strong>`,
+                showCancelButton: true,
+                confirmButtonColor: "#17a2b8",
+                confirmButtonText: "Si, continuar",
+                cancelButtonText: "No, cancelar",
+                denyButtonText: `No, cancelar`,
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    axios
+                        .post("/admin/certificacions/desaprobar/" + id)
                         .then((res) => {
                             this.getCertificacions();
                             this.filter = "";

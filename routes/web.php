@@ -152,6 +152,7 @@ Route::prefix('admin')->group(function () {
     Route::POST("certificacions/activar/{certificacion}", [CertificacionController::class, "activar"]);
     Route::get("certificacions/getNroCorrelativo", [CertificacionController::class, "getNroCorrelativo"]);
     Route::POST("certificacions/aprobar/{certificacion}", [CertificacionController::class, "aprobar"]);
+    Route::POST("certificacions/desaprobar/{certificacion}", [CertificacionController::class, "desaprobar"]);
     Route::POST("certificacions/pdf/{certificacion}", [CertificacionController::class, "pdf"]);
     Route::resource('certificacions', CertificacionController::class)->only([
         'index', 'store', 'update', 'destroy', 'show'

@@ -104,6 +104,9 @@ class DetalleFormularioController extends Controller
 
         DB::beginTransaction();
         try {
+
+            $array_form_seleccionado = explode("|", $request["formulario_seleccionado"]);
+            $request["formulario_id"] = $array_form_seleccionado[1];
             $detalle_formulario->update(array_map('mb_strtoupper', $request->except("data", "eliminados", "do_eliminados")));
 
             $eliminados = $request->eliminados;
