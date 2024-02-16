@@ -28,23 +28,35 @@
                                     :class="{
                                         'text-danger': errors.codigo_pei,
                                     }"
-                                    >Código PEI - Objetivos estrategicos*</label
+                                    >Código PEI - Acción a mediano plazo*</label
                                 >
                                 <div class="input-group">
-                                    <input
-                                        type="text"
+                                    <select
                                         :class="{
                                             'is-invalid': errors.codigo_pei,
                                         }"
                                         v-model="formulario_cuatro.codigo_pei"
                                         placeholder="Código PEI"
                                         class="form-control"
-                                    />
+                                        @change="asignaSelectPei(0)"
+                                    >
+                                        <option value="">Código PEI</option>
+                                        <option
+                                            v-for="(
+                                                item, index
+                                            ) in selectsPei[0]"
+                                            :key="index"
+                                            :value="item"
+                                        >
+                                            {{ item }}
+                                        </option>
+                                    </select>
                                     <div class="input-group-prepend texto">
                                         <el-input
                                             type="textarea"
+                                            readonly
                                             autosize
-                                            placeholder="Objetivos estrategicos"
+                                            placeholder="Acción a mediano plazo"
                                             :class="{
                                                 'is-invalid':
                                                     errors.objetivo_estrategico,
@@ -68,20 +80,32 @@
                                     v-text="errors.objetivo_estrategico[0]"
                                 ></span>
                                 <div class="input-group mt-1">
-                                    <input
-                                        type="text"
+                                    <select
                                         :class="{
                                             'is-invalid': errors.codigo_pei2,
                                         }"
                                         v-model="formulario_cuatro.codigo_pei2"
                                         placeholder="Código PEI"
                                         class="form-control"
-                                    />
+                                        @change="asignaSelectPei(1)"
+                                    >
+                                        <option value="">Código PEI</option>
+                                        <option
+                                            v-for="(
+                                                item, index
+                                            ) in selectsPei[0]"
+                                            :key="index"
+                                            :value="item"
+                                        >
+                                            {{ item }}
+                                        </option>
+                                    </select>
                                     <div class="input-group-prepend texto">
                                         <el-input
                                             type="textarea"
+                                            readonly
                                             autosize
-                                            placeholder="Objetivos estrategicos"
+                                            placeholder="Acción a mediano plazo"
                                             :class="{
                                                 'is-invalid':
                                                     errors.objetivo_estrategico2,
@@ -95,20 +119,32 @@
                                     </div>
                                 </div>
                                 <div class="input-group mt-1">
-                                    <input
-                                        type="text"
+                                    <select
                                         :class="{
                                             'is-invalid': errors.codigo_pei3,
                                         }"
                                         v-model="formulario_cuatro.codigo_pei3"
                                         placeholder="Código PEI"
                                         class="form-control"
-                                    />
+                                        @change="asignaSelectPei(2)"
+                                    >
+                                        <option value="">Código PEI</option>
+                                        <option
+                                            v-for="(
+                                                item, index
+                                            ) in selectsPei[0]"
+                                            :key="index"
+                                            :value="item"
+                                        >
+                                            {{ item }}
+                                        </option>
+                                    </select>
                                     <div class="input-group-prepend texto">
                                         <el-input
                                             type="textarea"
+                                            readonly
                                             autosize
-                                            placeholder="Objetivos estrategicos"
+                                            placeholder="Acción a mediano plazo"
                                             :class="{
                                                 'is-invalid':
                                                     errors.objetivo_estrategico3,
@@ -157,15 +193,22 @@
                                     }"
                                     >Indicador de Proceso*</label
                                 >
-                                <el-input
-                                    type="textarea"
-                                    autosize
+                                <el-select
                                     placeholder="Indicador de Proceso"
+                                    class="w-100"
                                     :class="{ 'is-invalid': errors.indicador }"
                                     v-model="formulario_cuatro.indicador"
                                     clearable
                                 >
-                                </el-input>
+                                    <el-option
+                                        v-for="(
+                                            item, index
+                                        ) in selectsIndicadores"
+                                        :key="index"
+                                        :value="item"
+                                        :label="item"
+                                    ></el-option>
+                                </el-select>
                                 <span
                                     class="error invalid-feedback"
                                     v-if="errors.indicador"
@@ -182,6 +225,7 @@
                                 >
                                 <div class="input-group">
                                     <input
+                                        readonly
                                         type="text"
                                         :class="{
                                             'is-invalid': errors.codigo_poa,
@@ -193,6 +237,7 @@
                                     <div class="input-group-prepend texto">
                                         <el-input
                                             type="textarea"
+                                            readonly
                                             autosize
                                             placeholder="Acción de Corto Plazo de Gestión"
                                             :class="{
@@ -219,6 +264,7 @@
                                 ></span>
                                 <div class="input-group mt-1">
                                     <input
+                                        readonly
                                         type="text"
                                         :class="{
                                             'is-invalid': errors.codigo_poa2,
@@ -230,6 +276,7 @@
                                     <div class="input-group-prepend texto">
                                         <el-input
                                             type="textarea"
+                                            readonly
                                             autosize
                                             placeholder="Acción de Corto Plazo de Gestión"
                                             :class="{
@@ -246,6 +293,7 @@
                                 </div>
                                 <div class="input-group mt-1">
                                     <input
+                                        readonly
                                         type="text"
                                         :class="{
                                             'is-invalid': errors.codigo_poa3,
@@ -257,6 +305,7 @@
                                     <div class="input-group-prepend texto">
                                         <el-input
                                             type="textarea"
+                                            readonly
                                             autosize
                                             placeholder="Acción de Corto Plazo de Gestión"
                                             :class="{
@@ -286,7 +335,9 @@
                                     :class="{
                                         'is-invalid': errors.indicador_proceso,
                                     }"
-                                    v-model="formulario_cuatro.indicador_proceso"
+                                    v-model="
+                                        formulario_cuatro.indicador_proceso
+                                    "
                                     clearable
                                 >
                                 </el-input>
@@ -390,7 +441,7 @@
                             </div>
                             <div
                                 class="form-group col-md-6"
-                                v-if="user.tipo=='SUPER USUARIO'"
+                                v-if="user.tipo == 'SUPER USUARIO'"
                             >
                                 <label
                                     :class="{
@@ -524,7 +575,11 @@ export default {
             }
         },
         unidadUsuario() {
-            return this.user ? (this.user.unidad ? this.user.unidad.nombre : "") : "";
+            return this.user
+                ? this.user.unidad
+                    ? this.user.unidad.nombre
+                    : ""
+                : "";
         },
     },
     data() {
@@ -534,6 +589,13 @@ export default {
             enviando: false,
             listUnidades: [],
             errors: [],
+            datosAmp: listAmp,
+            datosIndPei: listIndPei,
+            datosCodPoa: listCodPoa,
+            datosAccion: listAccion,
+
+            selectsPei: [listCodPei, listCodPei, listCodPei],
+            selectsIndicadores: [],
         };
     },
     mounted() {
@@ -545,6 +607,56 @@ export default {
             axios.get("/admin/unidads").then((response) => {
                 this.listUnidades = response.data.unidads;
             });
+        },
+        asignaSelectPei(index) {
+            if (index == 0) {
+                let codigo_seleccionado = this.formulario_cuatro.codigo_pei;
+                this.formulario_cuatro.objetivo_estrategico = this.datosAmp[codigo_seleccionado];
+
+                this.selectsIndicadores = [];
+                this.formulario_cuatro.indicador = "";
+
+                this.formulario_cuatro.codigo_poa = "";
+                this.formulario_cuatro.accion_corto = "";
+                if (this.formulario_cuatro && codigo_seleccionado != "") {
+                    let codigo_seleccionado = this.formulario_cuatro.codigo_pei;
+                    this.formulario_cuatro.objetivo_estrategico = this.datosAmp[codigo_seleccionado];
+
+                    this.selectsIndicadores = this.datosIndPei[codigo_seleccionado];
+                    this.formulario_cuatro.indicador = this.selectsIndicadores[0];
+
+                    this.formulario_cuatro.codigo_poa = this.datosCodPoa[codigo_seleccionado];
+                    this.formulario_cuatro.accion_corto = this.datosAccion[codigo_seleccionado];
+                }
+            }
+            if (index == 1) {
+                let codigo_seleccionado = this.formulario_cuatro.codigo_pei2;
+                this.formulario_cuatro.objetivo_estrategico2 = "";
+
+                this.formulario_cuatro.codigo_poa2 = "";
+                this.formulario_cuatro.accion_corto2 = "";
+                if (this.formulario_cuatro && codigo_seleccionado) {
+                    let codigo_seleccionado = this.formulario_cuatro.codigo_pei2;
+                    this.formulario_cuatro.objetivo_estrategico2 = this.datosAmp[codigo_seleccionado];
+
+                    this.formulario_cuatro.codigo_poa2 = this.datosCodPoa[codigo_seleccionado];
+                    this.formulario_cuatro.accion_corto2 = this.datosAccion[codigo_seleccionado];
+                }
+            }
+            if (index == 2) {
+                let codigo_seleccionado = this.formulario_cuatro.codigo_pei3;
+                this.formulario_cuatro.objetivo_estrategico3 = "";
+
+                this.formulario_cuatro.codigo_poa3 = "";
+                this.formulario_cuatro.accion_corto3 = "";
+                if (this.formulario_cuatro && codigo_seleccionado != "") {
+                    let codigo_seleccionado = this.formulario_cuatro.codigo_pei3;
+                    this.formulario_cuatro.objetivo_estrategico3 = this.datosAmp[codigo_seleccionado];
+
+                    this.formulario_cuatro.codigo_poa3 = this.datosCodPoa[codigo_seleccionado];
+                    this.formulario_cuatro.accion_corto3 = this.datosAccion[codigo_seleccionado];
+                }
+            }
         },
         setRegistroModal() {
             this.enviando = true;
