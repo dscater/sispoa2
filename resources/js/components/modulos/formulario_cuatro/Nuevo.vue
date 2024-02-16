@@ -554,6 +554,10 @@ export default {
             this.errors = [];
             if (newVal) {
                 this.bModal = true;
+                if (this.accion == "edit") {
+                    this.selectsIndicadores =
+                        this.datosIndPei[this.formulario_cuatro.codigo_pei];
+                }
             } else {
                 this.bModal = false;
             }
@@ -611,7 +615,8 @@ export default {
         asignaSelectPei(index) {
             if (index == 0) {
                 let codigo_seleccionado = this.formulario_cuatro.codigo_pei;
-                this.formulario_cuatro.objetivo_estrategico = this.datosAmp[codigo_seleccionado];
+                this.formulario_cuatro.objetivo_estrategico =
+                    this.datosAmp[codigo_seleccionado];
 
                 this.selectsIndicadores = [];
                 this.formulario_cuatro.indicador = "";
@@ -620,13 +625,18 @@ export default {
                 this.formulario_cuatro.accion_corto = "";
                 if (this.formulario_cuatro && codigo_seleccionado != "") {
                     let codigo_seleccionado = this.formulario_cuatro.codigo_pei;
-                    this.formulario_cuatro.objetivo_estrategico = this.datosAmp[codigo_seleccionado];
+                    this.formulario_cuatro.objetivo_estrategico =
+                        this.datosAmp[codigo_seleccionado];
 
-                    this.selectsIndicadores = this.datosIndPei[codigo_seleccionado];
-                    this.formulario_cuatro.indicador = this.selectsIndicadores[0];
+                    this.selectsIndicadores =
+                        this.datosIndPei[codigo_seleccionado];
+                    this.formulario_cuatro.indicador =
+                        this.selectsIndicadores[0];
 
-                    this.formulario_cuatro.codigo_poa = this.datosCodPoa[codigo_seleccionado];
-                    this.formulario_cuatro.accion_corto = this.datosAccion[codigo_seleccionado];
+                    this.formulario_cuatro.codigo_poa =
+                        this.datosCodPoa[codigo_seleccionado];
+                    this.formulario_cuatro.accion_corto =
+                        this.datosAccion[codigo_seleccionado];
                 }
             }
             if (index == 1) {
@@ -636,11 +646,15 @@ export default {
                 this.formulario_cuatro.codigo_poa2 = "";
                 this.formulario_cuatro.accion_corto2 = "";
                 if (this.formulario_cuatro && codigo_seleccionado) {
-                    let codigo_seleccionado = this.formulario_cuatro.codigo_pei2;
-                    this.formulario_cuatro.objetivo_estrategico2 = this.datosAmp[codigo_seleccionado];
+                    let codigo_seleccionado =
+                        this.formulario_cuatro.codigo_pei2;
+                    this.formulario_cuatro.objetivo_estrategico2 =
+                        this.datosAmp[codigo_seleccionado];
 
-                    this.formulario_cuatro.codigo_poa2 = this.datosCodPoa[codigo_seleccionado];
-                    this.formulario_cuatro.accion_corto2 = this.datosAccion[codigo_seleccionado];
+                    this.formulario_cuatro.codigo_poa2 =
+                        this.datosCodPoa[codigo_seleccionado];
+                    this.formulario_cuatro.accion_corto2 =
+                        this.datosAccion[codigo_seleccionado];
                 }
             }
             if (index == 2) {
@@ -650,11 +664,15 @@ export default {
                 this.formulario_cuatro.codigo_poa3 = "";
                 this.formulario_cuatro.accion_corto3 = "";
                 if (this.formulario_cuatro && codigo_seleccionado != "") {
-                    let codigo_seleccionado = this.formulario_cuatro.codigo_pei3;
-                    this.formulario_cuatro.objetivo_estrategico3 = this.datosAmp[codigo_seleccionado];
+                    let codigo_seleccionado =
+                        this.formulario_cuatro.codigo_pei3;
+                    this.formulario_cuatro.objetivo_estrategico3 =
+                        this.datosAmp[codigo_seleccionado];
 
-                    this.formulario_cuatro.codigo_poa3 = this.datosCodPoa[codigo_seleccionado];
-                    this.formulario_cuatro.accion_corto3 = this.datosAccion[codigo_seleccionado];
+                    this.formulario_cuatro.codigo_poa3 =
+                        this.datosCodPoa[codigo_seleccionado];
+                    this.formulario_cuatro.accion_corto3 =
+                        this.datosAccion[codigo_seleccionado];
                 }
             }
         },
