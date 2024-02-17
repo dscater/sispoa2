@@ -79,14 +79,14 @@
                                                     @change="getOperaciones"
                                                 >
                                                     <el-option
-                                                        v-for="item in listFormularios"
-                                                        :key="item.id"
+                                                        v-for="(
+                                                            item, index_form
+                                                        ) in listFormularios"
+                                                        :key="index_form"
+                                                        :value="item.poa_seleccionado"
                                                         :label="
-                                                            ingresarEnter(
-                                                                item.codigo_poa
-                                                            )
+                                                            item.codigo_poa
                                                         "
-                                                        :value="item.id"
                                                     >
                                                     </el-option>
                                                 </el-select>
@@ -251,13 +251,13 @@ export default {
         getFormularios() {
             if (this.oReporte.unidad_id != "") {
                 axios
-                    .get("/admin/formulario_cuatro/getPorUnidad", {
+                    .get("/admin/formulario_cuatro/getPoaPorUnidad", {
                         params: {
                             id: this.oReporte.unidad_id,
                         },
                     })
                     .then((response) => {
-                        this.listFormularios = response.data;
+                        this.listFormularios = response.data.listado;
                     });
             } else {
                 this.listFormularios = [];

@@ -182,9 +182,9 @@
     <table border="1">
         <thead>
             <tr>
-                <th width="7%">Código PEI</th>
+                <th width="20%">Código PEI</th>
                 <th>Indicador de Proceso</th>
-                <th>Código POA</th>
+                <th width="20%">Código POA</th>
                 <th>Indicador de Proceso POA</th>
                 <th>Resultado Esperado Gestión</th>
                 <th>Presupuesto Programado Gestión</th>

@@ -265,9 +265,14 @@ class DetalleFormularioController extends Controller
         }
     }
 
-    public function seguimiento_trimestral(DetalleFormulario $detalle_formulario)
+    public function seguimiento_trimestral(Request $request)
     {
-        $html = view("parcial.seguimiento_trimestral", compact("detalle_formulario"))->render();
+        $detalle_formulario = DetalleFormulario::where("formulario_seleccionado", $request->formulario_id)->get()->first();
+        if ($detalle_formulario) {
+            $html = view("parcial.seguimiento_trimestral", compact("detalle_formulario"))->render();
+        } else {
+            $html = '<h5 class="w-100 text-center">SIN RESULTADOS</h5>';
+        }
         return response()->JSON($html);
     }
 }

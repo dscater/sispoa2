@@ -194,7 +194,7 @@
     @endphp
     @inject('configuracion', 'App\Models\Configuracion')
     @inject('o_certificacion', 'App\Models\Certificacion')
-    @foreach ($formularios as $formulario)
+    @foreach ($memoria_calculos as $memoria_calculo)
         <img class="logo" src="{{ asset('imgs/' . $configuracion->first()->logo2) }}" alt="Logo">
         <img class="logo2" src="{{ asset('imgs/' . $configuracion->first()->logo) }}" alt="Logo">
         <div class="titulo">MEMORIAS DE CÁLCULO<br />GESTIÓN {{ date('Y') }}</div>
@@ -207,17 +207,17 @@
             @endif
         @endif
 
-        <table border="1" class="collapse">
+        <table border="1" class="collapse" style="margin-top: 80px;">
             <tbody>
                 <tr class="bg_principal">
                     <td class="bold p-5" width="10%">Código PEI:</td>
-                    <td class="bold p-5">{!! str_replace(',', '<br>', $formulario->codigo_pei) !!}</td>
+                    <td class="bold p-5">{!! str_replace(',', '<br>', $memoria_calculo->pei_text) !!}</td>
                     <td class="bold p-5" width="15%">Presupuesto programado:</td>
-                    <td class="bold p-5">{{ number_format($formulario->presupuesto, 2) }}</td>
+                    <td class="bold p-5">{{ number_format($memoria_calculo->formulario->presupuesto, 2) }}</td>
                 </tr>
                 <tr>
                     <td class="bold p-5">Unidad:</td>
-                    <td class="bold p-5" colspan="3">{{ $formulario->unidad->nombre }}</td>
+                    <td class="bold p-5" colspan="3">{{ $memoria_calculo->formulario->unidad->nombre }}</td>
                 </tr>
             </tbody>
         </table>
@@ -317,81 +317,75 @@
                 </tr>
             </thead>
             <tbody>
-                @if ($formulario->memoria_calculo)
-                    @foreach ($formulario->memoria_calculo->operacions as $operacion)
-                        @foreach ($operacion->memoria_operacion_detalles as $mod)
-                            <tr v-for="item in oMemoriaCalculo.operacions">
-                                <td>{{ $mod->ue }}</td>
-                                <td>{{ $mod->prog }}</td>
-                                <td>{{ $mod->act }}</td>
-                                <td>
-                                    {{ $operacion->codigo_operacion }}
-                                </td>
-                                <td>
-                                    {{ $operacion->codigo_actividad }}
-                                </td>
-                                <td>{{ $mod->partida }}</td>
-                                <td>{{ $mod->nro }}</td>
-                                <td>{{ $mod->descripcion }}</td>
-                                <td>{{ $mod->cantidad }}</td>
-                                <td>{{ $mod->unidad }}</td>
-                                <td>{{ $mod->costo }}</td>
-                                <td>{{ $mod->total }}</td>
-                                <td>
-                                    {{ $mod->justificacion }}
-                                </td>
-                                <td>{{ $mod->ene }}</td>
-                                <td>{{ $mod->feb }}</td>
-                                <td>{{ $mod->mar }}</td>
-                                <td>{{ $mod->abr }}</td>
-                                <td>{{ $mod->may }}</td>
-                                <td>{{ $mod->jun }}</td>
-                                <td>{{ $mod->jul }}</td>
-                                <td>{{ $mod->ago }}</td>
-                                <td>{{ $mod->sep }}</td>
-                                <td>{{ $mod->oct }}</td>
-                                <td>{{ $mod->nov }}</td>
-                                <td>{{ $mod->dic }}</td>
-                                <td class="{{ (float) $mod->saldo == 0 ? 'fondo_rojo' : '' }} centreado">
-                                    {{ $mod->total_actividad }}
-                                    </>
-                            </tr>
-                        @endforeach
+                @foreach ($memoria_calculo->operacions as $operacion)
+                    @foreach ($operacion->memoria_operacion_detalles as $mod)
+                        <tr v-for="item in oMemoriaCalculo.operacions">
+                            <td>{{ $mod->ue }}</td>
+                            <td>{{ $mod->prog }}</td>
+                            <td>{{ $mod->act }}</td>
+                            <td>
+                                {{ $operacion->codigo_operacion }}
+                            </td>
+                            <td>
+                                {{ $operacion->codigo_actividad }}
+                            </td>
+                            <td>{{ $mod->partida }}</td>
+                            <td>{{ $mod->nro }}</td>
+                            <td>{{ $mod->descripcion }}</td>
+                            <td>{{ $mod->cantidad }}</td>
+                            <td>{{ $mod->unidad }}</td>
+                            <td>{{ $mod->costo }}</td>
+                            <td>{{ $mod->total }}</td>
+                            <td>
+                                {{ $mod->justificacion }}
+                            </td>
+                            <td>{{ $mod->ene }}</td>
+                            <td>{{ $mod->feb }}</td>
+                            <td>{{ $mod->mar }}</td>
+                            <td>{{ $mod->abr }}</td>
+                            <td>{{ $mod->may }}</td>
+                            <td>{{ $mod->jun }}</td>
+                            <td>{{ $mod->jul }}</td>
+                            <td>{{ $mod->ago }}</td>
+                            <td>{{ $mod->sep }}</td>
+                            <td>{{ $mod->oct }}</td>
+                            <td>{{ $mod->nov }}</td>
+                            <td>{{ $mod->dic }}</td>
+                            <td class="{{ (float) $mod->saldo == 0 ? 'fondo_rojo' : '' }} centreado">
+                                {{ $mod->total_actividad }}
+                                </>
+                        </tr>
                     @endforeach
-                    <tr>
-                        <th colspan="8" class="text-center">TOTAL PARTIDA</th>
-                        <th colspan="3"></th>
-                        <th>
-                            {{ $formulario->memoria_calculo->total_actividades }}
-                        </th>
-                        <th></th>
-                        <th class="text-center">{{ $formulario->memoria_calculo->total_ene }}</th>
-                        <th class="text-center">{{ $formulario->memoria_calculo->total_feb }}</th>
-                        <th class="text-center">{{ $formulario->memoria_calculo->total_mar }}</th>
-                        <th class="text-center">{{ $formulario->memoria_calculo->total_abr }}</th>
-                        <th class="text-center">{{ $formulario->memoria_calculo->total_may }}</th>
-                        <th class="text-center">{{ $formulario->memoria_calculo->total_jun }}</th>
-                        <th class="text-center">{{ $formulario->memoria_calculo->total_jul }}</th>
-                        <th class="text-center">{{ $formulario->memoria_calculo->total_ago }}</th>
-                        <th class="text-center">{{ $formulario->memoria_calculo->total_sep }}</th>
-                        <th class="text-center">{{ $formulario->memoria_calculo->total_oct }}</th>
-                        <th class="text-center">{{ $formulario->memoria_calculo->total_nov }}</th>
-                        <th class="text-center">{{ $formulario->memoria_calculo->total_dic }}</th>
-                        <th class="text-center">
-                            {{ $formulario->memoria_calculo->total_final }}
-                        </th>
-                    </tr>
-                @else
-                    <tr>
-                        <td colspan="26" class="centreado">NO SE ENCONTRARON REGISTROS</td>
-                    </tr>
-                @endif
+                @endforeach
+                <tr>
+                    <th colspan="8" class="text-center">TOTAL PARTIDA</th>
+                    <th colspan="3"></th>
+                    <th>
+                        {{ $memoria_calculo->total_actividades }}
+                    </th>
+                    <th></th>
+                    <th class="text-center">{{ $memoria_calculo->total_ene }}</th>
+                    <th class="text-center">{{ $memoria_calculo->total_feb }}</th>
+                    <th class="text-center">{{ $memoria_calculo->total_mar }}</th>
+                    <th class="text-center">{{ $memoria_calculo->total_abr }}</th>
+                    <th class="text-center">{{ $memoria_calculo->total_may }}</th>
+                    <th class="text-center">{{ $memoria_calculo->total_jun }}</th>
+                    <th class="text-center">{{ $memoria_calculo->total_jul }}</th>
+                    <th class="text-center">{{ $memoria_calculo->total_ago }}</th>
+                    <th class="text-center">{{ $memoria_calculo->total_sep }}</th>
+                    <th class="text-center">{{ $memoria_calculo->total_oct }}</th>
+                    <th class="text-center">{{ $memoria_calculo->total_nov }}</th>
+                    <th class="text-center">{{ $memoria_calculo->total_dic }}</th>
+                    <th class="text-center">
+                        {{ $memoria_calculo->total_final }}
+                    </th>
+                </tr>
             </tbody>
         </table>
         @php
             $contador++;
         @endphp
-        @if ($contador < count($formularios))
+        @if ($contador < count($memoria_calculos))
             <div class="salto_linea"></div>
         @endif
     @endforeach

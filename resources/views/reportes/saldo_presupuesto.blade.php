@@ -177,7 +177,7 @@
     @foreach ($formularios as $formulario)
         <img class="logo" src="{{ asset('imgs/' . $configuracion->first()->logo) }}" alt="Logo">
         <div class="titulo">SALDO PRESUPUESTARIO<br />GESTIÓN {{ date('Y') }}</div>
-        <table border="1" class="collapse">
+        <table border="1" class="collapse" style="margin-top:80px;">
             <tbody>
                 <tr class="bg_principal">
                     <td class="bold p-5" width="15%">Código PEI:</td>

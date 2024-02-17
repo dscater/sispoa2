@@ -100,6 +100,8 @@ Route::prefix('admin')->group(function () {
     Route::get("formulario_cuatro/listado_pei_index", [FormularioCuatroController::class, "listado_pei_index"]);
     Route::get("formulario_cuatro/listado_index", [FormularioCuatroController::class, "listado_index"]);
     Route::get("formulario_cuatro/getPorUnidad", [FormularioCuatroController::class, "getPorUnidad"]);
+    Route::get("formulario_cuatro/getPoaPorUnidad", [FormularioCuatroController::class, "getPoaPorUnidad"]);
+    Route::get("formulario_cuatro/getPeiPorUnidad", [FormularioCuatroController::class, "getPeiPorUnidad"]);
     Route::get("formulario_cuatro/getOperaciones", [FormularioCuatroController::class, "getOperaciones"]);
     Route::get("formulario_cuatro/getOperacionesFormularioSeleccionado", [FormularioCuatroController::class, "getOperacionesFormularioSeleccionado"]);
     Route::resource('formulario_cuatro', FormularioCuatroController::class)->only([
@@ -107,7 +109,7 @@ Route::prefix('admin')->group(function () {
     ]);
 
     // DETALLE FORMULARIO CUATRO
-    Route::get('detalle_formularios/seguimiento_trimestral/{detalle_formulario}', [DetalleFormularioController::class, "seguimiento_trimestral"]);
+    Route::get('detalle_formularios/seguimiento_trimestral', [DetalleFormularioController::class, "seguimiento_trimestral"]);
     Route::resource('detalle_formularios', DetalleFormularioController::class)->only([
         'index', 'store', 'update', 'destroy', 'show'
     ]);

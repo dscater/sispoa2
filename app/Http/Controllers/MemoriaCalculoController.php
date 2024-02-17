@@ -434,13 +434,12 @@ class MemoriaCalculoController extends Controller
 
     public function getOperaciones(Request $request)
     {
-        $formulario_cuatro = FormularioCuatro::find($request->formulario_id);
-        $memoria_calculo = $formulario_cuatro->memoria_calculo;
+        $memoria_calculo = MemoriaCalculo::where("formulario_seleccionado", $request->formulario_id)->get()->first();
+        $operaciones = [];
         if ($memoria_calculo) {
             $operaciones = $memoria_calculo->operacions;
-            return response()->JSON($operaciones);
         }
-        return response()->JSON([]);
+        return response()->JSON($operaciones);
     }
     public function getTabla(MemoriaCalculo $memoria_calculo)
     {

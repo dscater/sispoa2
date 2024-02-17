@@ -20,11 +20,16 @@ class MemoriaCalculo extends Model
     ];
 
     protected $with = ["formulario", "operacions"];
-    protected $appends = ["estado_aprobado", "sw_aprobado", "pei_text"];
+    protected $appends = ["estado_aprobado", "sw_aprobado", "pei_text", "poa_text"];
 
     public function getPeiTextAttribute()
     {
         return FormularioCuatroController::getPeiIndividual($this->formulario_seleccionado);
+    }
+
+    public function getPoaTextAttribute()
+    {
+        return FormularioCuatroController::getPoaIndividual($this->formulario_seleccionado);
     }
 
     public function formulario()

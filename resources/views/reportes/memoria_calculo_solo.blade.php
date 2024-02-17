@@ -301,7 +301,7 @@
             @foreach ($memoria_calculo->operacions as $index => $operacion)
                 @if ($operacion->operacion->subdireccion)
                     <tr>
-                        <td colspan="28">{{ $operacion->operacion->subdireccion->nombre }}</td>
+                        <td colspan="27">{{ $operacion->operacion->subdireccion->nombre }}</td>
                     </tr>
                 @endif
                 @foreach ($operacion->memoria_operacion_detalles as $mod)

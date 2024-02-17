@@ -152,18 +152,80 @@ class FormularioCuatroController extends Controller
         return response()->JSON($formularios);
     }
 
+    public function getPoaPorUnidad(Request $request)
+    {
+        $listado = [];
+        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "ENLACE") {
+            $listado = FormularioCuatro::where("unidad_id", Auth::user()->unidad_id)->get();
+        } else {
+            $listado = FormularioCuatro::where("unidad_id", $request->id)->get();
+        }
+
+        $listado_final = [];
+        foreach ($listado as $list) {
+            $array_completo = explode("|", $list->codigo_poa); // el array que contiene todos los codigos poa y sus acciones
+            foreach ($array_completo as $index => $value) {
+                $array_codigo_accion = explode("-", $value, 2);
+                $nuevo_elemento = [
+                    "codigo_poa" => $value,
+                    "poa_seleccionado" => $index . '|' . $list->id,
+                    "codigo" => trim($array_codigo_accion[0]),
+                    "accion" => trim($array_codigo_accion[1]),
+                ];
+                // recorremos los codigos y accione para formar el nuevo listado
+                $listado_final[] = $nuevo_elemento;
+            }
+        }
+
+        return response()->JSON(["listado" => $listado_final]);
+    }
+
+    public function getPeiPorUnidad(Request $request)
+    {
+        $listado = [];
+        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "ENLACE") {
+            $listado = FormularioCuatro::where("unidad_id", Auth::user()->unidad_id)->get();
+        } else {
+            $listado = FormularioCuatro::where("unidad_id", $request->id)->get();
+        }
+
+        $listado_final = [];
+        foreach ($listado as $list) {
+            $array_completo = explode("|", $list->codigo_pei); // el array que contiene todos los codigos poa y sus acciones
+            foreach ($array_completo as $index => $value) {
+                $array_codigo_accion = explode("-", $value, 2);
+                $nuevo_elemento = [
+                    "codigo_pei" => $value,
+                    "pei_seleccionado" => $index . '|' . $list->id,
+                    "codigo" => trim($array_codigo_accion[0]),
+                    "accion" => trim($array_codigo_accion[1]),
+                ];
+                // recorremos los codigos y accione para formar el nuevo listado
+                $listado_final[] = $nuevo_elemento;
+            }
+        }
+
+        return response()->JSON(["listado" => $listado_final]);
+    }
+
     public function getOperaciones(Request $request)
     {
-        $formulario_cuatro = FormularioCuatro::find($request->id);
-        $operaciones = $formulario_cuatro->detalle_formulario->operacions;
+        $detalle_formulario = DetalleFormulario::where("formulario_seleccionado", $request->id)->get()->first();
+        $operaciones = [];
+        if ($detalle_formulario) {
+            $operaciones = $detalle_formulario->operacions;
+        }
         return response()->JSON($operaciones);
     }
 
     public function getOperacionesFormularioSeleccionado(Request $request)
     {
         $array = explode("|", $request->id);
-        $formulario_cuatro = FormularioCuatro::find($array[1]);
-        $operaciones = $formulario_cuatro->detalle_formulario->operacions;
+        $detalle_formulario = DetalleFormulario::where("formulario_seleccionado", $request->id)->get()->first();
+        $operaciones = [];
+        if ($detalle_formulario) {
+            $operaciones = $detalle_formulario->operacions;
+        }
         return response()->JSON($operaciones);
     }
 

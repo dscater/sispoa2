@@ -1010,7 +1010,7 @@ export default {
             axios
                 .get("/admin/memoria_calculos/getOperaciones", {
                     params: {
-                        formulario_id: this.oCertificacion.formulario_id,
+                        formulario_id: this.oCertificacion.poa_seleccionado,
                     },
                 })
                 .then((response) => {

@@ -34,7 +34,6 @@
 
         .titulo {
             position: absolute;
-            border: solid 1px;
             width: 350px;
             font-weight: bold;
             font-size: 1.5rem;
@@ -193,10 +192,11 @@
     @endphp
     @inject('configuracion', 'App\Models\Configuracion')
     @inject('o_certificacion_detalles', 'App\Models\CertificacionDetalle')
-    @foreach ($formularios as $formulario)
+    @foreach ($memoria_calculos as $memoria_calculo)
         <img class="logo" src="{{ asset('imgs/' . $configuracion->first()->logo2) }}" alt="Logo">
         <img class="logo2" src="{{ asset('imgs/' . $configuracion->first()->logo) }}" alt="Logo">
         <div class="titulo">EJECUCIÓN DE PRESUPUESTO<br />GESTIÓN {{ date('Y') }}</div>
+        <div style="margin-top: 80px;"></div>
         @if (Auth::user()->tipo != 'SUPER USUARIO' || $filtro == 'Unidad Organizacional')
             @if ($filtro == 'Unidad Organizacional')
                 <h4 class="titulo2">{{ $unidad->nombre }}</h4>
@@ -208,9 +208,9 @@
             <tbody>
                 <tr class="bg_principal">
                     <td class="bold p-5" width="15%">Código PEI:</td>
-                    <td class="bold p-5">{!! str_replace(',', '<br>', $formulario->codigo_pei) !!}</td>
+                    <td class="bold p-5">{!! str_replace(',', '<br>', $memoria_calculo->pei_text) !!}</td>
                     <td class="bold p-5" width="15%">Presupuesto programado:</td>
-                    <td class="bold p-5">{{ number_format($formulario->presupuesto, 2) }}</td>
+                    <td class="bold p-5">{{ number_format($memoria_calculo->formulario->presupuesto, 2) }}</td>
                 </tr>
             </tbody>
         </table>
@@ -218,12 +218,12 @@
         <table class="collapse tabla_detalle" border="1">
             <thead>
                 <tr>
-                    <th rowspan="2" width="5%">
+                    {{-- <th rowspan="2" width="5%">
                         Código tarea
                     </th>
                     <th rowspan="2">
                         Actividad/Tareas
-                    </th>
+                    </th> --}}
                     <th rowspan="2">Partida</th>
                     <th rowspan="2">Descripción</th>
                     <th colspan="3">
@@ -247,8 +247,8 @@
                     $suma_ejecutados = 0;
                     $suma_saldos = 0;
                 @endphp
-                @if ($formulario->memoria_calculo)
-                    @foreach ($formulario->memoria_calculo->operacions as $operacion)
+                @if ($memoria_calculo)
+                    @foreach ($memoria_calculo->operacions as $operacion)
                         @foreach ($operacion->memoria_operacion_detalles as $mod)
                             @php
                                 $cantidad_usado = $o_certificacion_detalles
@@ -277,10 +277,10 @@
 
                             @if ($muestra_fila)
                                 <tr>
-                                    <td class="centreado">
+                                    {{-- <td class="centreado">
                                         {{ $operacion->codigo_actividad }}
                                     </td>
-                                    <td>{{ $operacion->descripcion_actividad }}</td>
+                                    <td>{{ $operacion->descripcion_actividad }}</td> --}}
                                     <td class="centreado">{{ $mod->m_partida->partida }}</td>
                                     <td class="centreado">{{ $mod->m_partida->descripcion }}</td>
                                     <td class="centreado">{{ $mod->cantidad }}</td>
@@ -301,16 +301,16 @@
                     @endforeach
                 @else
                     <tr>
-                        <td colspan="9" class="centreado">AÚN NO SE REALIZO UN PRESUPUESTO</td>
+                        <td colspan="7" class="centreado">AÚN NO SE REALIZO UN PRESUPUESTO</td>
                     </tr>
                 @endif
             </tbody>
             <tfoot>
                 <tr>
-                    <th colspan="6">TOTAL</th>
-                    @if ($formulario->memoria_calculo && $filtro2 == 'Todos')
-                        <th>{{ number_format($formulario->memoria_calculo->total_final, 2) }}</th>
-                    @elseif($formulario->memoria_calculo)
+                    <th colspan="4">TOTAL</th>
+                    @if ($memoria_calculo && $filtro2 == 'Todos')
+                        <th>{{ number_format($memoria_calculo->total_final, 2) }}</th>
+                    @elseif($memoria_calculo)
                         <th>{{ number_format($suma_ejecutados, 2) }}</th>
                     @else
                         <th>0.00</th>
@@ -324,7 +324,7 @@
         @php
             $contador++;
         @endphp
-        @if ($contador < count($formularios))
+        @if ($contador < count($memoria_calculos))
             <div class="salto_linea"></div>
         @endif
     @endforeach

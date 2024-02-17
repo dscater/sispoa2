@@ -118,14 +118,14 @@
                                                     }"
                                                 >
                                                     <el-option
-                                                        v-for="item in listFormularios"
-                                                        :key="item.id"
-                                                        :label="
-                                                            ingresarEnter(
-                                                                item.codigo_pei
-                                                            )
+                                                        v-for="(
+                                                            item, index_form
+                                                        ) in listFormularios"
+                                                        :key="index_form"
+                                                        :value="
+                                                            item.pei_seleccionado
                                                         "
-                                                        :value="item.id"
+                                                        :label="item.codigo_pei"
                                                     >
                                                     </el-option>
                                                 </el-select>
@@ -260,9 +260,11 @@ export default {
         },
         // OBTENER LA LISTA DE FORMULARIO
         getFormularios() {
-            axios.get("/admin/formulario_cuatro").then((response) => {
-                this.listFormularios = response.data.listado;
-            });
+            axios
+                .get("/admin/formulario_cuatro/listado_pei_index")
+                .then((response) => {
+                    this.listFormularios = response.data.listado;
+                });
         },
         limpiarFormulario() {
             this.oReporte.filtro = "Todos";

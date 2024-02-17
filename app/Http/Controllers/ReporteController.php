@@ -94,17 +94,21 @@ class ReporteController extends Controller
         $formulario_id =  $request->formulario_id;
         $fecha_ini =  $request->fecha_ini;
         $fecha_fin =  $request->fecha_fin;
-        $formularios = FormularioCuatro::all();
+
+        $memoria_calulos = MemoriaCalculo::all();
         if ($filtro != "Todos") {
             switch ($filtro) {
                 case "Unidad Organizacional":
-                    $formularios = FormularioCuatro::where("unidad_id", $unidad_id)->get();
+                    $memoria_calulos = MemoriaCalculo::select("memoria_calculos.*")
+                        ->join("formulario_cuatro", "formulario_cuatro.id", "=", "memoria_calculos.formulario_id")
+                        ->where("formulario_cuatro.unidad_id", $unidad_id)
+                        ->get();
                     break;
                 case "Código PEI":
-                    $formularios = FormularioCuatro::where("id", $formulario_id)->get();
+                    $memoria_calulos = MemoriaCalculo::where("formulario_seleccionado", $formulario_id)->get();
                     break;
                 case "Rango de fechas":
-                    $formularios = FormularioCuatro::whereBetween("fecha_registro", [$fecha_ini, $fecha_fin])->get();
+                    $memoria_calulos = MemoriaCalculo::whereBetween("fecha_registro", [$fecha_ini, $fecha_fin])->get();
                     break;
             }
         }
@@ -231,7 +235,7 @@ class ReporteController extends Controller
             $drawing->setName('logo');
             $drawing->setDescription('logo');
             $drawing->setPath(public_path() . '/imgs/' . Configuracion::first()->logo); // put your path and image here
-            $drawing->setCoordinates('H' . $fila);
+            $drawing->setCoordinates('G' . $fila);
             $drawing->setOffsetX(0);
             $drawing->setOffsetY(0);
             $drawing->setHeight(50);
@@ -240,144 +244,142 @@ class ReporteController extends Controller
 
         $fila = 2;
 
-        foreach ($formularios as $formulario_cuatro) {
+        foreach ($memoria_calulos as $memoria_calculo) {
             $sheet->setCellValue('A' . $fila, "SALDO PRESUPUESTARIO - GESTIÓN " . date("Y"));
-            $sheet->mergeCells("A" . $fila . ":I" . $fila);  //COMBINAR CELDAS
-            $sheet->getStyle('A' . $fila . ':I' . $fila)->getAlignment()->setHorizontal('center');
-            $sheet->getStyle('A' . $fila . ':I' . $fila)->applyFromArray($styleTexto);
+            $sheet->mergeCells("A" . $fila . ":G" . $fila);  //COMBINAR CELDAS
+            $sheet->getStyle('A' . $fila . ':G' . $fila)->getAlignment()->setHorizontal('center');
+            $sheet->getStyle('A' . $fila . ':G' . $fila)->applyFromArray($styleTexto);
             $fila++;
             $fila++;
             $sheet->setCellValue('A' . $fila, 'CÓDIGO PEI');
             $sheet->getStyle('A' . $fila)->applyFromArray($styleArray);
-            $sheet->setCellValue('B' . $fila, str_replace("|", "\n", $formulario_cuatro->codigo_pei));
-            $enters = substr_count($formulario_cuatro->codigo_pei, "|");
-            $alto_fila = 25;
-            if ($enters > 1) {
-                $alto_fila = $enters * 26;
-            }
-            $sheet->getRowDimension($fila)->setRowHeight($alto_fila);
-            $sheet->mergeCells("B" . $fila . ":I" . $fila);  //COMBINAR
-            $sheet->getStyle('B' . $fila . ':I' . $fila)->applyFromArray($estilo_conenido);
+            $sheet->setCellValue('B' . $fila, str_replace("|", "\n", $memoria_calculo->pei_text));
+            // $enters = substr_count($memoria_calculo->formulario_cuatro->codigo_pei, "|");
+            // $alto_fila = 25;
+            // if ($enters > 1) {
+            //     $alto_fila = $enters * 26;
+            // }
+            // $sheet->getRowDimension($fila)->setRowHeight($alto_fila);
+            $sheet->mergeCells("B" . $fila . ":G" . $fila);  //COMBINAR
+            $sheet->getStyle('B' . $fila . ':G' . $fila)->applyFromArray($estilo_conenido);
             $fila++;
             $sheet->setCellValue('A' . $fila, 'OBJETIVO ESTRATÉGICO INSTITUCIONAL');
             $sheet->getStyle('A' . $fila)->applyFromArray($styleArray);
-            $sheet->setCellValue('B' . $fila, $formulario_cuatro->accion_institucional);
-            $sheet->mergeCells("B" . $fila . ":I" . $fila);  //COMBINAR
-            $sheet->getStyle('B' . $fila . ':I' . $fila)->applyFromArray($estilo_conenido);
+            $sheet->setCellValue('B' . $fila, $memoria_calculo->formulario_cuatro ? $memoria_calculo->formulario_cuatro->accion_institucional : "");
+            $sheet->mergeCells("B" . $fila . ":G" . $fila);  //COMBINAR
+            $sheet->getStyle('B' . $fila . ':G' . $fila)->applyFromArray($estilo_conenido);
             $fila++;
             $sheet->setCellValue('A' . $fila, 'INDICADOR');
             $sheet->getStyle('A' . $fila)->applyFromArray($styleArray);
-            $sheet->setCellValue('B' . $fila, $formulario_cuatro->indicador);
-            $sheet->mergeCells("B" . $fila . ":I" . $fila);  //COMBINAR
-            $sheet->getStyle('B' . $fila . ':I' . $fila)->applyFromArray($estilo_conenido);
+            $sheet->setCellValue('B' . $fila, $memoria_calculo->formulario_cuatro ? $memoria_calculo->formulario_cuatro->indicador : "");
+            $sheet->mergeCells("B" . $fila . ":G" . $fila);  //COMBINAR
+            $sheet->getStyle('B' . $fila . ':G' . $fila)->applyFromArray($estilo_conenido);
             $fila++;
             $sheet->setCellValue('A' . $fila, 'CODIGO POA');
             $sheet->getStyle('A' . $fila)->applyFromArray($styleArray);
-            $sheet->setCellValue('B' . $fila, str_replace("|", "\n", $formulario_cuatro->codigo_poa));
-            $enters = substr_count($formulario_cuatro->codigo_poa, "|");
-            $alto_fila = 25;
-            if ($enters > 1) {
-                $alto_fila = $enters * 26;
-            }
-            $sheet->getRowDimension($fila)->setRowHeight($alto_fila);
-            $sheet->mergeCells("B" . $fila . ":I" . $fila);  //COMBINAR
-            $sheet->getStyle('B' . $fila . ':I' . $fila)->applyFromArray($estilo_conenido);
+            $sheet->setCellValue('B' . $fila, str_replace("|", "\n", $memoria_calculo->poa_text));
+            // $enters = substr_count($memoria_calculo->formulario_cuatro->codigo_poa, "|");
+            // $alto_fila = 25;
+            // if ($enters > 1) {
+            //     $alto_fila = $enters * 26;
+            // }
+            // $sheet->getRowDimension($fila)->setRowHeight($alto_fila);
+            $sheet->mergeCells("B" . $fila . ":G" . $fila);  //COMBINAR
+            $sheet->getStyle('B' . $fila . ':G' . $fila)->applyFromArray($estilo_conenido);
             $fila++;
             $sheet->setCellValue('A' . $fila, 'ACCIÓN DE CORTO PLAZO DE GESTIÓN');
             $sheet->getStyle('A' . $fila)->applyFromArray($styleArray);
-            $sheet->setCellValue('B' . $fila, $formulario_cuatro->accion_corto);
-            $sheet->mergeCells("B" . $fila . ":I" . $fila);  //COMBINAR
-            $sheet->getStyle('B' . $fila . ':I' . $fila)->applyFromArray($estilo_conenido);
+            $sheet->setCellValue('B' . $fila, $memoria_calculo->formulario_cuatro ? $memoria_calculo->formulario_cuatro->accion_corto : "");
+            $sheet->mergeCells("B" . $fila . ":G" . $fila);  //COMBINAR
+            $sheet->getStyle('B' . $fila . ':G' . $fila)->applyFromArray($estilo_conenido);
             $fila++;
             $sheet->setCellValue('A' . $fila, 'RESULTADO ESPERADO GESTIÓN');
             $sheet->getStyle('A' . $fila)->applyFromArray($styleArray);
-            $sheet->setCellValue('B' . $fila, $formulario_cuatro->resultado_esperado);
-            $sheet->mergeCells("B" . $fila . ":I" . $fila);  //COMBINAR
-            $sheet->getStyle('B' . $fila . ':I' . $fila)->applyFromArray($estilo_conenido);
+            $sheet->setCellValue('B' . $fila, $memoria_calculo->formulario_cuatro ? $memoria_calculo->formulario_cuatro->resultado_esperado : "");
+            $sheet->mergeCells("B" . $fila . ":G" . $fila);  //COMBINAR
+            $sheet->getStyle('B' . $fila . ':G' . $fila)->applyFromArray($estilo_conenido);
             $fila++;
             $sheet->setCellValue('A' . $fila, 'PRESUPUESTO PROGRAMADO GESTIÓN');
             $sheet->getStyle('A' . $fila)->applyFromArray($styleArray);
-            $sheet->setCellValue('B' . $fila, number_format($formulario_cuatro->presupuesto, 2) . " ");
-            $sheet->mergeCells("B" . $fila . ":I" . $fila);  //COMBINAR
-            $sheet->getStyle('B' . $fila . ':I' . $fila)->applyFromArray($estilo_conenido);
+            $sheet->setCellValue('B' . $fila, number_format($memoria_calculo->formulario_cuatro ? $memoria_calculo->formulario_cuatro->presupuesto : 0, 2) . " ");
+            $sheet->mergeCells("B" . $fila . ":G" . $fila);  //COMBINAR
+            $sheet->getStyle('B' . $fila . ':G' . $fila)->applyFromArray($estilo_conenido);
             $fila++;
             $sheet->setCellValue('A' . $fila, 'PONDERACIÓN %');
             $sheet->getStyle('A' . $fila)->applyFromArray($styleArray);
-            $sheet->setCellValue('B' . $fila, number_format($formulario_cuatro->ponderacion, 2) . " ");
-            $sheet->mergeCells("B" . $fila . ":I" . $fila);  //COMBINAR
-            $sheet->getStyle('B' . $fila . ':I' . $fila)->applyFromArray($estilo_conenido);
+            $sheet->setCellValue('B' . $fila, number_format($memoria_calculo->formulario_cuatro ? $memoria_calculo->formulario_cuatro->ponderacion : 0, 2) . " ");
+            $sheet->mergeCells("B" . $fila . ":G" . $fila);  //COMBINAR
+            $sheet->getStyle('B' . $fila . ':G' . $fila)->applyFromArray($estilo_conenido);
             $fila++;
             $sheet->setCellValue('A' . $fila, 'UNIDAD ORGANIZACIONAL');
             $sheet->getStyle('A' . $fila)->applyFromArray($styleArray);
-            $sheet->setCellValue('B' . $fila, $formulario_cuatro->unidad->nombre);
-            $sheet->mergeCells("B" . $fila . ":I" . $fila);  //COMBINAR
-            $sheet->getStyle('B' . $fila . ':I' . $fila)->applyFromArray($estilo_conenido);
+            $sheet->setCellValue('B' . $fila, $memoria_calculo->formulario_cuatro ? $memoria_calculo->formulario_cuatro->unidad->nombre : "");
+            $sheet->mergeCells("B" . $fila . ":G" . $fila);  //COMBINAR
+            $sheet->getStyle('B' . $fila . ':G' . $fila)->applyFromArray($estilo_conenido);
 
             $fila++;
             $fila++;
-            $sheet->setCellValue('A' . $fila, 'Código tarea');
+            // $sheet->setCellValue('A' . $fila, 'Código tarea');
+            // $sheet->mergeCells("A" . $fila . ":A" . ($fila + 1));  //COMBINAR CELDAS
+            // $sheet->setCellValue('B' . $fila, 'Actividad/Tarea');
+            // $sheet->mergeCells("B" . $fila . ":B" . ($fila + 1));  //COMBINAR CELDAS
+            $sheet->setCellValue('A' . $fila, 'Partida');
             $sheet->mergeCells("A" . $fila . ":A" . ($fila + 1));  //COMBINAR CELDAS
-            $sheet->setCellValue('B' . $fila, 'Actividad/Tarea');
-            $sheet->mergeCells("B" . $fila . ":B" . ($fila + 1));  //COMBINAR CELDAS
-            $sheet->setCellValue('C' . $fila, 'Partida');
-            $sheet->mergeCells("C" . $fila . ":C" . ($fila + 1));  //COMBINAR CELDAS
-            $sheet->setCellValue('D' . $fila, 'Presupuesto');
-            $sheet->mergeCells("D" . $fila . ":F" . $fila);  //COMBINAR CELDAS
-            $sheet->setCellValue('G' . $fila, 'Ejecutado');
-            $sheet->mergeCells("G" . $fila . ":H" . $fila);  //COMBINAR CELDAS
-            $sheet->setCellValue('I' . $fila, 'Saldo');
-            $sheet->mergeCells("I" . $fila . ":I" . ($fila + 1));  //COMBINAR CELDAS
-            $sheet->getStyle('A' . $fila . ':I' . $fila)->applyFromArray($styleArray2);
+            $sheet->setCellValue('B' . $fila, 'Presupuesto');
+            $sheet->mergeCells("B" . $fila . ":D" . $fila);  //COMBINAR CELDAS
+            $sheet->setCellValue('E' . $fila, 'Ejecutado');
+            $sheet->mergeCells("E" . $fila . ":F" . $fila);  //COMBINAR CELDAS
+            $sheet->setCellValue('G' . $fila, 'Saldo');
+            $sheet->mergeCells("G" . $fila . ":G" . ($fila + 1));  //COMBINAR CELDAS
+            $sheet->getStyle('A' . $fila . ':G' . $fila)->applyFromArray($styleArray2);
             $fila++;
-            $sheet->setCellValue('D' . $fila, 'Cantidad');
-            $sheet->setCellValue('E' . $fila, 'Costo Unitario');
-            $sheet->setCellValue('F' . $fila, 'Presupuesto vigente');
-            $sheet->setCellValue('G' . $fila, 'Cantidad');
-            $sheet->setCellValue('H' . $fila, 'Presupuesto Vigente');
-            $sheet->getStyle('A' . $fila . ':I' . $fila)->applyFromArray($styleArray2);
+            $sheet->setCellValue('B' . $fila, 'Cantidad');
+            $sheet->setCellValue('C' . $fila, 'Costo Unitario');
+            $sheet->setCellValue('D' . $fila, 'Presupuesto vigente');
+            $sheet->setCellValue('E' . $fila, 'Cantidad');
+            $sheet->setCellValue('F' . $fila, 'Presupuesto Vigente');
+            $sheet->getStyle('A' . $fila . ':G' . $fila)->applyFromArray($styleArray2);
             $fila++;
             $suma_ejecutados = 0;
             $suma_saldos = 0;
-            if ($formulario_cuatro->memoria_calculo) {
-                foreach ($formulario_cuatro->memoria_calculo->operacions as $operacion) {
-                    $sheet->setCellValue('A' . $fila, $operacion->codigo_actividad);
-                    $sheet->setCellValue('B' . $fila, $operacion->descripcion_actividad);
+            foreach ($memoria_calculo->operacions as $operacion) {
+                // $sheet->setCellValue('A' . $fila, $operacion->codigo_actividad);
+                // $sheet->setCellValue('B' . $fila, $operacion->descripcion_actividad);
 
-                    foreach ($operacion->memoria_operacion_detalles as $mod) {
-                        $sheet->setCellValue('C' . $fila, $mod->m_partida->partida);
-                        $sheet->setCellValue('D' . $fila, $mod->cantidad);
-                        $sheet->setCellValue('E' . $fila, number_format($mod->costo, 2) . " ");
-                        $sheet->setCellValue('F' . $fila, number_format($mod->total, 2) . " ");
-                        $cantidad_usado = CertificacionDetalle::select("certificacion_detalles.*")
-                            ->join("certificacions", "certificacions.id", "=", "certificacion_detalles.certificacion_id")
-                            ->where('certificacions.mo_id', $operacion->id)
-                            ->where("anulado", 0)
-                            ->where("mod_id", $mod->id)
-                            ->sum('cantidad_usar');
-                        $total_usado = CertificacionDetalle::select("certificacion_detalles.*")
-                            ->join("certificacions", "certificacions.id", "=", "certificacion_detalles.certificacion_id")
-                            ->where('certificacions.mo_id', $operacion->id)
-                            ->where("anulado", 0)
-                            ->where("mod_id", $mod->id)
-                            ->sum('presupuesto_usarse');
-                        $saldo = (float) $mod->total - (float) $total_usado;
-                        $sheet->setCellValue('G' . $fila, $cantidad_usado);
-                        $sheet->setCellValue('H' . $fila, $total_usado);
-                        $sheet->setCellValue('I' . $fila, number_format($saldo, 2) . " ");
-                        $sheet->getStyle('A' . $fila . ':I' . $fila)->applyFromArray($estilo_conenido);
-                        $fila++;
-                        $suma_ejecutados += $total_usado;
-                        $suma_saldos += $saldo;
-                    }
+                foreach ($operacion->memoria_operacion_detalles as $mod) {
+                    $sheet->setCellValue('A' . $fila, $mod->m_partida->partida);
+                    $sheet->setCellValue('B' . $fila, $mod->cantidad);
+                    $sheet->setCellValue('C' . $fila, number_format($mod->costo, 2) . " ");
+                    $sheet->setCellValue('D' . $fila, number_format($mod->total, 2) . " ");
+                    $cantidad_usado = CertificacionDetalle::select("certificacion_detalles.*")
+                        ->join("certificacions", "certificacions.id", "=", "certificacion_detalles.certificacion_id")
+                        ->where('certificacions.mo_id', $operacion->id)
+                        ->where("anulado", 0)
+                        ->where("mod_id", $mod->id)
+                        ->sum('cantidad_usar');
+                    $total_usado = CertificacionDetalle::select("certificacion_detalles.*")
+                        ->join("certificacions", "certificacions.id", "=", "certificacion_detalles.certificacion_id")
+                        ->where('certificacions.mo_id', $operacion->id)
+                        ->where("anulado", 0)
+                        ->where("mod_id", $mod->id)
+                        ->sum('presupuesto_usarse');
+                    $saldo = (float) $mod->total - (float) $total_usado;
+                    $sheet->setCellValue('E' . $fila, $cantidad_usado);
+                    $sheet->setCellValue('F' . $fila, $total_usado);
+                    $sheet->setCellValue('G' . $fila, number_format($saldo, 2) . " ");
+                    $sheet->getStyle('A' . $fila . ':G' . $fila)->applyFromArray($estilo_conenido);
+                    $fila++;
+                    $suma_ejecutados += $total_usado;
+                    $suma_saldos += $saldo;
                 }
-
-                $sheet->setCellValue('A' . $fila, 'TOTAL');
-                $sheet->mergeCells("A" . $fila . ":E" . $fila);  //COMBINAR CELDAS
-                $sheet->setCellValue('F' . $fila, number_format($formulario_cuatro->memoria_calculo->total_final, 2) . " ");
-                $sheet->setCellValue('H' . $fila, number_format($suma_ejecutados, 2) . " ");
-                $sheet->setCellValue('I' . $fila, number_format($suma_saldos, 2) . " ");
-                $sheet->getStyle('A' . $fila . ':I' . $fila)->applyFromArray($estilo_total);
             }
+
+            $sheet->setCellValue('A' . $fila, 'TOTAL');
+            $sheet->mergeCells("A" . $fila . ":C" . $fila);  //COMBINAR CELDAS
+            $sheet->setCellValue('D' . $fila, number_format($memoria_calculo->total_final, 2) . " ");
+            $sheet->setCellValue('F' . $fila, number_format($suma_ejecutados, 2) . " ");
+            $sheet->setCellValue('G' . $fila, number_format($suma_saldos, 2) . " ");
+            $sheet->getStyle('A' . $fila . ':G' . $fila)->applyFromArray($estilo_total);
 
             $sheet->getColumnDimension('A')->setWidth(30);
             $sheet->getColumnDimension('B')->setWidth(20);
@@ -391,7 +393,7 @@ class ReporteController extends Controller
             $fila++;
         }
         $sheet->setCellValue('G' . $fila, self::getFechaTexto());
-        $sheet->mergeCells("G" . $fila . ":I" . $fila);  //COMBINAR CELDAS
+        $sheet->mergeCells("G" . $fila . ":G" . $fila);  //COMBINAR CELDAS
 
         foreach (range('A', 'I') as $columnID) {
             $sheet->getStyle($columnID)->getAlignment()->setWrapText(true);
@@ -402,7 +404,7 @@ class ReporteController extends Controller
         $sheet->getPageMargins()->setRight(0.1);
         $sheet->getPageMargins()->setLeft(0.1);
         $sheet->getPageMargins()->setBottom(0.1);
-        $sheet->getPageSetup()->setPrintArea('A:I');
+        $sheet->getPageSetup()->setPrintArea('A:G');
         $sheet->getPageSetup()->setFitToWidth(1);
         $sheet->getPageSetup()->setFitToHeight(0);
 
@@ -438,43 +440,58 @@ class ReporteController extends Controller
         $fecha_fin =  $request->fecha_fin;
         $filtro2 =  $request->filtro2;
 
-        $formularios = [];
+        $memoria_calculos = [];
         $unidad = null;
         if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS") {
-            $formularios = FormularioCuatro::where("unidad_id", Auth::user()->unidad_id)->get();
+            $memoria_calculos = MemoriaCalculo::select("memoria_calculos.*")
+                ->join("formulario_cuatro", "formulario_cuatro.id", "=", "memoria_calculos.formulario_id")
+                ->where("formulario_cuatro.unidad_id", Auth::user()->unidad_id)->get();
             if ($filtro != "Todos") {
                 switch ($filtro) {
                     case "Código PEI":
-                        $formularios = FormularioCuatro::where("id", $formulario_id)
-                            ->where("unidad_id", Auth::user()->unidad_id)
+                        $memoria_calculos = MemoriaCalculo::select("memoria_calculos.*")
+                            ->join("formulario_cuatro", "formulario_cuatro.id", "=", "memoria_calculos.formulario_id")
+                            ->where("memoria_calculos.formulario_seleccionado", $formulario_id)
+                            ->where("formulario_cuatro.unidad_id", Auth::user()->unidad_id)
                             ->get();
                         break;
                     case "Rango de fechas":
-                        $formularios = FormularioCuatro::whereBetween("fecha_registro", [$fecha_ini, $fecha_fin])
-                            ->where("unidad_id", Auth::user()->unidad_id)
+                        $memoria_calculos = MemoriaCalculo::select("memoria_calculos.*")
+                            ->join("formulario_cuatro", "formulario_cuatro.id", "=", "memoria_calculos.formulario_id")
+                            ->whereBetween("fecha_registro", [$fecha_ini, $fecha_fin])
+                            ->where("formulario_cuatro.unidad_id", Auth::user()->unidad_id)
                             ->get();
                         break;
                 }
             }
         } else {
-            $formularios = FormularioCuatro::all();
+            $memoria_calculos = MemoriaCalculo::select("memoria_calculos.*")
+                ->join("formulario_cuatro", "formulario_cuatro.id", "=", "memoria_calculos.formulario_id")
+                ->get();
             if ($filtro != "Todos") {
                 switch ($filtro) {
                     case "Unidad Organizacional":
-                        $formularios = FormularioCuatro::where("unidad_id", $unidad_id)->get();
+                        $memoria_calculos = MemoriaCalculo::select("memoria_calculos.*")
+                            ->join("formulario_cuatro", "formulario_cuatro.id", "=", "memoria_calculos.formulario_id")
+                            ->where("formulario_cuatro.unidad_id", $unidad_id)->get();
                         $unidad = Unidad::find($unidad_id);
                         break;
                     case "Código PEI":
-                        $formularios = FormularioCuatro::where("id", $formulario_id)->get();
+                        $memoria_calculos = MemoriaCalculo::select("memoria_calculos.*")
+                            ->join("formulario_cuatro", "formulario_cuatro.id", "=", "memoria_calculos.formulario_id")
+                            ->where("memoria_calculos.formulario_seleccionado", $formulario_id)
+                            ->get();
                         break;
                     case "Rango de fechas":
-                        $formularios = FormularioCuatro::whereBetween("fecha_registro", [$fecha_ini, $fecha_fin])->get();
+                        $memoria_calculos = MemoriaCalculo::select("memoria_calculos.*")
+                            ->join("formulario_cuatro", "formulario_cuatro.id", "=", "memoria_calculos.formulario_id")
+                            ->whereBetween("memoria_calculos.fecha_registro", [$fecha_ini, $fecha_fin])->get();
                         break;
                 }
             }
         }
 
-        $pdf = PDF::loadView('reportes.ejecucion_presupuestos', compact('formularios', 'filtro', 'filtro2', 'unidad'))->setPaper('legal', 'landscape');
+        $pdf = PDF::loadView('reportes.ejecucion_presupuestos', compact('memoria_calculos', 'filtro', 'filtro2', 'unidad'))->setPaper('legal', 'landscape');
         // ENUMERAR LAS PÁGINAS USANDO CANVAS
         $pdf->output();
         $dom_pdf = $pdf->getDomPDF();
@@ -551,37 +568,50 @@ class ReporteController extends Controller
         $fecha_ini =  $request->fecha_ini;
         $fecha_fin =  $request->fecha_fin;
 
-        $formularios = [];
+        $memoria_calculos = [];
         $unidad = null;
         if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS") {
-            $formularios = FormularioCuatro::where("unidad_id", Auth::user()->unidad_id)->get();
+            $memoria_calculos = MemoriaCalculo::select("memoria_calculos.*")
+                ->join("formulario_cuatro", "formulario_cuatro.id", "memoria_calculos.formulario_id")
+                ->where("formulario_cuatro.unidad_id", Auth::user()->unidad_id)
+                ->get();
             if ($filtro != "Todos") {
                 switch ($filtro) {
                     case "Código PEI":
-                        $formularios = FormularioCuatro::where("id", $formulario_id)
-                            ->where("unidad_id", Auth::user()->unidad_id)
+                        $memoria_calculos = MemoriaCalculo::select("memoria_calculos.*")
+                            ->join("formulario_cuatro", "formulario_cuatro.id", "memoria_calculos.formulario_id")
+                            ->where("memoria_calculos.formulario_seleccionado", $formulario_id)
+                            ->where("formulario_cuatro.unidad_id", Auth::user()->unidad_id)
                             ->get();
                         break;
                     case "Rango de fechas":
-                        $formularios = FormularioCuatro::whereBetween("fecha_registro", [$fecha_ini, $fecha_fin])
-                            ->where("unidad_id", Auth::user()->unidad_id)
+                        $memoria_calculos = MemoriaCalculo::select("memoria_calculos.*")
+                            ->join("formulario_cuatro", "formulario_cuatro.id", "memoria_calculos.formulario_id")
+                            ->whereBetween("memoria_calculos.fecha_registro", [$fecha_ini, $fecha_fin])
+                            ->where("formulario_cuatro.unidad_id", Auth::user()->unidad_id)
                             ->get();
                         break;
                 }
             }
         } else {
-            $formularios = FormularioCuatro::all();
+            $memoria_calculos = MemoriaCalculo::select("memoria_calculos.*")->get();
             if ($filtro != "Todos") {
                 switch ($filtro) {
                     case "Unidad Organizacional":
-                        $formularios = FormularioCuatro::where("unidad_id", $unidad_id)->get();
+                        $memoria_calculos = MemoriaCalculo::select("memoria_calculos.*")
+                            ->join("formulario_cuatro", "formulario_cuatro.id", "memoria_calculos.formulario_id")
+                            ->where("formulario_cuatro.unidad_id", $unidad_id)->get();
                         $unidad = Unidad::find($unidad_id);
                         break;
                     case "Código PEI":
-                        $formularios = FormularioCuatro::where("id", $formulario_id)->get();
+                        $memoria_calculos = MemoriaCalculo::select("memoria_calculos.*")
+                            ->join("formulario_cuatro", "formulario_cuatro.id", "memoria_calculos.formulario_id")
+                            ->where("memoria_calculos.formulario_seleccionado", $formulario_id)
+                            ->get();
                         break;
                     case "Rango de fechas":
-                        $formularios = FormularioCuatro::whereBetween("fecha_registro", [$fecha_ini, $fecha_fin])->get();
+                        $memoria_calculos = MemoriaCalculo::select("memoria_calculos.*")
+                            ->whereBetween("fecha_registro", [$fecha_ini, $fecha_fin])->get();
                         break;
                 }
             }
@@ -589,14 +619,8 @@ class ReporteController extends Controller
 
 
         $array_tablas = [];
-        // foreach ($formularios as $formulario) {
-        //     $formulario_cinco = $formulario->memoria_calculo->formulario_cinco;
-        //     $array_registros = FormularioCincoController::armaRepetidos($formulario_cinco);
-        //     $tabla = view('reportes.parcial.formulario_cinco', compact('array_registros', 'formulario_cinco'))->render();
-        //     $array_tablas[$formulario->id] = $tabla;
-        // }
 
-        $pdf = PDF::loadView('reportes.formulario_cinco', compact('formularios', "array_tablas", "filtro", "unidad"))->setPaper('legal', 'landscape');
+        $pdf = PDF::loadView('reportes.formulario_cinco', compact('memoria_calculos', "array_tablas", "filtro", "unidad"))->setPaper('legal', 'landscape');
         // ENUMERAR LAS PÁGINAS USANDO CANVAS
         $pdf->output();
         $dom_pdf = $pdf->getDomPDF();
@@ -615,44 +639,57 @@ class ReporteController extends Controller
         $fecha_ini =  $request->fecha_ini;
         $fecha_fin =  $request->fecha_fin;
 
-        $formularios = [];
+        $memoria_calculos = [];
         $unidad = null;
         if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS") {
-            $formularios = FormularioCuatro::where("unidad_id", Auth::user()->unidad_id)->get();
+            $memoria_calculos = MemoriaCalculo::select("memoria_calculos.*")
+                ->join("formulario_cuatro", "formulario_cuatro.id", "=", "memoria_calculos.formulario_id")
+                ->where("formulario_cuatro.unidad_id", Auth::user()->unidad_id)->get();
             if ($filtro != "Todos") {
                 switch ($filtro) {
                     case "Código PEI":
-                        $formularios = FormularioCuatro::where("id", $formulario_id)
-                            ->where("unidad_id", Auth::user()->unidad_id)
+                        $memoria_calculos = MemoriaCalculo::select("memoria_calculos.*")
+                            ->join("formulario_cuatro", "formulario_cuatro.id", "=", "memoria_calculos.formulario_id")
+                            ->where("memoria_calculos.formulario_seleccionado", $formulario_id)
+                            ->where("formulario_cuatro.unidad_id", Auth::user()->unidad_id)
                             ->get();
                         break;
                     case "Rango de fechas":
-                        $formularios = FormularioCuatro::whereBetween("fecha_registro", [$fecha_ini, $fecha_fin])
-                            ->where("unidad_id", Auth::user()->unidad_id)
+                        $memoria_calculos = MemoriaCalculo::select("memoria_calculos.*")
+                            ->join("formulario_cuatro", "formulario_cuatro.id", "=", "memoria_calculos.formulario_id")
+                            ->whereBetween("memoria_calculos.fecha_registro", [$fecha_ini, $fecha_fin])
+                            ->where("formulario_cuatro.unidad_id", Auth::user()->unidad_id)
                             ->get();
                         break;
                 }
             }
         } else {
-            $formularios = FormularioCuatro::all();
+            $memoria_calculos = MemoriaCalculo::select("memoria_calculos.*")
+                ->get();
             if ($filtro != "Todos") {
                 switch ($filtro) {
                     case "Unidad Organizacional":
-                        $formularios = FormularioCuatro::where("unidad_id", $unidad_id)->get();
+                        $memoria_calculos = MemoriaCalculo::select("memoria_calculos.*")
+                            ->join("formulario_cuatro", "formulario_cuatro.id", "=", "memoria_calculos.formulario_id")
+                            ->where("formulario_cuatro.unidad_id", $unidad_id)->get();
                         $unidad = Unidad::find($unidad_id);
                         break;
                     case "Código PEI":
-                        $formularios = FormularioCuatro::where("id", $formulario_id)->get();
+                        $memoria_calculos = MemoriaCalculo::select("memoria_calculos.*")
+                            ->join("formulario_cuatro", "formulario_cuatro.id", "=", "memoria_calculos.formulario_id")
+                            ->where("memoria_calculos.formulario_seleccionado", $formulario_id)
+                            ->get();
                         break;
                     case "Rango de fechas":
-                        $formularios = FormularioCuatro::whereBetween("fecha_registro", [$fecha_ini, $fecha_fin])->get();
+                        $memoria_calculos = MemoriaCalculo::select("memoria_calculos.*")
+                            ->whereBetween("memoria_calculos.fecha_registro", [$fecha_ini, $fecha_fin])->get();
                         break;
                 }
             }
         }
 
 
-        $pdf = PDF::loadView('reportes.memoria_calculos', compact('formularios', "filtro", "unidad"))->setPaper('legal', 'landscape');
+        $pdf = PDF::loadView('reportes.memoria_calculos', compact('memoria_calculos', "filtro", "unidad"))->setPaper('legal', 'landscape');
         // ENUMERAR LAS PÁGINAS USANDO CANVAS
         $pdf->output();
         $dom_pdf = $pdf->getDomPDF();
@@ -688,19 +725,22 @@ class ReporteController extends Controller
         $formulario_id =  $request->formulario_id;
         $partida_id =  $request->partida_id;
 
-        $formulario = FormularioCuatro::find($formulario_id);
+        $memoria_calculo = MemoriaCalculo::where("formulario_seleccionado", $formulario_id)->get()->first();
         $partida = Partida::find($partida_id);
         $memoria_operacion_detalles = null;
-        if ($formulario->memoria_calculo) {
+        $unidad = null;
+        $formulario = null;
+        if ($memoria_calculo) {
+            $formulario = $memoria_calculo->formulario;
             $memoria_operacion_detalles = MemoriaOperacionDetalle::select("memoria_operacion_detalles.*")
                 ->join("memoria_operacions", "memoria_operacions.id", "=", "memoria_operacion_detalles.memoria_operacion_id")
-                ->where("memoria_operacions.memoria_id", $formulario->memoria_calculo->id)
+                ->where("memoria_operacions.memoria_id", $memoria_calculo->id)
                 ->where("memoria_operacion_detalles.partida_id", $partida_id)
                 ->get();
+            $unidad = $memoria_calculo->formulario->unidad;
         }
 
-        $unidad = $formulario->unidad;
-        $pdf = PDF::loadView('reportes.saldos_partida', compact("memoria_operacion_detalles", "formulario", "partida", "unidad"))->setPaper('legal', 'landscape');
+        $pdf = PDF::loadView('reportes.saldos_partida', compact("memoria_operacion_detalles", "memoria_calculo", "formulario", "partida", "unidad"))->setPaper('legal', 'landscape');
         // ENUMERAR LAS PÁGINAS USANDO CANVAS
         $pdf->output();
         $dom_pdf = $pdf->getDomPDF();

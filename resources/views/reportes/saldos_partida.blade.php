@@ -196,12 +196,12 @@
     <img class="logo" src="{{ asset('imgs/' . $configuracion->first()->logo2) }}" alt="Logo">
     <img class="logo2" src="{{ asset('imgs/' . $configuracion->first()->logo) }}" alt="Logo">
     <div class="titulo">SALDOS DE PRESUPUESTOS POR ACTIVIDAD<br />GESTIÓN {{ date('Y') }}</div>
-    <div class="titulo2">{{ $unidad->nombre }}</div>
+    <div class="titulo2" style="margin-top:80px;">{{ $unidad ? $unidad->nombre : '' }}</div>
     <table border="1" class="collapse">
         <tbody>
             <tr class="bg_principal">
                 <td class="bold p-5" width="10%">Código PEI:</td>
-                <td class="bold p-5">{!! str_replace(',', '<br>', $formulario->codigo_pei) !!}</td>
+                <td class="bold p-5">{!! str_replace(',', '<br>', $memoria_calculo ? $memoria_calculo->pei_text : '') !!}</td>
             </tr>
             <tr>
                 <td class="bold p-5">Partida:</td>
@@ -216,12 +216,12 @@
                 <th rowspan="2" width="5%">
                     Código operación
                 </th>
-                <th rowspan="2" width="5%">
+                {{-- <th rowspan="2" width="5%">
                     Código tarea
                 </th>
                 <th rowspan="2">
                     Actividad/Tareas
-                </th>
+                </th> --}}
                 <th rowspan="2">Partida</th>
                 <th colspan="3">
                     Presupuesto
@@ -245,44 +245,45 @@
                 $suma_saldos = 0;
                 $suma_usados = 0;
             @endphp
-
-            @foreach ($memoria_operacion_detalles as $mod)
-                <tr>
-                    <td class="centreado">
-                        {{ $mod->memoria_operacion->codigo_operacion }}
-                    </td>
-                    <td class="centreado">
+            @if ($memoria_operacion_detalles)
+                @foreach ($memoria_operacion_detalles as $mod)
+                    <tr>
+                        <td class="centreado">
+                            {{ $mod->memoria_operacion->codigo_operacion }}
+                        </td>
+                        {{-- <td class="centreado">
                         {{ $mod->memoria_operacion->codigo_actividad }}
                     </td>
-                    <td>{{ $mod->memoria_operacion->descripcion_actividad }}</td>
-                    <td class="centreado">{{ $mod->partida }}</td>
-                    <td class="centreado">{{ $mod->cantidad }}</td>
-                    <td class="centreado">{{ $mod->costo }}</td>
-                    <td class="centreado">{{ $mod->total }}</td>
-                    @php
-                        $cantidad_usado = $o_certificacion_detalles
-                            ->join('certificacions', 'certificacions.id', '=', 'certificacion_detalles.certificacion_id')
-                            ->where('certificacion_detalles.mo_id', $mod->memoria_operacion->id)
-                            ->where('mod_id', $mod->id)
-                            ->where('anulado', 0)
-                            ->sum('cantidad_usar');
-                        $total_usado = $o_certificacion_detalles
-                            ->join('certificacions', 'certificacions.id', '=', 'certificacion_detalles.certificacion_id')
-                            ->where('certificacion_detalles.mo_id', $mod->memoria_operacion->id)
-                            ->where('mod_id', $mod->id)
-                            ->where('anulado', 0)
-                            ->sum('presupuesto_usarse');
-                        $saldo = (float) $mod->total - (float) $total_usado;
-                        $suma_usados += (float) $total_usado;
-                        $suma_saldos += (float) $saldo;
-                    @endphp
-                    <td class="centreado">{{ $cantidad_usado }}</td>
-                    <td class="centreado">{{ number_format($total_usado, 2) }}</td>
-                    <td class="centreado">{{ number_format($saldo, 2) }}</td>
-                </tr>
-            @endforeach
+                    <td>{{ $mod->memoria_operacion->descripcion_actividad }}</td> --}}
+                        <td class="centreado">{{ $mod->partida }}</td>
+                        <td class="centreado">{{ $mod->cantidad }}</td>
+                        <td class="centreado">{{ $mod->costo }}</td>
+                        <td class="centreado">{{ $mod->total }}</td>
+                        @php
+                            $cantidad_usado = $o_certificacion_detalles
+                                ->join('certificacions', 'certificacions.id', '=', 'certificacion_detalles.certificacion_id')
+                                ->where('certificacion_detalles.mo_id', $mod->memoria_operacion->id)
+                                ->where('mod_id', $mod->id)
+                                ->where('anulado', 0)
+                                ->sum('cantidad_usar');
+                            $total_usado = $o_certificacion_detalles
+                                ->join('certificacions', 'certificacions.id', '=', 'certificacion_detalles.certificacion_id')
+                                ->where('certificacion_detalles.mo_id', $mod->memoria_operacion->id)
+                                ->where('mod_id', $mod->id)
+                                ->where('anulado', 0)
+                                ->sum('presupuesto_usarse');
+                            $saldo = (float) $mod->total - (float) $total_usado;
+                            $suma_usados += (float) $total_usado;
+                            $suma_saldos += (float) $saldo;
+                        @endphp
+                        <td class="centreado">{{ $cantidad_usado }}</td>
+                        <td class="centreado">{{ number_format($total_usado, 2) }}</td>
+                        <td class="centreado">{{ number_format($saldo, 2) }}</td>
+                    </tr>
+                @endforeach
+            @endif
             <tr>
-                <td class="centreado bold" colspan="8">TOTAL</td>
+                <td class="centreado bold" colspan="6">TOTAL</td>
                 <td class="centreado bold">{{ number_format($suma_usados, 2) }}</td>
                 <td class="centreado bold">{{ number_format($suma_saldos, 2) }}</td>
             </tr>

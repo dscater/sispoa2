@@ -198,7 +198,7 @@
     <img class="logo2" src="{{ asset('imgs/' . $configuracion->first()->logo) }}" alt="Logo">
     <div class="titulo">SALDOS DE PRESUPUESTOS POR ACTIVIDAD<br />GESTIÓN {{ date('Y') }}</div>
     <div class="titulo2">{{ $unidad->nombre }}</div>
-    <table border="1" class="collapse">
+    <table border="1" class="collapse" style="margin-top:80px;">
         <tbody>
             <tr class="bg_principal">
                 <td class="bold p-5" width="10%">Código PEI:</td>

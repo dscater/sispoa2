@@ -91,7 +91,7 @@
                                     <td class="border_left border_top">{{ $registro_resp->act }}</td>
                                     <td class="border_left border_top"></td>
                                     <td
-                                        class="{{ (float) $registro_resp->saldo == 0 ? 'fondo_rojo' : '' }}  border_left border_right">
+                                        class="{{ (float) $registro_resp->saldo == 0 ? 'fondo_rojo' : '' }}  border_left border_right border_top">
                                         {{ $registro_resp->total_actividad }}</td>
                                 </tr>
                             @elseif ($index_lugar == 0 && $index_responsable == 0 && $index_registro_rep == 0)

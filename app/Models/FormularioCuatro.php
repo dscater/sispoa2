@@ -229,6 +229,11 @@ class FormularioCuatro extends Model
         return $this->hasOne(MemoriaCalculo::class, 'formulario_id');
     }
 
+    public function memoria_calculos()
+    {
+        return $this->hasMany(MemoriaCalculo::class, 'formulario_id');
+    }
+
     public function certificacions()
     {
         return $this->hasMany(Certificacion::class, 'formulario_id');

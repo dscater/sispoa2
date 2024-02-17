@@ -26,13 +26,9 @@
                                         >
                                             <el-option
                                                 v-for="item in listDetalles"
-                                                :key="item.id"
-                                                :value="item.id"
-                                                :label="
-                                                    ingresarEnter(
-                                                        item.formulario.codigo_pei
-                                                    )
-                                                "
+                                                :key="item.pei_seleccionado"
+                                                :value="item.pei_seleccionado"
+                                                :label="item.codigo_pei"
                                             >
                                             </el-option>
                                         </el-select>
@@ -76,18 +72,19 @@ export default {
         getDetalleFormularios() {
             this.showOverlay = true;
             this.muestra_modal = false;
-            let url = "/admin/detalle_formularios";
+            let url = "/admin/formulario_cuatro/listado_pei_index";
             axios.get(url).then((res) => {
-                this.listDetalles = res.data.detalle_formularios;
+                this.listDetalles = res.data.listado;
             });
         },
         cargaTabla() {
             if (this.detalle_formulario_id != "") {
                 axios
-                    .get(
-                        "/admin/detalle_formularios/seguimiento_trimestral/" +
-                            this.detalle_formulario_id
-                    )
+                    .get("/admin/detalle_formularios/seguimiento_trimestral", {
+                        params: {
+                            formulario_id: this.detalle_formulario_id,
+                        },
+                    })
                     .then((response) => {
                         this.htmlTabla = response.data;
                     });

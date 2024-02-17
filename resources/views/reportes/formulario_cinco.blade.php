@@ -213,6 +213,10 @@
         .border_left {
             border-left: solid 0.2px black;
         }
+
+        .salto_linea{
+            page-break-after: always;
+        }
     </style>
 </head>
 
@@ -224,7 +228,7 @@
     @inject('o_certificacion', 'App\Models\Certificacion')
     @inject('o_verificacion_actividad', 'App\Models\VerificacionActividad')
     @inject('o_formulario_cinco_controller', 'App\Http\Controllers\FormularioCincoController')
-    @foreach ($formularios as $formulario)
+    @foreach ($memoria_calculos as $memoria_calculo)
         <div class="encabezado">
             <div class="logo">
                 <img src="{{ asset('imgs/' . $configuracion->first()->logo2) }}">
@@ -249,30 +253,28 @@
             <tbody>
                 <tr class="bg_principal">
                     <td class="bold p-5" width="10%">Código PEI:</td>
-                    <td class="bold p-5">{!! str_replace(',', '<br>', $formulario->codigo_pei) !!}</td>
+                    <td class="bold p-5">{!! str_replace(',', '<br>', $memoria_calculo->pei_text) !!}</td>
                     <td class="bold p-5" width="15%">Presupuesto programado:</td>
-                    <td class="bold p-5">{{ number_format($formulario->presupuesto, 2) }}</td>
+                    <td class="bold p-5">{{ number_format($memoria_calculo->formulario->presupuesto, 2) }}</td>
                 </tr>
                 <tr>
                     <td class="bold p-5">Unidad:</td>
-                    <td class="bold p-5" colspan="3">{{ $formulario->unidad->nombre }}</td>
+                    <td class="bold p-5" colspan="3">{{ $memoria_calculo->formulario->unidad->nombre }}</td>
                 </tr>
             </tbody>
         </table>
         @php
             $tabla = '<p class="centreado">SIN REGISTROS</p>';
-            if ($formulario->memoria_calculo) {
-                $formulario_cinco = $formulario->memoria_calculo->formulario_cinco;
-                $array_registros = $o_formulario_cinco_controller::armaRepetidos($formulario_cinco);
-                $verificacion_actividad = $o_verificacion_actividad::get()->first();
-                $tabla = view('parcial.formulario_cinco2', compact('array_registros', 'formulario_cinco', 'verificacion_actividad'))->render();
-            }
+            $formulario_cinco = $memoria_calculo->formulario_cinco;
+            $array_registros = $o_formulario_cinco_controller::armaRepetidos($formulario_cinco);
+            $verificacion_actividad = $o_verificacion_actividad::get()->first();
+            $tabla = view('parcial.formulario_cinco2', compact('array_registros', 'formulario_cinco', 'verificacion_actividad'))->render();
         @endphp
         {!! $tabla !!}
         @php
             $contador++;
         @endphp
-        @if ($contador < count($formularios))
+        @if ($contador < count($memoria_calculos))
             <div class="salto_linea"></div>
         @endif
     @endforeach
