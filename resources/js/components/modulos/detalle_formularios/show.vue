@@ -119,6 +119,15 @@
                                                 >
                                                     {{ operacion.operacion }}
                                                 </td>
+                                                <td
+                                                    :rowspan="
+                                                        operacion
+                                                            .detalle_operaciones
+                                                            .length + 1
+                                                    "
+                                                >
+                                                    {{ operacion.total_porcentaje }} %
+                                                </td>
                                             </tr>
                                             <tr
                                                 v-for="(
@@ -126,11 +135,11 @@
                                                     index_detalle
                                                 ) in operacion.detalle_operaciones"
                                             >
-                                                <td>
+                                                <!-- <td>
                                                     {{
                                                         detalle_operacion.ponderacion
                                                     }}%
-                                                </td>
+                                                </td> -->
                                                 <td>
                                                     {{
                                                         detalle_operacion.resultado_esperado

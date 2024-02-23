@@ -320,58 +320,58 @@ export default {
                 }
                 item.memoria_operacion_detalles.forEach(
                     (elem_detalle, index_detalle) => {
-                        if (elem_detalle.ue == null || elem_detalle.ue == "") {
-                            array_errors.push(
-                                "Debes ingresar una <b>Unidad Ejecutora</b> en el detalle " +
-                                    (index + 1) +
-                                    "-" +
-                                    (index_detalle + 1)
-                            );
-                        }
-                        if (
-                            elem_detalle.prog == null ||
-                            elem_detalle.prog == ""
-                        ) {
-                            array_errors.push(
-                                "Debes ingresar una <b>Programación</b> en el detalle " +
-                                    (index + 1) +
-                                    "-" +
-                                    (index_detalle + 1)
-                            );
-                        }
-                        if (
-                            elem_detalle.act == null ||
-                            elem_detalle.act == ""
-                        ) {
-                            array_errors.push(
-                                "Debes ingresar una <b>Actividad</b> en el detalle " +
-                                    (index + 1) +
-                                    "-" +
-                                    (index_detalle + 1)
-                            );
-                        }
-                        if (
-                            elem_detalle.lugar == null ||
-                            elem_detalle.lugar == ""
-                        ) {
-                            array_errors.push(
-                                "Debes ingresar un <b>Lugar de Ejecución de la Operación</b> en el detalle " +
-                                    (index + 1) +
-                                    "-" +
-                                    (index_detalle + 1)
-                            );
-                        }
-                        if (
-                            elem_detalle.responsable == null ||
-                            elem_detalle.responsable == ""
-                        ) {
-                            array_errors.push(
-                                "Debes ingresar un <b>Responsable de Ejecución de la Operación / Tarea</b> en el detalle " +
-                                    (index + 1) +
-                                    "-" +
-                                    (index_detalle + 1)
-                            );
-                        }
+                        // if (elem_detalle.ue == null || elem_detalle.ue == "") {
+                        //     array_errors.push(
+                        //         "Debes ingresar una <b>Unidad Ejecutora</b> en el detalle " +
+                        //             (index + 1) +
+                        //             "-" +
+                        //             (index_detalle + 1)
+                        //     );
+                        // }
+                        // if (
+                        //     elem_detalle.prog == null ||
+                        //     elem_detalle.prog == ""
+                        // ) {
+                        //     array_errors.push(
+                        //         "Debes ingresar una <b>Programación</b> en el detalle " +
+                        //             (index + 1) +
+                        //             "-" +
+                        //             (index_detalle + 1)
+                        //     );
+                        // }
+                        // if (
+                        //     elem_detalle.act == null ||
+                        //     elem_detalle.act == ""
+                        // ) {
+                        //     array_errors.push(
+                        //         "Debes ingresar una <b>Actividad</b> en el detalle " +
+                        //             (index + 1) +
+                        //             "-" +
+                        //             (index_detalle + 1)
+                        //     );
+                        // }
+                        // if (
+                        //     elem_detalle.lugar == null ||
+                        //     elem_detalle.lugar == ""
+                        // ) {
+                        //     array_errors.push(
+                        //         "Debes ingresar un <b>Lugar de Ejecución de la Operación</b> en el detalle " +
+                        //             (index + 1) +
+                        //             "-" +
+                        //             (index_detalle + 1)
+                        //     );
+                        // }
+                        // if (
+                        //     elem_detalle.responsable == null ||
+                        //     elem_detalle.responsable == ""
+                        // ) {
+                        //     array_errors.push(
+                        //         "Debes ingresar un <b>Responsable de Ejecución de la Operación / Tarea</b> en el detalle " +
+                        //             (index + 1) +
+                        //             "-" +
+                        //             (index_detalle + 1)
+                        //     );
+                        // }
                         if (
                             elem_detalle.partida_id == null ||
                             elem_detalle.partida_id == ""

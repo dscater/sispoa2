@@ -15,6 +15,13 @@ class Operacion extends Model
     ];
 
     protected $with = ["detalle_operaciones"];
+    protected $appends = ["total_porcentaje"];
+
+    public function getTotalPorcentajeAttribute()
+    {
+        $total = DetalleOperacion::where("operacion_id", $this->id)->sum("ponderacion");
+        return $total;
+    }
 
     public function detalle_operaciones()
     {

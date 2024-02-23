@@ -421,32 +421,38 @@
                                                                 class="fa fa-check"
                                                             ></i>
                                                         </b-button>
-                                                        <b-button
-                                                            v-else
-                                                            size="sm"
-                                                            pill
-                                                            variant="outline-info"
-                                                            class="btn-flat btn-block"
-                                                            title="Desaprobar"
-                                                            @click="
-                                                                desaprobarCertificacion(
-                                                                    row.item.id,
-                                                                    row.item
-                                                                        .formulario
-                                                                        .codigo_pei +
-                                                                        ' con fecha de registro ' +
-                                                                        formatoFecha(
-                                                                            row
-                                                                                .item
-                                                                                .fecha_registro
-                                                                        )
-                                                                )
-                                                            "
-                                                        >
-                                                            <i
-                                                                class="fa fa-times-circle"
-                                                            ></i>
-                                                        </b-button>
+                                                        <template v-else>
+                                                            <b-button
+                                                                v-if="
+                                                                    user.tipo ==
+                                                                    'SUPER USUARIO'
+                                                                "
+                                                                size="sm"
+                                                                pill
+                                                                variant="outline-info"
+                                                                class="btn-flat btn-block"
+                                                                title="Desaprobar"
+                                                                @click="
+                                                                    desaprobarCertificacion(
+                                                                        row.item
+                                                                            .id,
+                                                                        row.item
+                                                                            .formulario
+                                                                            .codigo_pei +
+                                                                            ' con fecha de registro ' +
+                                                                            formatoFecha(
+                                                                                row
+                                                                                    .item
+                                                                                    .fecha_registro
+                                                                            )
+                                                                    )
+                                                                "
+                                                            >
+                                                                <i
+                                                                    class="fa fa-times-circle"
+                                                                ></i>
+                                                            </b-button>
+                                                        </template>
 
                                                         <template
                                                             v-if="

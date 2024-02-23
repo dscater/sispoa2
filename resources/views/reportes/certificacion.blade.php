@@ -365,7 +365,7 @@
                 <th class="bg_principal centreado">Acción de Corto Plazo</th>
                 <th class="bg_principal centreado">Cod. Op.</th>
                 <th class="bg_principal centreado">Operación</th>
-                <th class="bg_principal centreado">Cod. Act.</th>
+                {{-- <th class="bg_principal centreado">Cod. Act.</th> --}}
             </tr>
         </thead>
         <tbody>
@@ -374,7 +374,7 @@
                 <td class="centreado">{!! str_replace('|', '<br>', $certificacion->accion) !!}</td>
                 <td class="bold">{{ $certificacion->memoria_operacion->operacion->codigo_operacion }}</td>
                 <td>{{ $certificacion->memoria_operacion->operacion->operacion }}</td>
-                <td class="bold">{{ $certificacion->memoria_operacion->codigo_actividad }}</td>
+                {{-- <td class="bold">{{ $certificacion->memoria_operacion->codigo_actividad }}</td> --}}
             </tr>
         </tbody>
     </table>
