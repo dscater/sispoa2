@@ -90,7 +90,10 @@
                                                 operacion, index_operacion
                                             ) in oDetalleFormulario.operacions"
                                         >
-                                            <tr v-if="operacion.subdireccion" class="bg-primary">
+                                            <tr
+                                                v-if="operacion.subdireccion"
+                                                class="bg-primary"
+                                            >
                                                 <td colspan="21">
                                                     {{
                                                         operacion.subdireccion
@@ -126,7 +129,30 @@
                                                             .length + 1
                                                     "
                                                 >
-                                                    {{ operacion.total_porcentaje }} %
+                                                    {{ operacion.ponderacion }}
+                                                    %
+                                                </td>
+                                                <td
+                                                    :rowspan="
+                                                        operacion
+                                                            .detalle_operaciones
+                                                            .length + 1
+                                                    "
+                                                >
+                                                    {{
+                                                        operacion.resultado_esperado
+                                                    }}
+                                                </td>
+                                                <td
+                                                    :rowspan="
+                                                        operacion
+                                                            .detalle_operaciones
+                                                            .length + 1
+                                                    "
+                                                >
+                                                    {{
+                                                        operacion.medios_verificacion
+                                                    }}
                                                 </td>
                                             </tr>
                                             <tr
@@ -140,16 +166,16 @@
                                                         detalle_operacion.ponderacion
                                                     }}%
                                                 </td> -->
-                                                <td>
+                                                <!-- <td>
                                                     {{
                                                         detalle_operacion.resultado_esperado
                                                     }}
-                                                </td>
-                                                <td>
+                                                </td> -->
+                                                <!-- <td>
                                                     {{
                                                         detalle_operacion.medios_verificacion
                                                     }}
-                                                </td>
+                                                </td> -->
                                                 <td>
                                                     {{
                                                         detalle_operacion.codigo_tarea

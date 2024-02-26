@@ -1250,11 +1250,13 @@ class ReporteController extends Controller
             foreach ($formulario_cuatro->detalle_formulario->operacions as $operacion) {
                 $sheet->setCellValue('A' . $fila, $operacion->codigo_operacion);
                 $sheet->setCellValue('B' . $fila, $operacion->operacion);
+                $sheet->setCellValue('C' . $fila, $operacion->ponderacion);
+                $sheet->setCellValue('D' . $fila, $operacion->resultado_esperado);
+                $sheet->setCellValue('E' . $fila, $operacion->medios_verificacion);
                 $contador = $fila;
                 foreach ($operacion->detalle_operaciones as $detalle_operacion) {
-                    $sheet->setCellValue('C' . $contador, $detalle_operacion->ponderacion);
-                    $sheet->setCellValue('D' . $contador, $detalle_operacion->resultado_esperado);
-                    $sheet->setCellValue('E' . $contador, $detalle_operacion->medios_verificacion);
+                    // $sheet->setCellValue('D' . $contador, $detalle_operacion->resultado_esperado);
+                    // $sheet->setCellValue('E' . $contador, $detalle_operacion->medios_verificacion);
                     $sheet->setCellValue('F' . $contador, $detalle_operacion->codigo_tarea);
                     $sheet->setCellValue('G' . $contador, $detalle_operacion->actividad_tarea);
                     $sheet->setCellValue('H' . $contador, $detalle_operacion->pt_e);
@@ -1312,6 +1314,9 @@ class ReporteController extends Controller
                 }
                 $sheet->mergeCells("A" . $fila . ":A" . ($contador - 1));  //COMBINAR CELDAS
                 $sheet->mergeCells("B" . $fila . ":B" . ($contador - 1));  //COMBINAR CELDAS
+                $sheet->mergeCells("C" . $fila . ":C" . ($contador - 1));  //COMBINAR CELDAS
+                $sheet->mergeCells("D" . $fila . ":D" . ($contador - 1));  //COMBINAR CELDAS
+                $sheet->mergeCells("E" . $fila . ":E" . ($contador - 1));  //COMBINAR CELDAS
                 $fila = $contador - 1;
                 $sheet->getStyle('A' . $fila . ':U' . $fila)->applyFromArray($estilo_conenido);
                 $fila++;

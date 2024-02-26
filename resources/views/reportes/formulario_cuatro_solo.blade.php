@@ -30,6 +30,24 @@
             word-wrap: break-word;
         }
 
+        thead tr th {
+            border-left: solid 0.7px black;
+            border-bottom: solid 0.7px black;
+        }
+
+        thead tr th:last-child {
+            border-right: solid 0.7px black;
+        }
+
+        tbody.info_table tr td {
+            border-left: solid 0.7px black;
+            border-bottom: solid 0.7px black;
+        }
+
+        tbody.info_table tr td:last-child {
+            border-right: solid 0.7px black;
+        }
+
         .encabezado {
             width: 100%;
         }
@@ -176,6 +194,10 @@
         .celeste {
             background: #DAEEF3;
         }
+
+        .none-border-bot {
+            border-bottom: none;
+        }
     </style>
 </head>
 
@@ -254,7 +276,7 @@
             </tbody>
         </tr>
     </table>
-    <table border="1">
+    <table>
         <thead>
             <tr>
                 <th rowspan="3" width="3%">Código de Operación(1)</th>
@@ -290,48 +312,107 @@
                 <th width="2%">D</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody class="info_table">
             @php
                 $cont = 1;
             @endphp
             @if ($formulario->detalle_formulario)
                 @foreach ($formulario->detalle_formulario->operacions as $operacion)
-                    @foreach ($operacion->detalle_operaciones as $detalle_operacion)
-                        <tr>
-                            <td>{{ $operacion->codigo_operacion }}</td>
-                            <td>{{ $operacion->operacion }}</td>
-                            <td>{{ $detalle_operacion->ponderacion }}</td>
-                            <td>{{ $detalle_operacion->resultado_esperado }}</td>
-                            <td>{{ $detalle_operacion->medios_verificacion }}</td>
-                            <td>{{ $detalle_operacion->codigo_tarea }}</td>
-                            <td>{{ $detalle_operacion->actividad_tarea }}</td>
-                            <td class="{{ $detalle_operacion->pt_e ? 'beis bold' : '' }}">
-                                {{ $detalle_operacion->pt_e }}</td>
-                            <td class="{{ $detalle_operacion->pt_f ? 'beis bold' : '' }}">
-                                {{ $detalle_operacion->pt_f }}</td>
-                            <td class="{{ $detalle_operacion->pt_m ? 'beis bold' : '' }}">
-                                {{ $detalle_operacion->pt_m }}</td>
-                            <td class="{{ $detalle_operacion->st_a ? 'beis bold' : '' }}">
-                                {{ $detalle_operacion->st_a }}</td>
-                            <td class="{{ $detalle_operacion->st_m ? 'beis bold' : '' }}">
-                                {{ $detalle_operacion->st_m }}</td>
-                            <td class="{{ $detalle_operacion->st_j ? 'beis bold' : '' }}">
-                                {{ $detalle_operacion->st_j }}</td>
-                            <td class="{{ $detalle_operacion->tt_j ? 'beis bold' : '' }}">
-                                {{ $detalle_operacion->tt_j }}</td>
-                            <td class="{{ $detalle_operacion->tt_a ? 'beis bold' : '' }}">
-                                {{ $detalle_operacion->tt_a }}</td>
-                            <td class="{{ $detalle_operacion->tt_s ? 'beis bold' : '' }}">
-                                {{ $detalle_operacion->tt_s }}</td>
-                            <td class="{{ $detalle_operacion->ct_o ? 'beis bold' : '' }}">
-                                {{ $detalle_operacion->ct_o }}</td>
-                            <td class="{{ $detalle_operacion->ct_n ? 'beis bold' : '' }}">
-                                {{ $detalle_operacion->ct_n }}</td>
-                            <td class="{{ $detalle_operacion->ct_d ? 'beis bold' : '' }}">
-                                {{ $detalle_operacion->ct_d }}</td>
-                            <td>{{ date('d/m/Y', strtotime($detalle_operacion->inicio)) }}</td>
-                            <td>{{ date('d/m/Y', strtotime($detalle_operacion->final)) }}</td>
-                        </tr>
+                    @foreach ($operacion->detalle_operaciones as $key => $detalle_operacion)
+                        @if ($key == 0)
+                            <tr>
+                                <td
+                                    class="{{ $key < count($operacion->detalle_operaciones) - 1 ? 'none-border-bot' : '' }}">
+                                    {{ $operacion->codigo_operacion }}</td>
+                                <td
+                                    class="{{ $key < count($operacion->detalle_operaciones) - 1 ? 'none-border-bot' : '' }}">
+                                    {{ $operacion->operacion }}
+                                </td>
+                                <td
+                                    class="{{ $key < count($operacion->detalle_operaciones) - 1 ? 'none-border-bot' : '' }}">
+                                    {{ $operacion->ponderacion }}</td>
+                                <td
+                                    class="{{ $key < count($operacion->detalle_operaciones) - 1 ? 'none-border-bot' : '' }}">
+                                    {{ $operacion->resultado_esperado }}</td>
+                                <td
+                                    class="{{ $key < count($operacion->detalle_operaciones) - 1 ? 'none-border-bot' : '' }}">
+                                    {{ $operacion->medios_verificacion }}</td>
+                                <td>{{ $detalle_operacion->codigo_tarea }}</td>
+                                <td>{{ $detalle_operacion->actividad_tarea }}</td>
+                                <td class="{{ $detalle_operacion->pt_e ? 'beis bold' : '' }}">
+                                    {{ $detalle_operacion->pt_e }}</td>
+                                <td class="{{ $detalle_operacion->pt_f ? 'beis bold' : '' }}">
+                                    {{ $detalle_operacion->pt_f }}</td>
+                                <td class="{{ $detalle_operacion->pt_m ? 'beis bold' : '' }}">
+                                    {{ $detalle_operacion->pt_m }}</td>
+                                <td class="{{ $detalle_operacion->st_a ? 'beis bold' : '' }}">
+                                    {{ $detalle_operacion->st_a }}</td>
+                                <td class="{{ $detalle_operacion->st_m ? 'beis bold' : '' }}">
+                                    {{ $detalle_operacion->st_m }}</td>
+                                <td class="{{ $detalle_operacion->st_j ? 'beis bold' : '' }}">
+                                    {{ $detalle_operacion->st_j }}</td>
+                                <td class="{{ $detalle_operacion->tt_j ? 'beis bold' : '' }}">
+                                    {{ $detalle_operacion->tt_j }}</td>
+                                <td class="{{ $detalle_operacion->tt_a ? 'beis bold' : '' }}">
+                                    {{ $detalle_operacion->tt_a }}</td>
+                                <td class="{{ $detalle_operacion->tt_s ? 'beis bold' : '' }}">
+                                    {{ $detalle_operacion->tt_s }}</td>
+                                <td class="{{ $detalle_operacion->ct_o ? 'beis bold' : '' }}">
+                                    {{ $detalle_operacion->ct_o }}</td>
+                                <td class="{{ $detalle_operacion->ct_n ? 'beis bold' : '' }}">
+                                    {{ $detalle_operacion->ct_n }}</td>
+                                <td class="{{ $detalle_operacion->ct_d ? 'beis bold' : '' }}">
+                                    {{ $detalle_operacion->ct_d }}</td>
+                                <td>{{ date('d/m/Y', strtotime($detalle_operacion->inicio)) }}</td>
+                                <td>{{ date('d/m/Y', strtotime($detalle_operacion->final)) }}</td>
+                            </tr>
+                        @else
+                            <tr>
+                                <td
+                                    class="{{ $key < count($operacion->detalle_operaciones) - 1 ? 'none-border-bot' : '' }}">
+                                </td>
+                                <td
+                                    class="{{ $key < count($operacion->detalle_operaciones) - 1 ? 'none-border-bot' : '' }}">
+                                </td>
+                                <td
+                                    class="{{ $key < count($operacion->detalle_operaciones) - 1 ? 'none-border-bot' : '' }}">
+                                </td>
+                                <td
+                                    class="{{ $key < count($operacion->detalle_operaciones) - 1 ? 'none-border-bot' : '' }}">
+                                </td>
+                                <td
+                                    class="{{ $key < count($operacion->detalle_operaciones) - 1 ? 'none-border-bot' : '' }}">
+                                </td>
+                                <td>{{ $detalle_operacion->codigo_tarea }}</td>
+                                <td>{{ $detalle_operacion->actividad_tarea }}</td>
+                                <td class="{{ $detalle_operacion->pt_e ? 'beis bold' : '' }}">
+                                    {{ $detalle_operacion->pt_e }}</td>
+                                <td class="{{ $detalle_operacion->pt_f ? 'beis bold' : '' }}">
+                                    {{ $detalle_operacion->pt_f }}</td>
+                                <td class="{{ $detalle_operacion->pt_m ? 'beis bold' : '' }}">
+                                    {{ $detalle_operacion->pt_m }}</td>
+                                <td class="{{ $detalle_operacion->st_a ? 'beis bold' : '' }}">
+                                    {{ $detalle_operacion->st_a }}</td>
+                                <td class="{{ $detalle_operacion->st_m ? 'beis bold' : '' }}">
+                                    {{ $detalle_operacion->st_m }}</td>
+                                <td class="{{ $detalle_operacion->st_j ? 'beis bold' : '' }}">
+                                    {{ $detalle_operacion->st_j }}</td>
+                                <td class="{{ $detalle_operacion->tt_j ? 'beis bold' : '' }}">
+                                    {{ $detalle_operacion->tt_j }}</td>
+                                <td class="{{ $detalle_operacion->tt_a ? 'beis bold' : '' }}">
+                                    {{ $detalle_operacion->tt_a }}</td>
+                                <td class="{{ $detalle_operacion->tt_s ? 'beis bold' : '' }}">
+                                    {{ $detalle_operacion->tt_s }}</td>
+                                <td class="{{ $detalle_operacion->ct_o ? 'beis bold' : '' }}">
+                                    {{ $detalle_operacion->ct_o }}</td>
+                                <td class="{{ $detalle_operacion->ct_n ? 'beis bold' : '' }}">
+                                    {{ $detalle_operacion->ct_n }}</td>
+                                <td class="{{ $detalle_operacion->ct_d ? 'beis bold' : '' }}">
+                                    {{ $detalle_operacion->ct_d }}</td>
+                                <td>{{ date('d/m/Y', strtotime($detalle_operacion->inicio)) }}</td>
+                                <td>{{ date('d/m/Y', strtotime($detalle_operacion->final)) }}</td>
+                            </tr>
+                        @endif
                     @endforeach
                 @endforeach
             @endif
