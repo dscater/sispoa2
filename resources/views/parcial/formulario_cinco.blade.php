@@ -13,12 +13,12 @@
             <th rowspan="3">
                 Operación(2)
             </th>
-            {{-- <th rowspan="3" width="3%">
+            <th rowspan="3" width="3%">
                 Código tarea(3)
             </th>
             <th rowspan="3">
                 Actividad/Tareas(4)
-            </th> --}}
+            </th>
             <th rowspan="3">
                 Lugar de ejecución de la
                 Operación(5)
@@ -64,6 +64,9 @@
             @foreach ($ar['registros'] as $index_registro => $registro)
                 @foreach ($registro['lugares'] as $index_lugar => $lugar)
                     @foreach ($lugar['responsables'] as $index_responsable => $responsable)
+                        @php
+                            $subtotal = 0;
+                        @endphp
                         @foreach ($responsable['registros'] as $index_registro_rep => $registro_resp)
                             @if ($index_registro == 0 && $index_lugar == 0 && $index_responsable == 0 && $index_registro_rep == 0)
                                 @if ($registro['subdireccion'])
@@ -76,8 +79,8 @@
                                 <tr>
                                     <td rowspan="{{ $ar['rowspan'] }}">{{ $registro['codigo_operacion'] }}</td>
                                     <td rowspan="{{ $ar['rowspan'] }}">{{ $registro['operacion'] }}</td>
-                                    {{-- <td rowspan="{{ $registro['rowspan'] }}">{{ $registro['codigo_tarea'] }}</td> --}}
-                                    {{-- <td rowspan="{{ $registro['rowspan'] }}">{{ $registro['tarea'] }}</td> --}}
+                                    <td rowspan="{{ $registro['rowspan'] }}">{{ $registro['codigo_tarea'] }}</td>
+                                    <td rowspan="{{ $registro['rowspan'] }}">{{ $registro['tarea'] }}</td>
                                     <td rowspan="{{ $lugar['rowspan'] }}">{{ $lugar['lugar'] }}</td>
                                     <td rowspan="{{ $responsable['rowspan'] }}">{{ $responsable['responsable'] }}</td>
                                     <td>{{ $registro_resp->partida }}</td>
@@ -95,8 +98,8 @@
                                 </tr>
                             @elseif ($index_lugar == 0 && $index_responsable == 0 && $index_registro_rep == 0)
                                 <tr>
-                                    {{-- <td rowspan="{{ $registro['rowspan'] }}">{{ $registro['codigo_tarea'] }}</td> --}}
-                                    {{-- <td rowspan="{{ $registro['rowspan'] }}">{{ $registro['tarea'] }}</td> --}}
+                                    <td rowspan="{{ $registro['rowspan'] }}">{{ $registro['codigo_tarea'] }}</td>
+                                    <td rowspan="{{ $registro['rowspan'] }}">{{ $registro['tarea'] }}</td>
                                     <td rowspan="{{ $lugar['rowspan'] }}">{{ $lugar['lugar'] }}
                                     </td>
                                     <td rowspan="{{ $responsable['rowspan'] }}">{{ $responsable['responsable'] }}</td>
@@ -145,13 +148,20 @@
                                         {{ $registro_resp->total_actividad }}</td>
                                 </tr>
                             @endif
+                            @php
+                                $subtotal += (float) $registro_resp->total_actividad;
+                            @endphp
                         @endforeach
+                        <tr>
+                            <td class="crema" colspan="16">TOTAL</td>
+                            <td class="crema">{{ number_format($subtotal, 2, '.', '') }}</td>
+                        </tr>
                     @endforeach
                 @endforeach
             @endforeach
         @endforeach
         <tr class="bg-primary">
-            <th colspan="14">TOTAL PRESUPUESTO DE LA/EL {{ $formulario_cinco->memoria->formulario->unidad->nombre }}
+            <th colspan="16">TOTAL PRESUPUESTO DE LA/EL {{ $formulario_cinco->memoria->formulario->unidad->nombre }}
             </th>
             <th class="text-center">{{ number_format($formulario_cinco->memoria->total_final, 2) }}</th>
         </tr>

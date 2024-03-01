@@ -542,7 +542,7 @@ class UserController extends Controller
         $conf_mcalculo = ConfiguracionModulo::where("modulo", "MEMORIA DE CÁLCULO")->get()->first();
         if ($conf_mcalculo->editar == 0) {
             // agregar index permiso
-            // $index[] = array_search("memoria_calculos.edit", $permisos);
+            $index[] = array_search("memoria_calculos.edit", $permisos);
         }
         if ($conf_mcalculo->eliminar == 0) {
             // agregar index permiso

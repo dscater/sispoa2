@@ -248,15 +248,15 @@ export default {
                             (index + 1)
                     );
                 }
-                // if (
-                //     item.detalle_operacion_id == null ||
-                //     item.detalle_operacion_id == ""
-                // ) {
-                //     array_errors.push(
-                //         "Debes seleccionar un <b>código de Actividad/Tarea</b> en el elemento " +
-                //             (index + 1)
-                //     );
-                // }
+                if (
+                    item.detalle_operacion_id == null ||
+                    item.detalle_operacion_id == ""
+                ) {
+                    array_errors.push(
+                        "Debes seleccionar un <b>código de Actividad/Tarea</b> en el elemento " +
+                            (index + 1)
+                    );
+                }
                 if (item.ue == null || item.ue == "") {
                     array_errors.push(
                         "Debes ingresar una <b>Unidad Ejecutora</b> en el elemento " +

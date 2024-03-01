@@ -196,7 +196,7 @@
         }
 
         .none-border-bot {
-            border-bottom: none;
+            border-bottom: none !important;
         }
     </style>
 </head>
@@ -319,7 +319,12 @@
             @if ($formulario->detalle_formulario)
                 @foreach ($formulario->detalle_formulario->operacions as $operacion)
                     @foreach ($operacion->detalle_operaciones as $key => $detalle_operacion)
-                        @if ($key == 0)
+                        @php
+                            $total_filas = count($operacion->detalle_operaciones);
+                            $numero_fila = round($total_filas / 2, 0);
+                            $numero_fila--;
+                        @endphp
+                        @if ($key == $numero_fila)
                             <tr>
                                 <td
                                     class="{{ $key < count($operacion->detalle_operaciones) - 1 ? 'none-border-bot' : '' }}">

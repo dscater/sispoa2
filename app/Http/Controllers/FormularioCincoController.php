@@ -337,7 +337,7 @@ class FormularioCincoController extends Controller
                 "operacion" => $operacion->operacion->operacion,
                 "codigo_tarea" => $operacion->codigo_actividad,
                 "tarea" => "",
-                // "tarea" => $operacion->detalle_operacion->actividad_tarea,
+                "tarea" => $operacion->detalle_operacion ? $operacion->detalle_operacion->actividad_tarea : "",
                 "rowspan" => $rowspan_operacion,
                 "lugares" => $array_lugares
             ];

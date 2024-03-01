@@ -1,7 +1,7 @@
 <table class="tabla_detalle">
     <tbody>
         <tr class="bg-primary cabecera">
-            <th colspan="15" class="border_left">
+            <th colspan="17" class="border_left">
                 PLAN OPERATIVO ANUAL GESTIÓN
                 {{ $verificacion_actividad ? $verificacion_actividad->gestion : date('Y') }}
             </th>
@@ -13,12 +13,12 @@
             <th rowspan="3">
                 Operación(2)
             </th>
-            {{-- <th rowspan="3" width="3%">
+            <th rowspan="3" width="3%">
                 Código tarea(3)
             </th>
             <th rowspan="3">
                 Actividad/Tareas(4)
-            </th> --}}
+            </th>
             <th rowspan="3">
                 Lugar de ejecución de la
                 Operación(5)
@@ -64,11 +64,14 @@
             @foreach ($ar['registros'] as $index_registro => $registro)
                 @foreach ($registro['lugares'] as $index_lugar => $lugar)
                     @foreach ($lugar['responsables'] as $index_responsable => $responsable)
+                        @php
+                            $subtotal = 0;
+                        @endphp
                         @foreach ($responsable['registros'] as $index_registro_rep => $registro_resp)
                             @if ($index_registro == 0 && $index_lugar == 0 && $index_responsable == 0 && $index_registro_rep == 0)
                                 @if ($registro['subdireccion'])
                                     <tr>
-                                        <td colspan="15" class="bg-primary border_left border_right">
+                                        <td colspan="17" class="bg-primary border_left border_right">
                                             {{ $registro['subdireccion']->nombre }}
                                         </td>
                                     </tr>
@@ -76,8 +79,8 @@
                                 <tr>
                                     <td class="border_left border_top">{{ $registro['codigo_operacion'] }}</td>
                                     <td class="border_left border_top">{{ $registro['operacion'] }}</td>
-                                    {{-- <td class="border_left border_top">{{ $registro['codigo_tarea'] }}</td> --}}
-                                    {{-- <td class="border_left border_top">{{ $registro['tarea'] }}</td> --}}
+                                    <td class="border_left border_top">{{ $registro['codigo_tarea'] }}</td>
+                                    <td class="border_left border_top">{{ $registro['tarea'] }}</td>
                                     <td class="border_left border_top">{{ $lugar['lugar'] }}</td>
                                     <td class="border_left border_top">{{ $responsable['responsable'] }}</td>
                                     <td class="border_left border_top">{{ $registro_resp->partida }}</td>
@@ -98,8 +101,8 @@
                                 <tr>
                                     <td class="border_left"></td>
                                     <td class="border_left"></td>
-                                    {{-- <td class="border_left border_top">{{ $registro['codigo_tarea'] }}</td> --}}
-                                    {{-- <td class="border_left border_top">{{ $registro['tarea'] }}</td> --}}
+                                    <td class="border_left border_top">{{ $registro['codigo_tarea'] }}</td>
+                                    <td class="border_left border_top">{{ $registro['tarea'] }}</td>
                                     <td class="border_left border_top">{{ $lugar['lugar'] }}</td>
                                     <td class="border_left border_top">{{ $responsable['responsable'] }}</td>
                                     <td class="border_left border_top">{{ $registro_resp->partida }}</td>
@@ -112,13 +115,14 @@
                                     <td class="border_left border_top">{{ $registro_resp->prog }}</td>
                                     <td class="border_left border_top">{{ $registro_resp->act }}</td>
                                     <td class="border_left border_top"></td>
-                                    <td class="{{ (float) $registro_resp->saldo == 0 ? 'fondo_rojo' : '' }} border_left border_right border_top">
+                                    <td
+                                        class="{{ (float) $registro_resp->saldo == 0 ? 'fondo_rojo' : '' }} border_left border_right border_top">
                                         {{ $registro_resp->total_actividad }}</td>
                                 </tr>
                             @elseif ($index_registro_rep == 0)
                                 <tr>
-                                    {{-- <td class="border_left"></td> --}}
-                                    {{-- <td class="border_left"></td> --}}
+                                    <td class="border_left"></td>
+                                    <td class="border_left"></td>
                                     <td class="border_left"></td>
                                     <td class="border_left"></td>
                                     <td class="border_left"></td>
@@ -133,13 +137,14 @@
                                     <td class="border_left border_top">{{ $registro_resp->prog }}</td>
                                     <td class="border_left border_top">{{ $registro_resp->act }}</td>
                                     <td class="border_left border_top"></td>
-                                    <td class="{{ (float) $registro_resp->saldo == 0 ? 'fondo_rojo' : '' }} border_left border_right border_top">
+                                    <td
+                                        class="{{ (float) $registro_resp->saldo == 0 ? 'fondo_rojo' : '' }} border_left border_right border_top">
                                         {{ $registro_resp->total_actividad }}</td>
                                 </tr>
                             @else
                                 <tr>
-                                    {{-- <td class="border_left"></td> --}}
-                                    {{-- <td class="border_left"></td> --}}
+                                    <td class="border_left"></td>
+                                    <td class="border_left"></td>
                                     <td class="border_left"></td>
                                     <td class="border_left"></td>
                                     <td class="border_left"></td>
@@ -154,18 +159,28 @@
                                     <td class="border_left border_top">{{ $registro_resp->prog }}</td>
                                     <td class="border_left border_top">{{ $registro_resp->act }}</td>
                                     <td class="border_left border_top"></td>
-                                    <td class="{{ (float) $registro_resp->saldo == 0 ? 'fondo_rojo' : '' }} border_left border_right border_top">
+                                    <td
+                                        class="{{ (float) $registro_resp->saldo == 0 ? 'fondo_rojo' : '' }} border_left border_right border_top">
                                         {{ $registro_resp->total_actividad }}</td>
                                 </tr>
                             @endif
+                            @php
+                                $subtotal += (float) $registro_resp->total_actividad;
+                            @endphp
                         @endforeach
+                        <tr>
+                            <td class="crema" colspan="16">TOTAL</td>
+                            <td class="crema">{{ number_format($subtotal, 2, '.', '') }}</td>
+                        </tr>
                     @endforeach
                 @endforeach
             @endforeach
         @endforeach
         <tr class="bg-primary">
-            <th colspan="14" class="border_left border_bottom border_top border_right">TOTAL PRESUPUESTO DE LA/EL {{ $formulario_cinco->memoria->formulario->unidad->nombre }}</th>
-            <th class="text-center border_left border_bottom border_top border_right">{{ number_format($formulario_cinco->memoria->total_final, 2) }}</th>
+            <th colspan="16" class="border_left border_bottom border_top border_right">TOTAL PRESUPUESTO DE LA/EL
+                {{ $formulario_cinco->memoria->formulario->unidad->nombre }}</th>
+            <th class="text-center border_left border_bottom border_top border_right">
+                {{ number_format($formulario_cinco->memoria->total_final, 2) }}</th>
         </tr>
     </tbody>
 </table>

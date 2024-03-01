@@ -1022,33 +1022,52 @@ export default {
         getDetalleOperacion(index) {
             let id_mod =
                 this.oCertificacion.certificacion_detalles[index].mod_id;
-            if (id_mod && id_mod != 0) {
-                let operacion = this.listDetalles.filter(
-                    (item) => item.id == id_mod
-                )[0];
-                this.oCertificacion.certificacion_detalles[
-                    index
-                ].memoria_operacion_detalle = operacion;
-                let valor_saldo_cantidad =
-                    this.oCertificacion.certificacion_detalles[index]
-                        .memoria_operacion_detalle.saldo_cantidad_aux;
 
-                if (this.accion == "edit") {
-                    // this.oCertificacion.certificacion_detalles[
-                    //     index
-                    // ].cantidad_usar = valor_saldo_cantidad;
-                } else {
-                    // create
+            if (this.verificaExistenciaPartida(index)) {
+                if (id_mod && id_mod != 0) {
+                    let operacion = this.listDetalles.filter(
+                        (item) => item.id == id_mod
+                    )[0];
                     this.oCertificacion.certificacion_detalles[
                         index
-                    ].cantidad_usar =
+                    ].memoria_operacion_detalle = operacion;
+                    let valor_saldo_cantidad =
+                        this.oCertificacion.certificacion_detalles[index]
+                            .memoria_operacion_detalle.saldo_cantidad_aux;
+
+                    if (this.accion == "edit") {
+                        // this.oCertificacion.certificacion_detalles[
+                        //     index
+                        // ].cantidad_usar = valor_saldo_cantidad;
+                    } else {
+                        // create
                         this.oCertificacion.certificacion_detalles[
                             index
-                        ].memoria_operacion_detalle.saldo_cantidad_aux;
+                        ].cantidad_usar =
+                            this.oCertificacion.certificacion_detalles[
+                                index
+                            ].memoria_operacion_detalle.saldo_cantidad_aux;
+                    }
+                    this.getMontoPartida(index);
+                    this.obtieneSaldo(index);
                 }
-                this.getMontoPartida(index);
-                this.obtieneSaldo(index);
             }
+        },
+        verificaExistenciaPartida(index) {
+            let existe = this.oCertificacion.certificacion_detalles.filter(elem => elem.mod_id == this.oCertificacion.certificacion_detalles[index].mod_id);
+            if(existe.length > 1){
+                Swal.fire({
+                    icon: "info",
+                    title: "ATENCIÓN",
+                    html: `Esa partida ya fue seleccionada`,
+                    showConfirmButton: true,
+                    confirmButtonText: "Aceptar",
+                    confirmButtonColor: "#0069d9",
+                });
+                this.oCertificacion.certificacion_detalles[index].mod_id = ""
+                return false;
+            }
+            return true;
         },
         cargaDetallesCertificacion() {
             let certificacion_detalles =

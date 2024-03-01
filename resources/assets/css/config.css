@@ -23,6 +23,11 @@
     color: white;
 }
 
+.crema {
+    background: #EEECE1;
+    color: black;
+}
+
 .text-secondary {
     color: var(--secondary);
 }

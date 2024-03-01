@@ -75,13 +75,13 @@
                                                 >
                                                     N°
                                                 </th>
-                                                <th
+                                                <!-- <th
                                                     class="text-center"
                                                     rowspan="2"
                                                 >
                                                     Descripción detallada por
                                                     item(bien o servicio)
-                                                </th>
+                                                </th> -->
                                                 <th
                                                     class="text-center"
                                                     rowspan="2"
@@ -195,7 +195,7 @@
                                                         "
                                                     >
                                                         <td
-                                                            colspan="27"
+                                                            colspan="26"
                                                             class="bg-primary text-center"
                                                         >
                                                             {{
@@ -252,11 +252,11 @@
                                                         <td>
                                                             {{ item_mod.nro }}
                                                         </td>
-                                                        <td>
+                                                        <!-- <td>
                                                             {{
                                                                 item_mod.descripcion_detallada
                                                             }}
-                                                        </td>
+                                                        </td> -->
                                                         <td>
                                                             {{
                                                                 item_mod.cantidad
@@ -437,7 +437,7 @@
                                                 >
                                                     TOTAL PARTIDA
                                                 </th>
-                                                <th colspan="3"></th>
+                                                <th colspan="2"></th>
                                                 <th>
                                                     {{
                                                         oMemoriaCalculo.total_actividades

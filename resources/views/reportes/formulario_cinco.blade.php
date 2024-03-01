@@ -214,8 +214,14 @@
             border-left: solid 0.2px black;
         }
 
-        .salto_linea{
+        .salto_linea {
             page-break-after: always;
+        }
+
+        .crema {
+            border:solid 0.7px black;
+            background: #EEECE1;
+            color: black;
         }
     </style>
 </head>
@@ -268,7 +274,10 @@
             $formulario_cinco = $memoria_calculo->formulario_cinco;
             $array_registros = $o_formulario_cinco_controller::armaRepetidos($formulario_cinco);
             $verificacion_actividad = $o_verificacion_actividad::get()->first();
-            $tabla = view('parcial.formulario_cinco2', compact('array_registros', 'formulario_cinco', 'verificacion_actividad'))->render();
+            $tabla = view(
+                'parcial.formulario_cinco2',
+                compact('array_registros', 'formulario_cinco', 'verificacion_actividad'),
+            )->render();
         @endphp
         {!! $tabla !!}
         @php

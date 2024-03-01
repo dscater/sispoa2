@@ -62,7 +62,7 @@
                 </div>
             </div>
             <div class="row">
-                <!-- <div class="form-group col-md-3 mt-3">
+                <div class="form-group col-md-3 mt-3">
                     <label
                         :class="{
                             'text-danger': errors.detalle_operacion_id,
@@ -108,7 +108,7 @@
                         readonly
                     >
                     </el-input>
-                </div> -->
+                </div>
 
                 <div class="form-group col-md-2">
                     <label
@@ -221,7 +221,7 @@
                         v-text="errors.responsable[0]"
                     ></span>
                 </div>
-                <div class="form-group col-md-12" style="margin-bottom: 20px;">
+                <div class="form-group col-md-12" style="margin-bottom: 20px">
                     <label
                         :class="{
                             'text-danger': errors.justificacion,
@@ -951,9 +951,12 @@ export default {
         // OBTENER LAS OPERACIONES DEL FORMULARIO CUATRO
         getOperacionesFormulario() {
             axios
-                .get("/admin/formulario_cuatro/getOperacionesFormularioSeleccionado", {
-                    params: { id: this.formulario_cuatro_id },
-                })
+                .get(
+                    "/admin/formulario_cuatro/getOperacionesFormularioSeleccionado",
+                    {
+                        params: { id: this.formulario_cuatro_id },
+                    }
+                )
                 .then((response) => {
                     this.listOperaciones = response.data;
                     if (this.o_Operacion.operacion_id != "") {
