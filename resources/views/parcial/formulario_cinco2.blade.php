@@ -79,8 +79,8 @@
                                 <tr>
                                     <td class="border_left border_top">{{ $registro['codigo_operacion'] }}</td>
                                     <td class="border_left border_top">{{ $registro['operacion'] }}</td>
-                                    <td class="border_left border_top">{{ $registro['codigo_tarea'] }}</td>
-                                    <td class="border_left border_top">{{ $registro['tarea'] }}</td>
+                                    <td class="border_left border_top">{{ $registro_resp->cod_actividad_txt }}</td>
+                                    <td class="border_left border_top">{{ $registro_resp->actividad_txt }}</td>
                                     <td class="border_left border_top">{{ $lugar['lugar'] }}</td>
                                     <td class="border_left border_top">{{ $responsable['responsable'] }}</td>
                                     <td class="border_left border_top">{{ $registro_resp->partida }}</td>
@@ -101,8 +101,8 @@
                                 <tr>
                                     <td class="border_left"></td>
                                     <td class="border_left"></td>
-                                    <td class="border_left border_top">{{ $registro['codigo_tarea'] }}</td>
-                                    <td class="border_left border_top">{{ $registro['tarea'] }}</td>
+                                    <td class="border_left border_top">{{ $registro_resp->cod_actividad_txt }}</td>
+                                    <td class="border_left border_top">{{ $registro_resp->actividad_txt }}</td>
                                     <td class="border_left border_top">{{ $lugar['lugar'] }}</td>
                                     <td class="border_left border_top">{{ $responsable['responsable'] }}</td>
                                     <td class="border_left border_top">{{ $registro_resp->partida }}</td>
@@ -123,8 +123,8 @@
                                 <tr>
                                     <td class="border_left"></td>
                                     <td class="border_left"></td>
-                                    <td class="border_left"></td>
-                                    <td class="border_left"></td>
+                                    <td class="border_left border_top">{{ $registro_resp->cod_actividad_txt }}</td>
+                                    <td class="border_left border_top">{{ $registro_resp->actividad_txt }}</td>
                                     <td class="border_left"></td>
                                     <td class="border_left"></td>
                                     <td class="border_left border_top">{{ $registro_resp->partida }}</td>
@@ -145,8 +145,8 @@
                                 <tr>
                                     <td class="border_left"></td>
                                     <td class="border_left"></td>
-                                    <td class="border_left"></td>
-                                    <td class="border_left"></td>
+                                    <td class="border_left border_top">{{ $registro_resp->cod_actividad_txt }}</td>
+                                    <td class="border_left border_top">{{ $registro_resp->actividad_txt }}</td>
                                     <td class="border_left"></td>
                                     <td class="border_left"></td>
                                     <td class="border_left border_top">{{ $registro_resp->partida }}</td>

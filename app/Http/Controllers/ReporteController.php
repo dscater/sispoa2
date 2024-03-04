@@ -1835,18 +1835,17 @@ class ReporteController extends Controller
                         $sheet->mergeCells("B" . $fila . ":B" . ($fila + $ar["rowspan"] - 1));  //COMBINAR CELDAS
                     }
 
-
                     $sheet->getStyle('A' . $fila . ':Q' . $fila)->applyFromArray($estilo_conenido);
                     $fila_actividad = $fila;
                     foreach ($operacion["lugares"] as $lugar) {
-                        if ($sheet->getCell('C' . $fila_actividad)->getValue() == "") {
-                            $sheet->setCellValue('C' . $fila_actividad, $operacion["codigo_tarea"]);
-                            $sheet->mergeCells("C" . $fila_actividad . ":C" . ($fila_actividad + $operacion["rowspan"] - 1));  //COMBINAR CELDAS
-                        }
-                        if ($sheet->getCell('D' . $fila_actividad)->getValue() == "") {
-                            $sheet->setCellValue('D' . $fila_actividad, $operacion["tarea"]);
-                            $sheet->mergeCells("D" . $fila_actividad . ":D" . ($fila_actividad + $operacion["rowspan"] - 1));  //COMBINAR CELDAS
-                        }
+                        // if ($sheet->getCell('C' . $fila_actividad)->getValue() == "") {
+                        //     $sheet->setCellValue('C' . $fila_actividad, $operacion["codigo_tarea"]);
+                        //     $sheet->mergeCells("C" . $fila_actividad . ":C" . ($fila_actividad + $operacion["rowspan"] - 1));  //COMBINAR CELDAS
+                        // }
+                        // if ($sheet->getCell('D' . $fila_actividad)->getValue() == "") {
+                        //     $sheet->setCellValue('D' . $fila_actividad, $operacion["tarea"]);
+                        //     $sheet->mergeCells("D" . $fila_actividad . ":D" . ($fila_actividad + $operacion["rowspan"] - 1));  //COMBINAR CELDAS
+                        // }
 
                         $sheet->setCellValue('E' . $fila, $lugar["lugar"]);
                         $sheet->mergeCells("E" . $fila . ":E" . ($fila + $lugar["rowspan"] - 1));  //COMBINAR CELDAS
@@ -1857,6 +1856,8 @@ class ReporteController extends Controller
                             $subtotal = 0;
 
                             foreach ($responsable["registros"] as $registro) {
+                                $sheet->setCellValue('C' . $fila, $registro["cod_actividad_txt"]);
+                                $sheet->setCellValue('D' . $fila, $registro["actividad_txt"]);
                                 $sheet->setCellValue('G' . $fila, $registro["partida"]);
                                 $sheet->setCellValue('H' . $fila, $registro["descripcion"]);
                                 $sheet->setCellValue('I' . $fila, $registro["cantidad"]);

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 
 class MemoriaOperacionDetalle extends Model
 {
@@ -16,7 +17,55 @@ class MemoriaOperacionDetalle extends Model
         "ago", "sep", "oct", "nov", "dic", "total_actividad",
     ];
 
-    protected $appends = ["presupuesto", "saldo", "saldo_aux", "saldo_cantidad", "saldo_cantidad_aux"];
+    protected $appends = ["presupuesto", "saldo", "saldo_aux", "saldo_cantidad", "saldo_cantidad_aux", "cod_actividad_txt", "actividad_txt"];
+
+    public function getCodActividadTxtAttribute()
+    {
+        $index_detalle = 0;
+        $memoria_operacion = MemoriaOperacion::find($this->memoria_operacion_id);
+        $operacion_formulario = Operacion::find($memoria_operacion->operacion_id);
+
+        $index_detalle = self::getIndexDetalle($this->id, $memoria_operacion);
+        $value = "";
+        if ($operacion_formulario) {
+            // Accediendo a detalle formulario
+            if (isset($operacion_formulario->detalle_operaciones[$index_detalle])) {
+                $value = $operacion_formulario->detalle_operaciones[$index_detalle]->codigo_tarea;
+            }
+        }
+        return $value;
+    }
+
+    public function getActividadTxtAttribute()
+    {
+        $index_detalle = 0;
+        $memoria_operacion = MemoriaOperacion::find($this->memoria_operacion_id);
+        $operacion_formulario = Operacion::find($memoria_operacion->operacion_id);
+
+        $index_detalle = self::getIndexDetalle($this->id, $memoria_operacion);
+        $value = "";
+        if ($operacion_formulario) {
+            // Accediendo a detalle formulario
+            if (isset($operacion_formulario->detalle_operaciones[$index_detalle])) {
+                $value = $operacion_formulario->detalle_operaciones[$index_detalle]->actividad_tarea;
+            }
+        }
+        return $value;
+    }
+
+    public static function getIndexDetalle($id, $memoria_operacion)
+    {
+        $index_detalle = 0;
+        foreach ($memoria_operacion->memoria_operacion_detalles as $key => $mod) {
+            if ($id == $mod->id) {
+                $index_detalle = $key;
+                break;
+            }
+        }
+
+        return $index_detalle;
+    }
+
     public function getPresupuestoAttribute()
     {
         return (float)$this->cantidad * (float)$this->costo;
