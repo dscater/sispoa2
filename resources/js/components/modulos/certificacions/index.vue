@@ -610,10 +610,11 @@
 export default {
     data() {
         return {
-            permisos:
-                typeof localStorage.getItem("permisos") == "string"
-                    ? JSON.parse(localStorage.getItem("permisos"))
-                    : localStorage.getItem("permisos"),
+            // permisos:
+            //     typeof localStorage.getItem("permisos") == "string"
+            //         ? JSON.parse(localStorage.getItem("permisos"))
+            //         : localStorage.getItem("permisos"),
+            permisos: localStorage.getItem("permisos"),
             user: JSON.parse(localStorage.getItem("user")),
             search: "",
             listRegistros: [],
