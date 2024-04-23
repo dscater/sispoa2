@@ -47,7 +47,7 @@ Route::post('/logout', [LoginController::class, 'logout']);
 Route::post('/verifica_captcha', [LoginController::class, 'verifica_captcha']);
 
 Route::get('/corrige_certificacions', [CertificacionController::class, 'corrige_certificacions']);
-
+Route::get('/corrige_correlativos', [CertificacionController::class, 'corrige_correlativos']);
 
 // CONFIGURACIÓN
 Route::get('/configuracion/getConfiguracion', [ConfiguracionController::class, 'getConfiguracion']);

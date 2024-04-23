@@ -65,8 +65,20 @@ class CertificacionController extends Controller
             ], 422);
         }
 
+        $error_presupuestos = CertificacionController::validarValoresPresupuestoUsar($request->presupuesto_usarse, $request->mod_id);
+        if ($error_presupuestos[0]) {
+            throw new Exception($error_presupuestos[1]);
+        }
         DB::beginTransaction();
         try {
+
+            $ultimo = Certificacion::get()->last();
+            if ($ultimo) {
+                $request["correlativo"] = (int)$ultimo->correlativo + 1;
+            } else {
+                $request["correlativo"] = 1;
+            }
+
             $request["fecha_registro"] = date("Y-m-d");
             $request["estado"] = "PENDIENTE";
             $request["anulado"] = 0;
@@ -251,6 +263,36 @@ class CertificacionController extends Controller
         }
     }
 
+    public static function validarValoresPresupuestoUsar($array_presupuestos, $array_mod_id)
+    {
+        $error = false;
+        $msg = "";
+        if (count($array_presupuestos) <= 0) {
+            $error = true;
+            $msg = "Debes seleccionar al menos una Operación|Tarea/Actividad";
+        }
+        foreach ($array_presupuestos as $key => $presupuesto) {
+            if ($presupuesto < 0) {
+                $error = true;
+                $msg = "Los valores del Monto a Utilizar no pueden ser menores a 0";
+            }
+
+            // buscar si supera el total del mod_id
+            $mod = MemoriaOperacionDetalle::find($array_mod_id[$key]);
+            if ($mod) {
+                if ($presupuesto > $mod->total) {
+                    $error = true;
+                    if (strlen($msg) > 0) {
+                        $msg .= ". ";
+                    }
+                    $msg .= "Los valores del Monto a Utilizar no pueden ser mayores al total del detalle de operación";
+                }
+            }
+        }
+
+        return [$error, $msg];
+    }
+
     public function anular(Certificacion $certificacion)
     {
 
@@ -407,5 +449,15 @@ class CertificacionController extends Controller
         // FacadesLog::debug($errors);
 
         return $errors;
+    }
+
+    public function corrige_correlativos()
+    {
+        $certificacions = Certificacion::orderBy("created_at", "asc")->get();
+        foreach ($certificacions as $key => $certificacion) {
+            $certificacion->correlativo = (int)$key + 1;
+            $certificacion->save();
+        }
+        return 'Certificaciones corregidas<br><a href="/">Volver al inicio</a>';
     }
 }

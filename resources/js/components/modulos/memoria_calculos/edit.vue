@@ -415,6 +415,17 @@ export default {
                                     "-" +
                                     (index_detalle + 1)
                             );
+                        } else {
+                            if (
+                                parseFloat(elem_detalle.cantidad) < 0
+                            ) {
+                                array_errors.push(
+                                    "La <b>Canitdad</b> en el detalle " +
+                                        (index + 1) +
+                                        "-" +
+                                        (index_detalle + 1)+" no puede ser menor a 0"
+                                );
+                            }
                         }
                         if (
                             elem_detalle.unidad == null ||
@@ -437,6 +448,16 @@ export default {
                                     "-" +
                                     (index_detalle + 1)
                             );
+                        } else {
+                            if (parseFloat(elem_detalle.costo) < 0) {
+                                array_errors.push(
+                                    "El <b>Precio Unitario</b> en el detalle " +
+                                        (index + 1) +
+                                        "-" +
+                                        (index_detalle + 1) +
+                                        " no puede ser menor a 0"
+                                );
+                            }
                         }
                         // if (
                         //     elem_detalle.justificacion == null ||

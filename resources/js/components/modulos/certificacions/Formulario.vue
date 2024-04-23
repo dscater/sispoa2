@@ -406,6 +406,7 @@
                 </div>
                 <div
                     class="form-group col-md-6 ml-auto mr-auto border border-1 p-3"
+                    v-if="oCertificacion.id != 0"
                 >
                     <label
                         :class="{
