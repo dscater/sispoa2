@@ -167,6 +167,7 @@ Route::prefix('admin')->group(function () {
     ]);
 
     // FISICOS
+    Route::post("fisicos/exportar/{detalle_formulario}", [FisicoController::class, "exportar"]);
     Route::resource('fisicos', FisicoController::class)->only([
         'index', 'store', 'update', 'destroy'
     ]);
@@ -182,6 +183,7 @@ Route::prefix('admin')->group(function () {
     ]);
 
     // SEMAFOROS
+    Route::post('/semaforos/actualiza_estados/{detalle_formulario}', [SemaforoController::class, 'actualiza_estados'])->name("semaforos.actualiza_estados");
     Route::resource('semaforos', SemaforoController::class)->only([
         'index', 'store', 'update', 'destroy'
     ]);

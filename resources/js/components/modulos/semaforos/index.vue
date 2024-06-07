@@ -14,27 +14,6 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
-                            <div class="card-header">
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <button
-                                            v-if="
-                                                permisos.includes(
-                                                    'semaforos.create'
-                                                )
-                                            "
-                                            class="btn btn-outline-primary bg-lightblue btn-flat btn-block"
-                                            @click="
-                                                abreModal('nuevo');
-                                                limpiaSemaforo();
-                                            "
-                                        >
-                                            <i class="fa fa-plus"></i>
-                                            Nuevo
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
                             <div class="card-body">
                                 <div class="row">
                                     <b-col lg="10" class="my-1">
@@ -84,27 +63,16 @@
                                                 empty-filtered-text="Sin resultados"
                                                 :filter="filter"
                                             >
-                                                <template #cell(ver)="row">
-                                                    <div
-                                                        class="row justify-content-center"
-                                                    >
-                                                        <b-button
-                                                            size="sm"
-                                                            variant="primary"
-                                                            title="Ver"
-                                                            @click="
-                                                                verImagen(
-                                                                    row.item.file_path
-                                                                )
-                                                            "
-                                                        >
-                                                            <i
-                                                                class="fa fa-eye"
-                                                            ></i>
-                                                            Ver
-                                                        </b-button>
-                                                    </div>
+                                                <template
+                                                    #cell(formulario.codigo_pei)="row"
+                                                >
+                                                    <span
+                                                        v-html="
+                                                            row.item.pei_text
+                                                        "
+                                                    ></span>
                                                 </template>
+
                                                 <template
                                                     #cell(fecha_registro)="row"
                                                 >
@@ -115,43 +83,32 @@
                                                         )
                                                     }}
                                                 </template>
-
                                                 <template #cell(accion)="row">
                                                     <div
-                                                        class="row justify-content-center"
+                                                        class="row justify-content-between"
                                                     >
                                                         <b-button
                                                             size="sm"
                                                             pill
                                                             variant="outline-warning"
-                                                            class="btn-flat mb-1"
+                                                            class="btn-flat btn-block"
                                                             title="Editar registro"
+                                                            v-if="
+                                                                permisos.includes(
+                                                                    'detalle_formularios.edit'
+                                                                ) &&
+                                                                row.item
+                                                                    .sw_aprobado ==
+                                                                    0
+                                                            "
                                                             @click="
-                                                                editarRegistro(
-                                                                    row.item
+                                                                editar(
+                                                                    row.item.id
                                                                 )
                                                             "
                                                         >
                                                             <i
                                                                 class="fa fa-edit"
-                                                            ></i> </b-button
-                                                        ><br />
-                                                        <b-button
-                                                            size="sm"
-                                                            pill
-                                                            variant="outline-danger"
-                                                            class="btn-flat"
-                                                            title="Eliminar registro"
-                                                            @click="
-                                                                eliminaSemaforo(
-                                                                    row.item.id,
-                                                                    row.item
-                                                                        .descripcion
-                                                                )
-                                                            "
-                                                        >
-                                                            <i
-                                                                class="fa fa-trash"
                                                             ></i>
                                                         </b-button>
                                                     </div>
@@ -226,7 +183,11 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-12">
-                                <img :src="file_path" alt="Imagen" class="w-100"/>
+                                <img
+                                    :src="file_path"
+                                    alt="Imagen"
+                                    class="w-100"
+                                />
                             </div>
                         </div>
                     </div>
@@ -260,14 +221,28 @@ export default {
             showOverlay: false,
             fields: [
                 {
-                    key: "descripcion",
-                    label: "Descripción",
+                    key: "formulario.codigo_pei",
+                    label: "Código PEI",
                     sortable: true,
                 },
-                { key: "ver", label: "Ver" },
+                {
+                    key: "formulario.unidad.nombre",
+                    label: "Unidad Organizacional",
+                    sortable: true,
+                },
+                {
+                    key: "operacions.length",
+                    label: "Total operaciones",
+                    sortable: true,
+                },
                 {
                     key: "fecha_registro",
                     label: "Fecha de registro",
+                    sortable: true,
+                },
+                {
+                    key: "estado_aprobado",
+                    label: "Estado",
                     sortable: true,
                 },
                 { key: "accion", label: "Acción" },
@@ -311,18 +286,18 @@ export default {
             this.modal_imagen = true;
         },
         // Seleccionar Opciones de Tabla
-        editarRegistro(item) {
-            this.oSemaforo.id = item.id;
-            this.oSemaforo.descripcion = item.descripcion ? item.descripcion : "";
-            this.modal_accion = "edit";
-            this.muestra_modal = true;
+        editar(id) {
+            this.$router.push({
+                name: "semaforos.edit",
+                params: { id: id },
+            });
         },
 
         // Listar Semaforos
         getSemaforos() {
             this.showOverlay = true;
             this.muestra_modal = false;
-            let url = "/admin/semaforos";
+            let url = "/admin/detalle_formularios";
             if (this.pagina != 0) {
                 url += "?page=" + this.pagina;
             }
@@ -332,7 +307,7 @@ export default {
                 })
                 .then((res) => {
                     this.showOverlay = false;
-                    this.listRegistros = res.data.semaforos;
+                    this.listRegistros = res.data.detalle_formularios;
                     this.totalRows = res.data.total;
                 });
         },
@@ -349,7 +324,7 @@ export default {
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
                     axios
-                        .post("/admin/semaforos/" + id, {
+                        .post("/admin/detalle_formularios/" + id, {
                             _method: "DELETE",
                         })
                         .then((res) => {

@@ -502,7 +502,7 @@
                             <p>G. Ejecución de presupuestos</p>
                         </router-link>
                     </li>
-                    <li
+                    <!-- <li
                         class="nav-item"
                         v-if="permisos.includes('reportes.fisicos')"
                     >
@@ -537,7 +537,7 @@
                             <i class="fas fa-file-pdf nav-icon"></i>
                             <p>Semáforos</p>
                         </router-link>
-                    </li>
+                    </li> -->
                     <li class="nav-header bg-navy">OTRAS OPCIONES</li>
                     <li
                         class="nav-item"
@@ -551,7 +551,7 @@
                             <p>Físico</p>
                         </router-link>
                     </li>
-                    <li
+                    <!-- <li
                         class="nav-item"
                         v-if="permisos.includes('financieras.index')"
                     >
@@ -562,7 +562,7 @@
                             <i class="nav-icon fas fa-list-alt"></i>
                             <p>Financiero</p>
                         </router-link>
-                    </li>
+                    </li> -->
                     <li
                         class="nav-item"
                         v-if="permisos.includes('semaforos.index')"

@@ -14,27 +14,6 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
-                            <div class="card-header">
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <button
-                                            v-if="
-                                                permisos.includes(
-                                                    'fisicos.create'
-                                                )
-                                            "
-                                            class="btn btn-outline-primary bg-lightblue btn-flat btn-block"
-                                            @click="
-                                                abreModal('nuevo');
-                                                limpiaFisico();
-                                            "
-                                        >
-                                            <i class="fa fa-plus"></i>
-                                            Nuevo
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
                             <div class="card-body">
                                 <div class="row">
                                     <b-col lg="10" class="my-1">
@@ -84,27 +63,16 @@
                                                 empty-filtered-text="Sin resultados"
                                                 :filter="filter"
                                             >
-                                                <template #cell(ver)="row">
-                                                    <div
-                                                        class="row justify-content-center"
-                                                    >
-                                                        <b-button
-                                                            size="sm"
-                                                            variant="primary"
-                                                            title="Ver"
-                                                            @click="
-                                                                verImagen(
-                                                                    row.item.file_path
-                                                                )
-                                                            "
-                                                        >
-                                                            <i
-                                                                class="fa fa-eye"
-                                                            ></i>
-                                                            Ver
-                                                        </b-button>
-                                                    </div>
+                                                <template
+                                                    #cell(formulario.codigo_pei)="row"
+                                                >
+                                                    <span
+                                                        v-html="
+                                                            row.item.pei_text
+                                                        "
+                                                    ></span>
                                                 </template>
+
                                                 <template
                                                     #cell(fecha_registro)="row"
                                                 >
@@ -115,43 +83,24 @@
                                                         )
                                                     }}
                                                 </template>
-
                                                 <template #cell(accion)="row">
                                                     <div
-                                                        class="row justify-content-center"
+                                                        class="row justify-content-between"
                                                     >
                                                         <b-button
                                                             size="sm"
                                                             pill
-                                                            variant="outline-warning"
-                                                            class="btn-flat mb-1"
+                                                            variant="outline-primary"
+                                                            class="btn-flat btn-block"
                                                             title="Editar registro"
                                                             @click="
-                                                                editarRegistro(
-                                                                    row.item
+                                                                mostrar(
+                                                                    row.item.id
                                                                 )
                                                             "
                                                         >
                                                             <i
-                                                                class="fa fa-edit"
-                                                            ></i> </b-button
-                                                        ><br />
-                                                        <b-button
-                                                            size="sm"
-                                                            pill
-                                                            variant="outline-danger"
-                                                            class="btn-flat"
-                                                            title="Eliminar registro"
-                                                            @click="
-                                                                eliminaFisico(
-                                                                    row.item.id,
-                                                                    row.item
-                                                                        .descripcion
-                                                                )
-                                                            "
-                                                        >
-                                                            <i
-                                                                class="fa fa-trash"
+                                                                class="fa fa-eye"
                                                             ></i>
                                                         </b-button>
                                                     </div>
@@ -197,9 +146,9 @@
         <Nuevo
             :muestra_modal="muestra_modal"
             :accion="modal_accion"
-            :fisico="oFisico"
+            :semaforo="oSemaforo"
             @close="muestra_modal = false"
-            @envioModal="getFisicos"
+            @envioModal="getSemaforos"
         ></Nuevo>
 
         <div
@@ -226,7 +175,11 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-12">
-                                <img :src="file_path" alt="Imagen" class="w-100"/>
+                                <img
+                                    :src="file_path"
+                                    alt="Imagen"
+                                    class="w-100"
+                                />
                             </div>
                         </div>
                     </div>
@@ -260,14 +213,28 @@ export default {
             showOverlay: false,
             fields: [
                 {
-                    key: "descripcion",
-                    label: "Descripción",
+                    key: "formulario.codigo_pei",
+                    label: "Código PEI",
                     sortable: true,
                 },
-                { key: "ver", label: "Ver" },
+                {
+                    key: "formulario.unidad.nombre",
+                    label: "Unidad Organizacional",
+                    sortable: true,
+                },
+                {
+                    key: "operacions.length",
+                    label: "Total operaciones",
+                    sortable: true,
+                },
                 {
                     key: "fecha_registro",
                     label: "Fecha de registro",
+                    sortable: true,
+                },
+                {
+                    key: "estado_aprobado",
+                    label: "Estado",
                     sortable: true,
                 },
                 { key: "accion", label: "Acción" },
@@ -279,7 +246,7 @@ export default {
             }),
             muestra_modal: false,
             modal_accion: "nuevo",
-            oFisico: {
+            oSemaforo: {
                 id: 0,
                 descripcion: "",
                 archivo: null,
@@ -302,7 +269,7 @@ export default {
     },
     mounted() {
         this.loadingWindow.close();
-        this.getFisicos();
+        this.getSemaforos();
     },
     methods: {
         // Ver archivo
@@ -311,18 +278,17 @@ export default {
             this.modal_imagen = true;
         },
         // Seleccionar Opciones de Tabla
-        editarRegistro(item) {
-            this.oFisico.id = item.id;
-            this.oFisico.descripcion = item.descripcion ? item.descripcion : "";
-            this.modal_accion = "edit";
-            this.muestra_modal = true;
+        mostrar(id) {
+            this.$router.push({
+                name: "fisicos.show",
+                params: { id: id },
+            });
         },
-
-        // Listar Fisicos
-        getFisicos() {
+        // Listar Semaforos
+        getSemaforos() {
             this.showOverlay = true;
             this.muestra_modal = false;
-            let url = "/admin/fisicos";
+            let url = "/admin/detalle_formularios";
             if (this.pagina != 0) {
                 url += "?page=" + this.pagina;
             }
@@ -332,11 +298,11 @@ export default {
                 })
                 .then((res) => {
                     this.showOverlay = false;
-                    this.listRegistros = res.data.fisicos;
+                    this.listRegistros = res.data.detalle_formularios;
                     this.totalRows = res.data.total;
                 });
         },
-        eliminaFisico(id, descripcion) {
+        eliminaSemaforo(id, descripcion) {
             Swal.fire({
                 title: "¿Quierés eliminar este registro?",
                 html: `<strong>${descripcion}</strong>`,
@@ -349,11 +315,11 @@ export default {
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
                     axios
-                        .post("/admin/fisicos/" + id, {
+                        .post("/admin/detalle_formularios/" + id, {
                             _method: "DELETE",
                         })
                         .then((res) => {
-                            this.getFisicos();
+                            this.getSemaforos();
                             this.filter = "";
                             Swal.fire({
                                 icon: "success",
@@ -365,11 +331,11 @@ export default {
                 }
             });
         },
-        abreModal(tipo_accion = "nuevo", fisico = null) {
+        abreModal(tipo_accion = "nuevo", semaforo = null) {
             this.muestra_modal = true;
             this.modal_accion = tipo_accion;
-            if (fisico) {
-                this.oFisico = fisico;
+            if (semaforo) {
+                this.oSemaforo = semaforo;
             }
         },
         onFiltered(filteredItems) {
@@ -377,9 +343,9 @@ export default {
             this.totalRows = filteredItems.length;
             this.currentPage = 1;
         },
-        limpiaFisico() {
-            this.oFisico.descripcion = "";
-            this.oFisico.foto = null;
+        limpiaSemaforo() {
+            this.oSemaforo.descripcion = "";
+            this.oSemaforo.foto = null;
         },
         formatoFecha(date) {
             return this.$moment(String(date)).format("DD/MM/YYYY");

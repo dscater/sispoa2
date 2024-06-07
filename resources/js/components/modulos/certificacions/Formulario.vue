@@ -1137,9 +1137,10 @@ export default {
                     index
                 ].presupuesto_usarse = monto_usarse;
             } else {
-                this.oCertificacion.certificacion_detalles[
-                    index
-                ].presupuesto_usarse = monto_usarse;
+                console.log("info");
+                // this.oCertificacion.certificacion_detalles[
+                //     index
+                // ].presupuesto_usarse = monto_usarse;
             }
         },
         obtieneSaldo(index) {

@@ -11,11 +11,12 @@
             <button
                 class="btn btn-danger rounded-circle btnQuitar"
                 @click="quitar"
+                v-if="oUser.tipo != 'ENLACE'"
             >
                 X
             </button>
             <div class="row">
-                <div class="form-group col-md-12">
+                <div class="form-group col-md-12" v-if="oUser.tipo != 'ENLACE'">
                     <label>Seleccionar subunidad</label>
                     <el-select
                         placeholder="Sin subunidad"
@@ -40,6 +41,14 @@
                         v-text="errors.subdireccion_id[0]"
                     ></span>
                 </div>
+                <div class="form-group col-md-12" v-else>
+                    <label v-if="o_Operacion.subdireccion_id">Subunidad</label>
+                    {{
+                        listSubdireccions.filter(
+                            (elem) => elem.id == o_Operacion.subdireccion_id
+                        )[0]?.nombre
+                    }}
+                </div>
 
                 <div class="form-group col-md-6">
                     <label>Código de Operación</label>
@@ -50,6 +59,7 @@
                             'is-invalid': errors.codigo_operacion,
                         }"
                         v-model="o_Operacion.codigo_operacion"
+                        :readonly="oUser.tipo == 'ENLACE'"
                     />
                     <span
                         class="error invalid-feedback"
@@ -69,6 +79,7 @@
                         }"
                         v-model="o_Operacion.operacion"
                         clearable
+                        :readonly="oUser.tipo == 'ENLACE'"
                     >
                     </el-input>
                     <span
@@ -88,6 +99,7 @@
                         :class="{
                             'is-invalid': errors['ponderacion'],
                         }"
+                        :readonly="oUser.tipo == 'ENLACE'"
                     />
                     <span
                         class="error invalid-feedback"
@@ -106,6 +118,7 @@
                         }"
                         v-model="o_Operacion.resultado_esperado"
                         clearable
+                        :readonly="oUser.tipo == 'ENLACE'"
                     >
                     </el-input>
                     <span
@@ -124,6 +137,7 @@
                             'is-invalid': errors['medios_verificacion'],
                         }"
                         v-model="o_Operacion.medios_verificacion"
+                        :readonly="oUser.tipo == 'ENLACE'"
                     >
                     </el-input>
                     <span
@@ -175,6 +189,7 @@
                                         }"
                                         v-model="detalle.codigo_tarea"
                                         clearable
+                                        :readonly="oUser.tipo == 'ENLACE'"
                                     >
                                     </el-input>
                                     <span
@@ -206,6 +221,7 @@
                                         }"
                                         v-model="detalle.actividad_tarea"
                                         clearable
+                                        :readonly="oUser.tipo == 'ENLACE'"
                                     >
                                     </el-input>
                                     <span
@@ -236,6 +252,7 @@
                                                 ],
                                         }"
                                         v-model="detalle.inicio"
+                                        :readonly="oUser.tipo == 'ENLACE'"
                                     />
                                     <span
                                         class="error invalid-feedback"
@@ -257,6 +274,7 @@
                                                 ],
                                         }"
                                         v-model="detalle.final"
+                                        :readonly="oUser.tipo == 'ENLACE'"
                                     />
                                     <span
                                         class="error invalid-feedback"
@@ -312,6 +330,10 @@
                                                     <label>E</label>
                                                     <input
                                                         type="number"
+                                                        :readonly="
+                                                            oUser.tipo ==
+                                                            'ENLACE'
+                                                        "
                                                         v-model="detalle.pt_e"
                                                         class="form-control"
                                                         :class="{
@@ -329,6 +351,10 @@
                                                     <label>F</label>
                                                     <input
                                                         type="number"
+                                                        :readonly="
+                                                            oUser.tipo ==
+                                                            'ENLACE'
+                                                        "
                                                         v-model="detalle.pt_f"
                                                         class="form-control"
                                                         :class="{
@@ -346,6 +372,10 @@
                                                     <label>M</label>
                                                     <input
                                                         type="number"
+                                                        :readonly="
+                                                            oUser.tipo ==
+                                                            'ENLACE'
+                                                        "
                                                         v-model="detalle.pt_m"
                                                         class="form-control"
                                                         :class="{
@@ -363,6 +393,10 @@
                                                     <label>A</label>
                                                     <input
                                                         type="number"
+                                                        :readonly="
+                                                            oUser.tipo ==
+                                                            'ENLACE'
+                                                        "
                                                         v-model="detalle.st_a"
                                                         class="form-control"
                                                         :class="{
@@ -380,6 +414,10 @@
                                                     <label>M</label>
                                                     <input
                                                         type="number"
+                                                        :readonly="
+                                                            oUser.tipo ==
+                                                            'ENLACE'
+                                                        "
                                                         v-model="detalle.st_m"
                                                         class="form-control"
                                                         :class="{
@@ -397,6 +435,10 @@
                                                     <label>J</label>
                                                     <input
                                                         type="number"
+                                                        :readonly="
+                                                            oUser.tipo ==
+                                                            'ENLACE'
+                                                        "
                                                         v-model="detalle.st_j"
                                                         class="form-control"
                                                         :class="{
@@ -414,6 +456,10 @@
                                                     <label>J</label>
                                                     <input
                                                         type="number"
+                                                        :readonly="
+                                                            oUser.tipo ==
+                                                            'ENLACE'
+                                                        "
                                                         v-model="detalle.tt_j"
                                                         class="form-control"
                                                         :class="{
@@ -431,6 +477,10 @@
                                                     <label>A</label>
                                                     <input
                                                         type="number"
+                                                        :readonly="
+                                                            oUser.tipo ==
+                                                            'ENLACE'
+                                                        "
                                                         v-model="detalle.tt_a"
                                                         class="form-control"
                                                         :class="{
@@ -448,6 +498,10 @@
                                                     <label>S</label>
                                                     <input
                                                         type="number"
+                                                        :readonly="
+                                                            oUser.tipo ==
+                                                            'ENLACE'
+                                                        "
                                                         v-model="detalle.tt_s"
                                                         class="form-control"
                                                         :class="{
@@ -465,6 +519,10 @@
                                                     <label>O</label>
                                                     <input
                                                         type="number"
+                                                        :readonly="
+                                                            oUser.tipo ==
+                                                            'ENLACE'
+                                                        "
                                                         v-model="detalle.ct_o"
                                                         class="form-control"
                                                         :class="{
@@ -482,6 +540,10 @@
                                                     <label>N</label>
                                                     <input
                                                         type="number"
+                                                        :readonly="
+                                                            oUser.tipo ==
+                                                            'ENLACE'
+                                                        "
                                                         v-model="detalle.ct_n"
                                                         class="form-control"
                                                         :class="{
@@ -499,6 +561,10 @@
                                                     <label>D</label>
                                                     <input
                                                         type="number"
+                                                        :readonly="
+                                                            oUser.tipo ==
+                                                            'ENLACE'
+                                                        "
                                                         v-model="detalle.ct_d"
                                                         class="form-control"
                                                         :class="{
@@ -513,6 +579,443 @@
                                                     />
                                                 </td>
                                             </tr>
+                                            <tr
+                                                class="files"
+                                                v-if="oUser.tipo == 'ENLACE'"
+                                            >
+                                                <td>
+                                                    <label
+                                                        v-if="
+                                                            detalle.pt_e &&
+                                                            detalle.pt_e != ''
+                                                        "
+                                                        :class="[
+                                                            detalle.pt_e_file
+                                                                ? 'active'
+                                                                : '',
+                                                        ]"
+                                                        :for="
+                                                            'e_file_o_d' +
+                                                            index +
+                                                            index_detalle
+                                                        "
+                                                        ><i
+                                                            class="fa fa-paperclip"
+                                                        ></i
+                                                    ></label>
+                                                    <input
+                                                        type="file"
+                                                        :id="
+                                                            'e_file_o_d' +
+                                                            index +
+                                                            index_detalle
+                                                        "
+                                                        @change="
+                                                            cargarArchivo(
+                                                                'pt_e_file',
+                                                                index_detalle,
+                                                                $event
+                                                            )
+                                                        "
+                                                    />
+                                                </td>
+                                                <td>
+                                                    <label
+                                                        v-if="
+                                                            detalle.pt_f &&
+                                                            detalle.pt_f != ''
+                                                        "
+                                                        :class="[
+                                                            detalle.pt_f_file
+                                                                ? 'active'
+                                                                : '',
+                                                        ]"
+                                                        :for="
+                                                            'f_file_o_d' +
+                                                            index +
+                                                            index_detalle
+                                                        "
+                                                        ><i
+                                                            class="fa fa-paperclip"
+                                                        ></i
+                                                    ></label>
+                                                    <input
+                                                        type="file"
+                                                        :id="
+                                                            'f_file_o_d' +
+                                                            index +
+                                                            index_detalle
+                                                        "
+                                                        @change="
+                                                            cargarArchivo(
+                                                                'pt_f_file',
+                                                                index_detalle,
+                                                                $event
+                                                            )
+                                                        "
+                                                    />
+                                                </td>
+                                                <td>
+                                                    <label
+                                                        v-if="
+                                                            detalle.pt_m &&
+                                                            detalle.pt_m != ''
+                                                        "
+                                                        :class="[
+                                                            detalle.pt_m_file
+                                                                ? 'active'
+                                                                : '',
+                                                        ]"
+                                                        :for="
+                                                            'm_file_o_d' +
+                                                            index +
+                                                            index_detalle
+                                                        "
+                                                        ><i
+                                                            class="fa fa-paperclip"
+                                                        ></i
+                                                    ></label>
+                                                    <input
+                                                        type="file"
+                                                        :id="
+                                                            'm_file_o_d' +
+                                                            index +
+                                                            index_detalle
+                                                        "
+                                                        @change="
+                                                            cargarArchivo(
+                                                                'pt_m_file',
+                                                                index_detalle,
+                                                                $event
+                                                            )
+                                                        "
+                                                    />
+                                                </td>
+                                                <td>
+                                                    <label
+                                                        v-if="
+                                                            detalle.st_a &&
+                                                            detalle.st_a != ''
+                                                        "
+                                                        :class="[
+                                                            detalle.st_a_file
+                                                                ? 'active'
+                                                                : '',
+                                                        ]"
+                                                        :for="
+                                                            'a_file_o_d' +
+                                                            index +
+                                                            index_detalle
+                                                        "
+                                                        ><i
+                                                            class="fa fa-paperclip"
+                                                        ></i
+                                                    ></label>
+                                                    <input
+                                                        type="file"
+                                                        :id="
+                                                            'a_file_o_d' +
+                                                            index +
+                                                            index_detalle
+                                                        "
+                                                        @change="
+                                                            cargarArchivo(
+                                                                'st_a_file',
+                                                                index_detalle,
+                                                                $event
+                                                            )
+                                                        "
+                                                    />
+                                                </td>
+                                                <td>
+                                                    <label
+                                                        v-if="
+                                                            detalle.st_m &&
+                                                            detalle.st_m != ''
+                                                        "
+                                                        :class="[
+                                                            detalle.st_m_file
+                                                                ? 'active'
+                                                                : '',
+                                                        ]"
+                                                        :for="
+                                                            'm_file_o_d' +
+                                                            index +
+                                                            index_detalle
+                                                        "
+                                                        ><i
+                                                            class="fa fa-paperclip"
+                                                        ></i
+                                                    ></label>
+                                                    <input
+                                                        type="file"
+                                                        :id="
+                                                            'm_file_o_d' +
+                                                            index +
+                                                            index_detalle
+                                                        "
+                                                        @change="
+                                                            cargarArchivo(
+                                                                'st_m_file',
+                                                                index_detalle,
+                                                                $event
+                                                            )
+                                                        "
+                                                    />
+                                                </td>
+                                                <td>
+                                                    <label
+                                                        v-if="
+                                                            detalle.st_j &&
+                                                            detalle.st_j != ''
+                                                        "
+                                                        :class="[
+                                                            detalle.st_j_file
+                                                                ? 'active'
+                                                                : '',
+                                                        ]"
+                                                        :for="
+                                                            'j_file_o_d' +
+                                                            index +
+                                                            index_detalle
+                                                        "
+                                                        ><i
+                                                            class="fa fa-paperclip"
+                                                        ></i
+                                                    ></label>
+                                                    <input
+                                                        type="file"
+                                                        :id="
+                                                            'j_file_o_d' +
+                                                            index +
+                                                            index_detalle
+                                                        "
+                                                        @change="
+                                                            cargarArchivo(
+                                                                'st_j_file',
+                                                                index_detalle,
+                                                                $event
+                                                            )
+                                                        "
+                                                    />
+                                                </td>
+                                                <td>
+                                                    <label
+                                                        v-if="
+                                                            detalle.tt_j &&
+                                                            detalle.tt_j != ''
+                                                        "
+                                                        :class="[
+                                                            detalle.tt_j_file
+                                                                ? 'active'
+                                                                : '',
+                                                        ]"
+                                                        :for="
+                                                            'j_file_o_d' +
+                                                            index +
+                                                            index_detalle
+                                                        "
+                                                        ><i
+                                                            class="fa fa-paperclip"
+                                                        ></i
+                                                    ></label>
+                                                    <input
+                                                        type="file"
+                                                        :id="
+                                                            'j_file_o_d' +
+                                                            index +
+                                                            index_detalle
+                                                        "
+                                                        @change="
+                                                            cargarArchivo(
+                                                                'tt_j_file',
+                                                                index_detalle,
+                                                                $event
+                                                            )
+                                                        "
+                                                    />
+                                                </td>
+                                                <td>
+                                                    <label
+                                                        v-if="
+                                                            detalle.tt_a &&
+                                                            detalle.tt_a != ''
+                                                        "
+                                                        :class="[
+                                                            detalle.tt_a_file
+                                                                ? 'active'
+                                                                : '',
+                                                        ]"
+                                                        :for="
+                                                            'a_file_o_d' +
+                                                            index +
+                                                            index_detalle
+                                                        "
+                                                        ><i
+                                                            class="fa fa-paperclip"
+                                                        ></i
+                                                    ></label>
+                                                    <input
+                                                        type="file"
+                                                        :id="
+                                                            'a_file_o_d' +
+                                                            index +
+                                                            index_detalle
+                                                        "
+                                                        @change="
+                                                            cargarArchivo(
+                                                                'tt_a_file',
+                                                                index_detalle,
+                                                                $event
+                                                            )
+                                                        "
+                                                    />
+                                                </td>
+                                                <td>
+                                                    <label
+                                                        v-if="
+                                                            detalle.tt_s &&
+                                                            detalle.tt_s != ''
+                                                        "
+                                                        :class="[
+                                                            detalle.tt_s_file
+                                                                ? 'active'
+                                                                : '',
+                                                        ]"
+                                                        :for="
+                                                            's_file_o_d' +
+                                                            index +
+                                                            index_detalle
+                                                        "
+                                                        ><i
+                                                            class="fa fa-paperclip"
+                                                        ></i
+                                                    ></label>
+                                                    <input
+                                                        type="file"
+                                                        :id="
+                                                            's_file_o_d' +
+                                                            index +
+                                                            index_detalle
+                                                        "
+                                                        @change="
+                                                            cargarArchivo(
+                                                                'tt_s_file',
+                                                                index_detalle,
+                                                                $event
+                                                            )
+                                                        "
+                                                    />
+                                                </td>
+                                                <td>
+                                                    <label
+                                                        v-if="
+                                                            detalle.ct_o &&
+                                                            detalle.ct_o != ''
+                                                        "
+                                                        :class="[
+                                                            detalle.ct_o_file
+                                                                ? 'active'
+                                                                : '',
+                                                        ]"
+                                                        :for="
+                                                            'o_file_o_d' +
+                                                            index +
+                                                            index_detalle
+                                                        "
+                                                        ><i
+                                                            class="fa fa-paperclip"
+                                                        ></i
+                                                    ></label>
+                                                    <input
+                                                        type="file"
+                                                        :id="
+                                                            'o_file_o_d' +
+                                                            index +
+                                                            index_detalle
+                                                        "
+                                                        @change="
+                                                            cargarArchivo(
+                                                                'ct_o_file',
+                                                                index_detalle,
+                                                                $event
+                                                            )
+                                                        "
+                                                    />
+                                                </td>
+                                                <td>
+                                                    <label
+                                                        v-if="
+                                                            detalle.ct_n &&
+                                                            detalle.ct_n != ''
+                                                        "
+                                                        :class="[
+                                                            detalle.ct_n_file
+                                                                ? 'active'
+                                                                : '',
+                                                        ]"
+                                                        :for="
+                                                            'n_file_o_d' +
+                                                            index +
+                                                            index_detalle
+                                                        "
+                                                        ><i
+                                                            class="fa fa-paperclip"
+                                                        ></i
+                                                    ></label>
+                                                    <input
+                                                        type="file"
+                                                        :id="
+                                                            'n_file_o_d' +
+                                                            index +
+                                                            index_detalle
+                                                        "
+                                                        @change="
+                                                            cargarArchivo(
+                                                                'ct_n_file',
+                                                                index_detalle,
+                                                                $event
+                                                            )
+                                                        "
+                                                    />
+                                                </td>
+                                                <td>
+                                                    <label
+                                                        v-if="
+                                                            detalle.ct_d &&
+                                                            detalle.ct_d != ''
+                                                        "
+                                                        :class="[
+                                                            detalle.ct_d_file
+                                                                ? 'active'
+                                                                : '',
+                                                        ]"
+                                                        :for="
+                                                            'd_file_o_d' +
+                                                            index +
+                                                            index_detalle
+                                                        "
+                                                        ><i
+                                                            class="fa fa-paperclip"
+                                                        ></i
+                                                    ></label>
+                                                    <input
+                                                        type="file"
+                                                        :id="
+                                                            'd_file_o_d' +
+                                                            index +
+                                                            index_detalle
+                                                        "
+                                                        @change="
+                                                            cargarArchivo(
+                                                                'ct_d_file',
+                                                                index_detalle,
+                                                                $event
+                                                            )
+                                                        "
+                                                    />
+                                                </td>
+                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -523,7 +1026,7 @@
             </div>
 
             <!-- BOTON AGREGAR DETALLE -->
-            <div class="row">
+            <div class="row" v-if="oUser.tipo != 'ENLACE'">
                 <div class="col-md-12">
                     <div class="row">
                         <div class="col-md-12">
@@ -570,6 +1073,10 @@ export default {
     },
     data() {
         return {
+            oUser:
+                typeof localStorage.getItem("user") == "string"
+                    ? JSON.parse(localStorage.getItem("user"))
+                    : localStorage.getItem("user"),
             sw_accion: this.accion,
             errors: [],
             o_Operacion: this.operacion,
@@ -643,10 +1150,28 @@ export default {
                 ct_o: "",
                 ct_n: "",
                 ct_d: "",
+                pt_e_file: null,
+                pt_f_file: null,
+                pt_m_file: null,
+                st_a_file: null,
+                st_m_file: null,
+                st_j_file: null,
+                tt_j_file: null,
+                tt_a_file: null,
+                tt_s_file: null,
+                ct_o_file: null,
+                ct_n_file: null,
+                ct_d_file: null,
                 inicio: "",
                 final: "",
             });
         },
+
+        cargarArchivo(key, index, e) {
+            console.log(this.operacion.detalle_operaciones);
+            this.operacion.detalle_operaciones[index][key] = e.target.files[0];
+        },
+
         quitarDetalle(index, id) {
             this.o_Operacion.detalle_operaciones.splice(index, 1);
             if (id != 0) {
@@ -728,6 +1253,26 @@ export default {
 .detalle_trimestres tr td input {
     min-width: 45px;
     text-align: center;
+}
+
+.detalle_trimestres tr.files td label {
+    display: block;
+    position: relative;
+    background-color: rgba(77, 77, 77, 0.445);
+    max-width: 95%;
+    margin: auto;
+    color: white;
+    border-radius: 0px;
+    text-align: center;
+}
+
+.detalle_trimestres tr.files td label.active {
+    background-color: rgb(0, 184, 144);
+    color: white;
+}
+
+.detalle_trimestres tr.files td input {
+    display: none !important;
 }
 
 .input-group-text {

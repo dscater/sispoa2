@@ -128,6 +128,10 @@ export default {
     },
     data() {
         return {
+            oUser:
+                typeof localStorage.getItem("user") == "string"
+                    ? JSON.parse(localStorage.getItem("user"))
+                    : localStorage.getItem("user"),
             permisos: localStorage.getItem("permisos"),
             loadingWindow: Loading.service({
                 fullscreen: this.fullscreenLoading,

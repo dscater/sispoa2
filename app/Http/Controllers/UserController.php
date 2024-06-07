@@ -165,7 +165,7 @@ class UserController extends Controller
             'formulario_cuatro.destroy',
 
             'detalle_formularios.index',
-            'detalle_formularios.create',
+            // 'detalle_formularios.create',
             'detalle_formularios.edit',
             'detalle_formularios.destroy',
 

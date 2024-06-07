@@ -4,7 +4,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Detalle Formulario 4 - <small>Editar</small></h1>
+                        <h1>Semaforos - <small>Estados documentos</small></h1>
                     </div>
                 </div>
             </div>
@@ -29,7 +29,7 @@
                                             class="card-title w-full font-weight-bold"
                                         >
                                             <i class="fas fa-edit"></i>
-                                            Editar Registro
+                                            Estados Registro
                                         </h3>
                                     </div>
                                 </div>
@@ -42,29 +42,17 @@
                                                 'text-danger':
                                                     errors.formulario_seleccionado,
                                             }"
-                                            >Seleccionar código PEI*</label
+                                            >Código PEI*</label
                                         >
-                                        <el-select
-                                            filterable
-                                            class="w-100 d-block"
-                                            :class="{
-                                                'is-invalid':
-                                                    errors.formulario_seleccionado,
-                                            }"
-                                            v-model="formulario_seleccionado"
-                                            clearable
-                                            ref="codigo_pei"
-                                        >
-                                            <el-option
-                                                v-for="(
-                                                    item, index_form
-                                                ) in listFormularios"
-                                                :key="index_form"
-                                                :value="item.pei_seleccionado"
-                                                :label="item.codigo_pei"
-                                            >
-                                            </el-option>
-                                        </el-select>
+                                        <div class="px-2 py-2 border">
+                                            {{
+                                                listFormularios.filter(
+                                                    (elem) =>
+                                                        elem.pei_seleccionado ==
+                                                        formulario_seleccionado
+                                                )[0]?.codigo_pei
+                                            }}
+                                        </div>
                                         <span
                                             class="error invalid-feedback"
                                             v-if="
@@ -89,24 +77,7 @@
                             :accion="'edit'"
                             :key="index"
                         ></Operacion>
-                        <div class="row" v-if="oUser.tipo != 'ENLACE'">
-                            <div class="col-md-12">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <button
-                                            class="btn btn-primary btn-flat btn-block"
-                                            @click="agregarOperacion"
-                                            :disabled="!agregaOperacion"
-                                        >
-                                            <i class="fa fa-plus"></i>
-                                            Agregar Operación
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row mt-3">
+                        <div class="row mt-3" v-if="oUser.tipo == 'SUPER USUARIO'">
                             <div class="col-md-3">
                                 <el-button
                                     class="btn btn-primary bg-primary btn-flat btn-block"
@@ -207,199 +178,39 @@ export default {
         },
         // ENVIAR OPERACIONES
         enviarRegistro() {
-            let a_errores = [];
-            if (this.oUser.tipo != "ENLACE") {
-                a_errores = this.validaData();
-                if (a_errores.length == 0) {
-                    let data = {
-                        _method: "put",
-                        formulario_seleccionado: this.formulario_seleccionado,
-                        data: this.listOperacions,
-                        eliminados: this.eliminados,
-                        do_eliminados: this.do_eliminados,
-                    };
-                    axios
-                        .post(
-                            "/admin/detalle_formularios/" +
-                                this.oDetalleFormulario.id,
-                            data
-                        )
-                        .then((response) => {
-                            Swal.fire({
-                                icon: "success",
-                                title: response.data.msj,
-                                showConfirmButton: false,
-                                timer: 2000,
-                            });
-                            this.cambioPagina = false;
-                            if (this.next_pagina != null) {
-                                this.next_pagina();
-                            } else {
-                                this.$router.push({
-                                    name: "detalle_formularios.index",
-                                });
-                            }
-                        })
-                        .catch((error) => {
-                            this.enviando = false;
-                            if (error.response) {
-                                if (error.response.status === 422) {
-                                    this.errors = error.response.data.errors;
-                                    this.$refs.codigo_pei.focus();
-                                } else {
-                                    Swal.fire({
-                                        icon: "error",
-                                        title: error,
-                                        showConfirmButton: false,
-                                        timer: 2000,
-                                    });
-                                }
-                            } else {
-                                Swal.fire({
-                                    icon: "error",
-                                    title: error,
-                                    showConfirmButton: false,
-                                    timer: 2000,
-                                });
-                            }
-                        });
-                } else {
-                    let mensaje = "";
-                    a_errores.forEach((e) => {
-                        mensaje += e + "<br>";
-                    });
+            let data = {
+                formulario_seleccionado: this.formulario_seleccionado,
+                data: this.listOperacions,
+                eliminados: this.eliminados,
+                do_eliminados: this.do_eliminados,
+            };
+            axios
+                .post(
+                    "/admin/semaforos/actualiza_estados/" + this.oDetalleFormulario.id,
+                    data
+                )
+                .then((response) => {
                     Swal.fire({
-                        icon: "error",
-                        title: "Tienes los siguientes errores",
-                        html: mensaje,
-                        showConfirmButton: true,
-                        confirmButtonText: "Aceptar",
-                        confirmButtonColor: "#0069d9",
+                        icon: "success",
+                        title: response.data.msj,
+                        showConfirmButton: false,
+                        timer: 2000,
                     });
-                }
-            } else {
-                // ENLACE
-                let formData = new FormData();
-                formData.append("_method", "put");
-                this.listOperacions.forEach((item, index) => {
-                    formData.append("id_operacions[]", item.id);
-                    item.detalle_operaciones.forEach(
-                        (item_detalle, index_detalle) => {
-                            console.log(
-                                index_detalle + "-----------------------"
-                            );
-                            console.log(item_detalle);
-                            formData.append(
-                                "actividads" + item.id + "[]",
-                                item_detalle.id
-                            );
-
-                            formData.append(
-                                "files_pt_e" + item.id + item_detalle.id,
-                                item_detalle.pt_e_file
-                            );
-
-                            formData.append(
-                                "files_pt_f" + item.id + item_detalle.id,
-                                item_detalle.pt_f_file
-                            );
-
-                            formData.append(
-                                "files_pt_m" + item.id + item_detalle.id,
-                                item_detalle.pt_m_file
-                            );
-
-                            formData.append(
-                                "files_st_a" + item.id + item_detalle.id,
-                                item_detalle.st_a_file
-                            );
-
-                            formData.append(
-                                "files_st_m" + item.id + item_detalle.id,
-                                item_detalle.st_m_file
-                            );
-
-                            formData.append(
-                                "files_st_j" + item.id + item_detalle.id,
-                                item_detalle.st_j_file
-                            );
-
-                            formData.append(
-                                "files_tt_j" + item.id + item_detalle.id,
-                                item_detalle.tt_j_file
-                            );
-
-                            formData.append(
-                                "files_tt_a" + item.id + item_detalle.id,
-                                item_detalle.tt_a_file
-                            );
-
-                            formData.append(
-                                "files_tt_s" + item.id + item_detalle.id,
-                                item_detalle.tt_s_file
-                            );
-
-                            formData.append(
-                                "files_ct_o" + item.id + item_detalle.id,
-                                item_detalle.ct_o_file
-                            );
-
-                            formData.append(
-                                "files_ct_n" + item.id + item_detalle.id,
-                                item_detalle.ct_n_file
-                            );
-
-                            formData.append(
-                                "files_ct_d" + item.id + item_detalle.id + "[]",
-                                item_detalle.ct_d_file
-                            );
-                        }
-                    );
-                });
-
-                let config = {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                    },
-                };
-
-                axios
-                    .post(
-                        "/admin/detalle_formularios/" +
-                            this.oDetalleFormulario.id,
-                        formData,
-                        config
-                    )
-                    .then((response) => {
-                        Swal.fire({
-                            icon: "success",
-                            title: response.data.msj,
-                            showConfirmButton: false,
-                            timer: 2000,
+                    this.cambioPagina = false;
+                    if (this.next_pagina != null) {
+                        this.next_pagina();
+                    } else {
+                        this.$router.push({
+                            name: "semaforos.index",
                         });
-                        this.cambioPagina = false;
-                        if (this.next_pagina != null) {
-                            this.next_pagina();
-                        } else {
-                            this.$router.push({
-                                name: "detalle_formularios.index",
-                            });
-                        }
-                    })
-                    .catch((error) => {
-                        this.enviando = false;
-                        if (error.response) {
-                            if (error.response.status === 422) {
-                                this.errors = error.response.data.errors;
-                                this.$refs.codigo_pei.focus();
-                            } else {
-                                Swal.fire({
-                                    icon: "error",
-                                    title: error,
-                                    showConfirmButton: false,
-                                    timer: 2000,
-                                });
-                            }
+                    }
+                })
+                .catch((error) => {
+                    this.enviando = false;
+                    if (error.response) {
+                        if (error.response.status === 422) {
+                            this.errors = error.response.data.errors;
+                            this.$refs.codigo_pei.focus();
                         } else {
                             Swal.fire({
                                 icon: "error",
@@ -408,8 +219,15 @@ export default {
                                 timer: 2000,
                             });
                         }
-                    });
-            }
+                    } else {
+                        Swal.fire({
+                            icon: "error",
+                            title: error,
+                            showConfirmButton: false,
+                            timer: 2000,
+                        });
+                    }
+                });
         },
 
         // VALIDACION DE DATA

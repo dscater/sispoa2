@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DetalleFormulario;
+use App\Models\DetalleOperacion;
 use App\Models\Log;
+use App\Models\Operacion;
 use App\Models\Semaforo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class SemaforoController extends Controller
 {
@@ -78,5 +82,43 @@ class SemaforoController extends Controller
         Log::registrarLog("ELIMINACIÓN", "SEMÁFORO", "EL USUARIO $user->id ELIMINÓ UN SEMÁFORO", $user);
 
         return response()->JSON(["sw" => true, "semaforo" => $semaforo, "msj" => "El registro se actualizó correctamente"]);
+    }
+
+    public function actualiza_estados(Request $request, DetalleFormulario $detalle_formulario)
+    {
+        DB::beginTransaction();
+        try {
+            $data = $request->data;
+            foreach ($data as $d) {
+                foreach ($d["detalle_operaciones"] as $do) {
+                    $detalle_operacion = DetalleOperacion::find($do["id"]);
+                    $detalle_operacion->pt_e_est = $do["pt_e_est"];
+                    $detalle_operacion->pt_f_est = $do["pt_f_est"];
+                    $detalle_operacion->pt_m_est = $do["pt_m_est"];
+                    $detalle_operacion->st_a_est = $do["st_a_est"];
+                    $detalle_operacion->st_m_est = $do["st_m_est"];
+                    $detalle_operacion->st_j_est = $do["st_j_est"];
+                    $detalle_operacion->tt_j_est = $do["tt_j_est"];
+                    $detalle_operacion->tt_a_est = $do["tt_a_est"];
+                    $detalle_operacion->tt_s_est = $do["tt_s_est"];
+                    $detalle_operacion->ct_o_est = $do["ct_o_est"];
+                    $detalle_operacion->ct_n_est = $do["ct_n_est"];
+                    $detalle_operacion->ct_d_est = $do["ct_d_est"];
+                    $detalle_operacion->save();
+                }
+            }
+            DB::commit();
+            return response()->JSON([
+                'sw' => true,
+                'detalle_formulario' => $detalle_formulario,
+                'msj' => 'El registro se actualizó de forma correcta'
+            ], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->JSON([
+                'sw' => false,
+                'message' => $e->getMessage(),
+            ], 500);
+        }
     }
 }

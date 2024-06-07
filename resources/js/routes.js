@@ -214,6 +214,12 @@ export default new Router({
             name: 'fisicos.index',
             component: require('./components/modulos/fisicos/index.vue').default,
         },
+        {
+            path: '/fisicos/:id',
+            name: 'fisicos.show',
+            props: true,
+            component: require('./components/modulos/fisicos/show.vue').default,
+        },
 
         // FINANCIERAS
         {
@@ -227,6 +233,12 @@ export default new Router({
             path: '/semaforos',
             name: 'semaforos.index',
             component: require('./components/modulos/semaforos/index.vue').default,
+        },
+        {
+            path: '/semaforos/:id',
+            name: 'semaforos.edit',
+            props: true,
+            component: require('./components/modulos/semaforos/edit.vue').default,
         },
 
         // VERIFICACION ACTIVIDAD

@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DetalleFormulario;
 use App\Models\Fisico;
 use App\Models\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use PDF;
 
 class FisicoController extends Controller
 {
@@ -78,5 +80,92 @@ class FisicoController extends Controller
         Log::registrarLog("ELIMINACIÓN", "FÍSICO", "EL USUARIO $user->id ELIMINÓ UN FÍSICO", $user);
 
         return response()->JSON(["sw" => true, "fisico" => $fisico, "msj" => "El registro se actualizó correctamente"]);
+    }
+
+    public function exportar(DetalleFormulario $detalle_formulario)
+    {
+        $formulario = $detalle_formulario->formulario;
+
+        $total_programados = 0;
+        $total_ejecutados = 0;
+        $meses = [
+            "pt_e", "pt_f", "pt_m",
+            "st_a", "st_m", "st_j",
+            "tt_j", "tt_a", "tt_s",
+            "ct_o", "ct_n", "ct_d",
+        ];
+        $array_meses = [
+            "pt_e" => "Enero",
+            "pt_f" => "Febrero",
+            "pt_m" => "Marzo",
+            "st_a" => "Abril",
+            "st_m" => "Mayo",
+            "st_j" => "Junio",
+            "tt_j" => "Julio",
+            "tt_a" => "Agosto",
+            "tt_s" => "Septiembre",
+            "ct_o" => "Octubre",
+            "ct_n" => "Noviembre",
+            "ct_d" => "Diciembre",
+        ];
+
+        $array_programados = [];
+        $array_programados_p = [];
+        $array_ejecutados = [];
+        $array_ejecutados_p = [];
+        foreach ($meses  as $value) {
+            $array_programados[$value] = 0;
+            $array_programados_p[$value] = 0;
+            $array_ejecutados[$value] = 0;
+            $array_ejecutados_p[$value] = 0;
+        }
+
+        foreach ($detalle_formulario->operacions as $operacion) {
+            foreach ($operacion->detalle_operaciones as $do) {
+                foreach ($meses as $mes) {
+                    if ($do[$mes] && trim($do[$mes]) != '') {
+                        $array_programados[$mes] += (float)$do[$mes];
+                        $total_programados += (float)$do[$mes];
+                        // ejecutado
+                        if ($do[$mes . "_est"] == 2) {
+                            $array_ejecutados[$mes] += $do[$mes];
+                            $total_ejecutados += (float)$do[$mes];
+                        }
+                    }
+                }
+            }
+        }
+
+        foreach ($meses as $mes) {
+            $array_programados_p[$mes] = ($array_programados[$mes] * 100) / $total_programados;
+            $array_programados_p[$mes] = round($array_programados_p[$mes], 2);
+            $array_ejecutados_p[$mes] = ($array_ejecutados[$mes] * 100) / $total_programados;
+            $array_ejecutados_p[$mes] = round($array_ejecutados_p[$mes], 2);
+        }
+
+        $p_ejecutados = ($total_ejecutados * 100) / $total_programados;
+        $p_ejecutados = round($p_ejecutados, 2);
+
+        $pdf = PDF::loadView('reportes.formulario_cuatro_fisico', compact(
+            'formulario',
+            'detalle_formulario',
+            "total_programados",
+            "total_ejecutados",
+            "meses",
+            "array_programados",
+            "array_programados_p",
+            "array_ejecutados",
+            "array_ejecutados_p",
+            "p_ejecutados",
+        ))->setPaper('legal', 'landscape');
+        // ENUMERAR LAS PÁGINAS USANDO CANVAS
+        $pdf->output();
+        $dom_pdf = $pdf->getDomPDF();
+        $canvas = $dom_pdf->get_canvas();
+        $alto = $canvas->get_height();
+        $ancho = $canvas->get_width();
+        $canvas->page_text($ancho - 90, $alto - 25, "Página {PAGE_NUM} de {PAGE_COUNT}", null, 10, array(0, 0, 0));
+
+        return $pdf->download('formulario_cuatro_solo.pdf');
     }
 }
