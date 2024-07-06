@@ -196,51 +196,195 @@
                                                         detalle_operacion.actividad_tarea
                                                     }}
                                                 </td>
-                                                <td>
+                                                <td
+                                                    :class="[
+                                                        parseFloat(
+                                                            detalle_operacion.pt_e
+                                                        ) > 0 &&
+                                                        detalle_operacion.pt_e ==
+                                                            detalle_operacion.pt_e_eje
+                                                            ? 'bg-success'
+                                                            : detalle_operacion.pt_e
+                                                            ? 'bg-warning'
+                                                            : '',
+                                                    ]"
+                                                >
                                                     {{ detalle_operacion.pt_e }}
                                                 </td>
 
-                                                <td>
+                                                <td
+                                                    :class="[
+                                                        parseFloat(
+                                                            detalle_operacion.pt_f
+                                                        ) > 0 &&
+                                                        detalle_operacion.pt_f ==
+                                                            detalle_operacion.pt_f_eje
+                                                            ? 'bg-success'
+                                                            : detalle_operacion.pt_f
+                                                            ? 'bg-warning'
+                                                            : '',
+                                                    ]"
+                                                >
                                                     {{ detalle_operacion.pt_f }}
                                                 </td>
 
-                                                <td>
+                                                <td
+                                                    :class="[
+                                                        parseFloat(
+                                                            detalle_operacion.pt_m
+                                                        ) > 0 &&
+                                                        detalle_operacion.pt_m ==
+                                                            detalle_operacion.pt_m_eje
+                                                            ? 'bg-success'
+                                                            : detalle_operacion.pt_m
+                                                            ? 'bg-warning'
+                                                            : '',
+                                                    ]"
+                                                >
                                                     {{ detalle_operacion.pt_m }}
                                                 </td>
 
-                                                <td>
+                                                <td
+                                                    :class="[
+                                                        parseFloat(
+                                                            detalle_operacion.st_a
+                                                        ) > 0 &&
+                                                        detalle_operacion.st_a ==
+                                                            detalle_operacion.st_a_eje
+                                                            ? 'bg-success'
+                                                            : detalle_operacion.st_a
+                                                            ? 'bg-warning'
+                                                            : '',
+                                                    ]"
+                                                >
                                                     {{ detalle_operacion.st_a }}
                                                 </td>
 
-                                                <td>
+                                                <td
+                                                    :class="[
+                                                        parseFloat(
+                                                            detalle_operacion.st_m
+                                                        ) > 0 &&
+                                                        detalle_operacion.st_m ==
+                                                            detalle_operacion.st_m_eje
+                                                            ? 'bg-success'
+                                                            : detalle_operacion.st_m
+                                                            ? 'bg-warning'
+                                                            : '',
+                                                    ]"
+                                                >
                                                     {{ detalle_operacion.st_m }}
                                                 </td>
 
-                                                <td>
+                                                <td
+                                                    :class="[
+                                                        parseFloat(
+                                                            detalle_operacion.st_j
+                                                        ) > 0 &&
+                                                        detalle_operacion.st_j ==
+                                                            detalle_operacion.st_j_eje
+                                                            ? 'bg-success'
+                                                            : detalle_operacion.st_j
+                                                            ? 'bg-warning'
+                                                            : '',
+                                                    ]"
+                                                >
                                                     {{ detalle_operacion.st_j }}
                                                 </td>
 
-                                                <td>
+                                                <td
+                                                    :class="[
+                                                        parseFloat(
+                                                            detalle_operacion.tt_j
+                                                        ) > 0 &&
+                                                        detalle_operacion.tt_j ==
+                                                            detalle_operacion.tt_j_eje
+                                                            ? 'bg-success'
+                                                            : detalle_operacion.tt_j
+                                                            ? 'bg-warning'
+                                                            : '',
+                                                    ]"
+                                                >
                                                     {{ detalle_operacion.tt_j }}
                                                 </td>
 
-                                                <td>
+                                                <td
+                                                    :class="[
+                                                        parseFloat(
+                                                            detalle_operacion.tt_a
+                                                        ) > 0 &&
+                                                        detalle_operacion.tt_a ==
+                                                            detalle_operacion.tt_a_eje
+                                                            ? 'bg-success'
+                                                            : detalle_operacion.tt_a
+                                                            ? 'bg-warning'
+                                                            : '',
+                                                    ]"
+                                                >
                                                     {{ detalle_operacion.tt_a }}
                                                 </td>
 
-                                                <td>
+                                                <td
+                                                    :class="[
+                                                        parseFloat(
+                                                            detalle_operacion.tt_s
+                                                        ) > 0 &&
+                                                        detalle_operacion.tt_s ==
+                                                            detalle_operacion.tt_s_eje
+                                                            ? 'bg-success'
+                                                            : detalle_operacion.tt_s
+                                                            ? 'bg-warning'
+                                                            : '',
+                                                    ]"
+                                                >
                                                     {{ detalle_operacion.tt_s }}
                                                 </td>
 
-                                                <td>
+                                                <td
+                                                    :class="[
+                                                        parseFloat(
+                                                            detalle_operacion.ct_o
+                                                        ) > 0 &&
+                                                        detalle_operacion.ct_o ==
+                                                            detalle_operacion.ct_o_eje
+                                                            ? 'bg-success'
+                                                            : detalle_operacion.ct_o
+                                                            ? 'bg-warning'
+                                                            : '',
+                                                    ]"
+                                                >
                                                     {{ detalle_operacion.ct_o }}
                                                 </td>
 
-                                                <td>
+                                                <td
+                                                    :class="[
+                                                        parseFloat(
+                                                            detalle_operacion.ct_n
+                                                        ) > 0 &&
+                                                        detalle_operacion.ct_n ==
+                                                            detalle_operacion.ct_n_eje
+                                                            ? 'bg-success'
+                                                            : detalle_operacion.ct_n
+                                                            ? 'bg-warning'
+                                                            : '',
+                                                    ]"
+                                                >
                                                     {{ detalle_operacion.ct_n }}
                                                 </td>
 
-                                                <td>
+                                                <td
+                                                    :class="[
+                                                        parseFloat(
+                                                            detalle_operacion.ct_d
+                                                        ) > 0 &&
+                                                        detalle_operacion.ct_d ==
+                                                            detalle_operacion.ct_d_eje
+                                                            ? 'bg-success'
+                                                            : detalle_operacion.ct_d
+                                                            ? 'bg-warning'
+                                                            : '',
+                                                    ]"
+                                                >
                                                     {{ detalle_operacion.ct_d }}
                                                 </td>
 
@@ -294,7 +438,13 @@
                                                 {{ array_ejecutados_p[mes] }}
                                             </td>
                                             <td colspan="2">
-                                                {{ p_ejecutados }}%
+                                                {{ p_ejecutados }}% Acumulados
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="19"></td>
+                                            <td colspan="2">
+                                                {{ a_la_fecha }}% A la fecha
                                             </td>
                                         </tr>
                                     </tbody>
@@ -333,6 +483,7 @@ export default {
             array_ejecutados: [],
             array_ejecutados_p: [],
             p_ejecutados: 0,
+            a_la_fecha: 0,
         };
     },
     mounted() {
@@ -355,7 +506,7 @@ export default {
                     this.array_ejecutados = response.data.array_ejecutados;
                     this.array_ejecutados_p = response.data.array_ejecutados_p;
                     this.p_ejecutados = response.data.p_ejecutados;
-
+                    this.a_la_fecha = response.data.a_la_fecha;
                     Highcharts.chart("container", {
                         chart: {
                             type: "column",

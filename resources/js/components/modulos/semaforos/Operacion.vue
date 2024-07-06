@@ -224,599 +224,1023 @@
                                             <tr>
                                                 <td class="text-center">
                                                     <label>E</label>
-                                                    <input
-                                                        type="number"
-                                                        readonly
-                                                        v-model="detalle.pt_e"
-                                                        class="form-control"
-                                                        :class="{
-                                                            'font-weight-bold':
-                                                                detalle.pt_e,
-                                                            'bg-red':
-                                                                detalle.pt_e_est ==
-                                                                    0 &&
-                                                                detalle.pt_e !=
-                                                                    '',
-                                                            'bg-warning':
-                                                                detalle.pt_e_est ==
-                                                                    1 ||
-                                                                detalle.pt_e_est ==
-                                                                    3,
-                                                            'bg-success':
-                                                                detalle.pt_e_est ==
-                                                                2,
-                                                        }"
-                                                    />
+                                                    <div class="input-group">
+                                                        <input
+                                                            type="number"
+                                                            readonly
+                                                            v-model="
+                                                                detalle.pt_e
+                                                            "
+                                                            class="form-control"
+                                                            :class="{
+                                                                'font-weight-bold':
+                                                                    detalle.pt_e,
+                                                                'bg-red':
+                                                                    detalle.pt_e_est ==
+                                                                        0 &&
+                                                                    detalle.pt_e !=
+                                                                        '',
+                                                                'bg-warning':
+                                                                    detalle.pt_e_est ==
+                                                                        1 ||
+                                                                    detalle.pt_e_est ==
+                                                                        3,
+                                                                'bg-success':
+                                                                    detalle.pt_e_est ==
+                                                                    2,
+                                                            }"
+                                                        />
+                                                        <input
+                                                            v-if="
+                                                                detalle.pt_e &&
+                                                                oUser.tipo ==
+                                                                    'SUPER USUARIO'
+                                                            "
+                                                            type="number"
+                                                            step="1"
+                                                            class="form-control"
+                                                            v-model="
+                                                                detalle.pt_e_eje
+                                                            "
+                                                        />
+                                                    </div>
                                                 </td>
                                                 <td class="text-center">
                                                     <label>F</label>
-                                                    <input
-                                                        type="number"
-                                                        readonly
-                                                        v-model="detalle.pt_f"
-                                                        class="form-control"
-                                                        :class="{
-                                                            'font-weight-bold':
-                                                                detalle.pt_f,
-                                                            'bg-red':
-                                                                detalle.pt_f_est ==
-                                                                    0 &&
-                                                                detalle.pt_f !=
-                                                                    '',
-                                                            'bg-warning':
-                                                                detalle.pt_f_est ==
-                                                                    1 ||
-                                                                detalle.pt_f_est ==
-                                                                    3,
-                                                            'bg-success':
-                                                                detalle.pt_f_est ==
-                                                                2,
-                                                        }"
-                                                    />
+                                                    <div class="input-group">
+                                                        <input
+                                                            type="number"
+                                                            readonly
+                                                            v-model="
+                                                                detalle.pt_f
+                                                            "
+                                                            class="form-control"
+                                                            :class="{
+                                                                'font-weight-bold':
+                                                                    detalle.pt_f,
+                                                                'bg-red':
+                                                                    detalle.pt_f_est ==
+                                                                        0 &&
+                                                                    detalle.pt_f !=
+                                                                        '',
+                                                                'bg-warning':
+                                                                    detalle.pt_f_est ==
+                                                                        1 ||
+                                                                    detalle.pt_f_est ==
+                                                                        3,
+                                                                'bg-success':
+                                                                    detalle.pt_f_est ==
+                                                                    2,
+                                                            }"
+                                                        />
+                                                        <input
+                                                            v-if="
+                                                                detalle.pt_f &&
+                                                                oUser.tipo ==
+                                                                    'SUPER USUARIO'
+                                                            "
+                                                            type="number"
+                                                            step="1"
+                                                            class="form-control"
+                                                            v-model="
+                                                                detalle.pt_f_eje
+                                                            "
+                                                        />
+                                                    </div>
                                                 </td>
                                                 <td class="text-center">
                                                     <label>M</label>
-                                                    <input
-                                                        type="number"
-                                                        readonly
-                                                        v-model="detalle.pt_m"
-                                                        class="form-control"
-                                                        :class="{
-                                                            'font-weight-bold':
-                                                                detalle.pt_m,
-                                                            'bg-red':
-                                                                detalle.pt_m_est ==
-                                                                    0 &&
-                                                                detalle.pt_m !=
-                                                                    '',
-                                                            'bg-warning':
-                                                                detalle.pt_m_est ==
-                                                                    1 ||
-                                                                detalle.pt_m_est ==
-                                                                    3,
-                                                            'bg-success':
-                                                                detalle.pt_m_est ==
-                                                                2,
-                                                        }"
-                                                    />
+                                                    <div class="input-group">
+                                                        <input
+                                                            type="number"
+                                                            readonly
+                                                            v-model="
+                                                                detalle.pt_m
+                                                            "
+                                                            class="form-control"
+                                                            :class="{
+                                                                'font-weight-bold':
+                                                                    detalle.pt_m,
+                                                                'bg-red':
+                                                                    detalle.pt_m_est ==
+                                                                        0 &&
+                                                                    detalle.pt_m !=
+                                                                        '',
+                                                                'bg-warning':
+                                                                    detalle.pt_m_est ==
+                                                                        1 ||
+                                                                    detalle.pt_m_est ==
+                                                                        3,
+                                                                'bg-success':
+                                                                    detalle.pt_m_est ==
+                                                                    2,
+                                                            }"
+                                                        />
+                                                        <input
+                                                            v-if="
+                                                                detalle.pt_m &&
+                                                                oUser.tipo ==
+                                                                    'SUPER USUARIO'
+                                                            "
+                                                            type="number"
+                                                            step="1"
+                                                            class="form-control"
+                                                            v-model="
+                                                                detalle.pt_m_eje
+                                                            "
+                                                        />
+                                                    </div>
                                                 </td>
                                                 <td class="text-center">
                                                     <label>A</label>
-                                                    <input
-                                                        type="number"
-                                                        readonly
-                                                        v-model="detalle.st_a"
-                                                        class="form-control"
-                                                        :class="{
-                                                            'font-weight-bold':
-                                                                detalle.st_a,
-                                                            'bg-red':
-                                                                detalle.st_a_est ==
-                                                                    0 &&
-                                                                detalle.st_a !=
-                                                                    '',
-                                                            'bg-warning':
-                                                                detalle.st_a_est ==
-                                                                    1 ||
-                                                                detalle.st_a_est ==
-                                                                    3,
-                                                            'bg-success':
-                                                                detalle.st_a_est ==
-                                                                2,
-                                                        }"
-                                                    />
+                                                    <div class="input-group">
+                                                        <input
+                                                            type="number"
+                                                            readonly
+                                                            v-model="
+                                                                detalle.st_a
+                                                            "
+                                                            class="form-control"
+                                                            :class="{
+                                                                'font-weight-bold':
+                                                                    detalle.st_a,
+                                                                'bg-red':
+                                                                    detalle.st_a_est ==
+                                                                        0 &&
+                                                                    detalle.st_a !=
+                                                                        '',
+                                                                'bg-warning':
+                                                                    detalle.st_a_est ==
+                                                                        1 ||
+                                                                    detalle.st_a_est ==
+                                                                        3,
+                                                                'bg-success':
+                                                                    detalle.st_a_est ==
+                                                                    2,
+                                                            }"
+                                                        />
+                                                        <input
+                                                            v-if="
+                                                                detalle.st_a &&
+                                                                oUser.tipo ==
+                                                                    'SUPER USUARIO'
+                                                            "
+                                                            type="number"
+                                                            step="1"
+                                                            class="form-control"
+                                                            v-model="
+                                                                detalle.st_a_eje
+                                                            "
+                                                        />
+                                                    </div>
                                                 </td>
                                                 <td class="text-center">
                                                     <label>M</label>
-                                                    <input
-                                                        type="number"
-                                                        readonly
-                                                        v-model="detalle.st_m"
-                                                        class="form-control"
-                                                        :class="{
-                                                            'font-weight-bold':
-                                                                detalle.st_m,
-                                                            'bg-red':
-                                                                detalle.st_m_est ==
-                                                                    0 &&
-                                                                detalle.st_m !=
-                                                                    '',
-                                                            'bg-warning':
-                                                                detalle.st_m_est ==
-                                                                    1 ||
-                                                                detalle.st_m_est ==
-                                                                    3,
-                                                            'bg-success':
-                                                                detalle.st_m_est ==
-                                                                2,
-                                                        }"
-                                                    />
+                                                    <div class="input-group">
+                                                        <input
+                                                            type="number"
+                                                            readonly
+                                                            v-model="
+                                                                detalle.st_m
+                                                            "
+                                                            class="form-control"
+                                                            :class="{
+                                                                'font-weight-bold':
+                                                                    detalle.st_m,
+                                                                'bg-red':
+                                                                    detalle.st_m_est ==
+                                                                        0 &&
+                                                                    detalle.st_m !=
+                                                                        '',
+                                                                'bg-warning':
+                                                                    detalle.st_m_est ==
+                                                                        1 ||
+                                                                    detalle.st_m_est ==
+                                                                        3,
+                                                                'bg-success':
+                                                                    detalle.st_m_est ==
+                                                                    2,
+                                                            }"
+                                                        />
+                                                        <input
+                                                            v-if="
+                                                                detalle.st_m &&
+                                                                oUser.tipo ==
+                                                                    'SUPER USUARIO'
+                                                            "
+                                                            type="number"
+                                                            step="1"
+                                                            class="form-control"
+                                                            v-model="
+                                                                detalle.st_m_eje
+                                                            "
+                                                        />
+                                                    </div>
                                                 </td>
                                                 <td class="text-center">
                                                     <label>J</label>
-                                                    <input
-                                                        type="number"
-                                                        readonly
-                                                        v-model="detalle.st_j"
-                                                        class="form-control"
-                                                        :class="{
-                                                            'font-weight-bold':
-                                                                detalle.st_j,
-                                                            'bg-red':
-                                                                detalle.st_j_est ==
-                                                                    0 &&
-                                                                detalle.st_j !=
-                                                                    '',
-                                                            'bg-warning':
-                                                                detalle.st_j_est ==
-                                                                    1 ||
-                                                                detalle.st_j_est ==
-                                                                    3,
-                                                            'bg-success':
-                                                                detalle.st_j_est ==
-                                                                2,
-                                                        }"
-                                                    />
+                                                    <div class="input-group">
+                                                        <input
+                                                            type="number"
+                                                            readonly
+                                                            v-model="
+                                                                detalle.st_j
+                                                            "
+                                                            class="form-control"
+                                                            :class="{
+                                                                'font-weight-bold':
+                                                                    detalle.st_j,
+                                                                'bg-red':
+                                                                    detalle.st_j_est ==
+                                                                        0 &&
+                                                                    detalle.st_j !=
+                                                                        '',
+                                                                'bg-warning':
+                                                                    detalle.st_j_est ==
+                                                                        1 ||
+                                                                    detalle.st_j_est ==
+                                                                        3,
+                                                                'bg-success':
+                                                                    detalle.st_j_est ==
+                                                                    2,
+                                                            }"
+                                                        />
+                                                        <input
+                                                            v-if="
+                                                                detalle.st_j &&
+                                                                oUser.tipo ==
+                                                                    'SUPER USUARIO'
+                                                            "
+                                                            type="number"
+                                                            step="1"
+                                                            class="form-control"
+                                                            v-model="
+                                                                detalle.st_j_eje
+                                                            "
+                                                        />
+                                                    </div>
                                                 </td>
                                                 <td class="text-center">
                                                     <label>J</label>
-                                                    <input
-                                                        type="number"
-                                                        readonly
-                                                        v-model="detalle.tt_j"
-                                                        class="form-control"
-                                                        :class="{
-                                                            'font-weight-bold':
-                                                                detalle.tt_j,
-                                                            'bg-red':
-                                                                detalle.tt_j_est ==
-                                                                    0 &&
-                                                                detalle.tt_j !=
-                                                                    '',
-                                                            'bg-warning':
-                                                                detalle.tt_j_est ==
-                                                                    1 ||
-                                                                detalle.tt_j_est ==
-                                                                    3,
-                                                            'bg-success':
-                                                                detalle.tt_j_est ==
-                                                                2,
-                                                        }"
-                                                    />
+                                                    <div class="input-group">
+                                                        <input
+                                                            type="number"
+                                                            readonly
+                                                            v-model="
+                                                                detalle.tt_j
+                                                            "
+                                                            class="form-control"
+                                                            :class="{
+                                                                'font-weight-bold':
+                                                                    detalle.tt_j,
+                                                                'bg-red':
+                                                                    detalle.tt_j_est ==
+                                                                        0 &&
+                                                                    detalle.tt_j !=
+                                                                        '',
+                                                                'bg-warning':
+                                                                    detalle.tt_j_est ==
+                                                                        1 ||
+                                                                    detalle.tt_j_est ==
+                                                                        3,
+                                                                'bg-success':
+                                                                    detalle.tt_j_est ==
+                                                                    2,
+                                                            }"
+                                                        />
+                                                        <input
+                                                            v-if="
+                                                                detalle.tt_j &&
+                                                                oUser.tipo ==
+                                                                    'SUPER USUARIO'
+                                                            "
+                                                            type="number"
+                                                            step="1"
+                                                            class="form-control"
+                                                            v-model="
+                                                                detalle.tt_j_eje
+                                                            "
+                                                        />
+                                                    </div>
                                                 </td>
                                                 <td class="text-center">
                                                     <label>A</label>
-                                                    <input
-                                                        type="number"
-                                                        readonly
-                                                        v-model="detalle.tt_a"
-                                                        class="form-control"
-                                                        :class="{
-                                                            'font-weight-bold':
-                                                                detalle.tt_a,
-                                                            'bg-red':
-                                                                detalle.tt_a_est ==
-                                                                    0 &&
-                                                                detalle.tt_a !=
-                                                                    '',
-                                                            'bg-warning':
-                                                                detalle.tt_a_est ==
-                                                                    1 ||
-                                                                detalle.tt_a_est ==
-                                                                    3,
-                                                            'bg-success':
-                                                                detalle.tt_a_est ==
-                                                                2,
-                                                        }"
-                                                    />
+                                                    <div class="input-group">
+                                                        <input
+                                                            type="number"
+                                                            readonly
+                                                            v-model="
+                                                                detalle.tt_a
+                                                            "
+                                                            class="form-control"
+                                                            :class="{
+                                                                'font-weight-bold':
+                                                                    detalle.tt_a,
+                                                                'bg-red':
+                                                                    detalle.tt_a_est ==
+                                                                        0 &&
+                                                                    detalle.tt_a !=
+                                                                        '',
+                                                                'bg-warning':
+                                                                    detalle.tt_a_est ==
+                                                                        1 ||
+                                                                    detalle.tt_a_est ==
+                                                                        3,
+                                                                'bg-success':
+                                                                    detalle.tt_a_est ==
+                                                                    2,
+                                                            }"
+                                                        />
+                                                        <input
+                                                            v-if="
+                                                                detalle.tt_a &&
+                                                                oUser.tipo ==
+                                                                    'SUPER USUARIO'
+                                                            "
+                                                            type="number"
+                                                            step="1"
+                                                            class="form-control"
+                                                            v-model="
+                                                                detalle.tt_a_eje
+                                                            "
+                                                        />
+                                                    </div>
                                                 </td>
                                                 <td class="text-center">
                                                     <label>S</label>
-                                                    <input
-                                                        type="number"
-                                                        readonly
-                                                        v-model="detalle.tt_s"
-                                                        class="form-control"
-                                                        :class="{
-                                                            'font-weight-bold':
-                                                                detalle.tt_s,
-                                                            'bg-red':
-                                                                detalle.tt_s_est ==
-                                                                    0 &&
-                                                                detalle.tt_s !=
-                                                                    '',
-                                                            'bg-warning':
-                                                                detalle.tt_s_est ==
-                                                                    1 ||
-                                                                detalle.tt_s_est ==
-                                                                    3,
-                                                            'bg-success':
-                                                                detalle.tt_s_est ==
-                                                                2,
-                                                        }"
-                                                    />
+                                                    <div class="input-group">
+                                                        <input
+                                                            type="number"
+                                                            readonly
+                                                            v-model="
+                                                                detalle.tt_s
+                                                            "
+                                                            class="form-control"
+                                                            :class="{
+                                                                'font-weight-bold':
+                                                                    detalle.tt_s,
+                                                                'bg-red':
+                                                                    detalle.tt_s_est ==
+                                                                        0 &&
+                                                                    detalle.tt_s !=
+                                                                        '',
+                                                                'bg-warning':
+                                                                    detalle.tt_s_est ==
+                                                                        1 ||
+                                                                    detalle.tt_s_est ==
+                                                                        3,
+                                                                'bg-success':
+                                                                    detalle.tt_s_est ==
+                                                                    2,
+                                                            }"
+                                                        />
+                                                        <input
+                                                            v-if="
+                                                                detalle.tt_s &&
+                                                                oUser.tipo ==
+                                                                    'SUPER USUARIO'
+                                                            "
+                                                            type="number"
+                                                            step="1"
+                                                            class="form-control"
+                                                            v-model="
+                                                                detalle.tt_s_eje
+                                                            "
+                                                        />
+                                                    </div>
                                                 </td>
                                                 <td class="text-center">
                                                     <label>O</label>
-                                                    <input
-                                                        type="number"
-                                                        readonly
-                                                        v-model="detalle.ct_o"
-                                                        class="form-control"
-                                                        :class="{
-                                                            'font-weight-bold':
-                                                                detalle.ct_o,
-                                                            'bg-red':
-                                                                detalle.ct_o_est ==
-                                                                    0 &&
-                                                                detalle.ct_o !=
-                                                                    '',
-                                                            'bg-warning':
-                                                                detalle.ct_o_est ==
-                                                                    1 ||
-                                                                detalle.ct_o_est ==
-                                                                    3,
-                                                            'bg-success':
-                                                                detalle.ct_o_est ==
-                                                                2,
-                                                        }"
-                                                    />
+                                                    <div class="input-group">
+                                                        <input
+                                                            type="number"
+                                                            readonly
+                                                            v-model="
+                                                                detalle.ct_o
+                                                            "
+                                                            class="form-control"
+                                                            :class="{
+                                                                'font-weight-bold':
+                                                                    detalle.ct_o,
+                                                                'bg-red':
+                                                                    detalle.ct_o_est ==
+                                                                        0 &&
+                                                                    detalle.ct_o !=
+                                                                        '',
+                                                                'bg-warning':
+                                                                    detalle.ct_o_est ==
+                                                                        1 ||
+                                                                    detalle.ct_o_est ==
+                                                                        3,
+                                                                'bg-success':
+                                                                    detalle.ct_o_est ==
+                                                                    2,
+                                                            }"
+                                                        />
+                                                        <input
+                                                            v-if="
+                                                                detalle.ct_o &&
+                                                                oUser.tipo ==
+                                                                    'SUPER USUARIO'
+                                                            "
+                                                            type="number"
+                                                            step="1"
+                                                            class="form-control"
+                                                            v-model="
+                                                                detalle.ct_o_eje
+                                                            "
+                                                        />
+                                                    </div>
                                                 </td>
                                                 <td class="text-center">
                                                     <label>N</label>
-                                                    <input
-                                                        type="number"
-                                                        readonly
-                                                        v-model="detalle.ct_n"
-                                                        class="form-control"
-                                                        :class="{
-                                                            'font-weight-bold':
-                                                                detalle.ct_n,
-                                                            'bg-red':
-                                                                detalle.ct_n_est ==
-                                                                    0 &&
-                                                                detalle.ct_n !=
-                                                                    '',
-                                                            'bg-warning':
-                                                                detalle.ct_n_est ==
-                                                                    1 ||
-                                                                detalle.ct_n_est ==
-                                                                    3,
-                                                            'bg-success':
-                                                                detalle.ct_n_est ==
-                                                                2,
-                                                        }"
-                                                    />
+                                                    <div class="input-group">
+                                                        <input
+                                                            type="number"
+                                                            readonly
+                                                            v-model="
+                                                                detalle.ct_n
+                                                            "
+                                                            class="form-control"
+                                                            :class="{
+                                                                'font-weight-bold':
+                                                                    detalle.ct_n,
+                                                                'bg-red':
+                                                                    detalle.ct_n_est ==
+                                                                        0 &&
+                                                                    detalle.ct_n !=
+                                                                        '',
+                                                                'bg-warning':
+                                                                    detalle.ct_n_est ==
+                                                                        1 ||
+                                                                    detalle.ct_n_est ==
+                                                                        3,
+                                                                'bg-success':
+                                                                    detalle.ct_n_est ==
+                                                                    2,
+                                                            }"
+                                                        />
+                                                        <input
+                                                            v-if="
+                                                                detalle.ct_n &&
+                                                                oUser.tipo ==
+                                                                    'SUPER USUARIO'
+                                                            "
+                                                            type="number"
+                                                            step="1"
+                                                            class="form-control"
+                                                            v-model="
+                                                                detalle.ct_n_eje
+                                                            "
+                                                        />
+                                                    </div>
                                                 </td>
                                                 <td class="text-center">
                                                     <label>D</label>
-                                                    <input
-                                                        type="number"
-                                                        readonly
-                                                        v-model="detalle.ct_d"
-                                                        class="form-control"
-                                                        :class="{
-                                                            'font-weight-bold':
-                                                                detalle.ct_d,
-                                                            'bg-red':
-                                                                detalle.ct_d_est ==
-                                                                    0 &&
-                                                                detalle.ct_d !=
-                                                                    '',
-                                                            'bg-warning':
-                                                                detalle.ct_d_est ==
-                                                                    1 ||
-                                                                detalle.ct_d_est ==
-                                                                    3,
-                                                            'bg-success':
-                                                                detalle.ct_d_est ==
-                                                                2,
-                                                        }"
-                                                    />
+                                                    <div class="input-group">
+                                                        <input
+                                                            type="number"
+                                                            readonly
+                                                            v-model="
+                                                                detalle.ct_d
+                                                            "
+                                                            class="form-control"
+                                                            :class="{
+                                                                'font-weight-bold':
+                                                                    detalle.ct_d,
+                                                                'bg-red':
+                                                                    detalle.ct_d_est ==
+                                                                        0 &&
+                                                                    detalle.ct_d !=
+                                                                        '',
+                                                                'bg-warning':
+                                                                    detalle.ct_d_est ==
+                                                                        1 ||
+                                                                    detalle.ct_d_est ==
+                                                                        3,
+                                                                'bg-success':
+                                                                    detalle.ct_d_est ==
+                                                                    2,
+                                                            }"
+                                                        />
+                                                        <input
+                                                            v-if="
+                                                                detalle.ct_d &&
+                                                                oUser.tipo ==
+                                                                    'SUPER USUARIO'
+                                                            "
+                                                            type="number"
+                                                            step="1"
+                                                            class="form-control"
+                                                            v-model="
+                                                                detalle.ct_d_eje
+                                                            "
+                                                        />
+                                                    </div>
                                                 </td>
                                             </tr>
                                             <tr class="estados_files">
                                                 <td>
-                                                    <a
-                                                        :href="detalle.pt_e_url"
-                                                        :disabled="
+                                                    <span
+                                                        v-if="detalle.pt_e_url"
+                                                    >
+                                                        Total:
+                                                        {{
                                                             detalle.pt_e_url
-                                                                ? false
-                                                                : true
-                                                        "
-                                                        target="_blank"
-                                                        v-if="
-                                                            detalle.pt_e &&
-                                                            detalle.pt_e != ''
-                                                        "
-                                                        :class="[
-                                                            detalle.pt_e_file
-                                                                ? 'active'
-                                                                : '',
-                                                        ]"
-                                                        ><i
-                                                            class="fa fa-paperclip"
-                                                        ></i
-                                                    ></a>
+                                                                ? detalle
+                                                                      .pt_e_url
+                                                                      .length
+                                                                : 0
+                                                        }}
+                                                    </span>
+
+                                                    <template
+                                                        v-for="i_file in detalle.pt_e_url"
+                                                    >
+                                                        <a
+                                                            :href="i_file"
+                                                            class="mb-1"
+                                                            :disabled="
+                                                                i_file
+                                                                    ? false
+                                                                    : true
+                                                            "
+                                                            target="_blank"
+                                                            v-if="
+                                                                i_file &&
+                                                                i_file != ''
+                                                            "
+                                                            :class="[
+                                                                i_file
+                                                                    ? 'active'
+                                                                    : '',
+                                                            ]"
+                                                            ><i
+                                                                class="fa fa-paperclip"
+                                                            ></i
+                                                        ></a>
+                                                    </template>
                                                 </td>
                                                 <td>
-                                                    <a
-                                                        :href="detalle.pt_f_url"
-                                                        :disabled="
+                                                    <span
+                                                        v-if="detalle.pt_f_url"
+                                                    >
+                                                        Total:
+                                                        {{
                                                             detalle.pt_f_url
-                                                                ? false
-                                                                : true
-                                                        "
-                                                        target="_blank"
-                                                        v-if="
-                                                            detalle.pt_f &&
-                                                            detalle.pt_f != ''
-                                                        "
-                                                        :class="[
-                                                            detalle.pt_f_file
-                                                                ? 'active'
-                                                                : '',
-                                                        ]"
-                                                        ><i
-                                                            class="fa fa-paperclip"
-                                                        ></i
-                                                    ></a>
+                                                                ? detalle
+                                                                      .pt_f_url
+                                                                      .length
+                                                                : 0
+                                                        }}
+                                                    </span>
+
+                                                    <template
+                                                        v-for="i_file in detalle.pt_f_url"
+                                                    >
+                                                        <a
+                                                            :href="i_file"
+                                                            class="mb-1"
+                                                            :disabled="
+                                                                i_file
+                                                                    ? false
+                                                                    : true
+                                                            "
+                                                            target="_blank"
+                                                            v-if="
+                                                                i_file &&
+                                                                i_file != ''
+                                                            "
+                                                            :class="[
+                                                                i_file
+                                                                    ? 'active'
+                                                                    : '',
+                                                            ]"
+                                                            ><i
+                                                                class="fa fa-paperclip"
+                                                            ></i
+                                                        ></a>
+                                                    </template>
                                                 </td>
                                                 <td>
-                                                    <a
-                                                        :href="detalle.pt_m_url"
-                                                        :disabled="
+                                                    <span
+                                                        v-if="detalle.pt_m_url"
+                                                    >
+                                                        Total:
+                                                        {{
                                                             detalle.pt_m_url
-                                                                ? false
-                                                                : true
-                                                        "
-                                                        target="_blank"
-                                                        v-if="
-                                                            detalle.pt_m &&
-                                                            detalle.pt_m != ''
-                                                        "
-                                                        :class="[
-                                                            detalle.pt_m_file
-                                                                ? 'active'
-                                                                : '',
-                                                        ]"
-                                                        ><i
-                                                            class="fa fa-paperclip"
-                                                        ></i
-                                                    ></a>
+                                                                ? detalle
+                                                                      .pt_m_url
+                                                                      .length
+                                                                : 0
+                                                        }}
+                                                    </span>
+
+                                                    <template
+                                                        v-for="i_file in detalle.pt_m_url"
+                                                    >
+                                                        <a
+                                                            :href="i_file"
+                                                            class="mb-1"
+                                                            :disabled="
+                                                                i_file
+                                                                    ? false
+                                                                    : true
+                                                            "
+                                                            target="_blank"
+                                                            v-if="
+                                                                i_file &&
+                                                                i_file != ''
+                                                            "
+                                                            :class="[
+                                                                i_file
+                                                                    ? 'active'
+                                                                    : '',
+                                                            ]"
+                                                            ><i
+                                                                class="fa fa-paperclip"
+                                                            ></i
+                                                        ></a>
+                                                    </template>
                                                 </td>
                                                 <td>
-                                                    <a
-                                                        :href="detalle.st_a_url"
-                                                        :disabled="
+                                                    <span
+                                                        v-if="detalle.st_a_url"
+                                                    >
+                                                        Total:
+                                                        {{
                                                             detalle.st_a_url
-                                                                ? false
-                                                                : true
-                                                        "
-                                                        target="_blank"
-                                                        v-if="
-                                                            detalle.st_a &&
-                                                            detalle.st_a != ''
-                                                        "
-                                                        :class="[
-                                                            detalle.st_a_file
-                                                                ? 'active'
-                                                                : '',
-                                                        ]"
-                                                        ><i
-                                                            class="fa fa-paperclip"
-                                                        ></i
-                                                    ></a>
+                                                                ? detalle
+                                                                      .st_a_url
+                                                                      .length
+                                                                : 0
+                                                        }}
+                                                    </span>
+
+                                                    <template
+                                                        v-for="i_file in detalle.st_a_url"
+                                                    >
+                                                        <a
+                                                            :href="i_file"
+                                                            class="mb-1"
+                                                            :disabled="
+                                                                i_file
+                                                                    ? false
+                                                                    : true
+                                                            "
+                                                            target="_blank"
+                                                            v-if="
+                                                                i_file &&
+                                                                i_file != ''
+                                                            "
+                                                            :class="[
+                                                                i_file
+                                                                    ? 'active'
+                                                                    : '',
+                                                            ]"
+                                                            ><i
+                                                                class="fa fa-paperclip"
+                                                            ></i
+                                                        ></a>
+                                                    </template>
                                                 </td>
                                                 <td>
-                                                    <a
-                                                        :href="detalle.st_m_url"
-                                                        :disabled="
+                                                    <span
+                                                        v-if="detalle.st_m_url"
+                                                    >
+                                                        Total:
+                                                        {{
                                                             detalle.st_m_url
-                                                                ? false
-                                                                : true
-                                                        "
-                                                        target="_blank"
-                                                        v-if="
-                                                            detalle.st_m &&
-                                                            detalle.st_m != ''
-                                                        "
-                                                        :class="[
-                                                            detalle.st_m_file
-                                                                ? 'active'
-                                                                : '',
-                                                        ]"
-                                                        ><i
-                                                            class="fa fa-paperclip"
-                                                        ></i
-                                                    ></a>
+                                                                ? detalle
+                                                                      .st_m_url
+                                                                      .length
+                                                                : 0
+                                                        }}
+                                                    </span>
+
+                                                    <template
+                                                        v-for="i_file in detalle.st_m_url"
+                                                    >
+                                                        <a
+                                                            :href="i_file"
+                                                            class="mb-1"
+                                                            :disabled="
+                                                                i_file
+                                                                    ? false
+                                                                    : true
+                                                            "
+                                                            target="_blank"
+                                                            v-if="
+                                                                i_file &&
+                                                                i_file != ''
+                                                            "
+                                                            :class="[
+                                                                i_file
+                                                                    ? 'active'
+                                                                    : '',
+                                                            ]"
+                                                            ><i
+                                                                class="fa fa-paperclip"
+                                                            ></i
+                                                        ></a>
+                                                    </template>
                                                 </td>
                                                 <td>
-                                                    <a
-                                                        :href="detalle.st_j_url"
-                                                        :disabled="
+                                                    <span
+                                                        v-if="detalle.st_j_url"
+                                                    >
+                                                        Total:
+                                                        {{
                                                             detalle.st_j_url
-                                                                ? false
-                                                                : true
-                                                        "
-                                                        target="_blank"
-                                                        v-if="
-                                                            detalle.st_j &&
-                                                            detalle.st_j != ''
-                                                        "
-                                                        :class="[
-                                                            detalle.st_j_file
-                                                                ? 'active'
-                                                                : '',
-                                                        ]"
-                                                        ><i
-                                                            class="fa fa-paperclip"
-                                                        ></i
-                                                    ></a>
+                                                                ? detalle
+                                                                      .st_j_url
+                                                                      .length
+                                                                : 0
+                                                        }}
+                                                    </span>
+
+                                                    <template
+                                                        v-for="i_file in detalle.st_j_url"
+                                                    >
+                                                        <a
+                                                            :href="i_file"
+                                                            class="mb-1"
+                                                            :disabled="
+                                                                i_file
+                                                                    ? false
+                                                                    : true
+                                                            "
+                                                            target="_blank"
+                                                            v-if="
+                                                                i_file &&
+                                                                i_file != ''
+                                                            "
+                                                            :class="[
+                                                                i_file
+                                                                    ? 'active'
+                                                                    : '',
+                                                            ]"
+                                                            ><i
+                                                                class="fa fa-paperclip"
+                                                            ></i
+                                                        ></a>
+                                                    </template>
                                                 </td>
                                                 <td>
-                                                    <a
-                                                        :href="detalle.tt_j_url"
-                                                        :disabled="
+                                                    <span
+                                                        v-if="detalle.tt_j_url"
+                                                    >
+                                                        Total:
+                                                        {{
                                                             detalle.tt_j_url
-                                                                ? false
-                                                                : true
-                                                        "
-                                                        target="_blank"
-                                                        v-if="
-                                                            detalle.tt_j &&
-                                                            detalle.tt_j != ''
-                                                        "
-                                                        :class="[
-                                                            detalle.tt_j_file
-                                                                ? 'active'
-                                                                : '',
-                                                        ]"
-                                                        ><i
-                                                            class="fa fa-paperclip"
-                                                        ></i
-                                                    ></a>
+                                                                ? detalle
+                                                                      .tt_j_url
+                                                                      .length
+                                                                : 0
+                                                        }}
+                                                    </span>
+
+                                                    <template
+                                                        v-for="i_file in detalle.tt_j_url"
+                                                    >
+                                                        <a
+                                                            :href="i_file"
+                                                            class="mb-1"
+                                                            :disabled="
+                                                                i_file
+                                                                    ? false
+                                                                    : true
+                                                            "
+                                                            target="_blank"
+                                                            v-if="
+                                                                i_file &&
+                                                                i_file != ''
+                                                            "
+                                                            :class="[
+                                                                i_file
+                                                                    ? 'active'
+                                                                    : '',
+                                                            ]"
+                                                            ><i
+                                                                class="fa fa-paperclip"
+                                                            ></i
+                                                        ></a>
+                                                    </template>
                                                 </td>
                                                 <td>
-                                                    <a
-                                                        :href="detalle.tt_a_url"
-                                                        :disabled="
+                                                    <span
+                                                        v-if="detalle.tt_a_url"
+                                                    >
+                                                        Total:
+                                                        {{
                                                             detalle.tt_a_url
-                                                                ? false
-                                                                : true
-                                                        "
-                                                        target="_blank"
-                                                        v-if="
-                                                            detalle.tt_a &&
-                                                            detalle.tt_a != ''
-                                                        "
-                                                        :class="[
-                                                            detalle.tt_a_file
-                                                                ? 'active'
-                                                                : '',
-                                                        ]"
-                                                        ><i
-                                                            class="fa fa-paperclip"
-                                                        ></i
-                                                    ></a>
+                                                                ? detalle
+                                                                      .tt_a_url
+                                                                      .length
+                                                                : 0
+                                                        }}
+                                                    </span>
+
+                                                    <template
+                                                        v-for="i_file in detalle.tt_a_url"
+                                                    >
+                                                        <a
+                                                            :href="i_file"
+                                                            class="mb-1"
+                                                            :disabled="
+                                                                i_file
+                                                                    ? false
+                                                                    : true
+                                                            "
+                                                            target="_blank"
+                                                            v-if="
+                                                                i_file &&
+                                                                i_file != ''
+                                                            "
+                                                            :class="[
+                                                                i_file
+                                                                    ? 'active'
+                                                                    : '',
+                                                            ]"
+                                                            ><i
+                                                                class="fa fa-paperclip"
+                                                            ></i
+                                                        ></a>
+                                                    </template>
                                                 </td>
                                                 <td>
-                                                    <a
-                                                        :href="detalle.tt_s_url"
-                                                        :disabled="
+                                                    <span
+                                                        v-if="detalle.tt_s_url"
+                                                    >
+                                                        Total:
+                                                        {{
                                                             detalle.tt_s_url
-                                                                ? false
-                                                                : true
-                                                        "
-                                                        target="_blank"
-                                                        v-if="
-                                                            detalle.tt_s &&
-                                                            detalle.tt_s != ''
-                                                        "
-                                                        :class="[
-                                                            detalle.tt_s_file
-                                                                ? 'active'
-                                                                : '',
-                                                        ]"
-                                                        ><i
-                                                            class="fa fa-paperclip"
-                                                        ></i
-                                                    ></a>
+                                                                ? detalle
+                                                                      .tt_s_url
+                                                                      .length
+                                                                : 0
+                                                        }}
+                                                    </span>
+
+                                                    <template
+                                                        v-for="i_file in detalle.tt_s_url"
+                                                    >
+                                                        <a
+                                                            :href="i_file"
+                                                            class="mb-1"
+                                                            :disabled="
+                                                                i_file
+                                                                    ? false
+                                                                    : true
+                                                            "
+                                                            target="_blank"
+                                                            v-if="
+                                                                i_file &&
+                                                                i_file != ''
+                                                            "
+                                                            :class="[
+                                                                i_file
+                                                                    ? 'active'
+                                                                    : '',
+                                                            ]"
+                                                            ><i
+                                                                class="fa fa-paperclip"
+                                                            ></i
+                                                        ></a>
+                                                    </template>
                                                 </td>
                                                 <td>
-                                                    <a
-                                                        :href="detalle.ct_o_url"
-                                                        :disabled="
+                                                    <span
+                                                        v-if="detalle.ct_o_url"
+                                                    >
+                                                        Total:
+                                                        {{
                                                             detalle.ct_o_url
-                                                                ? false
-                                                                : true
-                                                        "
-                                                        target="_blank"
-                                                        v-if="
-                                                            detalle.ct_o &&
-                                                            detalle.ct_o != ''
-                                                        "
-                                                        :class="[
-                                                            detalle.ct_o_file
-                                                                ? 'active'
-                                                                : '',
-                                                        ]"
-                                                        ><i
-                                                            class="fa fa-paperclip"
-                                                        ></i
-                                                    ></a>
+                                                                ? detalle
+                                                                      .ct_o_url
+                                                                      .length
+                                                                : 0
+                                                        }}
+                                                    </span>
+
+                                                    <template
+                                                        v-for="i_file in detalle.ct_o_url"
+                                                    >
+                                                        <a
+                                                            :href="i_file"
+                                                            class="mb-1"
+                                                            :disabled="
+                                                                i_file
+                                                                    ? false
+                                                                    : true
+                                                            "
+                                                            target="_blank"
+                                                            v-if="
+                                                                i_file &&
+                                                                i_file != ''
+                                                            "
+                                                            :class="[
+                                                                i_file
+                                                                    ? 'active'
+                                                                    : '',
+                                                            ]"
+                                                            ><i
+                                                                class="fa fa-paperclip"
+                                                            ></i
+                                                        ></a>
+                                                    </template>
                                                 </td>
                                                 <td>
-                                                    <a
-                                                        :href="detalle.ct_n_url"
-                                                        :disabled="
+                                                    <span
+                                                        v-if="detalle.ct_n_url"
+                                                    >
+                                                        Total:
+                                                        {{
                                                             detalle.ct_n_url
-                                                                ? false
-                                                                : true
-                                                        "
-                                                        target="_blank"
-                                                        v-if="
-                                                            detalle.ct_n &&
-                                                            detalle.ct_n != ''
-                                                        "
-                                                        :class="[
-                                                            detalle.ct_n_file
-                                                                ? 'active'
-                                                                : '',
-                                                        ]"
-                                                        ><i
-                                                            class="fa fa-paperclip"
-                                                        ></i
-                                                    ></a>
+                                                                ? detalle
+                                                                      .ct_n_url
+                                                                      .length
+                                                                : 0
+                                                        }}
+                                                    </span>
+
+                                                    <template
+                                                        v-for="i_file in detalle.ct_n_url"
+                                                    >
+                                                        <a
+                                                            :href="i_file"
+                                                            class="mb-1"
+                                                            :disabled="
+                                                                i_file
+                                                                    ? false
+                                                                    : true
+                                                            "
+                                                            target="_blank"
+                                                            v-if="
+                                                                i_file &&
+                                                                i_file != ''
+                                                            "
+                                                            :class="[
+                                                                i_file
+                                                                    ? 'active'
+                                                                    : '',
+                                                            ]"
+                                                            ><i
+                                                                class="fa fa-paperclip"
+                                                            ></i
+                                                        ></a>
+                                                    </template>
                                                 </td>
                                                 <td>
-                                                    <a
-                                                        :href="detalle.ct_d_url"
-                                                        :disabled="
+                                                    <span
+                                                        v-if="detalle.ct_d_url"
+                                                    >
+                                                        Total:
+                                                        {{
                                                             detalle.ct_d_url
-                                                                ? false
-                                                                : true
-                                                        "
-                                                        target="_blank"
-                                                        v-if="
-                                                            detalle.ct_d &&
-                                                            detalle.ct_d != ''
-                                                        "
-                                                        :class="[
-                                                            detalle.ct_d_file
-                                                                ? 'active'
-                                                                : '',
-                                                        ]"
-                                                        ><i
-                                                            class="fa fa-paperclip"
-                                                        ></i
-                                                    ></a>
+                                                                ? detalle
+                                                                      .ct_d_url
+                                                                      .length
+                                                                : 0
+                                                        }}
+                                                    </span>
+
+                                                    <template
+                                                        v-for="i_file in detalle.ct_d_url"
+                                                    >
+                                                        <a
+                                                            :href="i_file"
+                                                            class="mb-1"
+                                                            :disabled="
+                                                                i_file
+                                                                    ? false
+                                                                    : true
+                                                            "
+                                                            target="_blank"
+                                                            v-if="
+                                                                i_file &&
+                                                                i_file != ''
+                                                            "
+                                                            :class="[
+                                                                i_file
+                                                                    ? 'active'
+                                                                    : '',
+                                                            ]"
+                                                            ><i
+                                                                class="fa fa-paperclip"
+                                                            ></i
+                                                        ></a>
+                                                    </template>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td class="text-center">
                                                     <select
-                                                        v-if="detalle.pt_e_file && oUser.tipo=='SUPER USUARIO'"
+                                                        v-if="
+                                                            detalle.pt_e_file &&
+                                                            oUser.tipo ==
+                                                                'SUPER USUARIO'
+                                                        "
                                                         class="form-select rounded-0"
                                                         v-model="
                                                             detalle.pt_e_est
@@ -833,11 +1257,23 @@
                                                             }}
                                                         </option>
                                                     </select>
-                                                    <span v-if="detalle.pt_e != ''" class="font-weight-bold">{{ detalle.pt_e_est_t }}</span>
+                                                    <span
+                                                        v-if="
+                                                            detalle.pt_e != ''
+                                                        "
+                                                        class="font-weight-bold"
+                                                        >{{
+                                                            detalle.pt_e_est_t
+                                                        }}</span
+                                                    >
                                                 </td>
                                                 <td class="text-center">
                                                     <select
-                                                        v-if="detalle.pt_f_file && oUser.tipo=='SUPER USUARIO'"
+                                                        v-if="
+                                                            detalle.pt_f_file &&
+                                                            oUser.tipo ==
+                                                                'SUPER USUARIO'
+                                                        "
                                                         class="form-select rounded-0"
                                                         v-model="
                                                             detalle.pt_f_est
@@ -854,11 +1290,23 @@
                                                             }}
                                                         </option>
                                                     </select>
-                                                    <span v-if="detalle.pt_f != ''" class="font-weight-bold">{{ detalle.pt_f_est_t }}</span>
+                                                    <span
+                                                        v-if="
+                                                            detalle.pt_f != ''
+                                                        "
+                                                        class="font-weight-bold"
+                                                        >{{
+                                                            detalle.pt_f_est_t
+                                                        }}</span
+                                                    >
                                                 </td>
                                                 <td class="text-center">
                                                     <select
-                                                        v-if="detalle.pt_m_file && oUser.tipo=='SUPER USUARIO'"
+                                                        v-if="
+                                                            detalle.pt_m_file &&
+                                                            oUser.tipo ==
+                                                                'SUPER USUARIO'
+                                                        "
                                                         class="form-select rounded-0"
                                                         v-model="
                                                             detalle.pt_m_est
@@ -875,11 +1323,23 @@
                                                             }}
                                                         </option>
                                                     </select>
-                                                    <span v-if="detalle.pt_m != ''" class="font-weight-bold">{{ detalle.pt_m_est_t }}</span>
+                                                    <span
+                                                        v-if="
+                                                            detalle.pt_m != ''
+                                                        "
+                                                        class="font-weight-bold"
+                                                        >{{
+                                                            detalle.pt_m_est_t
+                                                        }}</span
+                                                    >
                                                 </td>
                                                 <td class="text-center">
                                                     <select
-                                                        v-if="detalle.st_a_file && oUser.tipo=='SUPER USUARIO'"
+                                                        v-if="
+                                                            detalle.st_a_file &&
+                                                            oUser.tipo ==
+                                                                'SUPER USUARIO'
+                                                        "
                                                         class="form-select rounded-0"
                                                         v-model="
                                                             detalle.st_a_est
@@ -896,11 +1356,23 @@
                                                             }}
                                                         </option>
                                                     </select>
-                                                    <span v-if="detalle.st_a != ''" class="font-weight-bold">{{ detalle.st_a_est_t }}</span>
+                                                    <span
+                                                        v-if="
+                                                            detalle.st_a != ''
+                                                        "
+                                                        class="font-weight-bold"
+                                                        >{{
+                                                            detalle.st_a_est_t
+                                                        }}</span
+                                                    >
                                                 </td>
                                                 <td class="text-center">
                                                     <select
-                                                        v-if="detalle.st_m_file && oUser.tipo=='SUPER USUARIO'"
+                                                        v-if="
+                                                            detalle.st_m_file &&
+                                                            oUser.tipo ==
+                                                                'SUPER USUARIO'
+                                                        "
                                                         class="form-select rounded-0"
                                                         v-model="
                                                             detalle.st_m_est
@@ -917,11 +1389,23 @@
                                                             }}
                                                         </option>
                                                     </select>
-                                                    <span v-if="detalle.st_m != ''" class="font-weight-bold">{{ detalle.st_m_est_t }}</span>
+                                                    <span
+                                                        v-if="
+                                                            detalle.st_m != ''
+                                                        "
+                                                        class="font-weight-bold"
+                                                        >{{
+                                                            detalle.st_m_est_t
+                                                        }}</span
+                                                    >
                                                 </td>
                                                 <td class="text-center">
                                                     <select
-                                                        v-if="detalle.st_j_file && oUser.tipo=='SUPER USUARIO'"
+                                                        v-if="
+                                                            detalle.st_j_file &&
+                                                            oUser.tipo ==
+                                                                'SUPER USUARIO'
+                                                        "
                                                         class="form-select rounded-0"
                                                         v-model="
                                                             detalle.st_j_est
@@ -938,11 +1422,23 @@
                                                             }}
                                                         </option>
                                                     </select>
-                                                    <span v-if="detalle.st_j != ''" class="font-weight-bold">{{ detalle.st_j_est_t }}</span>
+                                                    <span
+                                                        v-if="
+                                                            detalle.st_j != ''
+                                                        "
+                                                        class="font-weight-bold"
+                                                        >{{
+                                                            detalle.st_j_est_t
+                                                        }}</span
+                                                    >
                                                 </td>
                                                 <td class="text-center">
                                                     <select
-                                                        v-if="detalle.tt_j_file && oUser.tipo=='SUPER USUARIO'"
+                                                        v-if="
+                                                            detalle.tt_j_file &&
+                                                            oUser.tipo ==
+                                                                'SUPER USUARIO'
+                                                        "
                                                         class="form-select rounded-0"
                                                         v-model="
                                                             detalle.tt_j_est
@@ -959,11 +1455,23 @@
                                                             }}
                                                         </option>
                                                     </select>
-                                                    <span v-if="detalle.tt_j != ''" class="font-weight-bold">{{ detalle.tt_j_est_t }}</span>
+                                                    <span
+                                                        v-if="
+                                                            detalle.tt_j != ''
+                                                        "
+                                                        class="font-weight-bold"
+                                                        >{{
+                                                            detalle.tt_j_est_t
+                                                        }}</span
+                                                    >
                                                 </td>
                                                 <td class="text-center">
                                                     <select
-                                                        v-if="detalle.tt_a_file && oUser.tipo=='SUPER USUARIO'"
+                                                        v-if="
+                                                            detalle.tt_a_file &&
+                                                            oUser.tipo ==
+                                                                'SUPER USUARIO'
+                                                        "
                                                         class="form-select rounded-0"
                                                         v-model="
                                                             detalle.tt_a_est
@@ -980,11 +1488,23 @@
                                                             }}
                                                         </option>
                                                     </select>
-                                                    <span v-if="detalle.tt_a != ''" class="font-weight-bold">{{ detalle.tt_a_est_t }}</span>
+                                                    <span
+                                                        v-if="
+                                                            detalle.tt_a != ''
+                                                        "
+                                                        class="font-weight-bold"
+                                                        >{{
+                                                            detalle.tt_a_est_t
+                                                        }}</span
+                                                    >
                                                 </td>
                                                 <td class="text-center">
                                                     <select
-                                                        v-if="detalle.tt_s_file && oUser.tipo=='SUPER USUARIO'"
+                                                        v-if="
+                                                            detalle.tt_s_file &&
+                                                            oUser.tipo ==
+                                                                'SUPER USUARIO'
+                                                        "
                                                         class="form-select rounded-0"
                                                         v-model="
                                                             detalle.tt_s_est
@@ -1001,11 +1521,23 @@
                                                             }}
                                                         </option>
                                                     </select>
-                                                    <span v-if="detalle.tt_s != ''" class="font-weight-bold">{{ detalle.tt_s_est_t }}</span>
+                                                    <span
+                                                        v-if="
+                                                            detalle.tt_s != ''
+                                                        "
+                                                        class="font-weight-bold"
+                                                        >{{
+                                                            detalle.tt_s_est_t
+                                                        }}</span
+                                                    >
                                                 </td>
                                                 <td class="text-center">
                                                     <select
-                                                        v-if="detalle.ct_o_file && oUser.tipo=='SUPER USUARIO'"
+                                                        v-if="
+                                                            detalle.ct_o_file &&
+                                                            oUser.tipo ==
+                                                                'SUPER USUARIO'
+                                                        "
                                                         class="form-select rounded-0"
                                                         v-model="
                                                             detalle.ct_o_est
@@ -1022,11 +1554,23 @@
                                                             }}
                                                         </option>
                                                     </select>
-                                                    <span v-if="detalle.ct_o != ''" class="font-weight-bold">{{ detalle.ct_o_est_t }}</span>
+                                                    <span
+                                                        v-if="
+                                                            detalle.ct_o != ''
+                                                        "
+                                                        class="font-weight-bold"
+                                                        >{{
+                                                            detalle.ct_o_est_t
+                                                        }}</span
+                                                    >
                                                 </td>
                                                 <td class="text-center">
                                                     <select
-                                                        v-if="detalle.ct_n_file && oUser.tipo=='SUPER USUARIO'"
+                                                        v-if="
+                                                            detalle.ct_n_file &&
+                                                            oUser.tipo ==
+                                                                'SUPER USUARIO'
+                                                        "
                                                         class="form-select rounded-0"
                                                         v-model="
                                                             detalle.ct_n_est
@@ -1043,11 +1587,23 @@
                                                             }}
                                                         </option>
                                                     </select>
-                                                    <span v-if="detalle.ct_n != ''" class="font-weight-bold">{{ detalle.ct_n_est_t }}</span>
+                                                    <span
+                                                        v-if="
+                                                            detalle.ct_n != ''
+                                                        "
+                                                        class="font-weight-bold"
+                                                        >{{
+                                                            detalle.ct_n_est_t
+                                                        }}</span
+                                                    >
                                                 </td>
                                                 <td class="text-center">
                                                     <select
-                                                        v-if="detalle.ct_d_file && oUser.tipo=='SUPER USUARIO'"
+                                                        v-if="
+                                                            detalle.ct_d_file &&
+                                                            oUser.tipo ==
+                                                                'SUPER USUARIO'
+                                                        "
                                                         class="form-select rounded-0"
                                                         v-model="
                                                             detalle.ct_d_est
@@ -1064,7 +1620,15 @@
                                                             }}
                                                         </option>
                                                     </select>
-                                                    <span v-if="detalle.ct_d != ''" class="font-weight-bold">{{ detalle.ct_d_est_t }}</span>
+                                                    <span
+                                                        v-if="
+                                                            detalle.ct_d != ''
+                                                        "
+                                                        class="font-weight-bold"
+                                                        >{{
+                                                            detalle.ct_d_est_t
+                                                        }}</span
+                                                    >
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -1286,6 +1850,7 @@ export default {
 }
 
 .detalle_trimestres tr td label {
+    z-index: 100;
     margin: 0px;
     position: absolute;
     font-size: 0.9rem;

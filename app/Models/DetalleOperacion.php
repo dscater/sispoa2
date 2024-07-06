@@ -24,6 +24,20 @@ class DetalleOperacion extends Model
         "st_a_est", "st_m_est", "st_j_est", // estados 0:pendiente, 1:subido, 2:revisado, 3:rechazado
         "tt_j_est", "tt_a_est", "tt_s_est", // estados 0:pendiente, 1:subido, 2:revisado, 3:rechazado
         "ct_o_est", "ct_n_est", "ct_d_est", // estados 0:pendiente, 1:subido, 2:revisado, 3:rechazado
+
+        "pt_e_eje",
+        "pt_f_eje",
+        "pt_m_eje",
+        "st_a_eje",
+        "st_m_eje",
+        "st_j_eje",
+        "tt_j_eje",
+        "tt_a_eje",
+        "tt_s_eje",
+        "ct_o_eje",
+        "ct_n_eje",
+        "ct_d_eje",
+
         "inicio", "final",
     ];
 
@@ -53,6 +67,19 @@ class DetalleOperacion extends Model
         "ct_o_url",
         "ct_n_url",
         "ct_d_url",
+
+        "pt_e_array",
+        "pt_f_array",
+        "pt_m_array",
+        "st_a_array",
+        "st_m_array",
+        "st_j_array",
+        "tt_j_array",
+        "tt_a_array",
+        "tt_s_array",
+        "ct_o_array",
+        "ct_n_array",
+        "ct_d_array",
     ];
 
     public function getPtEEstTAttribute()
@@ -236,89 +263,344 @@ class DetalleOperacion extends Model
         return $estado_text;
     }
 
+    // URLS
     public function getPtEUrlAttribute()
     {
-        if ($this->pt_e_file && $this->pt_e_file != '') {
-            return asset("/files/" . $this->pt_e_file);
+        if ($this->pt_e_file) {
+            $files = explode("|", $this->pt_e_file);
+            if (count($files) > 0) {
+                $archivos = [];
+                foreach ($files as $value) {
+                    $archivos[] = asset("/files/" . $value);
+                }
+                return $archivos;
+            }
         }
-        return "";
+        return null;
     }
     public function getPtFUrlAttribute()
     {
-        if ($this->pt_f_file && $this->pt_f_file != '') {
-            return asset("/files/" . $this->pt_f_file);
+        if ($this->pt_f_file) {
+            $files = explode("|", $this->pt_f_file);
+            if (count($files) > 0) {
+                $archivos = [];
+                foreach ($files as $value) {
+                    $archivos[] = asset("/files/" . $value);
+                }
+                return $archivos;
+            }
         }
-        return "";
+        return null;
     }
     public function getPtMUrlAttribute()
     {
-        if ($this->pt_m_file && $this->pt_m_file != '') {
-            return asset("/files/" . $this->pt_m_file);
+        if ($this->pt_m_file) {
+            $files = explode("|", $this->pt_m_file);
+            if (count($files) > 0) {
+                $archivos = [];
+                foreach ($files as $value) {
+                    $archivos[] = asset("/files/" . $value);
+                }
+                return $archivos;
+            }
         }
-        return "";
+        return null;
     }
     public function getStAUrlAttribute()
     {
-        if ($this->st_a_file && $this->st_a_file != '') {
-            return asset("/files/" . $this->st_a_file);
+        if ($this->st_a_file) {
+            $files = explode("|", $this->st_a_file);
+            if (count($files) > 0) {
+                $archivos = [];
+                foreach ($files as $value) {
+                    $archivos[] = asset("/files/" . $value);
+                }
+                return $archivos;
+            }
         }
-        return "";
+        return null;
     }
     public function getStMUrlAttribute()
     {
-        if ($this->st_m_file && $this->st_m_file != '') {
-            return asset("/files/" . $this->st_m_file);
+        if ($this->st_m_file) {
+            $files = explode("|", $this->st_m_file);
+            if (count($files) > 0) {
+                $archivos = [];
+                foreach ($files as $value) {
+                    $archivos[] = asset("/files/" . $value);
+                }
+                return $archivos;
+            }
         }
-        return "";
+        return null;
     }
     public function getStJUrlAttribute()
     {
-        if ($this->st_j_file && $this->st_j_file != '') {
-            return asset("/files/" . $this->st_j_file);
+        if ($this->st_j_file) {
+            $files = explode("|", $this->st_j_file);
+            if (count($files) > 0) {
+                $archivos = [];
+                foreach ($files as $value) {
+                    $archivos[] = asset("/files/" . $value);
+                }
+                return $archivos;
+            }
         }
-        return "";
+        return null;
     }
     public function getTtJUrlAttribute()
     {
-        if ($this->tt_j_file && $this->tt_j_file != '') {
-            return asset("/files/" . $this->tt_j_file);
+        if ($this->tt_j_file) {
+            $files = explode("|", $this->tt_j_file);
+            if (count($files) > 0) {
+                $archivos = [];
+                foreach ($files as $value) {
+                    $archivos[] = asset("/files/" . $value);
+                }
+                return $archivos;
+            }
         }
-        return "";
+        return null;
     }
     public function getTtAUrlAttribute()
     {
-        if ($this->tt_a_file && $this->tt_a_file != '') {
-            return asset("/files/" . $this->tt_a_file);
+        if ($this->tt_a_file) {
+            $files = explode("|", $this->tt_a_file);
+            if (count($files) > 0) {
+                $archivos = [];
+                foreach ($files as $value) {
+                    $archivos[] = asset("/files/" . $value);
+                }
+                return $archivos;
+            }
         }
-        return "";
+        return null;
     }
     public function getTtSUrlAttribute()
     {
-        if ($this->tt_s_file && $this->tt_s_file != '') {
-            return asset("/files/" . $this->tt_s_file);
+        if ($this->tt_s_file) {
+            $files = explode("|", $this->tt_s_file);
+            if (count($files) > 0) {
+                $archivos = [];
+                foreach ($files as $value) {
+                    $archivos[] = asset("/files/" . $value);
+                }
+                return $archivos;
+            }
         }
-        return "";
+        return null;
     }
     public function getCtOUrlAttribute()
     {
-        if ($this->ct_o_file && $this->ct_o_file != '') {
-            return asset("/files/" . $this->ct_o_file);
+        if ($this->ct_o_file) {
+            $files = explode("|", $this->ct_o_file);
+            if (count($files) > 0) {
+                $archivos = [];
+                foreach ($files as $value) {
+                    $archivos[] = asset("/files/" . $value);
+                }
+                return $archivos;
+            }
         }
-        return "";
+        return null;
     }
     public function getCtNUrlAttribute()
     {
-        if ($this->ct_n_file && $this->ct_n_file != '') {
-            return asset("/files/" . $this->ct_n_file);
+        if ($this->ct_n_file) {
+            $files = explode("|", $this->ct_n_file);
+            if (count($files) > 0) {
+                $archivos = [];
+                foreach ($files as $value) {
+                    $archivos[] = asset("/files/" . $value);
+                }
+                return $archivos;
+            }
         }
-        return "";
+        return null;
     }
     public function getCtDUrlAttribute()
     {
-        if ($this->ct_d_file && $this->ct_d_file != '') {
-            return asset("/files/" . $this->ct_d_file);
+        if ($this->ct_d_file) {
+            $files = explode("|", $this->ct_d_file);
+            if (count($files) > 0) {
+                $archivos = [];
+                foreach ($files as $value) {
+                    $archivos[] = asset("/files/" . $value);
+                }
+                return $archivos;
+            }
         }
-        return "";
+        return null;
+    }
+
+    // FILES ARRAY
+    public function getPtEArrayAttribute()
+    {
+        if ($this->pt_e_file) {
+            $files = explode("|", $this->pt_e_file);
+            if (count($files) > 0) {
+                $archivos = [];
+                foreach ($files as $value) {
+                    $archivos[] = $value;
+                }
+                return $archivos;
+            }
+        }
+        return null;
+    }
+    public function getPtFArrayAttribute()
+    {
+        if ($this->pt_f_file) {
+            $files = explode("|", $this->pt_f_file);
+            if (count($files) > 0) {
+                $archivos = [];
+                foreach ($files as $value) {
+                    $archivos[] = $value;
+                }
+                return $archivos;
+            }
+        }
+        return null;
+    }
+    public function getPtMArrayAttribute()
+    {
+        if ($this->pt_m_file) {
+            $files = explode("|", $this->pt_m_file);
+            if (count($files) > 0) {
+                $archivos = [];
+                foreach ($files as $value) {
+                    $archivos[] = $value;
+                }
+                return $archivos;
+            }
+        }
+        return null;
+    }
+    public function getStAArrayAttribute()
+    {
+        if ($this->st_a_file) {
+            $files = explode("|", $this->st_a_file);
+            if (count($files) > 0) {
+                $archivos = [];
+                foreach ($files as $value) {
+                    $archivos[] = $value;
+                }
+                return $archivos;
+            }
+        }
+        return null;
+    }
+    public function getStMArrayAttribute()
+    {
+        if ($this->st_m_file) {
+            $files = explode("|", $this->st_m_file);
+            if (count($files) > 0) {
+                $archivos = [];
+                foreach ($files as $value) {
+                    $archivos[] = $value;
+                }
+                return $archivos;
+            }
+        }
+        return null;
+    }
+    public function getStJArrayAttribute()
+    {
+        if ($this->st_j_file) {
+            $files = explode("|", $this->st_j_file);
+            if (count($files) > 0) {
+                $archivos = [];
+                foreach ($files as $value) {
+                    $archivos[] = $value;
+                }
+                return $archivos;
+            }
+        }
+        return null;
+    }
+    public function getTtJArrayAttribute()
+    {
+        if ($this->tt_j_file) {
+            $files = explode("|", $this->tt_j_file);
+            if (count($files) > 0) {
+                $archivos = [];
+                foreach ($files as $value) {
+                    $archivos[] = $value;
+                }
+                return $archivos;
+            }
+        }
+        return null;
+    }
+    public function getTtAArrayAttribute()
+    {
+        if ($this->tt_a_file) {
+            $files = explode("|", $this->tt_a_file);
+            if (count($files) > 0) {
+                $archivos = [];
+                foreach ($files as $value) {
+                    $archivos[] = $value;
+                }
+                return $archivos;
+            }
+        }
+        return null;
+    }
+    public function getTtSArrayAttribute()
+    {
+        if ($this->tt_s_file) {
+            $files = explode("|", $this->tt_s_file);
+            if (count($files) > 0) {
+                $archivos = [];
+                foreach ($files as $value) {
+                    $archivos[] = $value;
+                }
+                return $archivos;
+            }
+        }
+        return null;
+    }
+    public function getCtOArrayAttribute()
+    {
+        if ($this->ct_o_file) {
+            $files = explode("|", $this->ct_o_file);
+            if (count($files) > 0) {
+                $archivos = [];
+                foreach ($files as $value) {
+                    $archivos[] = $value;
+                }
+                return $archivos;
+            }
+        }
+        return null;
+    }
+    public function getCtNArrayAttribute()
+    {
+        if ($this->ct_n_file) {
+            $files = explode("|", $this->ct_n_file);
+            if (count($files) > 0) {
+                $archivos = [];
+                foreach ($files as $value) {
+                    $archivos[] = $value;
+                }
+                return $archivos;
+            }
+        }
+        return null;
+    }
+    public function getCtDArrayAttribute()
+    {
+        if ($this->ct_d_file) {
+            $files = explode("|", $this->ct_d_file);
+            if (count($files) > 0) {
+                $archivos = [];
+                foreach ($files as $value) {
+                    $archivos[] = $value;
+                }
+                return $archivos;
+            }
+        }
+        return null;
     }
 
     public function operacion()

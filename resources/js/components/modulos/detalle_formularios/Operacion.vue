@@ -583,7 +583,7 @@
                                                 class="files"
                                                 v-if="oUser.tipo == 'ENLACE'"
                                             >
-                                                <td>
+                                                <td class="texte-center">
                                                     <label
                                                         v-if="
                                                             detalle.pt_e &&
@@ -603,8 +603,20 @@
                                                             class="fa fa-paperclip"
                                                         ></i
                                                     ></label>
+                                                    <span
+                                                        v-if="
+                                                            detalle?.pt_e_array
+                                                        "
+                                                    >
+                                                        Cargados:
+                                                        {{
+                                                            detalle?.pt_e_array
+                                                                ?.length
+                                                        }}
+                                                    </span>
                                                     <input
                                                         type="file"
+                                                        multiple
                                                         :id="
                                                             'e_file_o_d' +
                                                             index +
@@ -613,13 +625,14 @@
                                                         @change="
                                                             cargarArchivo(
                                                                 'pt_e_file',
+                                                                'pt_e_array',
                                                                 index_detalle,
                                                                 $event
                                                             )
                                                         "
                                                     />
                                                 </td>
-                                                <td>
+                                                <td class="texte-center">
                                                     <label
                                                         v-if="
                                                             detalle.pt_f &&
@@ -639,8 +652,20 @@
                                                             class="fa fa-paperclip"
                                                         ></i
                                                     ></label>
+                                                    <span
+                                                        v-if="
+                                                            detalle?.pt_f_array
+                                                        "
+                                                    >
+                                                        Cargados:
+                                                        {{
+                                                            detalle?.pt_f_array
+                                                                ?.length
+                                                        }}
+                                                    </span>
                                                     <input
                                                         type="file"
+                                                        multiple
                                                         :id="
                                                             'f_file_o_d' +
                                                             index +
@@ -649,13 +674,14 @@
                                                         @change="
                                                             cargarArchivo(
                                                                 'pt_f_file',
+                                                                'pt_f_array',
                                                                 index_detalle,
                                                                 $event
                                                             )
                                                         "
                                                     />
                                                 </td>
-                                                <td>
+                                                <td class="texte-center">
                                                     <label
                                                         v-if="
                                                             detalle.pt_m &&
@@ -675,8 +701,20 @@
                                                             class="fa fa-paperclip"
                                                         ></i
                                                     ></label>
+                                                    <span
+                                                        v-if="
+                                                            detalle?.pt_m_array
+                                                        "
+                                                    >
+                                                        Cargados:
+                                                        {{
+                                                            detalle?.pt_m_array
+                                                                ?.length
+                                                        }}
+                                                    </span>
                                                     <input
                                                         type="file"
+                                                        multiple
                                                         :id="
                                                             'm_file_o_d' +
                                                             index +
@@ -685,13 +723,14 @@
                                                         @change="
                                                             cargarArchivo(
                                                                 'pt_m_file',
+                                                                'pt_m_array',
                                                                 index_detalle,
                                                                 $event
                                                             )
                                                         "
                                                     />
                                                 </td>
-                                                <td>
+                                                <td class="texte-center">
                                                     <label
                                                         v-if="
                                                             detalle.st_a &&
@@ -711,8 +750,20 @@
                                                             class="fa fa-paperclip"
                                                         ></i
                                                     ></label>
+                                                    <span
+                                                        v-if="
+                                                            detalle?.st_a_array
+                                                        "
+                                                    >
+                                                        Cargados:
+                                                        {{
+                                                            detalle?.st_a_array
+                                                                ?.length
+                                                        }}
+                                                    </span>
                                                     <input
                                                         type="file"
+                                                        multiple
                                                         :id="
                                                             'a_file_o_d' +
                                                             index +
@@ -721,13 +772,14 @@
                                                         @change="
                                                             cargarArchivo(
                                                                 'st_a_file',
+                                                                'st_a_array',
                                                                 index_detalle,
                                                                 $event
                                                             )
                                                         "
                                                     />
                                                 </td>
-                                                <td>
+                                                <td class="texte-center">
                                                     <label
                                                         v-if="
                                                             detalle.st_m &&
@@ -747,8 +799,20 @@
                                                             class="fa fa-paperclip"
                                                         ></i
                                                     ></label>
+                                                    <span
+                                                        v-if="
+                                                            detalle?.st_m_array
+                                                        "
+                                                    >
+                                                        Cargados:
+                                                        {{
+                                                            detalle?.st_m_array
+                                                                ?.length
+                                                        }}
+                                                    </span>
                                                     <input
                                                         type="file"
+                                                        multiple
                                                         :id="
                                                             'm_file_o_d' +
                                                             index +
@@ -757,13 +821,14 @@
                                                         @change="
                                                             cargarArchivo(
                                                                 'st_m_file',
+                                                                'st_m_array',
                                                                 index_detalle,
                                                                 $event
                                                             )
                                                         "
                                                     />
                                                 </td>
-                                                <td>
+                                                <td class="texte-center">
                                                     <label
                                                         v-if="
                                                             detalle.st_j &&
@@ -783,8 +848,20 @@
                                                             class="fa fa-paperclip"
                                                         ></i
                                                     ></label>
+                                                    <span
+                                                        v-if="
+                                                            detalle?.st_j_array
+                                                        "
+                                                    >
+                                                        Cargados:
+                                                        {{
+                                                            detalle?.st_j_array
+                                                                ?.length
+                                                        }}
+                                                    </span>
                                                     <input
                                                         type="file"
+                                                        multiple
                                                         :id="
                                                             'j_file_o_d' +
                                                             index +
@@ -793,13 +870,14 @@
                                                         @change="
                                                             cargarArchivo(
                                                                 'st_j_file',
+                                                                'st_j_array',
                                                                 index_detalle,
                                                                 $event
                                                             )
                                                         "
                                                     />
                                                 </td>
-                                                <td>
+                                                <td class="texte-center">
                                                     <label
                                                         v-if="
                                                             detalle.tt_j &&
@@ -819,8 +897,20 @@
                                                             class="fa fa-paperclip"
                                                         ></i
                                                     ></label>
+                                                    <span
+                                                        v-if="
+                                                            detalle?.tt_j_array
+                                                        "
+                                                    >
+                                                        Cargados:
+                                                        {{
+                                                            detalle?.tt_j_array
+                                                                ?.length
+                                                        }}
+                                                    </span>
                                                     <input
                                                         type="file"
+                                                        multiple
                                                         :id="
                                                             'j_file_o_d' +
                                                             index +
@@ -829,13 +919,14 @@
                                                         @change="
                                                             cargarArchivo(
                                                                 'tt_j_file',
+                                                                'tt_j_array',
                                                                 index_detalle,
                                                                 $event
                                                             )
                                                         "
                                                     />
                                                 </td>
-                                                <td>
+                                                <td class="texte-center">
                                                     <label
                                                         v-if="
                                                             detalle.tt_a &&
@@ -855,8 +946,20 @@
                                                             class="fa fa-paperclip"
                                                         ></i
                                                     ></label>
+                                                    <span
+                                                        v-if="
+                                                            detalle?.tt_a_array
+                                                        "
+                                                    >
+                                                        Cargados:
+                                                        {{
+                                                            detalle?.tt_a_array
+                                                                ?.length
+                                                        }}
+                                                    </span>
                                                     <input
                                                         type="file"
+                                                        multiple
                                                         :id="
                                                             'a_file_o_d' +
                                                             index +
@@ -865,13 +968,14 @@
                                                         @change="
                                                             cargarArchivo(
                                                                 'tt_a_file',
+                                                                'tt_a_array',
                                                                 index_detalle,
                                                                 $event
                                                             )
                                                         "
                                                     />
                                                 </td>
-                                                <td>
+                                                <td class="texte-center">
                                                     <label
                                                         v-if="
                                                             detalle.tt_s &&
@@ -891,8 +995,20 @@
                                                             class="fa fa-paperclip"
                                                         ></i
                                                     ></label>
+                                                    <span
+                                                        v-if="
+                                                            detalle?.tt_s_array
+                                                        "
+                                                    >
+                                                        Cargados:
+                                                        {{
+                                                            detalle?.tt_s_array
+                                                                ?.length
+                                                        }}
+                                                    </span>
                                                     <input
                                                         type="file"
+                                                        multiple
                                                         :id="
                                                             's_file_o_d' +
                                                             index +
@@ -901,13 +1017,14 @@
                                                         @change="
                                                             cargarArchivo(
                                                                 'tt_s_file',
+                                                                'tt_s_array',
                                                                 index_detalle,
                                                                 $event
                                                             )
                                                         "
                                                     />
                                                 </td>
-                                                <td>
+                                                <td class="texte-center">
                                                     <label
                                                         v-if="
                                                             detalle.ct_o &&
@@ -927,8 +1044,20 @@
                                                             class="fa fa-paperclip"
                                                         ></i
                                                     ></label>
+                                                    <span
+                                                        v-if="
+                                                            detalle?.ct_o_array
+                                                        "
+                                                    >
+                                                        Cargados:
+                                                        {{
+                                                            detalle?.ct_o_array
+                                                                ?.length
+                                                        }}
+                                                    </span>
                                                     <input
                                                         type="file"
+                                                        multiple
                                                         :id="
                                                             'o_file_o_d' +
                                                             index +
@@ -937,13 +1066,14 @@
                                                         @change="
                                                             cargarArchivo(
                                                                 'ct_o_file',
+                                                                'ct_o_array',
                                                                 index_detalle,
                                                                 $event
                                                             )
                                                         "
                                                     />
                                                 </td>
-                                                <td>
+                                                <td class="texte-center">
                                                     <label
                                                         v-if="
                                                             detalle.ct_n &&
@@ -963,8 +1093,20 @@
                                                             class="fa fa-paperclip"
                                                         ></i
                                                     ></label>
+                                                    <span
+                                                        v-if="
+                                                            detalle?.ct_n_array
+                                                        "
+                                                    >
+                                                        Cargados:
+                                                        {{
+                                                            detalle?.ct_n_array
+                                                                ?.length
+                                                        }}
+                                                    </span>
                                                     <input
                                                         type="file"
+                                                        multiple
                                                         :id="
                                                             'n_file_o_d' +
                                                             index +
@@ -973,13 +1115,14 @@
                                                         @change="
                                                             cargarArchivo(
                                                                 'ct_n_file',
+                                                                'ct_n_array',
                                                                 index_detalle,
                                                                 $event
                                                             )
                                                         "
                                                     />
                                                 </td>
-                                                <td>
+                                                <td class="texte-center">
                                                     <label
                                                         v-if="
                                                             detalle.ct_d &&
@@ -999,8 +1142,20 @@
                                                             class="fa fa-paperclip"
                                                         ></i
                                                     ></label>
+                                                    <span
+                                                        v-if="
+                                                            detalle?.ct_d_array
+                                                        "
+                                                    >
+                                                        Cargados:
+                                                        {{
+                                                            detalle?.ct_d_array
+                                                                ?.length
+                                                        }}
+                                                    </span>
                                                     <input
                                                         type="file"
+                                                        multiple
                                                         :id="
                                                             'd_file_o_d' +
                                                             index +
@@ -1009,6 +1164,7 @@
                                                         @change="
                                                             cargarArchivo(
                                                                 'ct_d_file',
+                                                                'ct_d_array',
                                                                 index_detalle,
                                                                 $event
                                                             )
@@ -1167,9 +1323,15 @@ export default {
             });
         },
 
-        cargarArchivo(key, index, e) {
-            console.log(this.operacion.detalle_operaciones);
-            this.operacion.detalle_operaciones[index][key] = e.target.files[0];
+        cargarArchivo(key, key_array, index, e) {
+            if (e.target.files.length > 0) {
+                this.operacion.detalle_operaciones[index][key] = Array.from(
+                    e.target.files
+                );
+
+                this.operacion.detalle_operaciones[index][key_array] =
+                    Array.from(e.target.files);
+            }
         },
 
         quitarDetalle(index, id) {
@@ -1255,7 +1417,12 @@ export default {
     text-align: center;
 }
 
+.detalle_trimestres tr.files td {
+    text-align: center;
+}
+
 .detalle_trimestres tr.files td label {
+    text-align: center;
     display: block;
     position: relative;
     background-color: rgba(77, 77, 77, 0.445);

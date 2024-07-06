@@ -285,74 +285,156 @@ export default {
                     formData.append("id_operacions[]", item.id);
                     item.detalle_operaciones.forEach(
                         (item_detalle, index_detalle) => {
-                            console.log(
-                                index_detalle + "-----------------------"
-                            );
-                            console.log(item_detalle);
                             formData.append(
                                 "actividads" + item.id + "[]",
                                 item_detalle.id
                             );
 
-                            formData.append(
-                                "files_pt_e" + item.id + item_detalle.id,
-                                item_detalle.pt_e_file
-                            );
+                            console.log(item_detalle.st_a_file);
 
-                            formData.append(
-                                "files_pt_f" + item.id + item_detalle.id,
-                                item_detalle.pt_f_file
-                            );
+                            if (item_detalle.pt_e_file?.length > 0) {
+                                item_detalle.pt_e_file.forEach((elem) => {
+                                    formData.append(
+                                        "files_pt_e" +
+                                            item.id +
+                                            item_detalle.id +
+                                            "[]",
+                                        elem
+                                    );
+                                });
+                            }
 
-                            formData.append(
-                                "files_pt_m" + item.id + item_detalle.id,
-                                item_detalle.pt_m_file
-                            );
+                            if (item_detalle.pt_f_file?.length > 0) {
+                                item_detalle.pt_f_file.forEach((elem) => {
+                                    formData.append(
+                                        "files_pt_f" +
+                                            item.id +
+                                            item_detalle.id +
+                                            "[]",
+                                        elem
+                                    );
+                                });
+                            }
 
-                            formData.append(
-                                "files_st_a" + item.id + item_detalle.id,
-                                item_detalle.st_a_file
-                            );
+                            if (item_detalle.pt_m_file?.length > 0) {
+                                item_detalle.pt_m_file.forEach((elem) => {
+                                    formData.append(
+                                        "files_pt_m" +
+                                            item.id +
+                                            item_detalle.id +
+                                            "[]",
+                                        elem
+                                    );
+                                });
+                            }
 
-                            formData.append(
-                                "files_st_m" + item.id + item_detalle.id,
-                                item_detalle.st_m_file
-                            );
+                            if (item_detalle.st_a_file?.length > 0) {
+                                item_detalle.st_a_file.forEach((elem) => {
+                                    formData.append(
+                                        "files_st_a" +
+                                            item.id +
+                                            item_detalle.id +
+                                            "[]",
+                                        elem
+                                    );
+                                });
+                            }
 
-                            formData.append(
-                                "files_st_j" + item.id + item_detalle.id,
-                                item_detalle.st_j_file
-                            );
+                            if (item_detalle.st_m_file?.length > 0) {
+                                item_detalle.st_m_file.forEach((elem) => {
+                                    formData.append(
+                                        "files_st_m" +
+                                            item.id +
+                                            item_detalle.id +
+                                            "[]",
+                                        elem
+                                    );
+                                });
+                            }
 
-                            formData.append(
-                                "files_tt_j" + item.id + item_detalle.id,
-                                item_detalle.tt_j_file
-                            );
+                            if (item_detalle.st_j_file?.length > 0) {
+                                item_detalle.st_j_file.forEach((elem) => {
+                                    formData.append(
+                                        "files_st_j" +
+                                            item.id +
+                                            item_detalle.id +
+                                            "[]",
+                                        elem
+                                    );
+                                });
+                            }
 
-                            formData.append(
-                                "files_tt_a" + item.id + item_detalle.id,
-                                item_detalle.tt_a_file
-                            );
+                            if (item_detalle.tt_j_file?.length > 0) {
+                                item_detalle.tt_j_file.forEach((elem) => {
+                                    formData.append(
+                                        "files_tt_j" +
+                                            item.id +
+                                            item_detalle.id +
+                                            "[]",
+                                        elem
+                                    );
+                                });
+                            }
 
-                            formData.append(
-                                "files_tt_s" + item.id + item_detalle.id,
-                                item_detalle.tt_s_file
-                            );
+                            if (item_detalle.tt_a_file?.length > 0) {
+                                item_detalle.tt_a_file.forEach((elem) => {
+                                    formData.append(
+                                        "files_tt_a" +
+                                            item.id +
+                                            item_detalle.id +
+                                            "[]",
+                                        elem
+                                    );
+                                });
+                            }
 
-                            formData.append(
-                                "files_ct_o" + item.id + item_detalle.id,
-                                item_detalle.ct_o_file
-                            );
+                            if (item_detalle.tt_s_file?.length > 0) {
+                                item_detalle.tt_s_file.forEach((elem) => {
+                                    formData.append(
+                                        "files_tt_s" +
+                                            item.id +
+                                            item_detalle.id +
+                                            "[]",
+                                        elem
+                                    );
+                                });
+                            }
 
-                            formData.append(
-                                "files_ct_n" + item.id + item_detalle.id,
-                                item_detalle.ct_n_file
-                            );
+                            if (item_detalle.ct_o_file?.length > 0) {
+                                item_detalle.ct_o_file.forEach((elem) => {
+                                    formData.append(
+                                        "files_ct_o" +
+                                            item.id +
+                                            item_detalle.id +
+                                            "[]",
+                                        elem
+                                    );
+                                });
+                            }
 
-                            formData.append(
-                                "files_ct_d" + item.id + item_detalle.id + "[]",
-                                item_detalle.ct_d_file
-                            );
+                            if (item_detalle.ct_n_file?.length > 0) {
+                                item_detalle.ct_n_file.forEach((elem) => {
+                                    formData.append(
+                                        "files_ct_n" +
+                                            item.id +
+                                            item_detalle.id +
+                                            "[]",
+                                        elem
+                                    );
+                                });
+                            }
+
+                            if (item_detalle.ct_d_file?.length > 0) {
+                                item_detalle.ct_d_file.forEach((elem) => {
+                                    formData.append(
+                                        "files_ct_d" +
+                                            item.id +
+                                            item_detalle.id +
+                                            "[]",
+                                        elem
+                                    );
+                                });
+                            }
                         }
                     );
                 });

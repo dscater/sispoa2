@@ -104,6 +104,19 @@ class SemaforoController extends Controller
                     $detalle_operacion->ct_o_est = $do["ct_o_est"];
                     $detalle_operacion->ct_n_est = $do["ct_n_est"];
                     $detalle_operacion->ct_d_est = $do["ct_d_est"];
+
+                    $detalle_operacion->pt_e_eje = $do["pt_e_eje"];
+                    $detalle_operacion->pt_f_eje = $do["pt_f_eje"];
+                    $detalle_operacion->pt_m_eje = $do["pt_m_eje"];
+                    $detalle_operacion->st_a_eje = $do["st_a_eje"];
+                    $detalle_operacion->st_m_eje = $do["st_m_eje"];
+                    $detalle_operacion->st_j_eje = $do["st_j_eje"];
+                    $detalle_operacion->tt_j_eje = $do["tt_j_eje"];
+                    $detalle_operacion->tt_a_eje = $do["tt_a_eje"];
+                    $detalle_operacion->tt_s_eje = $do["tt_s_eje"];
+                    $detalle_operacion->ct_o_eje = $do["ct_o_eje"];
+                    $detalle_operacion->ct_n_eje = $do["ct_n_eje"];
+                    $detalle_operacion->ct_d_eje = $do["ct_d_eje"];
                     $detalle_operacion->save();
                 }
             }

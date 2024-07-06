@@ -11,6 +11,7 @@ use App\Models\Operacion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log as FacadesLog;
 
 class DetalleFormularioController extends Controller
 {
@@ -126,171 +127,268 @@ class DetalleFormularioController extends Controller
                         // detalle
                         $detalle_operacion = DetalleOperacion::findOrFail($id_det);
                         $antiguo = $detalle_operacion->pt_e_file;
+                        FacadesLog::debug($st_a);
                         if ($pt_e) {
-                            if ($antiguo && $antiguo != '') {
-                                \File::delete(public_path("/files/" . $antiguo));
-                                $detalle_operacion->pt_e_est = 0;
+                            $archivos_antiguos = $detalle_operacion->pt_e_array;
+                            if ($archivos_antiguos) {
+                                foreach ($archivos_antiguos as $value) {
+                                    \File::delete(public_path("/files/" . $value));
+                                }
                             }
-                            $archivo = $pt_e;
-                            $ext = "." . $archivo->getClientOriginalExtension();
-                            $nom_archivo = "pt_e" . time() . $id_ope . $id_det . $key_det . $ext;
-                            $archivo->move(public_path("/files/"), $nom_archivo);
-                            $detalle_operacion->pt_e_file = $nom_archivo;
-                            $detalle_operacion->pt_e_est = 1;
+                            $agregados = [];
+                            foreach ($pt_e as $index_file => $file) {
+                                $archivo = $file;
+                                $ext = "." . $archivo->getClientOriginalExtension();
+                                $nom_archivo = $index_file . "pt_e" . time() . $id_ope . $id_det . $key_det . $ext;
+                                $archivo->move(public_path("/files/"), $nom_archivo);
+                                $agregados[] = $nom_archivo;
+                            }
+                            if (count($agregados) > 0) {
+                                $detalle_operacion->pt_e_file = implode("|", $agregados);
+                                $detalle_operacion->pt_e_est = 1;
+                            }
                         }
 
                         $antiguo = $detalle_operacion->pt_f_file;
                         if ($pt_f) {
-                            if ($antiguo && $antiguo != '') {
-                                \File::delete(public_path("/files/" . $antiguo));
-                                $detalle_operacion->pt_f_est = 0;
+                            $archivos_antiguos = $detalle_operacion->pt_f_array;
+                            if ($archivos_antiguos) {
+                                foreach ($archivos_antiguos as $value) {
+                                    \File::delete(public_path("/files/" . $value));
+                                }
                             }
-                            $archivo = $pt_f;
-                            $ext = "." . $archivo->getClientOriginalExtension();
-                            $nom_archivo = "pt_f" . time() . $id_ope . $id_det . $key_det . $ext;
-                            $archivo->move(public_path("/files/"), $nom_archivo);
-                            $detalle_operacion->pt_f_file = $nom_archivo;
-                            $detalle_operacion->pt_f_est = 1;
+                            $agregados = [];
+                            foreach ($pt_f as $index_file => $file) {
+                                $archivo = $file;
+                                $ext = "." . $archivo->getClientOriginalExtension();
+                                $nom_archivo = $index_file . "pt_f" . time() . $id_ope . $id_det . $key_det . $ext;
+                                $archivo->move(public_path("/files/"), $nom_archivo);
+                                $agregados[] = $nom_archivo;
+                            }
+                            if (count($agregados) > 0) {
+                                $detalle_operacion->pt_f_file = implode("|", $agregados);
+                                $detalle_operacion->pt_f_est = 1;
+                            }
                         }
 
                         $antiguo = $detalle_operacion->pt_m_file;
                         if ($pt_m) {
-                            if ($antiguo && $antiguo != '') {
-                                \File::delete(public_path("/files/" . $antiguo));
-                                $detalle_operacion->pt_m_est = 0;
+                            $archivos_antiguos = $detalle_operacion->pt_m_array;
+                            if ($archivos_antiguos) {
+                                foreach ($archivos_antiguos as $value) {
+                                    \File::delete(public_path("/files/" . $value));
+                                }
                             }
-                            $archivo = $pt_m;
-                            $ext = "." . $archivo->getClientOriginalExtension();
-                            $nom_archivo = "pt_m" . time() . $id_ope . $id_det . $key_det . $ext;
-                            $archivo->move(public_path("/files/"), $nom_archivo);
-                            $detalle_operacion->pt_m_file = $nom_archivo;
-                            $detalle_operacion->pt_m_est = 1;
+                            $agregados = [];
+                            foreach ($pt_m as $index_file => $file) {
+                                $archivo = $file;
+                                $ext = "." . $archivo->getClientOriginalExtension();
+                                $nom_archivo = $index_file . "pt_m" . time() . $id_ope . $id_det . $key_det . $ext;
+                                $archivo->move(public_path("/files/"), $nom_archivo);
+                                $agregados[] = $nom_archivo;
+                            }
+                            if (count($agregados) > 0) {
+                                $detalle_operacion->pt_m_file = implode("|", $agregados);
+                                $detalle_operacion->pt_m_est = 1;
+                            }
                         }
 
                         $antiguo = $detalle_operacion->st_a_file;
                         if ($st_a) {
-                            if ($antiguo && $antiguo != '') {
-                                \File::delete(public_path("/files/" . $antiguo));
-                                $detalle_operacion->st_a_est = 0;
+                            $archivos_antiguos = $detalle_operacion->st_a_array;
+                            if ($archivos_antiguos) {
+                                foreach ($archivos_antiguos as $value) {
+                                    \File::delete(public_path("/files/" . $value));
+                                }
                             }
-                            $archivo = $st_a;
-                            $ext = "." . $archivo->getClientOriginalExtension();
-                            $nom_archivo = "st_a" . time() . $id_ope . $id_det . $key_det . $ext;
-                            $archivo->move(public_path("/files/"), $nom_archivo);
-                            $detalle_operacion->st_a_file = $nom_archivo;
-                            $detalle_operacion->st_a_est = 1;
+                            $agregados = [];
+                            foreach ($st_a as $index_file => $file) {
+                                $archivo = $file;
+                                $ext = "." . $archivo->getClientOriginalExtension();
+                                $nom_archivo = $index_file . "st_a" . time() . $id_ope . $id_det . $key_det . $ext;
+                                $archivo->move(public_path("/files/"), $nom_archivo);
+                                $agregados[] = $nom_archivo;
+                            }
+                            if (count($agregados) > 0) {
+                                $detalle_operacion->st_a_file = implode("|", $agregados);
+                                $detalle_operacion->st_a_est = 1;
+                            }
                         }
 
                         $antiguo = $detalle_operacion->st_m_file;
                         if ($st_m) {
-                            if ($antiguo && $antiguo != '') {
-                                \File::delete(public_path("/files/" . $antiguo));
-                                $detalle_operacion->st_m_est = 0;
+                            $archivos_antiguos = $detalle_operacion->st_m_array;
+                            if ($archivos_antiguos) {
+                                foreach ($archivos_antiguos as $value) {
+                                    \File::delete(public_path("/files/" . $value));
+                                }
                             }
-                            $archivo = $st_m;
-                            $ext = "." . $archivo->getClientOriginalExtension();
-                            $nom_archivo = "st_m" . time() . $id_ope . $id_det . $key_det . $ext;
-                            $archivo->move(public_path("/files/"), $nom_archivo);
-                            $detalle_operacion->st_m_file = $nom_archivo;
-                            $detalle_operacion->st_m_est = 1;
+                            $agregados = [];
+                            foreach ($st_m as $index_file => $file) {
+                                $archivo = $file;
+                                $ext = "." . $archivo->getClientOriginalExtension();
+                                $nom_archivo = $index_file . "st_m" . time() . $id_ope . $id_det . $key_det . $ext;
+                                $archivo->move(public_path("/files/"), $nom_archivo);
+                                $agregados[] = $nom_archivo;
+                            }
+                            if (count($agregados) > 0) {
+                                $detalle_operacion->st_m_file = implode("|", $agregados);
+                                $detalle_operacion->st_m_est = 1;
+                            }
                         }
 
                         $antiguo = $detalle_operacion->st_j_file;
                         if ($st_j) {
-                            if ($antiguo && $antiguo != '') {
-                                \File::delete(public_path("/files/" . $antiguo));
-                                $detalle_operacion->st_j_est = 0;
+                            $archivos_antiguos = $detalle_operacion->st_j_array;
+                            if ($archivos_antiguos) {
+                                foreach ($archivos_antiguos as $value) {
+                                    \File::delete(public_path("/files/" . $value));
+                                }
                             }
-                            $archivo = $st_j;
-                            $ext = "." . $archivo->getClientOriginalExtension();
-                            $nom_archivo = "st_j" . time() . $id_ope . $id_det . $key_det . $ext;
-                            $archivo->move(public_path("/files/"), $nom_archivo);
-                            $detalle_operacion->st_j_file = $nom_archivo;
-                            $detalle_operacion->st_j_est = 1;
+                            $agregados = [];
+                            foreach ($st_j as $index_file => $file) {
+                                $archivo = $file;
+                                $ext = "." . $archivo->getClientOriginalExtension();
+                                $nom_archivo = $index_file . "st_j" . time() . $id_ope . $id_det . $key_det . $ext;
+                                $archivo->move(public_path("/files/"), $nom_archivo);
+                                $agregados[] = $nom_archivo;
+                            }
+                            if (count($agregados) > 0) {
+                                $detalle_operacion->st_j_file = implode("|", $agregados);
+                                $detalle_operacion->st_j_est = 1;
+                            }
                         }
 
                         $antiguo = $detalle_operacion->tt_j_file;
                         if ($tt_j) {
-                            if ($antiguo && $antiguo != '') {
-                                \File::delete(public_path("/files/" . $antiguo));
-                                $detalle_operacion->tt_j_est = 0;
+                            $archivos_antiguos = $detalle_operacion->tt_j_array;
+                            if ($archivos_antiguos) {
+                                foreach ($archivos_antiguos as $value) {
+                                    \File::delete(public_path("/files/" . $value));
+                                }
                             }
-                            $archivo = $tt_j;
-                            $ext = "." . $archivo->getClientOriginalExtension();
-                            $nom_archivo = "tt_j" . time() . $id_ope . $id_det . $key_det . $ext;
-                            $archivo->move(public_path("/files/"), $nom_archivo);
-                            $detalle_operacion->tt_j_file = $nom_archivo;
-                            $detalle_operacion->tt_j_est = 1;
+                            $agregados = [];
+                            foreach ($tt_j as $index_file => $file) {
+                                $archivo = $file;
+                                $ext = "." . $archivo->getClientOriginalExtension();
+                                $nom_archivo = $index_file . "tt_j" . time() . $id_ope . $id_det . $key_det . $ext;
+                                $archivo->move(public_path("/files/"), $nom_archivo);
+                                $agregados[] = $nom_archivo;
+                            }
+                            if (count($agregados) > 0) {
+                                $detalle_operacion->tt_j_file = implode("|", $agregados);
+                                $detalle_operacion->tt_j_est = 1;
+                            }
                         }
 
                         $antiguo = $detalle_operacion->tt_a_file;
                         if ($tt_a) {
-                            if ($antiguo && $antiguo != '') {
-                                \File::delete(public_path("/files/" . $antiguo));
-                                $detalle_operacion->tt_a_est = 0;
+                            $archivos_antiguos = $detalle_operacion->tt_a_array;
+                            if ($archivos_antiguos) {
+                                foreach ($archivos_antiguos as $value) {
+                                    \File::delete(public_path("/files/" . $value));
+                                }
                             }
-                            $archivo = $tt_a;
-                            $ext = "." . $archivo->getClientOriginalExtension();
-                            $nom_archivo = "tt_a" . time() . $id_ope . $id_det . $key_det . $ext;
-                            $archivo->move(public_path("/files/"), $nom_archivo);
-                            $detalle_operacion->tt_a_file = $nom_archivo;
-                            $detalle_operacion->tt_a_est = 1;
+                            $agregados = [];
+                            foreach ($tt_a as $index_file => $file) {
+                                $archivo = $file;
+                                $ext = "." . $archivo->getClientOriginalExtension();
+                                $nom_archivo = $index_file . "tt_a" . time() . $id_ope . $id_det . $key_det . $ext;
+                                $archivo->move(public_path("/files/"), $nom_archivo);
+                                $agregados[] = $nom_archivo;
+                            }
+                            if (count($agregados) > 0) {
+                                $detalle_operacion->tt_a_file = implode("|", $agregados);
+                                $detalle_operacion->tt_a_est = 1;
+                            }
                         }
 
                         $antiguo = $detalle_operacion->tt_s_file;
                         if ($tt_s) {
-                            if ($antiguo && $antiguo != '') {
-                                \File::delete(public_path("/files/" . $antiguo));
-                                $detalle_operacion->tt_s_est = 0;
+                            $archivos_antiguos = $detalle_operacion->tt_s_array;
+                            if ($archivos_antiguos) {
+                                foreach ($archivos_antiguos as $value) {
+                                    \File::delete(public_path("/files/" . $value));
+                                }
                             }
-                            $archivo = $tt_s;
-                            $ext = "." . $archivo->getClientOriginalExtension();
-                            $nom_archivo = "tt_s" . time() . $id_ope . $id_det . $key_det . $ext;
-                            $archivo->move(public_path("/files/"), $nom_archivo);
-                            $detalle_operacion->tt_s_file = $nom_archivo;
-                            $detalle_operacion->tt_s_est = 1;
+                            $agregados = [];
+                            foreach ($tt_s as $index_file => $file) {
+                                $archivo = $file;
+                                $ext = "." . $archivo->getClientOriginalExtension();
+                                $nom_archivo = $index_file . "tt_s" . time() . $id_ope . $id_det . $key_det . $ext;
+                                $archivo->move(public_path("/files/"), $nom_archivo);
+                                $agregados[] = $nom_archivo;
+                            }
+                            if (count($agregados) > 0) {
+                                $detalle_operacion->tt_s_file = implode("|", $agregados);
+                                $detalle_operacion->tt_s_est = 1;
+                            }
                         }
 
                         $antiguo = $detalle_operacion->ct_o_file;
                         if ($ct_o) {
-                            if ($antiguo && $antiguo != '') {
-                                \File::delete(public_path("/files/" . $antiguo));
-                                $detalle_operacion->ct_o_est = 0;
+                            $archivos_antiguos = $detalle_operacion->ct_o_array;
+                            if ($archivos_antiguos) {
+                                foreach ($archivos_antiguos as $value) {
+                                    \File::delete(public_path("/files/" . $value));
+                                }
                             }
-                            $archivo = $ct_o;
-                            $ext = "." . $archivo->getClientOriginalExtension();
-                            $nom_archivo = "ct_o" . time() . $id_ope . $id_det . $key_det . $ext;
-                            $archivo->move(public_path("/files/"), $nom_archivo);
-                            $detalle_operacion->ct_o_file = $nom_archivo;
-                            $detalle_operacion->ct_o_est = 1;
+                            $agregados = [];
+                            foreach ($ct_o as $index_file => $file) {
+                                $archivo = $file;
+                                $ext = "." . $archivo->getClientOriginalExtension();
+                                $nom_archivo = $index_file . "ct_o" . time() . $id_ope . $id_det . $key_det . $ext;
+                                $archivo->move(public_path("/files/"), $nom_archivo);
+                                $agregados[] = $nom_archivo;
+                            }
+                            if (count($agregados) > 0) {
+                                $detalle_operacion->ct_o_file = implode("|", $agregados);
+                                $detalle_operacion->ct_o_est = 1;
+                            }
                         }
 
                         $antiguo = $detalle_operacion->ct_n_file;
                         if ($ct_n) {
-                            if ($antiguo && $antiguo != '') {
-                                \File::delete(public_path("/files/" . $antiguo));
-                                $detalle_operacion->ct_n_est = 0;
+                            $archivos_antiguos = $detalle_operacion->ct_n_array;
+                            if ($archivos_antiguos) {
+                                foreach ($archivos_antiguos as $value) {
+                                    \File::delete(public_path("/files/" . $value));
+                                }
                             }
-                            $archivo = $ct_n;
-                            $ext = "." . $archivo->getClientOriginalExtension();
-                            $nom_archivo = "ct_n" . time() . $id_ope . $id_det . $key_det . $ext;
-                            $archivo->move(public_path("/files/"), $nom_archivo);
-                            $detalle_operacion->ct_n_file = $nom_archivo;
-                            $detalle_operacion->ct_n_est = 1;
+                            $agregados = [];
+                            foreach ($ct_n as $index_file => $file) {
+                                $archivo = $file;
+                                $ext = "." . $archivo->getClientOriginalExtension();
+                                $nom_archivo = $index_file . "ct_n" . time() . $id_ope . $id_det . $key_det . $ext;
+                                $archivo->move(public_path("/files/"), $nom_archivo);
+                                $agregados[] = $nom_archivo;
+                            }
+                            if (count($agregados) > 0) {
+                                $detalle_operacion->ct_n_file = implode("|", $agregados);
+                                $detalle_operacion->ct_n_est = 1;
+                            }
                         }
 
                         $antiguo = $detalle_operacion->ct_d_file;
                         if ($ct_d) {
-                            if ($antiguo && $antiguo != '') {
-                                \File::delete(public_path("/files/" . $antiguo));
-                                $detalle_operacion->ct_d_est = 0;
+                            $archivos_antiguos = $detalle_operacion->ct_d_array;
+                            if ($archivos_antiguos) {
+                                foreach ($archivos_antiguos as $value) {
+                                    \File::delete(public_path("/files/" . $value));
+                                }
                             }
-                            $archivo = $ct_d;
-                            $ext = "." . $archivo->getClientOriginalExtension();
-                            $nom_archivo = "ct_d" . time() . $id_ope . $id_det . $key_det . $ext;
-                            $archivo->move(public_path("/files/"), $nom_archivo);
-                            $detalle_operacion->ct_d_file = $nom_archivo;
-                            $detalle_operacion->ct_d_est = 1;
+                            $agregados = [];
+                            foreach ($ct_d as $index_file => $file) {
+                                $archivo = $file;
+                                $ext = "." . $archivo->getClientOriginalExtension();
+                                $nom_archivo = $index_file . "ct_d" . time() . $id_ope . $id_det . $key_det . $ext;
+                                $archivo->move(public_path("/files/"), $nom_archivo);
+                                $agregados[] = $nom_archivo;
+                            }
+                            if (count($agregados) > 0) {
+                                $detalle_operacion->ct_d_file = implode("|", $agregados);
+                                $detalle_operacion->ct_d_est = 1;
+                            }
                         }
 
                         $detalle_operacion->save();
@@ -454,29 +552,46 @@ class DetalleFormularioController extends Controller
                         $array_programados[$mes] += (float)$do[$mes];
                         $total_programados += (float)$do[$mes];
                         // ejecutado
-                        if ($do[$mes . "_est"] == 2) {
-                            $array_ejecutados[$mes] += $do[$mes];
-                            $total_ejecutados += (float)$do[$mes];
+                        if ($do[$mes . "_eje"] > 0) {
+                            $array_ejecutados[$mes] += $do[$mes . "_eje"];
+                            $total_ejecutados += (float)$do[$mes . "_eje"];
                         }
                     }
                 }
             }
         }
 
-        foreach ($meses as $mes) {
+        $a_la_fecha = 0;
+        $sum1 = 0;
+        $sum2 = 0;
+        $num_mes_actual = (int)date("m");
+        $num_mes_actual--;
+
+        foreach ($meses as $key_mes => $mes) {
             if ($total_programados > 0) {
                 $array_programados_p[$mes] = ($array_programados[$mes] * 100) / $total_programados;
                 $array_programados_p[$mes] = round($array_programados_p[$mes], 2);
+                if ($key_mes <= $num_mes_actual) {
+                    $sum1 += (float)$array_programados_p[$mes];
+                }
             } else {
                 $array_programados_p = 0;
             }
             if ($total_programados > 0) {
                 $array_ejecutados_p[$mes] = ($array_ejecutados[$mes] * 100) / $total_programados;
                 $array_ejecutados_p[$mes] = round($array_ejecutados_p[$mes], 2);
+                if ($key_mes <= $num_mes_actual) {
+                    $sum2 += (float)$array_ejecutados_p[$mes];
+                }
             } else {
                 $array_ejecutados_p = 0;
             }
         }
+
+        if ($sum1 > 0) {
+            $a_la_fecha = $sum2 / $sum1;
+        }
+        $a_la_fecha = round($a_la_fecha, 2);
 
         $p_ejecutados = 0;
         if ($total_programados > 0) {
@@ -507,6 +622,7 @@ class DetalleFormularioController extends Controller
             'detalle_formulario' => $detalle_formulario->load("operacions.subdireccion"),
             "total_programados" => $total_programados,
             "total_ejecutados" => $total_ejecutados,
+            "a_la_fecha" => $a_la_fecha,
             "meses" => $meses,
             "array_programados" => $array_programados,
             "array_programados_p" => $array_programados_p,
