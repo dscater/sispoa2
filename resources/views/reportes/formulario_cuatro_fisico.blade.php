@@ -466,6 +466,11 @@
                     {{ $p_ejecutados }}%
                 </td>
             </tr>
+            <tr>
+                <td colspan="19"></td>
+                <td colspan="2">
+                    {{ $a_la_fecha }}% A la fecha
+                </td>
             </tr>
         </tbody>
     </table>

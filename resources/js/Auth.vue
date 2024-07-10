@@ -257,6 +257,6 @@ export default {
 }
 
 .contenedor_captcha > div > div {
-    width: 100%!important;
+    width: 100% !important;
 }
 </style>

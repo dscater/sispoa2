@@ -35,6 +35,36 @@
                                 </div>
                             </div>
                             <div class="card-body">
+                                <div class="row mb-2">
+                                    <div class="col-12">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <label>Fecha Inicio</label>
+                                                <input
+                                                    type="date"
+                                                    class="form-control rounded-0"
+                                                    @change="generaGrafico()"
+                                                    @keyup="generaGrafico()"
+                                                    v-model="fecha_ini"
+                                                />
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label>Fecha Fin</label>
+                                                <input
+                                                    type="date"
+                                                    class="form-control rounded-0"
+                                                    @change="generaGrafico()"
+                                                    @keyup="generaGrafico()"
+                                                    v-model="fecha_fin"
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="col-12 p-4"
+                                        id="container"
+                                    ></div>
+                                </div>
                                 <div class="row">
                                     <div class="col-md-3">
                                         <button
@@ -45,415 +75,11 @@
                                         </button>
                                     </div>
                                 </div>
-                                <table class="tabla_detalle" border="1">
-                                    <thead>
-                                        <tr class="bg-primary">
-                                            <th rowspan="3" width="5%">
-                                                Código Operación(1)
-                                            </th>
-                                            <th rowspan="3">Operación(2)</th>
-                                            <th rowspan="3">Ponderación</th>
-                                            <th rowspan="3">
-                                                Resultado intermedio Esperado(3)
-                                            </th>
-                                            <th rowspan="3">
-                                                Medios de verificación(4)
-                                            </th>
-                                            <th rowspan="3">Código tarea(5)</th>
-                                            <th rowspan="3">
-                                                Actividad/Tarea(6)
-                                            </th>
-                                            <th colspan="12">
-                                                Programación de ejecución de
-                                                operaciones y actividades(7)
-                                            </th>
-                                            <th colspan="2">
-                                                Fecha prevista de ejecución(8)
-                                            </th>
-                                        </tr>
-                                        <tr class="bg-primary">
-                                            <th colspan="3">1er Trim.</th>
-                                            <th colspan="3">2do Trim.</th>
-                                            <th colspan="3">3er Trim.</th>
-                                            <th colspan="3">4to Trim.</th>
-                                            <th rowspan="2">Inicio</th>
-                                            <th rowspan="2">Final</th>
-                                        </tr>
-                                        <tr class="bg-primary">
-                                            <th>E</th>
-                                            <th>F</th>
-                                            <th>M</th>
-                                            <th>A</th>
-                                            <th>M</th>
-                                            <th>J</th>
-                                            <th>J</th>
-                                            <th>A</th>
-                                            <th>S</th>
-                                            <th>O</th>
-                                            <th>N</th>
-                                            <th>D</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <template
-                                            v-for="(
-                                                operacion, index_operacion
-                                            ) in oDetalleFormulario.operacions"
-                                        >
-                                            <tr
-                                                v-if="operacion.subdireccion"
-                                                class="bg-primary"
-                                            >
-                                                <td colspan="21">
-                                                    {{
-                                                        operacion.subdireccion
-                                                            .nombre
-                                                    }}
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td
-                                                    :rowspan="
-                                                        operacion
-                                                            .detalle_operaciones
-                                                            .length + 1
-                                                    "
-                                                >
-                                                    {{
-                                                        operacion.codigo_operacion
-                                                    }}
-                                                </td>
-                                                <td
-                                                    :rowspan="
-                                                        operacion
-                                                            .detalle_operaciones
-                                                            .length + 1
-                                                    "
-                                                >
-                                                    {{ operacion.operacion }}
-                                                </td>
-                                                <td
-                                                    :rowspan="
-                                                        operacion
-                                                            .detalle_operaciones
-                                                            .length + 1
-                                                    "
-                                                >
-                                                    {{ operacion.ponderacion }}
-                                                    %
-                                                </td>
-                                                <td
-                                                    :rowspan="
-                                                        operacion
-                                                            .detalle_operaciones
-                                                            .length + 1
-                                                    "
-                                                >
-                                                    {{
-                                                        operacion.resultado_esperado
-                                                    }}
-                                                </td>
-                                                <td
-                                                    :rowspan="
-                                                        operacion
-                                                            .detalle_operaciones
-                                                            .length + 1
-                                                    "
-                                                >
-                                                    {{
-                                                        operacion.medios_verificacion
-                                                    }}
-                                                </td>
-                                            </tr>
-                                            <tr
-                                                v-for="(
-                                                    detalle_operacion,
-                                                    index_detalle
-                                                ) in operacion.detalle_operaciones"
-                                            >
-                                                <!-- <td>
-                                                    {{
-                                                        detalle_operacion.ponderacion
-                                                    }}%
-                                                </td> -->
-                                                <!-- <td>
-                                                    {{
-                                                        detalle_operacion.resultado_esperado
-                                                    }}
-                                                </td> -->
-                                                <!-- <td>
-                                                    {{
-                                                        detalle_operacion.medios_verificacion
-                                                    }}
-                                                </td> -->
-                                                <td>
-                                                    {{
-                                                        detalle_operacion.codigo_tarea
-                                                    }}
-                                                </td>
-                                                <td>
-                                                    {{
-                                                        detalle_operacion.actividad_tarea
-                                                    }}
-                                                </td>
-                                                <td
-                                                    :class="[
-                                                        parseFloat(
-                                                            detalle_operacion.pt_e
-                                                        ) > 0 &&
-                                                        detalle_operacion.pt_e ==
-                                                            detalle_operacion.pt_e_eje
-                                                            ? 'bg-success'
-                                                            : detalle_operacion.pt_e
-                                                            ? 'bg-warning'
-                                                            : '',
-                                                    ]"
-                                                >
-                                                    {{ detalle_operacion.pt_e }}
-                                                </td>
-
-                                                <td
-                                                    :class="[
-                                                        parseFloat(
-                                                            detalle_operacion.pt_f
-                                                        ) > 0 &&
-                                                        detalle_operacion.pt_f ==
-                                                            detalle_operacion.pt_f_eje
-                                                            ? 'bg-success'
-                                                            : detalle_operacion.pt_f
-                                                            ? 'bg-warning'
-                                                            : '',
-                                                    ]"
-                                                >
-                                                    {{ detalle_operacion.pt_f }}
-                                                </td>
-
-                                                <td
-                                                    :class="[
-                                                        parseFloat(
-                                                            detalle_operacion.pt_m
-                                                        ) > 0 &&
-                                                        detalle_operacion.pt_m ==
-                                                            detalle_operacion.pt_m_eje
-                                                            ? 'bg-success'
-                                                            : detalle_operacion.pt_m
-                                                            ? 'bg-warning'
-                                                            : '',
-                                                    ]"
-                                                >
-                                                    {{ detalle_operacion.pt_m }}
-                                                </td>
-
-                                                <td
-                                                    :class="[
-                                                        parseFloat(
-                                                            detalle_operacion.st_a
-                                                        ) > 0 &&
-                                                        detalle_operacion.st_a ==
-                                                            detalle_operacion.st_a_eje
-                                                            ? 'bg-success'
-                                                            : detalle_operacion.st_a
-                                                            ? 'bg-warning'
-                                                            : '',
-                                                    ]"
-                                                >
-                                                    {{ detalle_operacion.st_a }}
-                                                </td>
-
-                                                <td
-                                                    :class="[
-                                                        parseFloat(
-                                                            detalle_operacion.st_m
-                                                        ) > 0 &&
-                                                        detalle_operacion.st_m ==
-                                                            detalle_operacion.st_m_eje
-                                                            ? 'bg-success'
-                                                            : detalle_operacion.st_m
-                                                            ? 'bg-warning'
-                                                            : '',
-                                                    ]"
-                                                >
-                                                    {{ detalle_operacion.st_m }}
-                                                </td>
-
-                                                <td
-                                                    :class="[
-                                                        parseFloat(
-                                                            detalle_operacion.st_j
-                                                        ) > 0 &&
-                                                        detalle_operacion.st_j ==
-                                                            detalle_operacion.st_j_eje
-                                                            ? 'bg-success'
-                                                            : detalle_operacion.st_j
-                                                            ? 'bg-warning'
-                                                            : '',
-                                                    ]"
-                                                >
-                                                    {{ detalle_operacion.st_j }}
-                                                </td>
-
-                                                <td
-                                                    :class="[
-                                                        parseFloat(
-                                                            detalle_operacion.tt_j
-                                                        ) > 0 &&
-                                                        detalle_operacion.tt_j ==
-                                                            detalle_operacion.tt_j_eje
-                                                            ? 'bg-success'
-                                                            : detalle_operacion.tt_j
-                                                            ? 'bg-warning'
-                                                            : '',
-                                                    ]"
-                                                >
-                                                    {{ detalle_operacion.tt_j }}
-                                                </td>
-
-                                                <td
-                                                    :class="[
-                                                        parseFloat(
-                                                            detalle_operacion.tt_a
-                                                        ) > 0 &&
-                                                        detalle_operacion.tt_a ==
-                                                            detalle_operacion.tt_a_eje
-                                                            ? 'bg-success'
-                                                            : detalle_operacion.tt_a
-                                                            ? 'bg-warning'
-                                                            : '',
-                                                    ]"
-                                                >
-                                                    {{ detalle_operacion.tt_a }}
-                                                </td>
-
-                                                <td
-                                                    :class="[
-                                                        parseFloat(
-                                                            detalle_operacion.tt_s
-                                                        ) > 0 &&
-                                                        detalle_operacion.tt_s ==
-                                                            detalle_operacion.tt_s_eje
-                                                            ? 'bg-success'
-                                                            : detalle_operacion.tt_s
-                                                            ? 'bg-warning'
-                                                            : '',
-                                                    ]"
-                                                >
-                                                    {{ detalle_operacion.tt_s }}
-                                                </td>
-
-                                                <td
-                                                    :class="[
-                                                        parseFloat(
-                                                            detalle_operacion.ct_o
-                                                        ) > 0 &&
-                                                        detalle_operacion.ct_o ==
-                                                            detalle_operacion.ct_o_eje
-                                                            ? 'bg-success'
-                                                            : detalle_operacion.ct_o
-                                                            ? 'bg-warning'
-                                                            : '',
-                                                    ]"
-                                                >
-                                                    {{ detalle_operacion.ct_o }}
-                                                </td>
-
-                                                <td
-                                                    :class="[
-                                                        parseFloat(
-                                                            detalle_operacion.ct_n
-                                                        ) > 0 &&
-                                                        detalle_operacion.ct_n ==
-                                                            detalle_operacion.ct_n_eje
-                                                            ? 'bg-success'
-                                                            : detalle_operacion.ct_n
-                                                            ? 'bg-warning'
-                                                            : '',
-                                                    ]"
-                                                >
-                                                    {{ detalle_operacion.ct_n }}
-                                                </td>
-
-                                                <td
-                                                    :class="[
-                                                        parseFloat(
-                                                            detalle_operacion.ct_d
-                                                        ) > 0 &&
-                                                        detalle_operacion.ct_d ==
-                                                            detalle_operacion.ct_d_eje
-                                                            ? 'bg-success'
-                                                            : detalle_operacion.ct_d
-                                                            ? 'bg-warning'
-                                                            : '',
-                                                    ]"
-                                                >
-                                                    {{ detalle_operacion.ct_d }}
-                                                </td>
-
-                                                <td>
-                                                    {{
-                                                        formatoFecha(
-                                                            detalle_operacion.inicio
-                                                        )
-                                                    }}
-                                                </td>
-                                                <td>
-                                                    {{
-                                                        formatoFecha(
-                                                            detalle_operacion.final
-                                                        )
-                                                    }}
-                                                </td>
-                                            </tr>
-                                        </template>
-
-                                        <tr>
-                                            <td colspan="7"></td>
-                                            <td v-for="mes in meses">
-                                                {{ array_programados[mes] }}
-                                            </td>
-                                            <td colspan="2">
-                                                {{ total_programados }}
-                                                Programados
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="7"></td>
-                                            <td v-for="mes in meses">
-                                                {{ array_programados_p[mes] }}
-                                            </td>
-                                            <td colspan="2">100%</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="7"></td>
-                                            <td v-for="mes in meses">
-                                                {{ array_ejecutados[mes] }}
-                                            </td>
-                                            <td colspan="2">
-                                                {{ total_ejecutados }}
-                                                Ejecutados
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="7"></td>
-                                            <td v-for="mes in meses">
-                                                {{ array_ejecutados_p[mes] }}
-                                            </td>
-                                            <td colspan="2">
-                                                {{ p_ejecutados }}% Acumulados
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="19"></td>
-                                            <td colspan="2">
-                                                {{ a_la_fecha }}% A la fecha
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div id="container"></div>
-                                    </div>
-                                </div>
+                                <table
+                                    class="tabla_detalle"
+                                    border="1"
+                                    v-html="html"
+                                ></table>
                             </div>
                         </div>
                     </div>
@@ -464,6 +90,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
     props: ["id"],
     data() {
@@ -484,18 +112,24 @@ export default {
             array_ejecutados_p: [],
             p_ejecutados: 0,
             a_la_fecha: 0,
+            fecha_ini: "",
+            fecha_fin: "",
+            interval_grafico: null,
+            html: "",
         };
     },
     mounted() {
         this.getDetalleFormulario();
+        this.generaGrafico();
         this.loadingWindow.close();
     },
     methods: {
         // OBTENER EL REGISTRO DETALLE FORMULARIO
         getDetalleFormulario() {
             axios
-                .get("/admin/detalle_formularios/" + this.id)
+                .get("/admin/detalle_formularios/getTablaSubunidad/" + this.id)
                 .then((response) => {
+                    this.html = response.data.html;
                     this.oDetalleFormulario = response.data.detalle_formulario;
                     this.total_programados = response.data.total_programados;
                     this.total_ejecutados = response.data.total_ejecutados;
@@ -507,12 +141,30 @@ export default {
                     this.array_ejecutados_p = response.data.array_ejecutados_p;
                     this.p_ejecutados = response.data.p_ejecutados;
                     this.a_la_fecha = response.data.a_la_fecha;
+                });
+        },
+        generaGrafico() {
+            clearInterval(this.interval_grafico);
+            this.interval_grafico = setTimeout(this.getGrafico(), 700);
+        },
+        getGrafico() {
+            axios
+                .get("/admin/detalle_formularios/getGraficoFechas/" + this.id, {
+                    params: {
+                        fecha_ini: this.fecha_ini,
+                        fecha_fin: this.fecha_fin,
+                    },
+                })
+                .then((response) => {
                     Highcharts.chart("container", {
                         chart: {
                             type: "column",
+                            backgroundColor: "#f0f0f0", // Fondo del gráfico
+                            borderColor: "#000000", // Color del borde
+                            borderWidth: 2, // Ancho del borde
                         },
                         title: {
-                            text: "Ejecutados/Programados",
+                            text: "Programados/Ejecutados",
                         },
                         subtitle: {
                             text: "",
@@ -541,7 +193,7 @@ export default {
                                 borderWidth: 0,
                                 dataLabels: {
                                     enabled: true,
-                                    format: "{point.y:.0f}",
+                                    format: "{point.y:.2f}%",
                                 },
                             },
                         },
@@ -550,7 +202,7 @@ export default {
                                 '<span style="font-size:10px"><b>{point.key}</b></span><table>',
                             pointFormat:
                                 '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                                '<td style="padding:0"><b>{point.y}</b></td></tr>',
+                                '<td style="padding:0"><b>{point.y}</b>%</td></tr>',
                             footerFormat: "</table>",
                             shared: true,
                             useHTML: true,

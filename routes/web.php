@@ -109,6 +109,13 @@ Route::prefix('admin')->group(function () {
     ]);
 
     // DETALLE FORMULARIO CUATRO
+    Route::get('detalle_formularios/getGraficoFechas/{detalle_formulario}', [DetalleFormularioController::class, "getGraficoFechas"]);
+    Route::get('detalle_formularios/getTablaHtml/{detalle_formulario}', [DetalleFormularioController::class, "getTablaHtml"]);
+    Route::get('detalle_formularios/getTablaHtmlMeses/{detalle_formulario}', [DetalleFormularioController::class, "getTablaHtmlMeses"]);
+    Route::get('detalle_formularios/getTablaSubunidad/{detalle_formulario}', [DetalleFormularioController::class, "getTablaSubunidad"]);
+    Route::get('detalle_formularios/getEjecucionFisico', [DetalleFormularioController::class, "getEjecucionFisico"]);
+    Route::get('detalle_formularios/getEjecucionFisicoGrafico', [DetalleFormularioController::class, "getEjecucionFisicoGrafico"]);
+    Route::get('detalle_formularios/getEjecucionFisicoUnidades', [DetalleFormularioController::class, "getEjecucionFisicoUnidades"]);
     Route::get('detalle_formularios/seguimiento_trimestral', [DetalleFormularioController::class, "seguimiento_trimestral"]);
     Route::resource('detalle_formularios', DetalleFormularioController::class)->only([
         'index', 'store', 'update', 'destroy', 'show'

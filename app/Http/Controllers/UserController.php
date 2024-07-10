@@ -349,6 +349,18 @@ class UserController extends Controller
             'memoria_calculos.destroy',
         ],
         'MAE' => [
+            // "reportes.fisicos",
+            // "reportes.financieros",
+            // "reportes.semaforos",
+
+            "reportes.formulario_cuatro",
+            "reportes.formulario_cuatro",
+            "reportes.formulario_cinco",
+            "reportes.memoria_calculos",
+            "reportes.saldos_actividad",
+            "reportes.saldos_partida",
+            "reportes.ejecucion_presupuestos",
+            "reportes.ejecucion_presupuestos_g",
             "reportes.fisicos",
             "reportes.financieros",
             "reportes.semaforos",

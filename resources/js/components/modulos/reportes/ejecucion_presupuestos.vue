@@ -4,7 +4,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Reportes - Ejecución de presupuestos</h1>
+                        <h1>Reportes - Ejecución de financiera</h1>
                     </div>
                 </div>
             </div>
@@ -283,7 +283,8 @@ export default {
         if (
             this.user.tipo == "JEFES DE UNIDAD" ||
             this.user.tipo == "DIRECTORES" ||
-            this.user.tipo == "JEFES DE ÁREAS"
+            this.user.tipo == "JEFES DE ÁREAS"||
+            this.user.tipo == "MAE"
         ) {
             this.listFiltro = ["Todos", "Código PEI", "Rango de fechas"];
         }

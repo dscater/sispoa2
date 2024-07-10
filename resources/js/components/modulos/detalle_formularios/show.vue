@@ -35,223 +35,11 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <table class="tabla_detalle" border="1">
-                                    <thead>
-                                        <tr class="bg-primary">
-                                            <th rowspan="3" width="5%">
-                                                Código Operación(1)
-                                            </th>
-                                            <th rowspan="3">Operación(2)</th>
-                                            <th rowspan="3">Ponderación</th>
-                                            <th rowspan="3">
-                                                Resultado intermedio Esperado(3)
-                                            </th>
-                                            <th rowspan="3">
-                                                Medios de verificación(4)
-                                            </th>
-                                            <th rowspan="3">Código tarea(5)</th>
-                                            <th rowspan="3">
-                                                Actividad/Tarea(6)
-                                            </th>
-                                            <th colspan="12">
-                                                Programación de ejecución de
-                                                operaciones y actividades(7)
-                                            </th>
-                                            <th colspan="2">
-                                                Fecha prevista de ejecución(8)
-                                            </th>
-                                        </tr>
-                                        <tr class="bg-primary">
-                                            <th colspan="3">1er Trim.</th>
-                                            <th colspan="3">2do Trim.</th>
-                                            <th colspan="3">3er Trim.</th>
-                                            <th colspan="3">4to Trim.</th>
-                                            <th rowspan="2">Inicio</th>
-                                            <th rowspan="2">Final</th>
-                                        </tr>
-                                        <tr class="bg-primary">
-                                            <th>E</th>
-                                            <th>F</th>
-                                            <th>M</th>
-                                            <th>A</th>
-                                            <th>M</th>
-                                            <th>J</th>
-                                            <th>J</th>
-                                            <th>A</th>
-                                            <th>S</th>
-                                            <th>O</th>
-                                            <th>N</th>
-                                            <th>D</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <template
-                                            v-for="(
-                                                operacion, index_operacion
-                                            ) in oDetalleFormulario.operacions"
-                                        >
-                                            <tr
-                                                v-if="operacion.subdireccion"
-                                                class="bg-primary"
-                                            >
-                                                <td colspan="21">
-                                                    {{
-                                                        operacion.subdireccion
-                                                            .nombre
-                                                    }}
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td
-                                                    :rowspan="
-                                                        operacion
-                                                            .detalle_operaciones
-                                                            .length + 1
-                                                    "
-                                                >
-                                                    {{
-                                                        operacion.codigo_operacion
-                                                    }}
-                                                </td>
-                                                <td
-                                                    :rowspan="
-                                                        operacion
-                                                            .detalle_operaciones
-                                                            .length + 1
-                                                    "
-                                                >
-                                                    {{ operacion.operacion }}
-                                                </td>
-                                                <td
-                                                    :rowspan="
-                                                        operacion
-                                                            .detalle_operaciones
-                                                            .length + 1
-                                                    "
-                                                >
-                                                    {{ operacion.ponderacion }}
-                                                    %
-                                                </td>
-                                                <td
-                                                    :rowspan="
-                                                        operacion
-                                                            .detalle_operaciones
-                                                            .length + 1
-                                                    "
-                                                >
-                                                    {{
-                                                        operacion.resultado_esperado
-                                                    }}
-                                                </td>
-                                                <td
-                                                    :rowspan="
-                                                        operacion
-                                                            .detalle_operaciones
-                                                            .length + 1
-                                                    "
-                                                >
-                                                    {{
-                                                        operacion.medios_verificacion
-                                                    }}
-                                                </td>
-                                            </tr>
-                                            <tr
-                                                v-for="(
-                                                    detalle_operacion,
-                                                    index_detalle
-                                                ) in operacion.detalle_operaciones"
-                                            >
-                                                <!-- <td>
-                                                    {{
-                                                        detalle_operacion.ponderacion
-                                                    }}%
-                                                </td> -->
-                                                <!-- <td>
-                                                    {{
-                                                        detalle_operacion.resultado_esperado
-                                                    }}
-                                                </td> -->
-                                                <!-- <td>
-                                                    {{
-                                                        detalle_operacion.medios_verificacion
-                                                    }}
-                                                </td> -->
-                                                <td>
-                                                    {{
-                                                        detalle_operacion.codigo_tarea
-                                                    }}
-                                                </td>
-                                                <td>
-                                                    {{
-                                                        detalle_operacion.actividad_tarea
-                                                    }}
-                                                </td>
-                                                <td>
-                                                    {{ detalle_operacion.pt_e }}
-                                                </td>
-
-                                                <td>
-                                                    {{ detalle_operacion.pt_f }}
-                                                </td>
-
-                                                <td>
-                                                    {{ detalle_operacion.pt_m }}
-                                                </td>
-
-                                                <td>
-                                                    {{ detalle_operacion.st_a }}
-                                                </td>
-
-                                                <td>
-                                                    {{ detalle_operacion.st_m }}
-                                                </td>
-
-                                                <td>
-                                                    {{ detalle_operacion.st_j }}
-                                                </td>
-
-                                                <td>
-                                                    {{ detalle_operacion.tt_j }}
-                                                </td>
-
-                                                <td>
-                                                    {{ detalle_operacion.tt_a }}
-                                                </td>
-
-                                                <td>
-                                                    {{ detalle_operacion.tt_s }}
-                                                </td>
-
-                                                <td>
-                                                    {{ detalle_operacion.ct_o }}
-                                                </td>
-
-                                                <td>
-                                                    {{ detalle_operacion.ct_n }}
-                                                </td>
-
-                                                <td>
-                                                    {{ detalle_operacion.ct_d }}
-                                                </td>
-
-                                                <td>
-                                                    {{
-                                                        formatoFecha(
-                                                            detalle_operacion.inicio
-                                                        )
-                                                    }}
-                                                </td>
-                                                <td>
-                                                    {{
-                                                        formatoFecha(
-                                                            detalle_operacion.final
-                                                        )
-                                                    }}
-                                                </td>
-                                            </tr>
-                                        </template>
-                                    </tbody>
-                                </table>
+                                <table
+                                    class="tabla_detalle"
+                                    border="1"
+                                    v-html="html"
+                                ></table>
                             </div>
                         </div>
                     </div>
@@ -277,6 +65,7 @@ export default {
             oDetalleFormulario: {
                 operacions: [],
             },
+            html: "",
         };
     },
     mounted() {
@@ -287,9 +76,10 @@ export default {
         // OBTENER EL REGISTRO DETALLE FORMULARIO
         getDetalleFormulario() {
             axios
-                .get("/admin/detalle_formularios/" + this.id)
+                .get("/admin/detalle_formularios/getTablaHtml/" + this.id)
                 .then((response) => {
                     this.oDetalleFormulario = response.data.detalle_formulario;
+                    this.html = response.data.html;
                 });
         },
         formatoFecha(date) {

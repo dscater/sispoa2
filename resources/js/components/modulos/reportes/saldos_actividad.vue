@@ -83,10 +83,10 @@
                                                             item, index_form
                                                         ) in listFormularios"
                                                         :key="index_form"
-                                                        :value="item.poa_seleccionado"
-                                                        :label="
-                                                            item.codigo_poa
+                                                        :value="
+                                                            item.poa_seleccionado
                                                         "
+                                                        :label="item.codigo_poa"
                                                     >
                                                     </el-option>
                                                 </el-select>
@@ -233,7 +233,8 @@ export default {
         if (
             this.user.tipo == "JEFES DE UNIDAD" ||
             this.user.tipo == "DIRECTORES" ||
-            this.user.tipo == "JEFES DE ÁREAS"
+            this.user.tipo == "JEFES DE ÁREAS" ||
+            this.user.tipo == "MAE"
         ) {
             this.oReporte.unidad_id = this.user.unidad_id;
             this.getFormularios();

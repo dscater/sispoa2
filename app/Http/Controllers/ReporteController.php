@@ -442,7 +442,7 @@ class ReporteController extends Controller
 
         $memoria_calculos = [];
         $unidad = null;
-        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS") {
+        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "MAE") {
             $memoria_calculos = MemoriaCalculo::select("memoria_calculos.*")
                 ->join("formulario_cuatro", "formulario_cuatro.id", "=", "memoria_calculos.formulario_id")
                 ->where("formulario_cuatro.unidad_id", Auth::user()->unidad_id)->get();
@@ -513,7 +513,7 @@ class ReporteController extends Controller
 
         $formularios = [];
         $unidad = null;
-        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS") {
+        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "MAE") {
             $formularios = FormularioCuatro::where("unidad_id", Auth::user()->unidad_id)->get();
             if ($filtro != "Todos") {
                 switch ($filtro) {
@@ -570,7 +570,7 @@ class ReporteController extends Controller
 
         $memoria_calculos = [];
         $unidad = null;
-        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS") {
+        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "MAE") {
             $memoria_calculos = MemoriaCalculo::select("memoria_calculos.*")
                 ->join("formulario_cuatro", "formulario_cuatro.id", "memoria_calculos.formulario_id")
                 ->where("formulario_cuatro.unidad_id", Auth::user()->unidad_id)
@@ -641,7 +641,7 @@ class ReporteController extends Controller
 
         $memoria_calculos = [];
         $unidad = null;
-        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS") {
+        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "MAE") {
             $memoria_calculos = MemoriaCalculo::select("memoria_calculos.*")
                 ->join("formulario_cuatro", "formulario_cuatro.id", "=", "memoria_calculos.formulario_id")
                 ->where("formulario_cuatro.unidad_id", Auth::user()->unidad_id)->get();
@@ -828,7 +828,7 @@ class ReporteController extends Controller
         $fecha_ini =  $request->fecha_ini;
         $fecha_fin =  $request->fecha_fin;
 
-        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS") {
+        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "MAE") {
             $unidads = Unidad::where("id", Auth::user()->unidad_id)->get();
         } else {
             $unidads = Unidad::all();
@@ -847,13 +847,13 @@ class ReporteController extends Controller
 
         foreach ($unidads as $unidad) {
             $categories[] = $unidad->nombre;
-            if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS") {
+            if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "MAE") {
                 $formularios = FormularioCuatro::where("unidad_id", $unidad->id)->where("id", Auth::user()->unidad_id)->get();
             } else {
                 $formularios = FormularioCuatro::where("unidad_id", $unidad->id)->get();
             }
             if ($filtro == "Rango de fechas") {
-                if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS") {
+                if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "MAE") {
                     $formularios = FormularioCuatro::where("unidad_id", $unidad->id)->whereBetween("fecha_registro", [$fecha_ini, $fecha_fin])->where("id", Auth::user()->unidad_id)->get();
                 } else {
                     $formularios = FormularioCuatro::where("unidad_id", $unidad->id)->whereBetween("fecha_registro", [$fecha_ini, $fecha_fin])->get();

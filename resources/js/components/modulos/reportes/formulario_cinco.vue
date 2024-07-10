@@ -247,7 +247,8 @@ export default {
         if (
             this.user.tipo == "JEFES DE UNIDAD" ||
             this.user.tipo == "DIRECTORES" ||
-            this.user.tipo == "JEFES DE ÁREAS"
+            this.user.tipo == "JEFES DE ÁREAS" ||
+            this.user.tipo == "MAE"
         ) {
             this.listFiltro = ["Todos", "Código PEI", "Rango de fechas"];
         }

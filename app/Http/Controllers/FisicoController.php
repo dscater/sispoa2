@@ -127,24 +127,53 @@ class FisicoController extends Controller
                         $array_programados[$mes] += (float)$do[$mes];
                         $total_programados += (float)$do[$mes];
                         // ejecutado
-                        if ($do[$mes . "_est"] == 2) {
-                            $array_ejecutados[$mes] += $do[$mes];
-                            $total_ejecutados += (float)$do[$mes];
+                        if ($do[$mes . "_eje"] > 0) {
+                            $array_ejecutados[$mes] += $do[$mes . "_eje"];
+                            $total_ejecutados += (float)$do[$mes . "_eje"];
                         }
                     }
                 }
             }
         }
 
-        foreach ($meses as $mes) {
-            $array_programados_p[$mes] = ($array_programados[$mes] * 100) / $total_programados;
-            $array_programados_p[$mes] = round($array_programados_p[$mes], 2);
-            $array_ejecutados_p[$mes] = ($array_ejecutados[$mes] * 100) / $total_programados;
-            $array_ejecutados_p[$mes] = round($array_ejecutados_p[$mes], 2);
+        $a_la_fecha = 0;
+        $sum1 = 0;
+        $sum2 = 0;
+        $num_mes_actual = (int)date("m");
+        $num_mes_actual--;
+
+        foreach ($meses as $key_mes => $mes) {
+            if ($total_programados > 0) {
+                $array_programados_p[$mes] = ($array_programados[$mes] * 100) / $total_programados;
+                $array_programados_p[$mes] = round($array_programados_p[$mes], 2);
+                if ($key_mes <= $num_mes_actual) {
+                    $sum1 += (float)$array_programados_p[$mes];
+                }
+            } else {
+                $array_programados_p = 0;
+            }
+            if ($total_programados > 0) {
+                $array_ejecutados_p[$mes] = ($array_ejecutados[$mes] * 100) / $total_programados;
+                $array_ejecutados_p[$mes] = round($array_ejecutados_p[$mes], 2);
+                if ($key_mes <= $num_mes_actual) {
+                    $sum2 += (float)$array_ejecutados_p[$mes];
+                }
+            } else {
+                $array_ejecutados_p = 0;
+            }
         }
 
-        $p_ejecutados = ($total_ejecutados * 100) / $total_programados;
-        $p_ejecutados = round($p_ejecutados, 2);
+        if ($sum1 > 0) {
+            $a_la_fecha = $sum2 / $sum1;
+        }
+        $a_la_fecha = round($a_la_fecha, 2);
+
+        $p_ejecutados = 0;
+        if ($total_programados > 0) {
+            $p_ejecutados = ($total_ejecutados * 100) / $total_programados;
+            $p_ejecutados = round($p_ejecutados, 2);
+        }
+
 
         $pdf = PDF::loadView('reportes.formulario_cuatro_fisico', compact(
             'formulario',
@@ -157,6 +186,7 @@ class FisicoController extends Controller
             "array_ejecutados",
             "array_ejecutados_p",
             "p_ejecutados",
+            "a_la_fecha"
         ))->setPaper('legal', 'landscape');
         // ENUMERAR LAS PÁGINAS USANDO CANVAS
         $pdf->output();
