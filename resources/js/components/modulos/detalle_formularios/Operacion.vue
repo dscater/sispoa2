@@ -693,7 +693,7 @@
                                                                 : '',
                                                         ]"
                                                         :for="
-                                                            'm_file_o_d' +
+                                                            'pm_file_o_d' +
                                                             index +
                                                             index_detalle
                                                         "
@@ -716,7 +716,7 @@
                                                         type="file"
                                                         multiple
                                                         :id="
-                                                            'm_file_o_d' +
+                                                            'pm_file_o_d' +
                                                             index +
                                                             index_detalle
                                                         "
@@ -742,7 +742,7 @@
                                                                 : '',
                                                         ]"
                                                         :for="
-                                                            'a_file_o_d' +
+                                                            'pa_file_o_d' +
                                                             index +
                                                             index_detalle
                                                         "
@@ -765,7 +765,7 @@
                                                         type="file"
                                                         multiple
                                                         :id="
-                                                            'a_file_o_d' +
+                                                            'pa_file_o_d' +
                                                             index +
                                                             index_detalle
                                                         "
@@ -791,7 +791,7 @@
                                                                 : '',
                                                         ]"
                                                         :for="
-                                                            'm_file_o_d' +
+                                                            'sm_file_o_d' +
                                                             index +
                                                             index_detalle
                                                         "
@@ -814,7 +814,7 @@
                                                         type="file"
                                                         multiple
                                                         :id="
-                                                            'm_file_o_d' +
+                                                            'sm_file_o_d' +
                                                             index +
                                                             index_detalle
                                                         "
@@ -840,7 +840,7 @@
                                                                 : '',
                                                         ]"
                                                         :for="
-                                                            'j_file_o_d' +
+                                                            'sj_file_o_d' +
                                                             index +
                                                             index_detalle
                                                         "
@@ -863,7 +863,7 @@
                                                         type="file"
                                                         multiple
                                                         :id="
-                                                            'j_file_o_d' +
+                                                            'sj_file_o_d' +
                                                             index +
                                                             index_detalle
                                                         "
@@ -889,7 +889,7 @@
                                                                 : '',
                                                         ]"
                                                         :for="
-                                                            'j_file_o_d' +
+                                                            'tj_file_o_d' +
                                                             index +
                                                             index_detalle
                                                         "
@@ -912,7 +912,7 @@
                                                         type="file"
                                                         multiple
                                                         :id="
-                                                            'j_file_o_d' +
+                                                            'tj_file_o_d' +
                                                             index +
                                                             index_detalle
                                                         "
@@ -938,7 +938,7 @@
                                                                 : '',
                                                         ]"
                                                         :for="
-                                                            'a_file_o_d' +
+                                                            'ta_file_o_d' +
                                                             index +
                                                             index_detalle
                                                         "
@@ -961,7 +961,7 @@
                                                         type="file"
                                                         multiple
                                                         :id="
-                                                            'a_file_o_d' +
+                                                            'ta_file_o_d' +
                                                             index +
                                                             index_detalle
                                                         "
@@ -987,7 +987,7 @@
                                                                 : '',
                                                         ]"
                                                         :for="
-                                                            's_file_o_d' +
+                                                            'ts_file_o_d' +
                                                             index +
                                                             index_detalle
                                                         "
@@ -1010,7 +1010,7 @@
                                                         type="file"
                                                         multiple
                                                         :id="
-                                                            's_file_o_d' +
+                                                            'ts_file_o_d' +
                                                             index +
                                                             index_detalle
                                                         "
@@ -1036,7 +1036,7 @@
                                                                 : '',
                                                         ]"
                                                         :for="
-                                                            'o_file_o_d' +
+                                                            'co_file_o_d' +
                                                             index +
                                                             index_detalle
                                                         "
@@ -1059,7 +1059,7 @@
                                                         type="file"
                                                         multiple
                                                         :id="
-                                                            'o_file_o_d' +
+                                                            'co_file_o_d' +
                                                             index +
                                                             index_detalle
                                                         "
@@ -1085,7 +1085,7 @@
                                                                 : '',
                                                         ]"
                                                         :for="
-                                                            'n_file_o_d' +
+                                                            'cn_file_o_d' +
                                                             index +
                                                             index_detalle
                                                         "
@@ -1108,7 +1108,7 @@
                                                         type="file"
                                                         multiple
                                                         :id="
-                                                            'n_file_o_d' +
+                                                            'cn_file_o_d' +
                                                             index +
                                                             index_detalle
                                                         "
@@ -1134,7 +1134,7 @@
                                                                 : '',
                                                         ]"
                                                         :for="
-                                                            'd_file_o_d' +
+                                                            'cd_file_o_d' +
                                                             index +
                                                             index_detalle
                                                         "
@@ -1157,7 +1157,7 @@
                                                         type="file"
                                                         multiple
                                                         :id="
-                                                            'd_file_o_d' +
+                                                            'cd_file_o_d' +
                                                             index +
                                                             index_detalle
                                                         "
@@ -1318,6 +1318,18 @@ export default {
                 ct_o_file: null,
                 ct_n_file: null,
                 ct_d_file: null,
+                pt_e_array: [],
+                pt_f_array: [],
+                pt_m_array: [],
+                st_a_array: [],
+                st_m_array: [],
+                st_j_array: [],
+                tt_j_array: [],
+                tt_a_array: [],
+                tt_s_array: [],
+                ct_o_array: [],
+                ct_n_array: [],
+                ct_d_array: [],
                 inicio: "",
                 final: "",
             });
@@ -1328,7 +1340,6 @@ export default {
                 this.operacion.detalle_operaciones[index][key] = Array.from(
                     e.target.files
                 );
-
                 this.operacion.detalle_operaciones[index][key_array] =
                     Array.from(e.target.files);
             }

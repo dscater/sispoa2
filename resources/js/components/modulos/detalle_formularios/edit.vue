@@ -292,8 +292,8 @@ export default {
 
                             console.log(item_detalle.st_a_file);
 
-                            if (item_detalle.pt_e_file?.length > 0) {
-                                item_detalle.pt_e_file.forEach((elem) => {
+                            if (Array.isArray(item_detalle.pt_e_array) && item_detalle.pt_e_array?.length > 0) {
+                                item_detalle.pt_e_array.forEach((elem) => {
                                     formData.append(
                                         "files_pt_e" +
                                             item.id +
@@ -304,8 +304,8 @@ export default {
                                 });
                             }
 
-                            if (item_detalle.pt_f_file?.length > 0) {
-                                item_detalle.pt_f_file.forEach((elem) => {
+                            if (Array.isArray(item_detalle.pt_f_array) && item_detalle.pt_f_array?.length > 0) {
+                                item_detalle.pt_f_array.forEach((elem) => {
                                     formData.append(
                                         "files_pt_f" +
                                             item.id +
@@ -316,8 +316,8 @@ export default {
                                 });
                             }
 
-                            if (item_detalle.pt_m_file?.length > 0) {
-                                item_detalle.pt_m_file.forEach((elem) => {
+                            if (Array.isArray(item_detalle.pt_m_array) && item_detalle.pt_m_array?.length > 0) {
+                                item_detalle.pt_m_array.forEach((elem) => {
                                     formData.append(
                                         "files_pt_m" +
                                             item.id +
@@ -328,8 +328,8 @@ export default {
                                 });
                             }
 
-                            if (item_detalle.st_a_file?.length > 0) {
-                                item_detalle.st_a_file.forEach((elem) => {
+                            if (Array.isArray(item_detalle.st_a_array) && item_detalle.st_a_array?.length > 0) {
+                                item_detalle.st_a_array.forEach((elem) => {
                                     formData.append(
                                         "files_st_a" +
                                             item.id +
@@ -340,8 +340,8 @@ export default {
                                 });
                             }
 
-                            if (item_detalle.st_m_file?.length > 0) {
-                                item_detalle.st_m_file.forEach((elem) => {
+                            if (Array.isArray(item_detalle.st_m_array) && item_detalle.st_m_array?.length > 0) {
+                                item_detalle.st_m_array.forEach((elem) => {
                                     formData.append(
                                         "files_st_m" +
                                             item.id +
@@ -352,8 +352,8 @@ export default {
                                 });
                             }
 
-                            if (item_detalle.st_j_file?.length > 0) {
-                                item_detalle.st_j_file.forEach((elem) => {
+                            if (Array.isArray(item_detalle.st_j_array) && item_detalle.st_j_array?.length > 0) {
+                                item_detalle.st_j_array.forEach((elem) => {
                                     formData.append(
                                         "files_st_j" +
                                             item.id +
@@ -364,8 +364,8 @@ export default {
                                 });
                             }
 
-                            if (item_detalle.tt_j_file?.length > 0) {
-                                item_detalle.tt_j_file.forEach((elem) => {
+                            if (Array.isArray(item_detalle.tt_j_array) && item_detalle.tt_j_array?.length > 0) {
+                                item_detalle.tt_j_array.forEach((elem) => {
                                     formData.append(
                                         "files_tt_j" +
                                             item.id +
@@ -376,8 +376,8 @@ export default {
                                 });
                             }
 
-                            if (item_detalle.tt_a_file?.length > 0) {
-                                item_detalle.tt_a_file.forEach((elem) => {
+                            if (Array.isArray(item_detalle.tt_a_array) && item_detalle.tt_a_array?.length > 0) {
+                                item_detalle.tt_a_array.forEach((elem) => {
                                     formData.append(
                                         "files_tt_a" +
                                             item.id +
@@ -388,8 +388,8 @@ export default {
                                 });
                             }
 
-                            if (item_detalle.tt_s_file?.length > 0) {
-                                item_detalle.tt_s_file.forEach((elem) => {
+                            if (Array.isArray(item_detalle.tt_s_array) && item_detalle.tt_s_array?.length > 0) {
+                                item_detalle.tt_s_array.forEach((elem) => {
                                     formData.append(
                                         "files_tt_s" +
                                             item.id +
@@ -400,8 +400,8 @@ export default {
                                 });
                             }
 
-                            if (item_detalle.ct_o_file?.length > 0) {
-                                item_detalle.ct_o_file.forEach((elem) => {
+                            if (Array.isArray(item_detalle.ct_o_array) && item_detalle.ct_o_array?.length > 0) {
+                                item_detalle.ct_o_array.forEach((elem) => {
                                     formData.append(
                                         "files_ct_o" +
                                             item.id +
@@ -412,8 +412,8 @@ export default {
                                 });
                             }
 
-                            if (item_detalle.ct_n_file?.length > 0) {
-                                item_detalle.ct_n_file.forEach((elem) => {
+                            if (Array.isArray(item_detalle.ct_n_array) && item_detalle.ct_n_array?.length > 0) {
+                                item_detalle.ct_n_array.forEach((elem) => {
                                     formData.append(
                                         "files_ct_n" +
                                             item.id +
@@ -424,8 +424,8 @@ export default {
                                 });
                             }
 
-                            if (item_detalle.ct_d_file?.length > 0) {
-                                item_detalle.ct_d_file.forEach((elem) => {
+                            if (Array.isArray(item_detalle.ct_d_array) && item_detalle.ct_d_array?.length > 0) {
+                                item_detalle.ct_d_array.forEach((elem) => {
                                     formData.append(
                                         "files_ct_d" +
                                             item.id +
