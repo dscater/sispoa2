@@ -23,14 +23,16 @@ class MemoriaOperacionDetalle extends Model
     {
         $index_detalle = 0;
         $memoria_operacion = MemoriaOperacion::find($this->memoria_operacion_id);
-        $operacion_formulario = Operacion::find($memoria_operacion->operacion_id);
-
-        $index_detalle = self::getIndexDetalle($this->id, $memoria_operacion);
         $value = "";
-        if ($operacion_formulario) {
-            // Accediendo a detalle formulario
-            if (isset($operacion_formulario->detalle_operaciones[$index_detalle])) {
-                $value = $operacion_formulario->detalle_operaciones[$index_detalle]->codigo_tarea;
+        if($memoria_operacion && $memoria_operacion->operacion_id){
+            $operacion_formulario = Operacion::find($memoria_operacion->operacion_id);
+    
+            $index_detalle = self::getIndexDetalle($this->id, $memoria_operacion);
+            if ($operacion_formulario) {
+                // Accediendo a detalle formulario
+                if (isset($operacion_formulario->detalle_operaciones[$index_detalle])) {
+                    $value = $operacion_formulario->detalle_operaciones[$index_detalle]->codigo_tarea;
+                }
             }
         }
         return $value;
@@ -40,14 +42,16 @@ class MemoriaOperacionDetalle extends Model
     {
         $index_detalle = 0;
         $memoria_operacion = MemoriaOperacion::find($this->memoria_operacion_id);
-        $operacion_formulario = Operacion::find($memoria_operacion->operacion_id);
-
-        $index_detalle = self::getIndexDetalle($this->id, $memoria_operacion);
         $value = "";
-        if ($operacion_formulario) {
-            // Accediendo a detalle formulario
-            if (isset($operacion_formulario->detalle_operaciones[$index_detalle])) {
-                $value = $operacion_formulario->detalle_operaciones[$index_detalle]->actividad_tarea;
+        if($memoria_operacion && $memoria_operacion->operacion_id){
+            $operacion_formulario = Operacion::find($memoria_operacion->operacion_id);
+    
+            $index_detalle = self::getIndexDetalle($this->id, $memoria_operacion);
+            if ($operacion_formulario) {
+                // Accediendo a detalle formulario
+                if (isset($operacion_formulario->detalle_operaciones[$index_detalle])) {
+                    $value = $operacion_formulario->detalle_operaciones[$index_detalle]->actividad_tarea;
+                }
             }
         }
         return $value;
