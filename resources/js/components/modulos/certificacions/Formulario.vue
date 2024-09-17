@@ -944,10 +944,12 @@ export default {
                         ? this.oCertificacion.certificacion_detalles[index]
                               .cantidad_usar
                         : 0
-                ).toFixed(2);
-            console.log(
-                this.oCertificacion.certificacion_detalles[index].cantidad_usar
-            );
+                );
+            // console.log(
+            //     "XX" +
+            //         this.oCertificacion.certificacion_detalles[index]
+            //             .cantidad_usar
+            // );
             // fin
 
             this.oCertificacion.certificacion_detalles[
@@ -1057,8 +1059,12 @@ export default {
             }
         },
         verificaExistenciaPartida(index) {
-            let existe = this.oCertificacion.certificacion_detalles.filter(elem => elem.mod_id == this.oCertificacion.certificacion_detalles[index].mod_id);
-            if(existe.length > 1){
+            let existe = this.oCertificacion.certificacion_detalles.filter(
+                (elem) =>
+                    elem.mod_id ==
+                    this.oCertificacion.certificacion_detalles[index].mod_id
+            );
+            if (existe.length > 1) {
                 Swal.fire({
                     icon: "info",
                     title: "ATENCIÓN",
@@ -1067,7 +1073,7 @@ export default {
                     confirmButtonText: "Aceptar",
                     confirmButtonColor: "#0069d9",
                 });
-                this.oCertificacion.certificacion_detalles[index].mod_id = ""
+                this.oCertificacion.certificacion_detalles[index].mod_id = "";
                 return false;
             }
             return true;
