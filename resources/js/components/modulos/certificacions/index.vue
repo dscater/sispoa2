@@ -49,6 +49,7 @@
                                                 <b-form-input
                                                     id="filter-input"
                                                     v-model="filter"
+                                                    @keyup="listaRegistros"
                                                     type="search"
                                                     placeholder="Buscar"
                                                 ></b-form-input>
@@ -58,7 +59,10 @@
                                                         class="bg-lightblue"
                                                         variant="primary"
                                                         :disabled="!filter"
-                                                        @click="filter = ''"
+                                                        @click="
+                                                            filter = '';
+                                                            listaRegistros();
+                                                        "
                                                         >Borrar</b-button
                                                     >
                                                 </b-input-group-append>
@@ -72,16 +76,17 @@
                                         >
                                             <b-table
                                                 :fields="fields_certificacions"
-                                                :items="listRegistros"
+                                                :items="getRegistros"
+                                                :busy.sync="isBusy"
+                                                @sort-changed="sortingChanged"
                                                 show-empty
                                                 stacked="md"
                                                 responsive
                                                 :current-page="currentPage"
                                                 :per-page="perPage"
-                                                @filtered="onFiltered"
                                                 empty-text="Sin resultados"
                                                 empty-filtered-text="Sin resultados"
-                                                :filter="filter"
+                                                ref="table"
                                             >
                                                 <template #cell(codigo)="row">
                                                     <span
@@ -588,7 +593,7 @@
                                                 v-if="perPage"
                                             >
                                                 <b-pagination
-                                                    v-model="currentPage"
+                                                    v-model="page"
                                                     :total-rows="totalRows"
                                                     :per-page="perPage"
                                                     align="left"
@@ -623,12 +628,12 @@ export default {
                 {
                     key: "codigo",
                     label: "Código POA",
-                    sortable: true,
+                    sortable: false,
                 },
                 {
                     key: "formulario.unidad.nombre",
                     label: "Unidad Organizacional",
-                    sortable: true,
+                    sortable: false,
                 },
                 {
                     key: "correlativo",
@@ -638,47 +643,49 @@ export default {
                 {
                     key: "o_personal_designado.full_name",
                     label: "Personal designado",
-                    sortable: true,
+                    sortable: false,
                 },
                 {
                     key: "departamento",
                     label: "Departamento(s)",
-                    sortable: true,
+                    sortable: false,
                 },
                 {
                     key: "municipio",
                     label: "Municipio",
-                    sortable: true,
+                    sortable: false,
                 },
                 {
                     key: "mo_id",
                     label: "Descripción Operación",
-                    sortable: true,
+                    sortable: false,
                 },
                 {
                     key: "cantidad_usar",
                     label: "Certificación",
-                    sortable: true,
+                    sortable: false,
                 },
                 {
                     key: "fechas",
                     label: "Fechas",
-                    sortable: true,
+                    sortable: false,
                 },
                 {
                     key: "estado",
                     label: "Estado",
-                    sortable: true,
+                    sortable: false,
                 },
                 { key: "fecha_registro", label: "Fecha de registro" },
                 // { key: "detalles", label: "Ver más" },
                 { key: "accion", label: "Acción" },
             ],
+            isBusy: false,
             loading: true,
             fullscreenLoading: true,
             loadingWindow: Loading.service({
                 fullscreen: this.fullscreenLoading,
             }),
+            page: 1,
             currentPage: 1,
             perPage: 10,
             pageOptions: [
@@ -687,11 +694,25 @@ export default {
                 { value: 25, text: "Mostrar 25 Registros" },
                 { value: 50, text: "Mostrar 50 Registros" },
                 { value: 100, text: "Mostrar 100 Registros" },
-                { value: this.totalRows, text: "Mostrar Todo" },
             ],
             totalRows: 10,
             filter: null,
+            sw_busqueda: "todos",
+            sortBy: null,
+            sortDesc: null,
+            links: null,
+            descargando: false,
         };
+    },
+    watch: {
+        page(newVal) {
+            // this.listaProductos();
+            this.$refs.table.refresh();
+        },
+        perPage(newVal) {
+            // this.listaProductos();
+            this.$refs.table.refresh();
+        },
     },
     computed: {
         fields_certificacions() {
@@ -700,12 +721,12 @@ export default {
                     {
                         key: "codigo",
                         label: "Código POA",
-                        sortable: true,
+                        sortable: false,
                     },
                     {
                         key: "formulario.unidad.nombre",
                         label: "Unidad Organizacional",
-                        sortable: true,
+                        sortable: false,
                     },
                     {
                         key: "correlativo",
@@ -715,42 +736,42 @@ export default {
                     {
                         key: "o_personal_designado.full_name",
                         label: "Personal designado",
-                        sortable: true,
+                        sortable: false,
                     },
                     {
                         key: "departamento",
                         label: "Departamento",
-                        sortable: true,
+                        sortable: false,
                     },
                     {
                         key: "municipio",
                         label: "Municipio",
-                        sortable: true,
+                        sortable: false,
                     },
                     {
                         key: "mo_id",
                         label: "Descripción Operación",
-                        sortable: true,
+                        sortable: false,
                     },
                     {
                         key: "cantidad_usar",
                         label: "Certificación",
-                        sortable: true,
+                        sortable: false,
                     },
                     {
                         key: "descargar",
                         label: "Descargar",
-                        sortable: true,
+                        sortable: false,
                     },
                     {
                         key: "fechas",
                         label: "Fechas",
-                        sortable: true,
+                        sortable: false,
                     },
                     {
                         key: "estado",
                         label: "Estado",
-                        sortable: true,
+                        sortable: false,
                     },
                     { key: "fecha_registro", label: "Fecha de registro" },
                     // { key: "detalles", label: "Ver más" },
@@ -763,25 +784,43 @@ export default {
     mounted() {
         // console.log(this.user);
         this.loadingWindow.close();
-        this.getCertificacions();
+        this.listaRegistros();
     },
     methods: {
         // Listar Certificacions
-        getCertificacions() {
-            this.showOverlay = true;
+        listaRegistros() {
+            this.page = 1;
+            this.$refs.table.refresh();
             this.muestra_modal = false;
-            let url = "/admin/certificacions";
-            if (this.pagina != 0) {
-                url += "?page=" + this.pagina;
-            }
-            axios
-                .get(url, {
-                    params: { per_page: this.per_page },
+        },
+        sortingChanged(ctx) {
+            this.sortBy = ctx.sortBy;
+            this.sortDesc = ctx.sortDesc;
+            this.$refs.table.refresh();
+        },
+        getRegistros() {
+            this.isBusy = true;
+            let promise = axios.get("/admin/certificacions/paginado", {
+                params: {
+                    page: this.page,
+                    per_page: this.perPage,
+                    value: this.filter,
+                    sortBy: this.sortBy,
+                    sortDesc: this.sortDesc,
+                },
+            });
+            return promise
+                .then((data) => {
+                    this.currentPage = data.data.certificacions.current_page;
+                    this.totalRows = data.data.certificacions.total;
+                    const items = data.data.certificacions.data;
+                    this.isBusy = false;
+                    return items;
                 })
-                .then((res) => {
-                    this.showOverlay = false;
-                    this.listRegistros = res.data.certificacions;
-                    this.totalRows = res.data.total;
+                .catch((error) => {
+                    console.log(error);
+                    this.isBusy = false;
+                    return [];
                 });
         },
         eliminaCertificacion(id, descripcion) {
@@ -801,7 +840,7 @@ export default {
                             _method: "DELETE",
                         })
                         .then((res) => {
-                            this.getCertificacions();
+                            this.getRegistros();
                             this.filter = "";
                             Swal.fire({
                                 icon: "success",
@@ -828,7 +867,7 @@ export default {
                     axios
                         .post("/admin/certificacions/aprobar/" + id)
                         .then((res) => {
-                            this.getCertificacions();
+                            this.getRegistros();
                             this.filter = "";
                             Swal.fire({
                                 icon: "success",
@@ -855,7 +894,7 @@ export default {
                     axios
                         .post("/admin/certificacions/desaprobar/" + id)
                         .then((res) => {
-                            this.getCertificacions();
+                            this.getRegistros();
                             this.filter = "";
                             Swal.fire({
                                 icon: "success",
@@ -882,7 +921,7 @@ export default {
                     axios
                         .post("/admin/certificacions/anular/" + id, {})
                         .then((res) => {
-                            this.getCertificacions();
+                            this.getRegistros();
                             this.filter = "";
                             Swal.fire({
                                 icon: "success",
@@ -909,7 +948,7 @@ export default {
                     axios
                         .post("/admin/certificacions/activar/" + id, {})
                         .then((res) => {
-                            this.getCertificacions();
+                            this.getRegistros();
                             this.filter = "";
                             Swal.fire({
                                 icon: "success",

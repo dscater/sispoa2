@@ -40,6 +40,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// VACIAR CACHE
+Route::get('/cache_clear', function () {
+    Artisan::call("route:clear");
+    Artisan::call("route:cache");
+    Artisan::call("view:clear");
+    Artisan::call("config:cache");
+    Artisan::call("optimize");
+
+    return 'Cache borrada correctamente<br/><a href="' . url("/") . '">Volver al inicio<a>';
+});
+
 // LOGIN
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout']);
@@ -57,6 +68,9 @@ Route::post('/configuracion/update', [ConfiguracionController::class, 'update'])
 Route::get('/pei/mision', [PeiController::class, "mision"]);
 Route::get('/pei/vision', [PeiController::class, "vision"]);
 Route::get('/pei/objetivos', [PeiController::class, "objetivos"]);
+
+// fix registros
+Route::get('fix_registros', [CertificacionController::class, 'fix_registros']);
 
 Route::prefix('admin')->group(function () {
 
@@ -78,22 +92,38 @@ Route::prefix('admin')->group(function () {
     Route::post('usuarios/actualizaContrasenia/{usuario}', [UserController::class, 'actualizaContrasenia']);
     Route::post('usuarios/actualizaFoto/{usuario}', [UserController::class, 'actualizaFoto']);
     Route::resource('usuarios', UserController::class)->only([
-        'index', 'store', 'update', 'destroy', 'show'
+        'index',
+        'store',
+        'update',
+        'destroy',
+        'show'
     ]);
 
     // UNIDADES ORGANIZACIONALES
     Route::resource('unidads', UnidadController::class)->only([
-        'index', 'store', 'update', 'destroy', 'show'
+        'index',
+        'store',
+        'update',
+        'destroy',
+        'show'
     ]);
 
     // PARTIDAS
     Route::resource('partidas', PartidaController::class)->only([
-        'index', 'store', 'update', 'destroy', 'show'
+        'index',
+        'store',
+        'update',
+        'destroy',
+        'show'
     ]);
 
     // Personal
     Route::resource('personals', PersonalController::class)->only([
-        'index', 'store', 'update', 'destroy', 'show'
+        'index',
+        'store',
+        'update',
+        'destroy',
+        'show'
     ]);
 
     // FORMULARIO CUATRO
@@ -105,7 +135,11 @@ Route::prefix('admin')->group(function () {
     Route::get("formulario_cuatro/getOperaciones", [FormularioCuatroController::class, "getOperaciones"]);
     Route::get("formulario_cuatro/getOperacionesFormularioSeleccionado", [FormularioCuatroController::class, "getOperacionesFormularioSeleccionado"]);
     Route::resource('formulario_cuatro', FormularioCuatroController::class)->only([
-        'index', 'store', 'update', 'destroy', 'show'
+        'index',
+        'store',
+        'update',
+        'destroy',
+        'show'
     ]);
 
     // DETALLE FORMULARIO CUATRO
@@ -118,14 +152,20 @@ Route::prefix('admin')->group(function () {
     Route::get('detalle_formularios/getEjecucionFisicoUnidades', [DetalleFormularioController::class, "getEjecucionFisicoUnidades"]);
     Route::get('detalle_formularios/seguimiento_trimestral', [DetalleFormularioController::class, "seguimiento_trimestral"]);
     Route::resource('detalle_formularios', DetalleFormularioController::class)->only([
-        'index', 'store', 'update', 'destroy', 'show'
+        'index',
+        'store',
+        'update',
+        'destroy',
+        'show'
     ]);
 
     // operacions
     Route::get('operacions/getTareas', [OperacionController::class, "getTareas"]);
 
     Route::resource('operacions', OperacionController::class)->only([
-        'store', 'update', 'destroy'
+        'store',
+        'update',
+        'destroy'
     ]);
 
     // tareas-partidas
@@ -143,19 +183,28 @@ Route::prefix('admin')->group(function () {
     // FORMULARIO CINCO
     Route::get("formulario_cinco/tabla/getTabla/{formulario_cinco}", [FormularioCincoController::class, 'getTabla']);
     Route::resource('formulario_cinco', FormularioCincoController::class)->only([
-        'index', 'store', 'update', 'destroy', 'show'
+        'index',
+        'store',
+        'update',
+        'destroy',
+        'show'
     ]);
 
     // MEMORIA CALCULOS
     Route::get("memoria_calculos/getOperaciones", [MemoriaCalculoController::class, "getOperaciones"]);
     Route::resource('memoria_calculos', MemoriaCalculoController::class)->only([
-        'index', 'store', 'update', 'destroy', 'show'
+        'index',
+        'store',
+        'update',
+        'destroy',
+        'show'
     ]);
 
     // MEMORIA OPERACION DETALLES
     Route::get("memoria_operacion_detalles/getDetalles", [MemoriaOperacionDetalleController::class, "getDetalles"]);
 
     // CERTIFICACION
+    Route::GET("certificacions/paginado", [CertificacionController::class, "paginado"]);
     Route::POST("certificacions/descargar/archivo/{certificacion}", [CertificacionController::class, "archivo"]);
     Route::POST("certificacions/anular/{certificacion}", [CertificacionController::class, "anular"]);
     Route::POST("certificacions/activar/{certificacion}", [CertificacionController::class, "activar"]);
@@ -164,41 +213,63 @@ Route::prefix('admin')->group(function () {
     Route::POST("certificacions/desaprobar/{certificacion}", [CertificacionController::class, "desaprobar"]);
     Route::POST("certificacions/pdf/{certificacion}", [CertificacionController::class, "pdf"]);
     Route::resource('certificacions', CertificacionController::class)->only([
-        'index', 'store', 'update', 'destroy', 'show'
+        'index',
+        'store',
+        'update',
+        'destroy',
+        'show'
     ]);
 
     // VERIFICACION ACTIVIDAD
     Route::get('/verificacion_actividads/getVerificacionActividad', [VerificacionActividadController::class, 'getVerificacionActividad']);
     Route::resource('verificacion_actividads', VerificacionActividadController::class)->only([
-        'index', 'store', 'update', 'destroy'
+        'index',
+        'store',
+        'update',
+        'destroy'
     ]);
 
     // FISICOS
     Route::post("fisicos/exportar/{detalle_formulario}", [FisicoController::class, "exportar"]);
     Route::resource('fisicos', FisicoController::class)->only([
-        'index', 'store', 'update', 'destroy'
+        'index',
+        'store',
+        'update',
+        'destroy'
     ]);
 
     // SUBDIRECCIÓN
     Route::resource('subdireccions', SubdireccionController::class)->only([
-        'index', 'store', 'update', 'destroy'
+        'index',
+        'store',
+        'update',
+        'destroy'
     ]);
 
     // FINANCIERAS
     Route::resource('financieras', FinancieraController::class)->only([
-        'index', 'store', 'update', 'destroy'
+        'index',
+        'store',
+        'update',
+        'destroy'
     ]);
 
     // SEMAFOROS
     Route::post('/semaforos/actualiza_estados/{detalle_formulario}', [SemaforoController::class, 'actualiza_estados'])->name("semaforos.actualiza_estados");
     Route::resource('semaforos', SemaforoController::class)->only([
-        'index', 'store', 'update', 'destroy'
+        'index',
+        'store',
+        'update',
+        'destroy'
     ]);
 
     // ACTIVIDAD REALIZADA
     Route::post('actividad_realizadas/archivo/{actividad_realizada}', [ActividadRealizadaController::class, 'archivo']);
     Route::resource('actividad_realizadas', ActividadRealizadaController::class)->only([
-        'index', 'store', 'update', 'destroy'
+        'index',
+        'store',
+        'update',
+        'destroy'
     ]);
 
     // REPORTES

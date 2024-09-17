@@ -10,6 +10,7 @@ use App\Models\MemoriaOperacionDetalle;
 use App\Models\Partida;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Log\Logger;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log as FacadesLog;
@@ -47,6 +48,41 @@ class CertificacionController extends Controller
                 ->orderBy("created_at", "desc")->get();
         }
         return response()->JSON(["certificacions" => $certificacions, "total" => count($certificacions)]);
+    }
+
+    public function paginado(Request $request)
+    {
+        $certificacions = [];
+        // $sortBy = $request->sortBy;
+        // $sortDesc = $request->sortDesc;
+        if (isset($request->value) && $request->value != "") {
+            $value = $request->value;
+            $certificacions = Certificacion::select("certificacions.*")
+                ->with(["o_personal_designado", "certificacion_detalles"])
+                ->join("personals", "personals.id", "=", "certificacions.personal_designado")
+                ->orWhere("certificacions.id", "LIKE", "%$value%")
+                ->orWhere("certificacions.codigo", "LIKE", "%$value%")
+                ->orWhere("certificacions.accion", "LIKE", "%$value%")
+                ->orWhere(DB::raw("CONCAT(personals.nombre,personals.paterno,personals.materno)", "LIKE", "%$value%"))
+                ->orWhere("certificacions.departamento", "LIKE", "%$value%")
+                ->orWhere("certificacions.municipio", "LIKE", "%$value%")
+                ->orWhere("certificacions.correlativo", "LIKE", "%$value%");
+        } else {
+            $certificacions = Certificacion::select("certificacions.*")
+                ->with(["o_personal_designado", "certificacion_detalles"]);
+        }
+
+        if ($request->sortBy) {
+            $desc =  $request->sortDesc === 'true' ? 'DESC' : 'ASC';
+            $col = $request->sortBy;
+            $certificacions->orderBy("certificacions." . $request->sortBy, $desc);
+        } else {
+            $certificacions->orderBy("certificacions.correlativo", "DESC");
+        }
+
+        $certificacions = $certificacions->paginate($request->per_page);
+
+        return response()->JSON(['certificacions' => $certificacions, 'total' => count($certificacions)], 200);
     }
 
     public function store(Request $request)
@@ -377,7 +413,7 @@ class CertificacionController extends Controller
             ->where("certificacion_detalles.mo_id", $certificacion_detalle->mo_id)
             ->where("certificacion_detalles.id", "<", $certificacion_detalle->id)
             ->where("anulado", 0)
-            ->orderBy("certificacion_detalles.created_at", "desc")->get()->last();
+            ->orderBy("certificacion_detalles.created_at", "asc")->get()->last();
         if ($ultimo) {
             $certificacion_detalle->total_cantidad = $certificacion_detalle->memoria_operacion_detalle->cantidad;
             $certificacion_detalle->saldo_cantidad = (float)$ultimo->saldo_cantidad - (float)$certificacion_detalle->cantidad_usar;
@@ -426,9 +462,7 @@ class CertificacionController extends Controller
         return true;
     }
 
-    public function archivo(Certificacion $certificacion)
-    {
-    }
+    public function archivo(Certificacion $certificacion) {}
 
     public static function validaDetallesOperacion($cantidad_usar, $presupuesto_usarse)
     {
@@ -459,5 +493,17 @@ class CertificacionController extends Controller
             $certificacion->save();
         }
         return 'Certificaciones corregidas<br><a href="/">Volver al inicio</a>';
+    }
+
+    // fix registros
+    public function fix_registros()
+    {
+        $certificacions = Certificacion::all();
+        foreach ($certificacions as $certificacion) {
+            foreach ($certificacion->certificacion_detalles as $key => $certificacion_detalle) {
+                $presupuesto_usarse = $certificacion_detalle->presupuesto_usarse;
+                // $cantidad_usar = $presupuesto_usarse *
+            }
+        }
     }
 }

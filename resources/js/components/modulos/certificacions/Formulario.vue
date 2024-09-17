@@ -124,6 +124,8 @@
                                 if (accion != 'edit') {
                                     certificacion_detalle.cantidad_usar =
                                         certificacion_detalle.memoria_operacion_detalle.saldo_cantidad_aux;
+                                    certificacion_detalle.presupuesto_usarse =
+                                        certificacion_detalle.memoria_operacion_detalle.saldo_aux;
                                     certificacion_detalle.memoria_operacion_detalle.saldo = 0;
                                     certificacion_detalle.memoria_operacion_detalle.saldo_cantidad = 0;
                                 }

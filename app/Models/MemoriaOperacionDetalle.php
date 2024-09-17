@@ -84,8 +84,11 @@ class MemoriaOperacionDetalle extends Model
             ->where("certificacions.anulado", 0)
             ->sum('certificacion_detalles.presupuesto_usarse');
 
-
+        // Log::debug("=============================");
+        // Log::debug($this->total);
+        // Log::debug($total_usado);
         $saldo = (float) $this->total - (float) $total_usado;
+        // Log::debug($saldo);
 
 
         return number_format($saldo, 2, '.', '');
