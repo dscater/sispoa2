@@ -283,8 +283,10 @@ export default {
         if (
             this.user.tipo == "JEFES DE UNIDAD" ||
             this.user.tipo == "DIRECTORES" ||
-            this.user.tipo == "JEFES DE ÁREAS"||
-            this.user.tipo == "MAE"
+            this.user.tipo == "JEFES DE ÁREAS" ||
+            this.user.tipo == "MAE" ||
+            this.user.tipo == "ENLACE" ||
+            this.user.tipo == "FINANCIERA"
         ) {
             this.listFiltro = ["Todos", "Código PEI", "Rango de fechas"];
         }
@@ -297,9 +299,11 @@ export default {
         },
         // OBTENER LA LISTA DE FORMULARIO
         getFormularios() {
-            axios.get("/admin/formulario_cuatro/listado_pei_index").then((response) => {
-                this.listFormularios = response.data.listado;
-            });
+            axios
+                .get("/admin/formulario_cuatro/listado_pei_index")
+                .then((response) => {
+                    this.listFormularios = response.data.listado;
+                });
         },
         limpiarFormulario() {
             this.oReporte.filtro = "Todos";

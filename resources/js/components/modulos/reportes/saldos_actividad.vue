@@ -234,7 +234,9 @@ export default {
             this.user.tipo == "JEFES DE UNIDAD" ||
             this.user.tipo == "DIRECTORES" ||
             this.user.tipo == "JEFES DE ÁREAS" ||
-            this.user.tipo == "MAE"
+            this.user.tipo == "MAE" ||
+            this.user.tipo == "ENLACE" ||
+            this.user.tipo == "FINANCIERA"
         ) {
             this.oReporte.unidad_id = this.user.unidad_id;
             this.getFormularios();

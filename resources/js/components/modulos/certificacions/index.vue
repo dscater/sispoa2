@@ -36,39 +36,48 @@
                             </div>
                             <div class="card-body">
                                 <div class="row">
-                                    <b-col lg="10" class="my-1">
-                                        <b-form-group
-                                            label="Buscar"
-                                            label-for="filter-input"
-                                            label-cols-sm="3"
-                                            label-align-sm="right"
-                                            label-size="sm"
-                                            class="mb-0"
-                                        >
+                                    <b-col lg="4" class="my-1">
+                                        <b-form-group class="mb-0">
+                                            <b-input-group size="sm">
+                                                <b-form-input
+                                                    id="filter-input1"
+                                                    v-model="cod_ope_txt"
+                                                    @keyup="listaRegistros"
+                                                    @change="listaRegistros"
+                                                    type="search"
+                                                    placeholder="Código de operación"
+                                                ></b-form-input>
+                                            </b-input-group>
+                                        </b-form-group>
+                                    </b-col>
+                                    <b-col lg="4" class="my-1">
+                                        <b-form-group class="mb-0">
+                                            <b-input-group size="sm">
+                                                <b-form-input
+                                                    id="filter-input2"
+                                                    v-model="partida_txt"
+                                                    @keyup="listaRegistros"
+                                                    @change="listaRegistros"
+                                                    type="search"
+                                                    placeholder="Partida"
+                                                ></b-form-input>
+                                            </b-input-group>
+                                        </b-form-group>
+                                    </b-col>
+                                    <!-- <b-col lg="4" class="my-1">
+                                        <b-form-group class="mb-0">
                                             <b-input-group size="sm">
                                                 <b-form-input
                                                     id="filter-input"
                                                     v-model="filter"
                                                     @keyup="listaRegistros"
+                                                    @change="listaRegistros"
                                                     type="search"
                                                     placeholder="Buscar"
                                                 ></b-form-input>
-
-                                                <b-input-group-append>
-                                                    <b-button
-                                                        class="bg-lightblue"
-                                                        variant="primary"
-                                                        :disabled="!filter"
-                                                        @click="
-                                                            filter = '';
-                                                            listaRegistros();
-                                                        "
-                                                        >Borrar</b-button
-                                                    >
-                                                </b-input-group-append>
                                             </b-input-group>
                                         </b-form-group>
-                                    </b-col>
+                                    </b-col> -->
                                     <div class="col-md-12">
                                         <b-overlay
                                             :show="showOverlay"
@@ -152,36 +161,36 @@
                                                                 >{{
                                                                     cd
                                                                         .memoria_operacion
-                                                                        .codigo_operacion
+                                                                        ?.codigo_operacion
                                                                 }}<br />
                                                                 <strong
                                                                     >Operación: </strong
                                                                 >{{
                                                                     cd
                                                                         .memoria_operacion
-                                                                        .descripcion_operacion
+                                                                        ?.descripcion_operacion
                                                                 }}<br />
-                                                                <strong
+                                                                <!-- <strong
                                                                     >Código de
                                                                     tarea: </strong
                                                                 >{{
                                                                     cd
-                                                                        .memoria_operacion
-                                                                        .codigo_actividad
+                                                                        .memoria_operacion_detalle
+                                                                        ?.cod_actividad_txt
                                                                 }}<br />
                                                                 <strong
                                                                     >Actividad/Tarea: </strong
                                                                 >{{
                                                                     cd
-                                                                        .memoria_operacion
-                                                                        .descripcion_actividad
-                                                                }}<br />
+                                                                        .memoria_operacion_detalle
+                                                                        ?.actividad_txt
+                                                                }}<br /> -->
                                                                 <strong
                                                                     >Partida: </strong
                                                                 >{{
                                                                     cd
                                                                         .memoria_operacion_detalle
-                                                                        .partida
+                                                                        ?.partida
                                                                 }}<br />
                                                             </div>
                                                             <template
@@ -626,11 +635,6 @@ export default {
             showOverlay: false,
             fields: [
                 {
-                    key: "codigo",
-                    label: "Código POA",
-                    sortable: false,
-                },
-                {
                     key: "formulario.unidad.nombre",
                     label: "Unidad Organizacional",
                     sortable: false,
@@ -697,6 +701,8 @@ export default {
             ],
             totalRows: 10,
             filter: null,
+            cod_ope_txt: "",
+            partida_txt: "",
             sw_busqueda: "todos",
             sortBy: null,
             sortDesc: null,
@@ -718,11 +724,6 @@ export default {
         fields_certificacions() {
             if (this.user.tipo == "SUPER USUARIO") {
                 return [
-                    {
-                        key: "codigo",
-                        label: "Código POA",
-                        sortable: false,
-                    },
                     {
                         key: "formulario.unidad.nombre",
                         label: "Unidad Organizacional",
@@ -805,6 +806,8 @@ export default {
                     page: this.page,
                     per_page: this.perPage,
                     value: this.filter,
+                    cod_ope: this.cod_ope_txt,
+                    partida: this.partida_txt,
                     sortBy: this.sortBy,
                     sortDesc: this.sortDesc,
                 },

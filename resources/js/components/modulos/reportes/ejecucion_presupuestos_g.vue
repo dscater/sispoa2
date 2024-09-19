@@ -198,7 +198,9 @@ export default {
             this.user.tipo == "JEFES DE UNIDAD" ||
             this.user.tipo == "DIRECTORES" ||
             this.user.tipo == "JEFES DE ÁREAS" ||
-            this.user.tipo == "MAE"
+            this.user.tipo == "MAE" ||
+            this.user.tipo == "ENLACE" ||
+            this.user.tipo == "FINANCIERA"
         ) {
             this.listFiltro = ["Todos", "Rango de fechas"];
         }

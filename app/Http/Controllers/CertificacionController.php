@@ -38,7 +38,8 @@ class CertificacionController extends Controller
     {
         $certificacions = [];
         if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "ENLACE") {
-            $certificacions = Certificacion::with("certificacion_detalles.memoria_operacion", "certificacion_detalles.memoria_operacion_detalle")->with("o_personal_designado")->select("certificacions.*")
+            $certificacions = Certificacion::with("certificacion_detalles.memoria_operacion", "certificacion_detalles.memoria_operacion_detalle")->with("o_personal_designado")
+                ->select("certificacions.*")
                 ->join("formulario_cuatro", "formulario_cuatro.id", "=", "certificacions.formulario_id")
                 ->where("formulario_cuatro.unidad_id", Auth::user()->unidad_id)
                 ->orderBy("created_at", "desc")
@@ -53,24 +54,37 @@ class CertificacionController extends Controller
     public function paginado(Request $request)
     {
         $certificacions = [];
+        $cod_ope = $request->cod_ope;
+        $partida = $request->partida;
         // $sortBy = $request->sortBy;
         // $sortDesc = $request->sortDesc;
-        if (isset($request->value) && $request->value != "") {
-            $value = $request->value;
-            $certificacions = Certificacion::select("certificacions.*")
-                ->with(["o_personal_designado", "certificacion_detalles"])
-                ->join("personals", "personals.id", "=", "certificacions.personal_designado")
-                ->orWhere("certificacions.id", "LIKE", "%$value%")
-                ->orWhere("certificacions.codigo", "LIKE", "%$value%")
-                ->orWhere("certificacions.accion", "LIKE", "%$value%")
-                ->orWhere(DB::raw("CONCAT(personals.nombre,personals.paterno,personals.materno)", "LIKE", "%$value%"))
-                ->orWhere("certificacions.departamento", "LIKE", "%$value%")
-                ->orWhere("certificacions.municipio", "LIKE", "%$value%")
-                ->orWhere("certificacions.correlativo", "LIKE", "%$value%");
-        } else {
-            $certificacions = Certificacion::select("certificacions.*")
-                ->with(["o_personal_designado", "certificacion_detalles"]);
+
+        $certificacions = Certificacion::with(["certificacion_detalles.memoria_operacion", "certificacion_detalles.memoria_operacion_detalle", "o_personal_designado"])->select("certificacions.*")
+            ->select("certificacions.*")
+            ->join("certificacion_detalles", "certificacion_detalles.certificacion_id", "=", "certificacions.id")
+            ->join("memoria_operacions", "memoria_operacions.id", "=", "certificacion_detalles.mo_id")
+            ->join("operacions", "operacions.id", "=", "memoria_operacions.operacion_id")
+            ->join("memoria_operacion_detalles", "memoria_operacion_detalles.id", "=", "certificacion_detalles.mod_id")
+            ->join("personals", "personals.id", "=", "certificacions.personal_designado");
+
+
+        if ($cod_ope) {
+            $certificacions->where("operacions.codigo_operacion", trim($cod_ope));
         }
+        if ($partida) {
+            $certificacions->where("memoria_operacion_detalles.partida", trim($partida));
+        }
+
+        // if (isset($request->value) && $request->value != "") {
+        //     $value = $request->value;
+        //     $certificacions->orWhere("certificacions.id", "LIKE", "%$value%")
+        //         ->orWhere("certificacions.codigo", "LIKE", "%$value%")
+        //         ->orWhere("certificacions.accion", "LIKE", "%$value%")
+        //         ->orWhere(DB::raw("CONCAT(personals.nombre,personals.paterno,personals.materno)", "LIKE", "%$value%"))
+        //         ->orWhere("certificacions.departamento", "LIKE", "%$value%")
+        //         ->orWhere("certificacions.municipio", "LIKE", "%$value%")
+        //         ->orWhere("certificacions.correlativo", "LIKE", "%$value%");
+        // }
 
         if ($request->sortBy) {
             $desc =  $request->sortDesc === 'true' ? 'DESC' : 'ASC';

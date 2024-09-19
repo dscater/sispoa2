@@ -384,6 +384,7 @@
             <tr>
                 <th class="bg_principal centreado">Descripción de lo solicitado</th>
                 <th class="bg_principal centreado">Partida</th>
+                <th class="bg_principal centreado">Presup. Total</th>
                 <th class="bg_principal centreado">Presup. Programado</th>
                 <th class="bg_principal centreado">Presup. A Ejecutarse</th>
                 <th class="bg_principal centreado">Saldo Presupuestario</th>
@@ -399,6 +400,7 @@
                     <td class="centreado">{{ $cd->memoria_operacion_detalle->m_partida->descripcion }}</td>
                     <td class="centreado">{{ $cd->memoria_operacion_detalle->partida }}</td>
                     <td class="centreado">{{ number_format($cd->memoria_operacion_detalle->total, 2) }}</td>
+                    <td class="centreado">{{ number_format($cd->saldo_total + $cd->presupuesto_usarse, 2) }}</td>
                     <td class="centreado">{{ number_format($cd->presupuesto_usarse, 2) }}</td>
                     @php
                         // $saldo = number_format((float) $cd->memoria_operacion_detalle->total - (float) $cd->presupuesto_usarse, 2);
@@ -421,7 +423,7 @@
                 @endphp
             @endforeach
             <tr>
-                <td class="bg_principal bold text_right" colspan="3">TOTAL MONTO CERTIFICADO</td>
+                <td class="bg_principal bold text_right" colspan="4">TOTAL MONTO CERTIFICADO</td>
                 <td class="centreado bg_principal bold">{{ number_format($total_ejecutarse, 2) }}</td>
                 <td class="centreado bg_principal bold">{{ number_format($total_saldo, 2) }}</td>
             </tr>
