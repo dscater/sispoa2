@@ -282,6 +282,13 @@
                             ) ||
                             permisos.includes('certificacions.index') ||
                             permisos.includes('seguimiento_trimestral.index') ||
+                            permisos.includes('actividad_realizadas.index') ||
+                            permisos.includes(
+                                'reportes.ejecucion_presupuestos'
+                            ) ||
+                            permisos.includes(
+                                'reportes.ejecucion_presupuestos_g'
+                            ) ||
                             permisos.includes('actividad_realizadas.index')
                         "
                     >
@@ -656,6 +663,9 @@ export default {
             fullscreenLoading: false,
             permisos: localStorage.getItem("permisos"),
         };
+    },
+    mounted() {
+        console.log(this.permisos);
     },
     methods: {
         logout() {

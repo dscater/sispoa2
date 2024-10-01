@@ -11,6 +11,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log as FacadesLog;
 
 class UserController extends Controller
 {
@@ -349,11 +350,12 @@ class UserController extends Controller
             'memoria_calculos.destroy',
         ],
         'MAE' => [
+            "fisicos.index",
+
             // "reportes.fisicos",
             // "reportes.financieros",
             // "reportes.semaforos",
 
-            "reportes.formulario_cuatro",
             "reportes.formulario_cuatro",
             "reportes.formulario_cinco",
             "reportes.memoria_calculos",
@@ -563,9 +565,10 @@ class UserController extends Controller
 
         // remover permisos
         foreach ($index as $value) {
-            unset($permisos[$value]);
+            if ($value) {
+                unset($permisos[$value]);
+            }
         }
-
         return response()->JSON($permisos);
     }
 
