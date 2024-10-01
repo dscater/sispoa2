@@ -61,12 +61,15 @@ class CertificacionController extends Controller
 
         $certificacions = Certificacion::with(["certificacion_detalles.memoria_operacion", "certificacion_detalles.memoria_operacion_detalle", "o_personal_designado"])->select("certificacions.*")
             ->select("certificacions.*")
+            ->join("formulario_cuatro", "formulario_cuatro.id", "=", "certificacions.formulario_id")
             ->join("certificacion_detalles", "certificacion_detalles.certificacion_id", "=", "certificacions.id")
             ->join("memoria_operacions", "memoria_operacions.id", "=", "certificacion_detalles.mo_id")
             ->join("operacions", "operacions.id", "=", "memoria_operacions.operacion_id")
             ->join("memoria_operacion_detalles", "memoria_operacion_detalles.id", "=", "certificacion_detalles.mod_id")
             ->join("personals", "personals.id", "=", "certificacions.personal_designado");
-
+        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "ENLACE") {
+            $certificacions->where("formulario_cuatro.unidad_id", Auth::user()->unidad_id);
+        }
 
         if ($cod_ope) {
             $certificacions->where("operacions.codigo_operacion", trim($cod_ope));
