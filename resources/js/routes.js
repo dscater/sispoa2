@@ -285,6 +285,12 @@ export default new Router({
             props: true
         },
         {
+            path: '/reportes/lista_certificacion',
+            name: 'reportes.lista_certificacion',
+            component: require('./components/modulos/reportes/lista_certificacion.vue').default,
+            props: true
+        },
+        {
             path: '/reportes/formulario_cuatro',
             name: 'reportes.formulario_cuatro',
             component: require('./components/modulos/reportes/formulario_cuatro.vue').default,

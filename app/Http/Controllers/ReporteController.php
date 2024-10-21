@@ -427,9 +427,7 @@ class ReporteController extends Controller
         // return $pdf->download('EjecucionPresupuestos.pdf');
     }
 
-    public static function saldo_presupuesto_excel($formularios)
-    {
-    }
+    public static function saldo_presupuesto_excel($formularios) {}
 
     public function ejecucion_presupuestos(Request $request)
     {
@@ -501,6 +499,277 @@ class ReporteController extends Controller
         $canvas->page_text($ancho - 90, $alto - 25, "Página {PAGE_NUM} de {PAGE_COUNT}", null, 10, array(0, 0, 0));
 
         return $pdf->download('EjecucionPresupuestos.pdf');
+    }
+
+    public function lista_certificacion(Request $request)
+    {
+        set_time_limit(0);
+        $filtro = $request->filtro;
+        $unidad_id = $request->unidad_id;
+        $tipo = $request->tipo;
+
+        $unidad = null;
+        $certificacion_detalles = CertificacionDetalle::select("certificacion_detalles.*")
+            ->join("certificacions", "certificacions.id", "=", "certificacion_detalles.certificacion_id")
+            ->join("formulario_cuatro", "formulario_cuatro.id", "=", "certificacions.formulario_id");
+        if ($filtro != 'Todos' || Auth::user()->tipo == 'ENLACE') {
+            if ($filtro != 'Todos' && Auth::user()->tipo == 'ADMINISTRADOR') {
+                $request->validate([
+                    "unidad_id" => "required"
+                ], [
+                    "unidad_id.required" => "Debes seleccionar una unidad"
+                ]);
+            } elseif (Auth::user()->tipo == 'ENLACE') {
+                $unidad_id = Auth::user()->unidad_id;
+            }
+            $unidad = Unidad::find($unidad_id);
+            $certificacion_detalles->where("formulario_cuatro.unidad_id", $unidad_id);
+        }
+
+        $certificacion_detalles = $certificacion_detalles->get();
+        $html = "";
+        if ($tipo == 'pdf') {
+            foreach ($certificacion_detalles as $certificacion_detalle) {
+                $html .= ' <tr>
+                <td>' . $certificacion_detalle->certificacion->correlativo . '</td>
+                <td>' . $certificacion_detalle->certificacion->formulario->unidad->nombre . '</td>
+                <td>' . $certificacion_detalle->certificacion->solicitante->full_name . '</td>
+                <td class="centreado">' . $certificacion_detalle->certificacion->certificacion_detalles[0]->memoria_operacion_detalle->ue . '|' . $certificacion_detalle->certificacion->certificacion_detalles[0]->memoria_operacion_detalle->prog . '|' . $certificacion_detalle->certificacion->certificacion_detalles[0]->memoria_operacion_detalle->act . '
+                </td>
+                <td>' . $certificacion_detalle->certificacion->memoria_operacion->operacion->codigo_operacion . '</td>
+                <td>' . $certificacion_detalle->memoria_operacion_detalle->partida . '</td>
+                <td>' . $certificacion_detalle->memoria_operacion_detalle->total . '</td>
+                <td>' . $certificacion_detalle->certificacion->fecha_registro . '</td>
+            </tr>';
+            }
+
+            $pdf = PDF::loadView('reportes.lista_certificacion', compact('certificacion_detalles', 'unidad', 'html'))->setPaper('legal', 'landscape');
+            // ENUMERAR LAS PÁGINAS USANDO CANVAS
+            $pdf->output();
+            $dom_pdf = $pdf->getDomPDF();
+            $canvas = $dom_pdf->get_canvas();
+            $alto = $canvas->get_height();
+            $ancho = $canvas->get_width();
+            $canvas->page_text($ancho - 90, $alto - 25, "Página {PAGE_NUM} de {PAGE_COUNT}", null, 10, array(0, 0, 0));
+            return $pdf->download('lista_certificacion.pdf');
+        } else {
+            $spreadsheet = new Spreadsheet();
+            $spreadsheet->getProperties()
+                ->setCreator("ADMIN")
+                ->setLastModifiedBy('Administración')
+                ->setTitle('Certificacions')
+                ->setSubject('Certificacions')
+                ->setDescription('Certificacions')
+                ->setKeywords('PHPSpreadsheet')
+                ->setCategory('Listado');
+
+            $sheet = $spreadsheet->getActiveSheet();
+
+            $spreadsheet->getDefaultStyle()->getFont()->setName('Arial');
+
+            $styleTexto = [
+                'font' => [
+                    'bold' => true,
+                    'size' => 12,
+                    'family' => 'Times New Roman'
+                ],
+                'borders' => [
+                    'allBorders' => [
+                        'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_NONE,
+                    ],
+                ],
+            ];
+
+            $styleTextoForm = [
+                'font' => [
+                    'bold' => true,
+                    'size' => 10,
+                ],
+            ];
+
+            $styleArray = [
+                'font' => [
+                    'bold' => true,
+                    'size' => 10,
+                    'color' => ['argb' => 'ffffff'],
+                ],
+                'alignment' => [
+                    'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+                ],
+                'borders' => [
+                    'allBorders' => [
+                        'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                    ],
+                ],
+                'fill' => [
+                    'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                    'color' => ['rgb' => '203764']
+                ],
+            ];
+
+
+            $styleArray2 = [
+                'font' => [
+                    'bold' => true,
+                    'size' => 10,
+                    'color' => ['argb' => 'ffffff'],
+                ],
+                'alignment' => [
+                    'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                    'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+                ],
+                'borders' => [
+                    'allBorders' => [
+                        'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                    ],
+                ],
+                'fill' => [
+                    'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                    'color' => ['rgb' => '203764']
+                ],
+            ];
+
+            $estilo_conenido = [
+                'font' => [
+                    'size' => 10,
+                ],
+                'alignment' => [
+                    'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+                    // 'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                ],
+                'borders' => [
+                    'allBorders' => [
+                        'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                    ],
+                ],
+            ];
+
+            $estilo_conenido2 = [
+                'font' => [
+                    'size' => 10,
+                    'bold' => true
+                ],
+                'alignment' => [
+                    'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+                    // 'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                ],
+                'borders' => [
+                    'allBorders' => [
+                        'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                    ],
+                ],
+                'fill' => [
+                    'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                    'color' => ['rgb' => 'EBF1DE']
+                ],
+            ];
+
+            $estilo_conenido3 = [
+                'font' => [
+                    'size' => 10,
+                    'bold' => true
+                ],
+                'alignment' => [
+                    'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+                    'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                ],
+                'borders' => [
+                    'allBorders' => [
+                        'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                    ],
+                ],
+                'fill' => [
+                    'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                    'color' => ['rgb' => 'EEECE1']
+                ],
+            ];
+
+            $fila = 1;
+            if (file_exists(public_path() . '/imgs/' . Configuracion::first()->logo2)) {
+                $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+                $drawing->setName('logo2');
+                $drawing->setDescription('logo2');
+                $drawing->setPath(public_path() . '/imgs/' . Configuracion::first()->logo2); // put your path and image here
+                $drawing->setCoordinates('A' . $fila);
+                $drawing->setOffsetX(5);
+                $drawing->setOffsetY(0);
+                $drawing->setHeight(60);
+                $drawing->setWorksheet($sheet);
+            }
+            if (file_exists(public_path() . '/imgs/' . Configuracion::first()->logo)) {
+                $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+                $drawing->setName('logo');
+                $drawing->setDescription('logo');
+                $drawing->setPath(public_path() . '/imgs/' . Configuracion::first()->logo); // put your path and image here
+                $drawing->setCoordinates('T' . $fila);
+                $drawing->setOffsetX(5);
+                $drawing->setOffsetY(0);
+                $drawing->setHeight(60);
+                $drawing->setWorksheet($sheet);
+            }
+
+            $fila = 2;
+            $sheet->setCellValue('A' . $fila, "REPORTE DE CERTIFICACIÓN ");
+            $sheet->mergeCells("A" . $fila . ":H" . $fila);  //COMBINAR CELDAS
+            $sheet->getStyle('A' . $fila . ':H' . $fila)->getAlignment()->setHorizontal('center');
+            $sheet->getStyle('A' . $fila . ':H' . $fila)->applyFromArray($styleTexto);
+            $fila++;
+            $fila++;
+            $fila++;
+
+            $sheet->setCellValue('A' . $fila, 'N° Correlativo');
+            $sheet->setCellValue('B' . $fila, 'Unidad Organizacional');
+            $sheet->setCellValue('C' . $fila, 'Nombre del solicitante');
+            $sheet->setCellValue('D' . $fila, 'Categoría programatica');
+            $sheet->setCellValue('E' . $fila, 'Cod. Operación');
+            $sheet->setCellValue('F' . $fila, 'Partida');
+            $sheet->setCellValue('G' . $fila, 'Monto');
+            $sheet->setCellValue('H' . $fila, 'Fecha');
+            $sheet->getStyle('A' . $fila . ':H' . $fila)->applyFromArray($styleArray);
+            $fila++;
+            foreach ($certificacion_detalles as $certificacion_detalle) {
+                $sheet->setCellValue('A' . $fila, $certificacion_detalle->certificacion->correlativo);
+                $sheet->setCellValue('B' . $fila, $certificacion_detalle->certificacion->formulario->unidad->nombre);
+                $sheet->setCellValue('C' . $fila, $certificacion_detalle->certificacion->solicitante->full_name);
+                $sheet->setCellValue('D' . $fila, $certificacion_detalle->certificacion->certificacion_detalles[0]->memoria_operacion_detalle->ue . '|' . $certificacion_detalle->certificacion->certificacion_detalles[0]->memoria_operacion_detalle->prog . '|' . $certificacion_detalle->certificacion->certificacion_detalles[0]->memoria_operacion_detalle->act);
+                $sheet->setCellValue('E' . $fila, $certificacion_detalle->certificacion->memoria_operacion->operacion->codigo_operacion);
+                $sheet->setCellValue('F' . $fila, $certificacion_detalle->memoria_operacion_detalle->partida);
+                $sheet->setCellValue('G' . $fila, $certificacion_detalle->memoria_operacion_detalle->total);
+                $sheet->setCellValue('H' . $fila, $certificacion_detalle->certificacion->fecha_registro);
+                $sheet->getStyle('A' . $fila . ':H' . $fila)->applyFromArray($estilo_conenido);
+                $fila++;
+            }
+            $fila++;
+
+            $sheet->getColumnDimension('A')->setWidth(7);
+            $sheet->getColumnDimension('B')->setWidth(35);
+            $sheet->getColumnDimension('C')->setWidth(35);
+            $sheet->getColumnDimension('D')->setWidth(10);
+            $sheet->getColumnDimension('E')->setWidth(7);
+            $sheet->getColumnDimension('F')->setWidth(8);
+            $sheet->getColumnDimension('G')->setWidth(14);
+            $sheet->getColumnDimension('H')->setWidth(10);
+
+            foreach (range('A', 'H') as $columnID) {
+                $sheet->getStyle($columnID)->getAlignment()->setWrapText(true);
+            }
+
+            $sheet->getPageSetup()->setOrientation(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_LANDSCAPE);
+            $sheet->getPageMargins()->setTop(0.5);
+            $sheet->getPageMargins()->setRight(0.1);
+            $sheet->getPageMargins()->setLeft(0.1);
+            $sheet->getPageMargins()->setBottom(0.1);
+            $sheet->getPageSetup()->setPrintArea('A:U');
+            $sheet->getPageSetup()->setFitToWidth(1);
+            $sheet->getPageSetup()->setFitToHeight(0);
+
+            // DESCARGA DEL ARCHIVO
+            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            header('Content-Disposition: attachment;filename="lista_certificacion.xlsx"');
+            header('Cache-Control: max-age=0');
+            $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+            $writer->save('php://output');
+        }
     }
 
     public function formulario_cuatro(Request $request)

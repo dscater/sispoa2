@@ -451,6 +451,18 @@
                     </li> -->
                     <li
                         class="nav-item"
+                        v-if="permisos.includes('reportes.lista_certificacion')"
+                    >
+                        <router-link
+                            :to="{ name: 'reportes.lista_certificacion' }"
+                            class="nav-link"
+                        >
+                            <i class="fas fa-file-pdf nav-icon"></i>
+                            <p>Lista certificación</p>
+                        </router-link>
+                    </li>
+                    <li
+                        class="nav-item"
                         v-if="permisos.includes('reportes.formulario_cuatro')"
                     >
                         <router-link
@@ -665,7 +677,6 @@ export default {
         };
     },
     mounted() {
-        console.log(this.permisos);
     },
     methods: {
         logout() {

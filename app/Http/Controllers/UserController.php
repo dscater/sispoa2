@@ -141,6 +141,7 @@ class UserController extends Controller
 
             'configuracion.modulos',
 
+            "reportes.lista_certificacion",
             "reportes.formulario_cuatro",
             "reportes.formulario_cinco",
             "reportes.memoria_calculos",
@@ -213,6 +214,7 @@ class UserController extends Controller
 
             "informe_actividad.index",
 
+            "reportes.lista_certificacion",
             "reportes.formulario_cuatro",
             "reportes.formulario_cinco",
             "reportes.memoria_calculos",

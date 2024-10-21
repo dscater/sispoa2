@@ -277,6 +277,7 @@ Route::prefix('admin')->group(function () {
     Route::post('reportes/saldo_presupuesto', [ReporteController::class, 'saldo_presupuesto']);
     Route::post('reportes/ejecucion_presupuestos', [ReporteController::class, 'ejecucion_presupuestos']);
     Route::post('reportes/ejecucion_presupuestos_g', [ReporteController::class, 'ejecucion_presupuestos_g']);
+    Route::post('reportes/lista_certificacion', [ReporteController::class, 'lista_certificacion']);
     Route::post('reportes/formulario_cuatro', [ReporteController::class, 'formulario_cuatro']);
     Route::post('reportes/formulario_cinco', [ReporteController::class, 'formulario_cinco']);
     Route::post('reportes/memoria_calculos', [ReporteController::class, 'memoria_calculos']);

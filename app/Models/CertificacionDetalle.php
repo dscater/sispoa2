@@ -34,6 +34,11 @@ class CertificacionDetalle extends Model
         return $this->presupuesto_usarse;
     }
 
+    public function certificacion()
+    {
+        return $this->belongsTo(Certificacion::class, 'certificacion_id');
+    }
+
     public function memoria_operacion()
     {
         return $this->belongsTo(MemoriaOperacion::class, 'mo_id');
