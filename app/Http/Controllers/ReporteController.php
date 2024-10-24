@@ -539,7 +539,7 @@ class ReporteController extends Controller
                 </td> ';
                     $html .= '<td>' . $certificacion_detalle->certificacion->memoria_operacion->operacion->codigo_operacion . '</td>';
                     $html .= '<td>' . $certificacion_detalle->memoria_operacion_detalle->partida . '</td>
-                <td>' . $certificacion_detalle->memoria_operacion_detalle->total . '</td>';
+                <td>' . $certificacion_detalle->presupuesto_usarse . '</td>';
 
                     $html .= '
                 <td>' . $certificacion_detalle->certificacion->fecha_registro . '</td>
@@ -739,7 +739,7 @@ class ReporteController extends Controller
                     $sheet->setCellValue('D' . $fila, $certificacion_detalle->certificacion->certificacion_detalles[0]->memoria_operacion_detalle->ue . '|' . $certificacion_detalle->certificacion->certificacion_detalles[0]->memoria_operacion_detalle->prog . '|' . $certificacion_detalle->certificacion->certificacion_detalles[0]->memoria_operacion_detalle->act);
 
                     $sheet->setCellValue('F' . $fila, $certificacion_detalle->memoria_operacion_detalle->partida);
-                    $sheet->setCellValue('G' . $fila, $certificacion_detalle->memoria_operacion_detalle->total);
+                    $sheet->setCellValue('G' . $fila, $certificacion_detalle->presupuesto_usarse);
                     $sheet->setCellValue('E' . $fila, $certificacion_detalle->certificacion->memoria_operacion->operacion->codigo_operacion);
                 }
                 $sheet->setCellValue('H' . $fila, $certificacion_detalle->certificacion->fecha_registro);

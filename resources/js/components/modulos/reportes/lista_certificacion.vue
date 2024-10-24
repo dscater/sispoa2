@@ -21,7 +21,7 @@
                                             <div
                                                 class="form-group col-md-12"
                                                 v-if="
-                                                    user.tipo == 'ADMINISTRADOR'
+                                                    user.tipo == 'SUPER USUARIO'
                                                 "
                                             >
                                                 <label
@@ -60,7 +60,7 @@
                                                 v-if="
                                                     oReporte.filtro ==
                                                         'Unidad Organizacional' &&
-                                                    user.tipo == 'ADMINISTRADOR'
+                                                    user.tipo == 'SUPER USUARIO'
                                                 "
                                             >
                                                 <label
