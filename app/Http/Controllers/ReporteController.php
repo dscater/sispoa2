@@ -530,17 +530,21 @@ class ReporteController extends Controller
         $html = "";
         if ($tipo == 'pdf') {
             foreach ($certificacion_detalles as $certificacion_detalle) {
-                $html .= ' <tr>
+                if ($certificacion_detalle->certificacion->certificacion_detalles[0]->memoria_operacion_detalle && $certificacion_detalle->certificacion->memoria_operacion) {
+                    $html .= ' <tr>
                 <td>' . $certificacion_detalle->certificacion->correlativo . '</td>
                 <td>' . $certificacion_detalle->certificacion->formulario->unidad->nombre . '</td>
-                <td>' . $certificacion_detalle->certificacion->solicitante->full_name . '</td>
-                <td class="centreado">' . $certificacion_detalle->certificacion->certificacion_detalles[0]->memoria_operacion_detalle->ue . '|' . $certificacion_detalle->certificacion->certificacion_detalles[0]->memoria_operacion_detalle->prog . '|' . $certificacion_detalle->certificacion->certificacion_detalles[0]->memoria_operacion_detalle->act . '
-                </td>
-                <td>' . $certificacion_detalle->certificacion->memoria_operacion->operacion->codigo_operacion . '</td>
-                <td>' . $certificacion_detalle->memoria_operacion_detalle->partida . '</td>
-                <td>' . $certificacion_detalle->memoria_operacion_detalle->total . '</td>
+                <td>' . $certificacion_detalle->certificacion->solicitante->full_name . '</td>';
+                    $html .= '<td class="centreado">' . $certificacion_detalle->certificacion->certificacion_detalles[0]->memoria_operacion_detalle->ue . '|' . $certificacion_detalle->certificacion->certificacion_detalles[0]->memoria_operacion_detalle->prog . '|' . $certificacion_detalle->certificacion->certificacion_detalles[0]->memoria_operacion_detalle->act . '
+                </td> ';
+                    $html .= '<td>' . $certificacion_detalle->certificacion->memoria_operacion->operacion->codigo_operacion . '</td>';
+                    $html .= '<td>' . $certificacion_detalle->memoria_operacion_detalle->partida . '</td>
+                <td>' . $certificacion_detalle->memoria_operacion_detalle->total . '</td>';
+
+                    $html .= '
                 <td>' . $certificacion_detalle->certificacion->fecha_registro . '</td>
             </tr>';
+                }
             }
 
             $pdf = PDF::loadView('reportes.lista_certificacion', compact('certificacion_detalles', 'unidad', 'html'))->setPaper('legal', 'landscape');
@@ -728,13 +732,16 @@ class ReporteController extends Controller
             $sheet->getStyle('A' . $fila . ':H' . $fila)->applyFromArray($styleArray);
             $fila++;
             foreach ($certificacion_detalles as $certificacion_detalle) {
-                $sheet->setCellValue('A' . $fila, $certificacion_detalle->certificacion->correlativo);
-                $sheet->setCellValue('B' . $fila, $certificacion_detalle->certificacion->formulario->unidad->nombre);
-                $sheet->setCellValue('C' . $fila, $certificacion_detalle->certificacion->solicitante->full_name);
-                $sheet->setCellValue('D' . $fila, $certificacion_detalle->certificacion->certificacion_detalles[0]->memoria_operacion_detalle->ue . '|' . $certificacion_detalle->certificacion->certificacion_detalles[0]->memoria_operacion_detalle->prog . '|' . $certificacion_detalle->certificacion->certificacion_detalles[0]->memoria_operacion_detalle->act);
-                $sheet->setCellValue('E' . $fila, $certificacion_detalle->certificacion->memoria_operacion->operacion->codigo_operacion);
-                $sheet->setCellValue('F' . $fila, $certificacion_detalle->memoria_operacion_detalle->partida);
-                $sheet->setCellValue('G' . $fila, $certificacion_detalle->memoria_operacion_detalle->total);
+                if ($certificacion_detalle->certificacion->certificacion_detalles[0]->memoria_operacion_detalle && $certificacion_detalle->certificacion->memoria_operacion) {
+                    $sheet->setCellValue('A' . $fila, $certificacion_detalle->certificacion->correlativo);
+                    $sheet->setCellValue('B' . $fila, $certificacion_detalle->certificacion->formulario->unidad->nombre);
+                    $sheet->setCellValue('C' . $fila, $certificacion_detalle->certificacion->solicitante->full_name);
+                    $sheet->setCellValue('D' . $fila, $certificacion_detalle->certificacion->certificacion_detalles[0]->memoria_operacion_detalle->ue . '|' . $certificacion_detalle->certificacion->certificacion_detalles[0]->memoria_operacion_detalle->prog . '|' . $certificacion_detalle->certificacion->certificacion_detalles[0]->memoria_operacion_detalle->act);
+
+                    $sheet->setCellValue('F' . $fila, $certificacion_detalle->memoria_operacion_detalle->partida);
+                    $sheet->setCellValue('G' . $fila, $certificacion_detalle->memoria_operacion_detalle->total);
+                    $sheet->setCellValue('E' . $fila, $certificacion_detalle->certificacion->memoria_operacion->operacion->codigo_operacion);
+                }
                 $sheet->setCellValue('H' . $fila, $certificacion_detalle->certificacion->fecha_registro);
                 $sheet->getStyle('A' . $fila . ':H' . $fila)->applyFromArray($estilo_conenido);
                 $fila++;
