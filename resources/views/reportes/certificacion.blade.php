@@ -337,12 +337,15 @@
                 </td>
             </tr>
             <tr>
-                <td class="centreado border_left border_bottom">{{ $certificacion->certificacion_detalles[0]->memoria_operacion_detalle->ue }}
+                <td class="centreado border_left border_bottom">
+                    {{ $certificacion->certificacion_detalles[0]->memoria_operacion_detalle->ue }}
                 </td>
-                <td class="centreado border_left border_bottom">{{ $certificacion->certificacion_detalles[0]->memoria_operacion_detalle->prog }}
+                <td class="centreado border_left border_bottom">
+                    {{ $certificacion->certificacion_detalles[0]->memoria_operacion_detalle->prog }}
                 </td>
                 <td class="centreado border_left border_bottom">00</td>
-                <td class="centreado border_left border_bottom">{{ $certificacion->certificacion_detalles[0]->memoria_operacion_detalle->act }}
+                <td class="centreado border_left border_bottom">
+                    {{ $certificacion->certificacion_detalles[0]->memoria_operacion_detalle->act }}
                 </td>
                 <td class="centreado border_left border_bottom">42</td>
                 <td class="centreado border_left border_bottom border_right">230</td>
@@ -384,7 +387,7 @@
             <tr>
                 <th class="bg_principal centreado">Descripción de lo solicitado</th>
                 <th class="bg_principal centreado">Partida</th>
-                {{-- <th class="bg_principal centreado">Presup. Total</th> --}}
+                <th class="bg_principal centreado">Presup. Total</th>
                 {{-- <th class="bg_principal centreado">Presup. Programado</th> --}}
                 <th class="bg_principal centreado">Presup. A Ejecutarse</th>
                 {{-- <th class="bg_principal centreado">Saldo Presupuestario</th> --}}
@@ -392,6 +395,7 @@
         </thead>
         <tbody>
             @php
+                $total_suma = 0;
                 $total_ejecutarse = 0;
                 $total_saldo = 0;
             @endphp
@@ -399,7 +403,7 @@
                 <tr>
                     <td class="centreado">{{ $cd->memoria_operacion_detalle->m_partida->descripcion }}</td>
                     <td class="centreado">{{ $cd->memoria_operacion_detalle->partida }}</td>
-                    {{-- <td class="centreado">{{ number_format($cd->memoria_operacion_detalle->total, 2) }}</td> --}}
+                    <td class="centreado">{{ number_format($cd->memoria_operacion_detalle->total, 2) }}</td>
                     <td class="centreado">{{ number_format($cd->presupuesto_usarse, 2) }}</td>
                     {{-- <td class="centreado">{{ number_format($cd->presupuesto_usarse, 2) }}</td> --}}
                     @php
@@ -416,6 +420,7 @@
                     </td> --}}
                 </tr>
                 @php
+                    $total_suma += (float) $cd->memoria_operacion_detalle->total;
                     $total_ejecutarse += (float) $cd->presupuesto_usarse;
                     if ($saldo != '-') {
                         $total_saldo += (float) $cd->saldo_total;
@@ -424,6 +429,7 @@
             @endforeach
             <tr>
                 <td class="bg_principal bold text_right" colspan="2">TOTAL MONTO CERTIFICADO</td>
+                <td class="centreado bg_principal bold">{{ number_format($total_suma, 2) }}</td>
                 <td class="centreado bg_principal bold">{{ number_format($total_ejecutarse, 2) }}</td>
                 {{-- <td class="centreado bg_principal bold">{{ number_format($total_saldo, 2) }}</td> --}}
             </tr>

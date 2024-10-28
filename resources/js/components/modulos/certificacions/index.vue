@@ -36,7 +36,21 @@
                             </div>
                             <div class="card-body">
                                 <div class="row">
-                                    <b-col lg="4" class="my-1">
+                                    <b-col lg="4" md="4" class="my-1">
+                                        <b-form-group class="mb-0">
+                                            <b-input-group size="sm">
+                                                <b-form-input
+                                                    id="filter-input3"
+                                                    v-model="buscar_txt"
+                                                    @keyup="listaRegistros"
+                                                    @change="listaRegistros"
+                                                    type="search"
+                                                    placeholder="Buscar"
+                                                ></b-form-input>
+                                            </b-input-group>
+                                        </b-form-group>
+                                    </b-col>
+                                    <b-col lg="2" md="2" class="my-1">
                                         <b-form-group class="mb-0">
                                             <b-input-group size="sm">
                                                 <b-form-input
@@ -50,7 +64,7 @@
                                             </b-input-group>
                                         </b-form-group>
                                     </b-col>
-                                    <b-col lg="4" class="my-1">
+                                    <b-col lg="2" md="2" class="my-1">
                                         <b-form-group class="mb-0">
                                             <b-input-group size="sm">
                                                 <b-form-input
@@ -64,20 +78,34 @@
                                             </b-input-group>
                                         </b-form-group>
                                     </b-col>
-                                    <!-- <b-col lg="4" class="my-1">
+                                    <b-col lg="2" md="2" class="my-1">
                                         <b-form-group class="mb-0">
                                             <b-input-group size="sm">
                                                 <b-form-input
-                                                    id="filter-input"
-                                                    v-model="filter"
+                                                    id="filter-input4"
+                                                    v-model="correlativo_txt"
                                                     @keyup="listaRegistros"
                                                     @change="listaRegistros"
                                                     type="search"
-                                                    placeholder="Buscar"
+                                                    placeholder="Nro. correlativo"
                                                 ></b-form-input>
                                             </b-input-group>
                                         </b-form-group>
-                                    </b-col> -->
+                                    </b-col>
+                                    <b-col lg="2" md="2" class="my-1">
+                                        <b-form-group class="mb-0">
+                                            <b-input-group size="sm">
+                                                <b-form-input
+                                                    id="filter-input5"
+                                                    v-model="monto_txt"
+                                                    @keyup="listaRegistros"
+                                                    @change="listaRegistros"
+                                                    type="search"
+                                                    placeholder="Monto"
+                                                ></b-form-input>
+                                            </b-input-group>
+                                        </b-form-group>
+                                    </b-col>
                                     <div class="col-md-12">
                                         <b-overlay
                                             :show="showOverlay"
@@ -701,8 +729,11 @@ export default {
             ],
             totalRows: 10,
             filter: null,
+            buscar_txt: "",
             cod_ope_txt: "",
             partida_txt: "",
+            correlativo_txt: "",
+            monto_txt: "",
             sw_busqueda: "todos",
             sortBy: null,
             sortDesc: null,
@@ -806,8 +837,11 @@ export default {
                     page: this.page,
                     per_page: this.perPage,
                     value: this.filter,
+                    buscar: this.buscar_txt,
                     cod_ope: this.cod_ope_txt,
                     partida: this.partida_txt,
+                    correlativo: this.correlativo_txt,
+                    monto: this.monto_txt,
                     sortBy: this.sortBy,
                     sortDesc: this.sortDesc,
                 },

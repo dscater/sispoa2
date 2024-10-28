@@ -54,14 +54,18 @@ class CertificacionController extends Controller
     public function paginado(Request $request)
     {
         $certificacions = [];
+        $buscar = $request->buscar;
         $cod_ope = $request->cod_ope;
         $partida = $request->partida;
+        $correlativo = $request->correlativo;
+        $monto = $request->monto;
         // $sortBy = $request->sortBy;
         // $sortDesc = $request->sortDesc;
 
         $certificacions = Certificacion::with(["certificacion_detalles.memoria_operacion", "certificacion_detalles.memoria_operacion_detalle", "o_personal_designado"])->select("certificacions.*")
             ->select("certificacions.*")
             ->join("formulario_cuatro", "formulario_cuatro.id", "=", "certificacions.formulario_id")
+            ->join("unidads", "unidads.id", "=", "formulario_cuatro.unidad_id")
             ->join("certificacion_detalles", "certificacion_detalles.certificacion_id", "=", "certificacions.id")
             ->join("memoria_operacions", "memoria_operacions.id", "=", "certificacion_detalles.mo_id")
             ->join("operacions", "operacions.id", "=", "memoria_operacions.operacion_id")
@@ -71,11 +75,34 @@ class CertificacionController extends Controller
             $certificacions->where("formulario_cuatro.unidad_id", Auth::user()->unidad_id);
         }
 
+        if ($buscar && trim($buscar)) {
+            $certificacions->where(function ($query) use ($buscar) {
+                $query->where("certificacions.correlativo", "LIKE", "%$buscar%")
+                    ->orWhere("unidads.nombre", "LIKE", "%$buscar%")
+                    ->orWhere(DB::raw("CONCAT(personals.nombre,personals.paterno,personals.materno)"), "LIKE", "%$buscar%")
+                    ->orWhere("certificacions.departamento", "LIKE", "%$buscar%")
+                    ->orWhere("certificacions.municipio", "LIKE", "%$buscar%")
+                    ->orWhere("certificacion_detalles.presupuesto_usarse", "LIKE", "%$buscar%")
+                    ->orWhere("certificacions.inicio", "LIKE", "%$buscar%")
+                    ->orWhere("certificacions.final", "LIKE", "%$buscar%")
+                    ->orWhere("certificacions.fecha_registro", "LIKE", "%$buscar%")
+                    ->orWhere("certificacions.estado", "LIKE", "%$buscar%");
+            });
+        }
+
         if ($cod_ope) {
             $certificacions->where("operacions.codigo_operacion", trim($cod_ope));
         }
         if ($partida) {
             $certificacions->where("memoria_operacion_detalles.partida", trim($partida));
+        }
+
+        if ($correlativo) {
+            $certificacions->where("certificacions.correlativo", trim($correlativo));
+        }
+
+        if ($monto) {
+            $certificacions->where("certificacion_detalles.presupuesto_usarse", trim($monto));
         }
 
         // if (isset($request->value) && $request->value != "") {
