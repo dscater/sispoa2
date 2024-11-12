@@ -252,13 +252,23 @@
                         @foreach ($operacion->memoria_operacion_detalles as $mod)
                             @php
                                 $cantidad_usado = $o_certificacion_detalles
-                                    ->join('certificacions', 'certificacions.id', '=', 'certificacion_detalles.certificacion_id')
+                                    ->join(
+                                        'certificacions',
+                                        'certificacions.id',
+                                        '=',
+                                        'certificacion_detalles.certificacion_id',
+                                    )
                                     ->where('anulado', 0)
                                     ->where('certificacion_detalles.mo_id', $operacion->id)
                                     ->where('mod_id', $mod->id)
                                     ->sum('cantidad_usar');
                                 $total_usado = $o_certificacion_detalles
-                                    ->join('certificacions', 'certificacions.id', '=', 'certificacion_detalles.certificacion_id')
+                                    ->join(
+                                        'certificacions',
+                                        'certificacions.id',
+                                        '=',
+                                        'certificacion_detalles.certificacion_id',
+                                    )
                                     ->where('anulado', 0)
                                     ->where('certificacion_detalles.mo_id', $operacion->id)
                                     ->where('mod_id', $mod->id)
@@ -274,7 +284,6 @@
                                     }
                                 @endphp
                             @endif
-
                             @if ($muestra_fila)
                                 <tr>
                                     {{-- <td class="centreado">

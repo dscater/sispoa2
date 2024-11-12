@@ -43,10 +43,10 @@ class CertificacionController extends Controller
                 ->join("formulario_cuatro", "formulario_cuatro.id", "=", "certificacions.formulario_id")
                 ->where("formulario_cuatro.unidad_id", Auth::user()->unidad_id)
                 ->orderBy("created_at", "desc")
-                ->get();
+                ->get()->distinct("certificacions.correlativo");
         } else {
             $certificacions = Certificacion::with("certificacion_detalles.memoria_operacion", "certificacion_detalles.memoria_operacion_detalle")->with("o_personal_designado")
-                ->orderBy("created_at", "desc")->get();
+                ->orderBy("created_at", "desc")->get()->distinct("certificacions.correlativo");
         }
         return response()->JSON(["certificacions" => $certificacions, "total" => count($certificacions)]);
     }
@@ -124,7 +124,7 @@ class CertificacionController extends Controller
             $certificacions->orderBy("certificacions.correlativo", "DESC");
         }
 
-        $certificacions = $certificacions->paginate($request->per_page);
+        $certificacions = $certificacions->distinct("certificacions.id")->paginate($request->per_page);
 
         return response()->JSON(['certificacions' => $certificacions, 'total' => count($certificacions)], 200);
     }

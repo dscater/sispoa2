@@ -22,6 +22,7 @@ use App\Models\VerificacionActividad;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log as FacadesLog;
 use PDF;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -981,11 +982,25 @@ class ReporteController extends Controller
         $unidad_id =  $request->unidad_id;
         $formulario_id =  $request->formulario_id;
         $operacion_id =  $request->operacion_id;
-        $actividad_id =  $request->actividad_id;
-        $actividad = DetalleOperacion::find($actividad_id);
+        // $actividad_id =  $request->actividad_id;
+        // $actividad = DetalleOperacion::find($actividad_id);
+
+        $array_formulario = explode("|", $formulario_id);
+
+        // $existe = MemoriaCalculo::select("memoria_calculos.*")
+        //     ->join("memoria_operacions", "memoria_operacions.memoria_id", "=", "memoria_calculos.id")
+        //     ->where("formulario_id", $array_formulario[1])
+        //     ->where("memoria_operacions.operacion_id", $operacion_id)
+        //     ->get();
+        // FacadesLog::debug($array_formulario[1]);
+        // FacadesLog::debug($operacion_id);
+        // FacadesLog::debug($existe);
+
+        $formulario = FormularioCuatro::find($array_formulario[1]);
+        $operacion = Operacion::find($operacion_id);
         $unidad = Unidad::find($unidad_id);
 
-        $pdf = PDF::loadView('reportes.saldos_actividad', compact("actividad", "unidad"))->setPaper('legal', 'landscape');
+        $pdf = PDF::loadView('reportes.saldos_actividad', compact("unidad", "formulario", "operacion"))->setPaper('legal', 'landscape');
         // ENUMERAR LAS PÁGINAS USANDO CANVAS
         $pdf->output();
         $dom_pdf = $pdf->getDomPDF();

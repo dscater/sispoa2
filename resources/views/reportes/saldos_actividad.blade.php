@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>SaldosActividad</title>
+    <title>SaldosOperacion</title>
     <style type="text/css">
         * {
             font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
@@ -196,48 +196,32 @@
     @inject('o_certificacion_detalles', 'App\Models\CertificacionDetalle')
     <img class="logo" src="{{ asset('imgs/' . $configuracion->first()->logo2) }}" alt="Logo">
     <img class="logo2" src="{{ asset('imgs/' . $configuracion->first()->logo) }}" alt="Logo">
-    <div class="titulo">SALDOS DE PRESUPUESTOS POR ACTIVIDAD<br />GESTIÓN {{ date('Y') }}</div>
+    <div class="titulo">SALDOS DE PRESUPUESTOS POR OPERACIÓN<br />GESTIÓN {{ date('Y') }}</div>
     <div class="titulo2">{{ $unidad->nombre }}</div>
     <table border="1" class="collapse" style="margin-top:80px;">
         <tbody>
             <tr class="bg_principal">
                 <td class="bold p-5" width="10%">Código PEI:</td>
-                <td class="bold p-5">{!! str_replace(',', '<br>', $actividad->operacion->detalle_formulario->formulario->codigo_pei) !!}</td>
+                <td class="bold p-5">{!! str_replace(',', '<br>', $formulario->codigo_pei) !!}</td>
             </tr>
             <tr>
                 <td class="bold p-5">Código operación:</td>
-                <td class="bold p-5">{{ $actividad->operacion->codigo_operacion }}</td>
+                <td class="bold p-5">{{ $operacion->codigo_operacion }}</td>
             </tr>
-            <td class="bold p-5">Actividad:</td>
+            {{-- <td class="bold p-5">Actividad:</td>
             <td class="bold p-5">{{ $actividad->actividad_tarea }}</td>
-            </tr>
+            </tr> --}}
         </tbody>
     </table>
 
     <table class="collapse tabla_detalle" border="1">
         <thead>
             <tr>
-                <th rowspan="2" width="5%">
-                    Código tarea
-                </th>
-                <th rowspan="2">
-                    Actividad/Tareas
-                </th>
-                <th rowspan="2">Partida</th>
-                <th colspan="3">
-                    Presupuesto
-                </th>
-                <th colspan="2">
-                    Ejecutado
-                </th>
-                <th rowspan="2">Saldo</th>
-            </tr>
-            <tr>
-                <th>Cantidad</th>
-                <th>Costo Unitario</th>
-                <th>PRESUPUESTO VIGENTE</th>
-                <th>Cantidad</th>
-                <th>PRESUPUESTO VIGENTE</th>
+                <th>Partida</th>
+                <th>Descripción</th>
+                <th>Presupuesto programado</th>
+                <th>Presupuesto certificado</th>
+                <th>Saldo con reversión</th>
             </tr>
         </thead>
         <tbody>
@@ -245,45 +229,57 @@
                 $suma_ejecutados = 0;
                 $suma_saldos = 0;
             @endphp
-            @if ($actividad->operacion->detalle_formulario->formulario->memoria_calculo)
+            @php
+                $memoria_calculos = App\Models\MemoriaCalculo::select('memoria_calculos.*')
+                    ->join('memoria_operacions', 'memoria_operacions.memoria_id', '=', 'memoria_calculos.id')
+                    ->where('formulario_id', $formulario->id)
+                    ->where('memoria_operacions.operacion_id', $operacion->id)
+                    ->get();
+                // $existe = $actividad->operacion->detalle_formulario->formulario->memoria_calculo
+                // ->operacions()
+                // ->where('detalle_operacion_id', $actividad->id)
+                // ->get();
+            @endphp
+            @if (count($memoria_calculos) > 0)
                 @php
-                    $existe = $actividad->operacion->detalle_formulario->formulario->memoria_calculo
-                        ->operacions()
-                        ->where('detalle_operacion_id', $actividad->id)
-                        ->get();
+                    $suma_vigente = 0;
+                    $suma_ejecutados = 0;
+                    $suma_saldos = 0;
                 @endphp
-                @if (count($existe) > 0)
-                    @php
-                        $suma_ejecutados = 0;
-                        $suma_saldos = 0;
-                    @endphp
-                    @foreach ($existe as $operacion)
-                        @foreach ($operacion->memoria_operacion_detalles as $mod)
+                @foreach ($memoria_calculos as $memoria)
+                    @foreach ($memoria->operacions as $mo)
+                        @foreach ($mo->memoria_operacion_detalles as $mod)
                             <tr>
-                                <td class="centreado">
-                                    {{ $operacion->codigo_actividad }}
-                                </td>
-                                <td>{{ $operacion->descripcion_actividad }}</td>
                                 <td class="centreado">{{ $mod->m_partida->partida }}</td>
-                                <td class="centreado">{{ $mod->cantidad }}</td>
-                                <td class="centreado">{{ $mod->costo }}</td>
+                                <td class="">{{ $mod->m_partida->descripcion }}</td>
                                 <td class="centreado">{{ $mod->total }}</td>
                                 @php
                                     $cantidad_usado = $o_certificacion_detalles
-                                        ->join('certificacions', 'certificacions.id', '=', 'certificacion_detalles.certificacion_id')
+                                        ->join(
+                                            'certificacions',
+                                            'certificacions.id',
+                                            '=',
+                                            'certificacion_detalles.certificacion_id',
+                                        )
                                         ->where('certificacion_detalles.mo_id', $operacion->id)
                                         ->where('mod_id', $mod->id)
                                         ->where('anulado', 0)
                                         ->sum('cantidad_usar');
                                     $total_usado = $o_certificacion_detalles
-                                        ->join('certificacions', 'certificacions.id', '=', 'certificacion_detalles.certificacion_id')
+                                        ->join(
+                                            'certificacions',
+                                            'certificacions.id',
+                                            '=',
+                                            'certificacion_detalles.certificacion_id',
+                                        )
                                         ->where('certificacion_detalles.mo_id', $operacion->id)
                                         ->where('mod_id', $mod->id)
                                         ->where('anulado', 0)
                                         ->sum('presupuesto_usarse');
                                     $saldo = (float) $mod->total - (float) $total_usado;
+
+                                    $suma_vigente += (float) $mod->total;
                                 @endphp
-                                <td class="centreado">{{ number_format($cantidad_usado, 2) }}</td>
                                 <td class="centreado">{{ number_format($total_usado, 2) }}</td>
                                 <td class="centreado">{{ number_format($saldo, 2) }}</td>
                             </tr>
@@ -293,21 +289,19 @@
                             @endphp
                         @endforeach
                     @endforeach
-                    <tr>
-                        <td class="centreado bold" colspan="7">TOTAL</td>
-                        <td class="centreado bold">{{ number_format($suma_ejecutados, 2) }}</td>
-                        <td class="centreado bold">{{ number_format($suma_saldos, 2) }}</td>
-                    </tr>
-                @else
-                    <tr>
-                        <td colspan="9" class="centreado">NO SE ENCONTRARÓN REGISTROS</td>
-                    </tr>
-                @endif
+                @endforeach
+                <tr>
+                    <td class="centreado bold" colspan="2">TOTAL</td>
+                    <td class="centreado bold">{{ number_format($suma_vigente, 2) }}</td>
+                    <td class="centreado bold">{{ number_format($suma_ejecutados, 2) }}</td>
+                    <td class="centreado bold">{{ number_format($suma_saldos, 2) }}</td>
+                </tr>
             @else
                 <tr>
-                    <td colspan="9" class="centreado">NO SE ENCONTRARÓN REGISTROS</td>
+                    <td colspan="6" class="centreado">NO SE ENCONTRARÓN REGISTROS</td>
                 </tr>
             @endif
+
         </tbody>
     </table>
 </body>

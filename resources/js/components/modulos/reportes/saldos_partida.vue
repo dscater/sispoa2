@@ -18,6 +18,45 @@
                                 <div class="ml-auto mr-auto col-md-5">
                                     <form>
                                         <div class="row">
+                                            <div
+                                                class="form-group col-md-12"
+                                                v-if="
+                                                    user &&
+                                                    user.tipo == 'SUPER USUARIO'
+                                                "
+                                            >
+                                                <label
+                                                    :class="{
+                                                        'text-danger':
+                                                            errors.unidad_id,
+                                                    }"
+                                                    >Unidad
+                                                    Organizacional*</label
+                                                >
+                                                <el-select
+                                                    class="w-100 d-block"
+                                                    :class="{
+                                                        'is-invalid':
+                                                            errors.unidad_id,
+                                                    }"
+                                                    v-model="oReporte.unidad_id"
+                                                    clearable
+                                                    @change="getFormularios"
+                                                >
+                                                    <el-option
+                                                        v-for="item in listaUnidades"
+                                                        :key="item.id"
+                                                        :value="item.id"
+                                                        :label="item.nombre"
+                                                    >
+                                                    </el-option>
+                                                </el-select>
+                                                <span
+                                                    class="error invalid-feedback"
+                                                    v-if="errors.unidad_id"
+                                                    v-text="errors.unidad_id[0]"
+                                                ></span>
+                                            </div>
                                             <div class="form-group col-md-12">
                                                 <label
                                                     :class="{
@@ -136,6 +175,7 @@
 export default {
     data() {
         return {
+            user: JSON.parse(localStorage.getItem("user")),
             errors: [],
             oReporte: {
                 formulario_id: "",
@@ -144,23 +184,50 @@ export default {
             aFechas: [],
             enviando: false,
             textoBtn: "Generar Reporte",
+            listaUnidades: [],
             listPartidas: [],
             listFormularios: [],
             errors: [],
         };
     },
     mounted() {
+        if (
+            this.user.tipo == "JEFES DE UNIDAD" ||
+            this.user.tipo == "DIRECTORES" ||
+            this.user.tipo == "JEFES DE ÁREAS" ||
+            this.user.tipo == "MAE" ||
+            this.user.tipo == "ENLACE" ||
+            this.user.tipo == "FINANCIERA"
+        ) {
+            this.oReporte.unidad_id = this.user.unidad_id;
+            this.getFormularios();
+        } else {
+            this.getUnidades();
+        }
         this.getFormularios();
         this.getPartidas();
     },
     methods: {
+        getUnidades() {
+            axios.get("/admin/unidads").then((response) => {
+                this.listaUnidades = response.data.unidads;
+            });
+        },
         // OBTENER LA LISTA DE FORMULARIO
         getFormularios() {
-            axios
-                .get("/admin/formulario_cuatro/listado_index")
-                .then((response) => {
-                    this.listFormularios = response.data.listado;
-                });
+            if (this.oReporte.unidad_id != "") {
+                axios
+                    .get("/admin/formulario_cuatro/getPoaPorUnidad", {
+                        params: {
+                            id: this.oReporte.unidad_id,
+                        },
+                    })
+                    .then((response) => {
+                        this.listFormularios = response.data.listado;
+                    });
+            } else {
+                this.listFormularios = [];
+            }
         },
         // GET PARTIDAS
         getPartidas() {

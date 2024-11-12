@@ -296,6 +296,31 @@
                     </li>
                     <li
                         class="nav-item"
+                        v-if="permisos.includes('fisicos.index')"
+                    >
+                        <router-link
+                            :to="{ name: 'fisicos.index' }"
+                            class="nav-link"
+                        >
+                            <i class="nav-icon fas fa-list-alt"></i>
+                            <p>Físico</p>
+                        </router-link>
+                    </li>
+
+                    <li
+                        class="nav-item"
+                        v-if="permisos.includes('semaforos.index')"
+                    >
+                        <router-link
+                            :to="{ name: 'semaforos.index' }"
+                            class="nav-link"
+                        >
+                            <i class="nav-icon fas fa-list-alt"></i>
+                            <p>Semáforo</p>
+                        </router-link>
+                    </li>
+                    <li
+                        class="nav-item"
                         v-if="
                             permisos.includes('verificacion_actividads.index')
                         "
@@ -363,7 +388,7 @@
                             <p>G. Ejecución de financiera</p>
                         </router-link>
                     </li>
-                    <li
+                    <!-- <li
                         class="nav-item"
                         v-if="permisos.includes('actividad_realizadas.index')"
                     >
@@ -374,7 +399,7 @@
                             <i class="nav-icon fa fa-file-alt"></i>
                             <p>Informe de actividad realizada</p>
                         </router-link>
-                    </li>
+                    </li> -->
                     <li
                         class="nav-header bg-navy"
                         v-if="
@@ -402,18 +427,6 @@
                         >
                             <i class="nav-icon fa fa-file-alt"></i>
                             <p>Modificación de memorias de cálculo</p>
-                        </router-link>
-                    </li>
-                    <li
-                        class="nav-item"
-                        v-if="permisos.includes('saldo_presupuesto.index')"
-                    >
-                        <router-link
-                            :to="{ name: 'saldo_presupuesto.index' }"
-                            class="nav-link"
-                        >
-                            <i class="nav-icon fa fa-file-alt"></i>
-                            <p>Saldo presupuesto</p>
                         </router-link>
                     </li>
                     <li
@@ -506,7 +519,7 @@
                             class="nav-link"
                         >
                             <i class="fas fa-file-pdf nav-icon"></i>
-                            <p>Saldos de presupuestos por actividad</p>
+                            <p>Saldos por operación</p>
                         </router-link>
                     </li>
                     <li
@@ -519,6 +532,18 @@
                         >
                             <i class="fas fa-file-pdf nav-icon"></i>
                             <p>Saldos por partida</p>
+                        </router-link>
+                    </li>
+                    <li
+                        class="nav-item"
+                        v-if="permisos.includes('saldo_presupuesto.index')"
+                    >
+                        <router-link
+                            :to="{ name: 'saldo_presupuesto.index' }"
+                            class="nav-link"
+                        >
+                            <i class="nav-icon fa fa-file-alt"></i>
+                            <p>Saldo presupuesto</p>
                         </router-link>
                     </li>
                     <!-- <li
@@ -557,19 +582,6 @@
                             <p>Semáforos</p>
                         </router-link>
                     </li> -->
-                    <li class="nav-header bg-navy">OTRAS OPCIONES</li>
-                    <li
-                        class="nav-item"
-                        v-if="permisos.includes('fisicos.index')"
-                    >
-                        <router-link
-                            :to="{ name: 'fisicos.index' }"
-                            class="nav-link"
-                        >
-                            <i class="nav-icon fas fa-list-alt"></i>
-                            <p>Físico</p>
-                        </router-link>
-                    </li>
                     <!-- <li
                         class="nav-item"
                         v-if="permisos.includes('financieras.index')"
@@ -582,18 +594,7 @@
                             <p>Financiero</p>
                         </router-link>
                     </li> -->
-                    <li
-                        class="nav-item"
-                        v-if="permisos.includes('semaforos.index')"
-                    >
-                        <router-link
-                            :to="{ name: 'semaforos.index' }"
-                            class="nav-link"
-                        >
-                            <i class="nav-icon fas fa-list-alt"></i>
-                            <p>Semáforo</p>
-                        </router-link>
-                    </li>
+                    <li class="nav-header bg-navy">OTRAS OPCIONES</li>
                     <li
                         class="nav-item"
                         v-if="permisos.includes('configuracion.index')"
@@ -676,8 +677,7 @@ export default {
             permisos: localStorage.getItem("permisos"),
         };
     },
-    mounted() {
-    },
+    mounted() {},
     methods: {
         logout() {
             this.fullscreenLoading = true;

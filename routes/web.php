@@ -255,6 +255,12 @@ Route::prefix('admin')->group(function () {
     ]);
 
     // SEMAFOROS
+    Route::get('/semaforos/getResumenSemaforo', [SemaforoController::class, 'getResumenSemaforo'])->name("semaforos.getResumenSemaforo");
+    Route::get('/semaforos/gerResumenFisicoUnidad', [SemaforoController::class, 'gerResumenFisicoUnidad'])->name("semaforos.gerResumenFisicoUnidad");
+    Route::get('/semaforos/getGraficoUnidad', [SemaforoController::class, 'getGraficoUnidad'])->name("semaforos.getGraficoUnidad");
+    Route::get('/semaforos/getResumenSemaforoDetalle', [SemaforoController::class, 'getResumenSemaforoDetalle'])->name("semaforos.getResumenSemaforoDetalle");
+
+
     Route::post('/semaforos/actualiza_estados/{detalle_formulario}', [SemaforoController::class, 'actualiza_estados'])->name("semaforos.actualiza_estados");
     Route::resource('semaforos', SemaforoController::class)->only([
         'index',

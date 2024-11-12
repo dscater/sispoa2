@@ -1,18 +1,18 @@
 :root {
-    --principal: #0062A5;
-    --secundario: #0062A5;
+    --principal: #0062a5;
+    --secundario: #0062a5;
     --correcto: #d2e7c9;
     --secondary: #da1900;
 }
 
 .login-page {
-    background-image: url('../imgs/fondo.jpeg') !important;
+    background-image: url("../imgs/fondo.jpeg") !important;
     background-repeat: no-repeat;
     background-size: 100% 100%;
     background-position: center;
 }
 
-.bg-cream{
+.bg-cream {
     background-color: rgb(247, 235, 203);
 }
 
@@ -21,13 +21,54 @@
     color: white !important;
 }
 
+.btn_semaforo {
+    border: solid 1px;
+    border-radius: 50%;
+    padding: 0px 10px;
+    width: 20px;
+    height: 20px;
+}
+
+.btn_semaforo_vacio {
+    margin: auto;
+    border: solid 1px black;
+    border-radius: 50%;
+    height: 20px;
+    width: 20px;
+}
+.btn_semaforo.malo {
+    color: white;
+    background-color: #da1900;
+}
+
+.btn_semaforo.regular {
+    background-color: #eff309;
+}
+
+.btn_semaforo.bueno {
+    background-color: #00db1d;
+}
+
+.bg-malo {
+    color: white;
+    background: #da1900 !important;
+}
+
+.bg-regular {
+    background: #d6da00 !important;
+}
+
+.bg-bueno {
+    background: #00db1d !important;
+}
+
 .secondary {
     background: var(--secondary);
     color: white;
 }
 
 .crema {
-    background: #EEECE1;
+    background: #eeece1;
     color: black;
 }
 
@@ -54,7 +95,7 @@
     overflow: auto;
 }
 
-.el-avatar>img {
+.el-avatar > img {
     width: 100%;
 }
 
@@ -85,7 +126,7 @@ input.form-control {
 }
 
 .fondo_rojo {
-    background: #DC3545;
+    background: #dc3545;
     color: white;
 }
 

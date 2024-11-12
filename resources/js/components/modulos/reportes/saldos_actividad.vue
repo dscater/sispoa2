@@ -4,7 +4,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Reportes - Saldos de presupuestos por actividad</h1>
+                        <h1>Reportes - Saldos por operación</h1>
                     </div>
                 </div>
             </div>
@@ -137,7 +137,7 @@
                                                     "
                                                 ></span>
                                             </div>
-                                            <div class="form-group col-md-12">
+                                            <!-- <div class="form-group col-md-12">
                                                 <label
                                                     :class="{
                                                         'text-danger':
@@ -175,7 +175,7 @@
                                                         errors.actividad_id[0]
                                                     "
                                                 ></span>
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </form>
                                     <div class="row">
