@@ -309,10 +309,28 @@
 
                     <li
                         class="nav-item"
-                        v-if="permisos.includes('semaforos.index')"
+                        v-if="
+                            permisos.includes('semaforos.index') &&
+                            user.tipo != 'SUPER USUARIO'
+                        "
                     >
                         <router-link
                             :to="{ name: 'semaforos.index' }"
+                            class="nav-link"
+                        >
+                            <i class="nav-icon fas fa-list-alt"></i>
+                            <p>Semáforo</p>
+                        </router-link>
+                    </li>
+                    <li
+                        class="nav-item"
+                        v-if="
+                            permisos.includes('semaforos.index') &&
+                            user.tipo == 'SUPER USUARIO'
+                        "
+                    >
+                        <router-link
+                            :to="{ name: 'semaforos.index_admin' }"
                             class="nav-link"
                         >
                             <i class="nav-icon fas fa-list-alt"></i>

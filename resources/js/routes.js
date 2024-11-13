@@ -276,6 +276,12 @@ export default new Router({
                 .default,
         },
         {
+            path: "/semaforos/administracion",
+            name: "semaforos.index_admin",
+            component: require("./components/modulos/semaforos/index_admin.vue")
+                .default,
+        },
+        {
             path: "/semaforos/:id",
             name: "semaforos.edit",
             props: true,
