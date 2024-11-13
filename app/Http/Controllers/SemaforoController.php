@@ -26,6 +26,10 @@ class SemaforoController extends Controller
 
         $unidads = Unidad::all();
 
+        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "ENLACE") {
+            $unidads = Unidad::where("id", Auth::user()->unidad_id)->get();
+        }
+
         $html = '<table class="table table-bordered">';
         $html .= '<thead class="bg-primary">';
         $html .= "<tr>";
@@ -230,7 +234,9 @@ class SemaforoController extends Controller
     public function getResumenSemaforo()
     {
         $unidads = Unidad::all();
-
+        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "ENLACE") {
+            $unidads = Unidad::where("id", Auth::user()->unidad_id)->get();
+        }
         $html = "<table>";
         $html .= '<thead class="bg-primary">';
         $html .= "<tr>";
@@ -390,7 +396,9 @@ class SemaforoController extends Controller
     public function getResumenSemaforoDetalle()
     {
         $unidads = Unidad::all();
-
+        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "ENLACE") {
+            $unidads = Unidad::where("id", Auth::user()->unidad_id)->get();
+        }
         $html = '<table class="table table-bordered">';
         $html .= '<thead class="bg-primary">';
         $html .= "<tr>";
