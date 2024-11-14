@@ -28,14 +28,15 @@ class FormularioCincoController extends Controller
     public function index(Request $request)
     {
         $listado = [];
-        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "ENLACE") {
+        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "ENLACE" || Auth::user()->tipo == "FINANCIERA") {
             $listado = FormularioCinco::select("formulario_cinco.*")
                 ->join("memoria_calculos", "memoria_calculos.id", "=", "formulario_cinco.memoria_id")
                 ->join("formulario_cuatro", "formulario_cuatro.id", "=", "memoria_calculos.formulario_id")
                 ->where("unidad_id", Auth::user()->unidad_id)
+                ->where("formulario_cinco.status", 1)
                 ->get();
         } else {
-            $listado = FormularioCinco::all();
+            $listado = FormularioCinco::where("status", 1)->get();
         }
         return response()->JSON(['listado' => $listado, 'total' => count($listado)], 200);
     }

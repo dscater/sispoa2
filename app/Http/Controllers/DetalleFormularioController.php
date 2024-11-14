@@ -25,13 +25,14 @@ class DetalleFormularioController extends Controller
     public function index(Request $request)
     {
         $detalle_formularios = [];
-        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "ENLACE") {
+        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "ENLACE" || Auth::user()->tipo == "FINANCIERA") {
             $detalle_formularios = DetalleFormulario::select("detalle_formularios.*")
                 ->join("formulario_cuatro", "formulario_cuatro.id", "=", "detalle_formularios.formulario_id")
                 ->where("formulario_cuatro.unidad_id", Auth::user()->unidad_id)
+                ->where("formulario_cuatro.status", 1)
                 ->get();
         } else {
-            $detalle_formularios = DetalleFormulario::all();
+            $detalle_formularios = DetalleFormulario::where("status", 1)->get();
         }
         return response()->JSON(['detalle_formularios' => $detalle_formularios, 'total' => count($detalle_formularios)], 200);
     }
@@ -514,10 +515,18 @@ class DetalleFormularioController extends Controller
         $total_programados = 0;
         $total_ejecutados = 0;
         $meses = [
-            "pt_e", "pt_f", "pt_m",
-            "st_a", "st_m", "st_j",
-            "tt_j", "tt_a", "tt_s",
-            "ct_o", "ct_n", "ct_d",
+            "pt_e",
+            "pt_f",
+            "pt_m",
+            "st_a",
+            "st_m",
+            "st_j",
+            "tt_j",
+            "tt_a",
+            "tt_s",
+            "ct_o",
+            "ct_n",
+            "ct_d",
         ];
         $array_meses = [
             "pt_e" => "Enero",
@@ -642,10 +651,18 @@ class DetalleFormularioController extends Controller
         $total_programados = 0;
         $total_ejecutados = 0;
         $meses = [
-            "pt_e", "pt_f", "pt_m",
-            "st_a", "st_m", "st_j",
-            "tt_j", "tt_a", "tt_s",
-            "ct_o", "ct_n", "ct_d",
+            "pt_e",
+            "pt_f",
+            "pt_m",
+            "st_a",
+            "st_m",
+            "st_j",
+            "tt_j",
+            "tt_a",
+            "tt_s",
+            "ct_o",
+            "ct_n",
+            "ct_d",
         ];
         $array_meses = [
             "pt_e" => "Enero",
@@ -1133,10 +1150,18 @@ class DetalleFormularioController extends Controller
         $total_programados = 0;
         $total_ejecutados = 0;
         $meses = [
-            "pt_e", "pt_f", "pt_m",
-            "st_a", "st_m", "st_j",
-            "tt_j", "tt_a", "tt_s",
-            "ct_o", "ct_n", "ct_d",
+            "pt_e",
+            "pt_f",
+            "pt_m",
+            "st_a",
+            "st_m",
+            "st_j",
+            "tt_j",
+            "tt_a",
+            "tt_s",
+            "ct_o",
+            "ct_n",
+            "ct_d",
         ];
         $array_meses = [
             "pt_e" => "Enero",
@@ -1337,10 +1362,18 @@ class DetalleFormularioController extends Controller
         $total_programados = 0;
         $total_ejecutados = 0;
         $meses = [
-            "pt_e", "pt_f", "pt_m",
-            "st_a", "st_m", "st_j",
-            "tt_j", "tt_a", "tt_s",
-            "ct_o", "ct_n", "ct_d",
+            "pt_e",
+            "pt_f",
+            "pt_m",
+            "st_a",
+            "st_m",
+            "st_j",
+            "tt_j",
+            "tt_a",
+            "tt_s",
+            "ct_o",
+            "ct_n",
+            "ct_d",
         ];
         $array_meses = [
             "pt_e" => "Enero",
@@ -1548,10 +1581,18 @@ class DetalleFormularioController extends Controller
         $total_ejecutados = 0;
 
         $meses = [
-            "pt_e", "pt_f", "pt_m",
-            "st_a", "st_m", "st_j",
-            "tt_j", "tt_a", "tt_s",
-            "ct_o", "ct_n", "ct_d",
+            "pt_e",
+            "pt_f",
+            "pt_m",
+            "st_a",
+            "st_m",
+            "st_j",
+            "tt_j",
+            "tt_a",
+            "tt_s",
+            "ct_o",
+            "ct_n",
+            "ct_d",
         ];
         $array_meses = [
             "pt_e" => "Enero",
@@ -1706,10 +1747,18 @@ class DetalleFormularioController extends Controller
         $total_ejecutados = 0;
 
         $meses = [
-            "pt_e", "pt_f", "pt_m",
-            "st_a", "st_m", "st_j",
-            "tt_j", "tt_a", "tt_s",
-            "ct_o", "ct_n", "ct_d",
+            "pt_e",
+            "pt_f",
+            "pt_m",
+            "st_a",
+            "st_m",
+            "st_j",
+            "tt_j",
+            "tt_a",
+            "tt_s",
+            "ct_o",
+            "ct_n",
+            "ct_d",
         ];
         $array_meses = [
             "pt_e" => "Enero",
@@ -1854,7 +1903,7 @@ class DetalleFormularioController extends Controller
 
     public function getEjecucionFisico(Request $request)
     {
-        $detalle_formulario = DetalleFormulario::where("formulario_seleccionado", $request->formulario_id)->get()->first();
+        $detalle_formulario = DetalleFormulario::where("formulario_seleccionado", $request->formulario_id)->where("status", 1)->get()->first();
         $mes_ini = (int)$request->mes1;
         $mes_fin = (int)$request->mes2;
         $mes_ini--;
@@ -1863,10 +1912,18 @@ class DetalleFormularioController extends Controller
         $total_programados = 0;
         $total_ejecutados = 0;
         $meses = [
-            "pt_e", "pt_f", "pt_m",
-            "st_a", "st_m", "st_j",
-            "tt_j", "tt_a", "tt_s",
-            "ct_o", "ct_n", "ct_d",
+            "pt_e",
+            "pt_f",
+            "pt_m",
+            "st_a",
+            "st_m",
+            "st_j",
+            "tt_j",
+            "tt_a",
+            "tt_s",
+            "ct_o",
+            "ct_n",
+            "ct_d",
         ];
 
         $meses_txt = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
@@ -2062,10 +2119,18 @@ class DetalleFormularioController extends Controller
         $unidades = Unidad::all();
 
         $meses = [
-            "pt_e", "pt_f", "pt_m",
-            "st_a", "st_m", "st_j",
-            "tt_j", "tt_a", "tt_s",
-            "ct_o", "ct_n", "ct_d",
+            "pt_e",
+            "pt_f",
+            "pt_m",
+            "st_a",
+            "st_m",
+            "st_j",
+            "tt_j",
+            "tt_a",
+            "tt_s",
+            "ct_o",
+            "ct_n",
+            "ct_d",
         ];
 
         $meses_txt = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
@@ -2152,6 +2217,7 @@ class DetalleFormularioController extends Controller
 
         $detalle_formularios = DetalleFormulario::select("detalle_formularios.*")
             ->join("formulario_cuatro", "formulario_cuatro.id", "=", "detalle_formularios.formulario_id")
+            ->where("formulario_cuatro.status", 1)
             ->get();
         $total_suma = 0;
         foreach ($detalle_formularios as $detalle_formulario) {
@@ -2172,6 +2238,7 @@ class DetalleFormularioController extends Controller
             $detalle_formularios = DetalleFormulario::select("detalle_formularios.*")
                 ->join("formulario_cuatro", "formulario_cuatro.id", "=", "detalle_formularios.formulario_id")
                 ->where("formulario_cuatro.unidad_id", $item->id)
+                ->where("formulario_cuatro.status", 1)
                 ->get();
 
             $total_suma_rango = 0;
@@ -2222,12 +2289,12 @@ class DetalleFormularioController extends Controller
     public function destroy(DetalleFormulario $detalle_formulario)
     {
         // validar si existe un registro de memoria de calculo
-        $existe = MemoriaCalculo::where("formulario_id", $detalle_formulario->formulario_id)->get();
+        $existe = MemoriaCalculo::where("formulario_id", $detalle_formulario->formulario_id)->where("status", 1)->get();
         if (count($existe) > 0) {
             return response()->JSON(["sw" => false, "formulario_cuatro" => $detalle_formulario->formulario, "msj" => "No es posible eliminar este registro, debido a que su información esta siendo utilizada en Memoria de cálculo"]);
         }
 
-        $existe = Certificacion::where("formulario_id", $detalle_formulario->formulario->id)->get();
+        $existe = Certificacion::where("formulario_id", $detalle_formulario->formulario->id)->where("status", 1)->get();
         if (count($existe) > 0) {
             return response()->JSON(["sw" => false, "formulario_cuatro" => $detalle_formulario->formulario, "msj" => "No es posible eliminar este registro, porque la información esta siendo utilizada en Certificaciones"]);
         }

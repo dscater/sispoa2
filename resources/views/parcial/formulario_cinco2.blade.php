@@ -1,7 +1,7 @@
 <table class="tabla_detalle">
     <tbody>
         <tr class="bg-primary cabecera">
-            <th colspan="17" class="border_left">
+            <th colspan="15" class="border_left">
                 PLAN OPERATIVO ANUAL GESTIÓN
                 {{ $verificacion_actividad ? $verificacion_actividad->gestion : date('Y') }}
             </th>
@@ -13,12 +13,12 @@
             <th rowspan="3">
                 Operación(2)
             </th>
-            <th rowspan="3" width="3%">
+            {{-- <th rowspan="3" width="3%">
                 Código tarea(3)
             </th>
             <th rowspan="3">
                 Actividad/Tareas(4)
-            </th>
+            </th> --}}
             <th rowspan="3">
                 Lugar de ejecución de la
                 Operación(5)
@@ -79,8 +79,8 @@
                                 <tr>
                                     <td class="border_left border_top">{{ $registro['codigo_operacion'] }}</td>
                                     <td class="border_left border_top">{{ $registro['operacion'] }}</td>
-                                    <td class="border_left border_top">{{ $registro_resp->cod_actividad_txt }}</td>
-                                    <td class="border_left border_top">{{ $registro_resp->actividad_txt }}</td>
+                                    {{-- <td class="border_left border_top">{{ $registro_resp->cod_actividad_txt }}</td>
+                                    <td class="border_left border_top">{{ $registro_resp->actividad_txt }}</td> --}}
                                     <td class="border_left border_top">{{ $lugar['lugar'] }}</td>
                                     <td class="border_left border_top">{{ $responsable['responsable'] }}</td>
                                     <td class="border_left border_top">{{ $registro_resp->partida }}</td>
@@ -101,8 +101,8 @@
                                 <tr>
                                     <td class="border_left"></td>
                                     <td class="border_left"></td>
-                                    <td class="border_left border_top">{{ $registro_resp->cod_actividad_txt }}</td>
-                                    <td class="border_left border_top">{{ $registro_resp->actividad_txt }}</td>
+                                    {{-- <td class="border_left border_top">{{ $registro_resp->cod_actividad_txt }}</td>
+                                    <td class="border_left border_top">{{ $registro_resp->actividad_txt }}</td> --}}
                                     <td class="border_left border_top">{{ $lugar['lugar'] }}</td>
                                     <td class="border_left border_top">{{ $responsable['responsable'] }}</td>
                                     <td class="border_left border_top">{{ $registro_resp->partida }}</td>
@@ -123,8 +123,8 @@
                                 <tr>
                                     <td class="border_left"></td>
                                     <td class="border_left"></td>
-                                    <td class="border_left border_top">{{ $registro_resp->cod_actividad_txt }}</td>
-                                    <td class="border_left border_top">{{ $registro_resp->actividad_txt }}</td>
+                                    {{-- <td class="border_left border_top">{{ $registro_resp->cod_actividad_txt }}</td> --}}
+                                    {{-- <td class="border_left border_top">{{ $registro_resp->actividad_txt }}</td> --}}
                                     <td class="border_left"></td>
                                     <td class="border_left"></td>
                                     <td class="border_left border_top">{{ $registro_resp->partida }}</td>
@@ -145,8 +145,8 @@
                                 <tr>
                                     <td class="border_left"></td>
                                     <td class="border_left"></td>
-                                    <td class="border_left border_top">{{ $registro_resp->cod_actividad_txt }}</td>
-                                    <td class="border_left border_top">{{ $registro_resp->actividad_txt }}</td>
+                                    {{-- <td class="border_left border_top">{{ $registro_resp->cod_actividad_txt }}</td> --}}
+                                    {{-- <td class="border_left border_top">{{ $registro_resp->actividad_txt }}</td> --}}
                                     <td class="border_left"></td>
                                     <td class="border_left"></td>
                                     <td class="border_left border_top">{{ $registro_resp->partida }}</td>
@@ -169,7 +169,7 @@
                             @endphp
                         @endforeach
                         <tr>
-                            <td class="crema" colspan="16">TOTAL</td>
+                            <td class="crema" colspan="14">TOTAL</td>
                             <td class="crema">{{ number_format($subtotal, 2, '.', '') }}</td>
                         </tr>
                     @endforeach
@@ -177,7 +177,7 @@
             @endforeach
         @endforeach
         <tr class="bg-primary">
-            <th colspan="16" class="border_left border_bottom border_top border_right">TOTAL PRESUPUESTO DE LA/EL
+            <th colspan="14" class="border_left border_bottom border_top border_right">TOTAL PRESUPUESTO DE LA/EL
                 {{ $formulario_cinco->memoria->formulario->unidad->nombre }}</th>
             <th class="text-center border_left border_bottom border_top border_right">
                 {{ number_format($formulario_cinco->memoria->total_final, 2) }}</th>

@@ -13,19 +13,41 @@ class FormularioCuatro extends Model
     protected $table = "formulario_cuatro";
 
     protected $fillable = [
-        'codigo_pei', 'objetivo_estrategico',
-        'resultado_institucional', 'indicador', 'codigo_poa',
-        'accion_corto', 'indicador_proceso', 'linea_base',
-        'meta', 'presupuesto', 'ponderacion',
-        'unidad_id', 'fecha_registro'
+        'codigo_pei',
+        'objetivo_estrategico',
+        'resultado_institucional',
+        'indicador',
+        'codigo_poa',
+        'accion_corto',
+        'indicador_proceso',
+        'linea_base',
+        'meta',
+        'presupuesto',
+        'ponderacion',
+        'unidad_id',
+        'fecha_registro',
+        'status'
     ];
 
     protected $with = ["unidad"];
 
     protected $appends = [
-        "estado_aprobado", "sw_aprobado",
-        "codigo_pei1", "objetivo_estrategico1", "codigo_pei2", "objetivo_estrategico2", "codigo_pei3", "objetivo_estrategico3",
-        "codigo_poa1", "accion_corto1", "codigo_poa2", "accion_corto2", "codigo_poa3", "accion_corto3", "codigo_poa_full", "accion_corto_full"
+        "estado_aprobado",
+        "sw_aprobado",
+        "codigo_pei1",
+        "objetivo_estrategico1",
+        "codigo_pei2",
+        "objetivo_estrategico2",
+        "codigo_pei3",
+        "objetivo_estrategico3",
+        "codigo_poa1",
+        "accion_corto1",
+        "codigo_poa2",
+        "accion_corto2",
+        "codigo_poa3",
+        "accion_corto3",
+        "codigo_poa_full",
+        "accion_corto_full"
     ];
 
     // PEI's

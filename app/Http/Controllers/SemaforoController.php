@@ -26,7 +26,7 @@ class SemaforoController extends Controller
 
         $unidads = Unidad::all();
 
-        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "ENLACE") {
+        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "ENLACE" || Auth::user()->tipo == "FINANCIERA") {
             $unidads = Unidad::where("id", Auth::user()->unidad_id)->get();
         }
 
@@ -61,6 +61,7 @@ class SemaforoController extends Controller
             $detalle_formularios = DetalleFormulario::select("detalle_formularios.*")
                 ->join("formulario_cuatro", "formulario_cuatro.id", "detalle_formularios.formulario_id")
                 ->where("unidad_id", $unidad->id)
+                ->where("detalle_formularios.status", 1)
                 ->get();
 
             $total_actividades_programadas = 0;
@@ -234,7 +235,7 @@ class SemaforoController extends Controller
     public function getResumenSemaforo()
     {
         $unidads = Unidad::all();
-        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "ENLACE") {
+        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "ENLACE" || Auth::user()->tipo == "FINANCIERA") {
             $unidads = Unidad::where("id", Auth::user()->unidad_id)->get();
         }
         $html = "<table>";
@@ -276,6 +277,7 @@ class SemaforoController extends Controller
             $detalle_formularios = DetalleFormulario::select("detalle_formularios.*")
                 ->join("formulario_cuatro", "formulario_cuatro.id", "detalle_formularios.formulario_id")
                 ->where("unidad_id", $unidad->id)
+                ->where("detalle_formularios.status", 1)
                 ->get();
 
             $total_operaciones = 0;
@@ -328,7 +330,8 @@ class SemaforoController extends Controller
                 }
             }
 
-
+            $p_actividad_ejecutadas = 0;
+            $p_actividad_ejecutadas_fecha = 0;
             if ($total_actividades_programadas > 0) {
                 $p_actividad_ejecutadas = round(($total_actividades_ejecutadas * 100) / $total_actividades_programadas, 2);
                 $p_actividad_ejecutadas_fecha = round(($total_actividades_ejecutadas_fecha * 100) / $total_actividades_programadas, 2);
@@ -396,7 +399,7 @@ class SemaforoController extends Controller
     public function getResumenSemaforoDetalle()
     {
         $unidads = Unidad::all();
-        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "ENLACE") {
+        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "ENLACE" || Auth::user()->tipo == "FINANCIERA") {
             $unidads = Unidad::where("id", Auth::user()->unidad_id)->get();
         }
         $html = '<table class="table table-bordered">';
@@ -454,6 +457,7 @@ class SemaforoController extends Controller
             $detalle_formularios = DetalleFormulario::select("detalle_formularios.*")
                 ->join("formulario_cuatro", "formulario_cuatro.id", "detalle_formularios.formulario_id")
                 ->where("unidad_id", $unidad->id)
+                ->where("detalle_formularios.status", 1)
                 ->get();
 
             $num_mes_actual = (int)date("m");
@@ -558,6 +562,7 @@ class SemaforoController extends Controller
         $detalle_formularios = DetalleFormulario::select("detalle_formularios.*")
             ->join("formulario_cuatro", "formulario_cuatro.id", "=", "detalle_formularios.formulario_id")
             ->where("unidad_id", $request->unidad_id)
+            ->where("detalle_formularios.status", 1)
             ->get();
 
         $total_programados = 0;
@@ -918,18 +923,18 @@ class SemaforoController extends Controller
         $html .= '
             <tr class="bg-cream">
                 <td colspan="7"></td>
-                <td>' . round(($programados[0] * 100) / $suma_programados, 2) . '</td>
-                <td>' . round(($programados[1] * 100) / $suma_programados, 2) . '</td>
-                <td>' . round(($programados[2] * 100) / $suma_programados, 2) . '</td>
-                <td>' . round(($programados[3] * 100) / $suma_programados, 2) . '</td>
-                <td>' . round(($programados[4] * 100) / $suma_programados, 2) . '</td>
-                <td>' . round(($programados[5] * 100) / $suma_programados, 2) . '</td>
-                <td>' . round(($programados[6] * 100) / $suma_programados, 2) . '</td>
-                <td>' . round(($programados[7] * 100) / $suma_programados, 2) . '</td>
-                <td>' . round(($programados[8] * 100) / $suma_programados, 2) . '</td>
-                <td>' . round(($programados[9] * 100) / $suma_programados, 2) . '</td>
-                <td>' . round(($programados[10] * 100) / $suma_programados, 2) . '</td>
-                <td>' . round(($programados[11] * 100) / $suma_programados, 2) . '</td>
+                <td>' . round(($suma_programados > 0 ? ($programados[0] * 100) / $suma_programados : 0), 2) . '</td>
+                <td>' . round(($suma_programados > 0 ? ($programados[1] * 100) / $suma_programados : 0), 2) . '</td>
+                <td>' . round(($suma_programados > 0 ? ($programados[2] * 100) / $suma_programados : 0), 2) . '</td>
+                <td>' . round(($suma_programados > 0 ? ($programados[3] * 100) / $suma_programados : 0), 2) . '</td>
+                <td>' . round(($suma_programados > 0 ? ($programados[4] * 100) / $suma_programados : 0), 2) . '</td>
+                <td>' . round(($suma_programados > 0 ? ($programados[5] * 100) / $suma_programados : 0), 2) . '</td>
+                <td>' . round(($suma_programados > 0 ? ($programados[6] * 100) / $suma_programados : 0), 2) . '</td>
+                <td>' . round(($suma_programados > 0 ? ($programados[7] * 100) / $suma_programados : 0), 2) . '</td>
+                <td>' . round(($suma_programados > 0 ? ($programados[8] * 100) / $suma_programados : 0), 2) . '</td>
+                <td>' . round(($suma_programados > 0 ? ($programados[9] * 100) / $suma_programados : 0), 2) . '</td>
+                <td>' . round(($suma_programados > 0 ? ($programados[10] * 100) / $suma_programados : 0), 2) . '</td>
+                <td>' . round(($suma_programados > 0 ? ($programados[11] * 100) / $suma_programados : 0), 2) . '</td>
                 <td colspan="2">100%</td>
             </tr>
         ';
@@ -955,18 +960,18 @@ class SemaforoController extends Controller
             </tr>
         ';
         $ejecutados_p = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-        $ejecutados_p[0] = round(($ejecutados[0] * 100) / $suma_programados, 2);
-        $ejecutados_p[1] = round(($ejecutados[1] * 100) / $suma_programados, 2);
-        $ejecutados_p[2] = round(($ejecutados[2] * 100) / $suma_programados, 2);
-        $ejecutados_p[3] = round(($ejecutados[3] * 100) / $suma_programados, 2);
-        $ejecutados_p[4] = round(($ejecutados[4] * 100) / $suma_programados, 2);
-        $ejecutados_p[5] = round(($ejecutados[5] * 100) / $suma_programados, 2);
-        $ejecutados_p[6] = round(($ejecutados[6] * 100) / $suma_programados, 2);
-        $ejecutados_p[7] = round(($ejecutados[7] * 100) / $suma_programados, 2);
-        $ejecutados_p[8] = round(($ejecutados[8] * 100) / $suma_programados, 2);
-        $ejecutados_p[9] = round(($ejecutados[9] * 100) / $suma_programados, 2);
-        $ejecutados_p[10] = round(($ejecutados[10] * 100) / $suma_programados, 2);
-        $ejecutados_p[11] = round(($ejecutados[11] * 100) / $suma_programados, 2);
+        $ejecutados_p[0] = round(($suma_programados > 0 ? ($ejecutados[0] * 100) / $suma_programados : 0), 2);
+        $ejecutados_p[1] = round(($suma_programados > 0 ? ($ejecutados[1] * 100) / $suma_programados : 0), 2);
+        $ejecutados_p[2] = round(($suma_programados > 0 ? ($ejecutados[2] * 100) / $suma_programados : 0), 2);
+        $ejecutados_p[3] = round(($suma_programados > 0 ? ($ejecutados[3] * 100) / $suma_programados : 0), 2);
+        $ejecutados_p[4] = round(($suma_programados > 0 ? ($ejecutados[4] * 100) / $suma_programados : 0), 2);
+        $ejecutados_p[5] = round(($suma_programados > 0 ? ($ejecutados[5] * 100) / $suma_programados : 0), 2);
+        $ejecutados_p[6] = round(($suma_programados > 0 ? ($ejecutados[6] * 100) / $suma_programados : 0), 2);
+        $ejecutados_p[7] = round(($suma_programados > 0 ? ($ejecutados[7] * 100) / $suma_programados : 0), 2);
+        $ejecutados_p[8] = round(($suma_programados > 0 ? ($ejecutados[8] * 100) / $suma_programados : 0), 2);
+        $ejecutados_p[9] = round(($suma_programados > 0 ? ($ejecutados[9] * 100) / $suma_programados : 0), 2);
+        $ejecutados_p[10] = round(($suma_programados > 0 ? ($ejecutados[10] * 100) / $suma_programados : 0), 2);
+        $ejecutados_p[11] = round(($suma_programados > 0 ? ($ejecutados[11] * 100) / $suma_programados : 0), 2);
 
         $suma_ejecutados_p = $ejecutados_p[0] +  $ejecutados_p[1] +  $ejecutados_p[2] + $ejecutados_p[3] + $ejecutados_p[4] + $ejecutados_p[5] + $ejecutados_p[6] + $ejecutados_p[7] + $ejecutados_p[8] + $ejecutados_p[9] + $ejecutados_p[10] + $ejecutados_p[11];
 
@@ -1056,7 +1061,7 @@ class SemaforoController extends Controller
         $html .= '</tbody>';
         return response()->JSON([
             'sw' => true,
-            'detalle_formulario' => $detalle_formulario->load("operacions.subdireccion"),
+            // 'detalle_formulario' => $detalle_formulario->load("operacions.subdireccion"),
             "html" => $html,
 
         ], 200);
@@ -1139,6 +1144,7 @@ class SemaforoController extends Controller
         $detalle_formularios = DetalleFormulario::select("detalle_formularios.*")
             ->join("formulario_cuatro", "formulario_cuatro.id", "=", "detalle_formularios.formulario_id")
             ->where("unidad_id", $request->unidad_id)
+            ->where("formulario_cuatro.status", 1)
             ->get();
 
 
@@ -1221,7 +1227,6 @@ class SemaforoController extends Controller
 
         return response()->JSON([
             'sw' => true,
-            'detalle_formulario' => $detalle_formulario->load("operacions.subdireccion"),
             "total_programados" => $total_programados,
             "total_ejecutados" => $total_ejecutados,
             "a_la_fecha" => $a_la_fecha,

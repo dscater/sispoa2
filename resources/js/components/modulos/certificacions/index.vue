@@ -496,6 +496,30 @@
                                                             </b-button>
                                                         </template>
 
+                                                        <b-button
+                                                            v-if="
+                                                                user.tipo ==
+                                                                    'FINANCIERA' &&
+                                                                row.item
+                                                                    .estado ==
+                                                                    'APROBADO'
+                                                            "
+                                                            size="sm"
+                                                            pill
+                                                            variant="outline-info"
+                                                            class="btn-flat btn-block"
+                                                            title="Revertir"
+                                                            @click="
+                                                                revertirCertificacion(
+                                                                    row.item
+                                                                )
+                                                            "
+                                                        >
+                                                            <i
+                                                                class="fa fa-sync"
+                                                            ></i>
+                                                        </b-button>
+
                                                         <template
                                                             v-if="
                                                                 row.item
@@ -645,11 +669,21 @@
                 </div>
             </div>
         </section>
+        <Revertir
+            :muestra_modal="muestra_modal"
+            :accion="modal_accion"
+            :certificacion="oCertificacion"
+            @close="muestra_modal = false"
+        ></Revertir>
     </div>
 </template>
 
 <script>
+import Revertir from "./Revertir.vue";
 export default {
+    components: {
+        Revertir,
+    },
     data() {
         return {
             // permisos:
@@ -739,6 +773,28 @@ export default {
             sortDesc: null,
             links: null,
             descargando: false,
+            muestra_modal: false,
+            modal_accion: "nuevo",
+            oCertificacion: {
+                formulario_id: "",
+                poa_seleccionado: "",
+                mo_id: "",
+                mod_id: "",
+                cantidad_usar: "",
+                presupuesto_usarse: 0,
+                archivo: null,
+                correlativo: "",
+                solicitante_id: "",
+                superior_id: "",
+                inicio: "",
+                final: "",
+                personal_designado: "",
+                departamento: "",
+                municipio: "",
+                estado: "PENDIENTE",
+                certificacion_detalles: [],
+                array_dptos: [],
+            },
         };
     },
     watch: {
@@ -969,6 +1025,11 @@ export default {
                         });
                 }
             });
+        },
+        revertirCertificacion(item) {
+            this.muestra_modal = true;
+            this.modal_accion = "nuevo";
+            this.oCertificacion = item;
         },
         activarCertificacion(id, descripcion) {
             Swal.fire({

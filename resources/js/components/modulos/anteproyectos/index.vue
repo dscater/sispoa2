@@ -4,7 +4,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Físico</h1>
+                        <h1>Anteproyecto POA</h1>
                     </div>
                 </div>
             </div>
@@ -13,7 +13,15 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="card">
+                        <div class="card border-primary">
+                            <div class="card-header">
+                                <button
+                                    class="btn btn-primary"
+                                    @click="generarAnteproyecto"
+                                    v-html="textoBoton"
+                                    :disabled="enviando"
+                                ></button>
+                            </div>
                             <div class="card-body">
                                 <div class="row">
                                     <b-col lg="10" class="my-1">
@@ -36,7 +44,6 @@
                                                 <b-input-group-append>
                                                     <b-button
                                                         class="bg-lightblue"
-                                                        variant="primary"
                                                         :disabled="!filter"
                                                         @click="filter = ''"
                                                         >Borrar</b-button
@@ -55,6 +62,7 @@
                                                 :items="listRegistros"
                                                 show-empty
                                                 stacked="md"
+                                                thead-class="bg-lightblue"
                                                 responsive
                                                 :current-page="currentPage"
                                                 :per-page="perPage"
@@ -63,47 +71,31 @@
                                                 empty-filtered-text="Sin resultados"
                                                 :filter="filter"
                                             >
-                                                <template
-                                                    #cell(formulario.codigo_pei)="row"
-                                                >
-                                                    <span
-                                                        v-html="
-                                                            row.item.pei_text
-                                                        "
-                                                    ></span>
-                                                </template>
-
-                                                <template
-                                                    #cell(fecha_registro)="row"
-                                                >
-                                                    {{
-                                                        formatoFecha(
-                                                            row.item
-                                                                .fecha_registro
-                                                        )
-                                                    }}
-                                                </template>
-                                                <template #cell(accion)="row">
-                                                    <div
-                                                        class="row justify-content-between"
-                                                    >
-                                                        <b-button
-                                                            size="sm"
-                                                            pill
-                                                            variant="outline-primary"
-                                                            class="btn-flat btn-block"
-                                                            title="Editar registro"
-                                                            @click="
-                                                                mostrar(
-                                                                    row.item.id
-                                                                )
-                                                            "
-                                                        >
-                                                            <i
-                                                                class="fa fa-eye"
-                                                            ></i>
-                                                        </b-button>
+                                                <template #cell(form4)="row">
+                                                    <div class="col-12 text-left">
+                                                        <a :href="row.item.url_form4_pdf" target="_blank" class="btn btn-outline-primary">PDF</a>
+                                                        <a :href="row.item.url_form4_excel" target="_blank" class="btn btn-outline-success">Excel</a>
                                                     </div>
+                                                </template>
+                                                <template #cell(form5)="row">
+                                                    <div class="col-12 text-left">
+                                                        <a :href="row.item.url_form5_pdf" target="_blank" class="btn btn-outline-primary">PDF</a>
+                                                        <a :href="row.item.url_form5_excel" target="_blank" class="btn btn-outline-success">Excel</a>
+                                                    </div>
+                                                </template>
+                                                <template #cell(memoria)="row">
+                                                    <div class="col-12 text-left">
+                                                        <a :href="row.item.url_memoria_pdf" target="_blank" class="btn btn-outline-primary">PDF</a>
+                                                        <a :href="row.item.url_memoria_excel" target="_blank" class="btn btn-outline-success">Excel</a>
+                                                    </div>
+                                                </template>
+                                                <template
+                                                    #cell(certificacion)="row"
+                                                >
+                                                <div class="col-12 text-left">
+                                                    <a :href="row.item.url_certificacion_pdf" target="_blank" class="btn btn-outline-primary">PDF</a>
+                                                    <a :href="row.item.url_certificacion_excel" target="_blank" class="btn btn-outline-success">Excel</a>
+                                                </div>
                                                 </template>
                                             </b-table>
                                         </b-overlay>
@@ -143,52 +135,6 @@
                 </div>
             </div>
         </section>
-
-        <div
-            class="modal fade"
-            :class="{ show: modal_imagen }"
-            id="modal-default"
-            aria-modal="true"
-            role="dialog"
-        >
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header bg-lightblue">
-                        <h4 class="modal-title">Ver archivo</h4>
-                        <button
-                            type="button"
-                            class="close"
-                            data-dismiss="modal"
-                            aria-label="Close"
-                            @click="modal_imagen = false"
-                        >
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <img
-                                    :src="file_path"
-                                    alt="Imagen"
-                                    class="w-100"
-                                />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer justify-content-end">
-                        <button
-                            type="button"
-                            class="btn btn-default"
-                            data-dismiss="modal"
-                            @click="modal_imagen = false"
-                        >
-                            Cerrar
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </template>
 
@@ -199,46 +145,41 @@ export default {
             permisos: localStorage.getItem("permisos"),
             search: "",
             listRegistros: [],
+            errors: [],
             showOverlay: false,
+            accion: "nuevo",
+            enviando: false,
             fields: [
                 {
-                    key: "formulario.codigo_pei",
-                    label: "Código PEI",
+                    key: "form4",
+                    label: "Formulario 4",
                     sortable: true,
                 },
                 {
-                    key: "formulario.unidad.nombre",
-                    label: "Unidad Organizacional",
+                    key: "form5",
+                    label: "Formulario 5",
                     sortable: true,
                 },
                 {
-                    key: "operacions.length",
-                    label: "Total operaciones",
+                    key: "memoria",
+                    label: "Memorias de cálculo",
                     sortable: true,
                 },
                 {
-                    key: "fecha_registro",
-                    label: "Fecha de registro",
+                    key: "certificacion",
+                    label: "Certificación POA",
                     sortable: true,
                 },
-                {
-                    key: "estado_aprobado",
-                    label: "Estado",
-                    sortable: true,
-                },
-                { key: "accion", label: "Acción" },
+                { key: "fecha_cierre_t", label: "Fecha cierre" },
             ],
             loading: true,
             fullscreenLoading: true,
             loadingWindow: Loading.service({
                 fullscreen: this.fullscreenLoading,
             }),
-            muestra_modal: false,
-            modal_accion: "nuevo",
-            oSemaforo: {
+            oAnteproyecto: {
                 id: 0,
-                descripcion: "",
-                archivo: null,
+                nombre: "",
             },
             currentPage: 1,
             perPage: 5,
@@ -252,32 +193,32 @@ export default {
             ],
             totalRows: 10,
             filter: null,
-            modal_imagen: false,
-            file_path: "",
         };
+    },
+    computed: {
+        textoBoton() {
+            if (this.enviando) {
+                return "Generando...";
+            } else {
+                return "Generar Anteproyecto";
+            }
+        },
     },
     mounted() {
         this.loadingWindow.close();
-        this.getSemaforos();
+        this.getAnteproyectos();
     },
     methods: {
-        // Ver archivo
-        verImagen(path) {
-            this.file_path = path;
-            this.modal_imagen = true;
-        },
         // Seleccionar Opciones de Tabla
-        mostrar(id) {
-            this.$router.push({
-                name: "fisicos.show",
-                params: { id: id },
-            });
+        editarRegistro(item) {
+            this.accion = "edit";
+            this.oAnteproyecto.id = item.id;
+            this.oAnteproyecto.nombre = item.nombre ? item.nombre : "";
         },
-        // Listar Semaforos
-        getSemaforos() {
+        // Listar Anteproyectos
+        getAnteproyectos() {
             this.showOverlay = true;
-            this.muestra_modal = false;
-            let url = "/admin/detalle_formularios";
+            let url = "/admin/anteproyectos";
             if (this.pagina != 0) {
                 url += "?page=" + this.pagina;
             }
@@ -287,11 +228,42 @@ export default {
                 })
                 .then((res) => {
                     this.showOverlay = false;
-                    this.listRegistros = res.data.detalle_formularios;
+                    this.listRegistros = res.data.anteproyectos;
                     this.totalRows = res.data.total;
                 });
         },
-        eliminaSemaforo(id, descripcion) {
+        generarAnteproyecto() {
+            this.enviando = true;
+            try {
+                this.textoBtn = "Enviando...";
+                let url = "/admin/anteproyectos";
+                axios
+                    .post(url)
+                    .then((res) => {
+                        this.enviando = false;
+                        Swal.fire({
+                            icon: "success",
+                            title: res.data.msj,
+                            showConfirmButton: false,
+                            timer: 1500,
+                        });
+                        this.getAnteproyectos();
+                        this.errors = [];
+                    })
+                    .catch((error) => {
+                        this.enviando = false;
+                        if (error.response) {
+                            if (error.response.status === 422) {
+                                this.errors = error.response.data.errors;
+                            }
+                        }
+                    });
+            } catch (e) {
+                this.enviando = false;
+                console.log(e);
+            }
+        },
+        eliminaAnteproyecto(id, descripcion) {
             Swal.fire({
                 title: "¿Quierés eliminar este registro?",
                 html: `<strong>${descripcion}</strong>`,
@@ -304,27 +276,34 @@ export default {
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
                     axios
-                        .post("/admin/detalle_formularios/" + id, {
+                        .post("/admin/anteproyectos/" + id, {
                             _method: "DELETE",
                         })
                         .then((res) => {
-                            this.getSemaforos();
-                            this.filter = "";
-                            Swal.fire({
-                                icon: "success",
-                                title: res.data.msj,
-                                showConfirmButton: false,
-                                timer: 1500,
-                            });
+                            if (res.data.sw) {
+                                this.getAnteproyectos();
+                                this.filter = "";
+                                Swal.fire({
+                                    icon: "success",
+                                    title: res.data.msj,
+                                    showConfirmButton: false,
+                                    timer: 1500,
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: res.data.msj,
+                                    showConfirmButton: false,
+                                    timer: 2500,
+                                });
+                            }
                         });
                 }
             });
         },
-        abreModal(tipo_accion = "nuevo", semaforo = null) {
-            this.muestra_modal = true;
-            this.modal_accion = tipo_accion;
-            if (semaforo) {
-                this.oSemaforo = semaforo;
+        abreModal(tipo_accion = "nuevo", anteproyecto = null) {
+            if (anteproyecto) {
+                this.oAnteproyecto = anteproyecto;
             }
         },
         onFiltered(filteredItems) {
@@ -332,12 +311,12 @@ export default {
             this.totalRows = filteredItems.length;
             this.currentPage = 1;
         },
-        limpiaSemaforo() {
-            this.oSemaforo.descripcion = "";
-            this.oSemaforo.foto = null;
+        limpiaAnteproyecto() {
+            this.oAnteproyecto.nombre = "";
+            this.accion = "nuevo";
         },
         formatoFecha(date) {
-            return this.$moment(String(date)).format("DD/MM/YYYY");
+            return this.$moment(String(date)).format("DD [de] MMMM [del] YYYY");
         },
     },
 };

@@ -339,33 +339,6 @@
                     </li>
                     <li
                         class="nav-item"
-                        v-if="
-                            permisos.includes('verificacion_actividads.index')
-                        "
-                    >
-                        <router-link
-                            :to="{ name: 'verificacion_actividads.index' }"
-                            class="nav-link"
-                            v-loading.fullscreen.lock="fullscreenLoading"
-                        >
-                            <i class="nav-icon fas fa-list-alt"></i>
-                            <p>Verificación de la actividad POA</p>
-                        </router-link>
-                    </li>
-                    <li
-                        class="nav-item"
-                        v-if="permisos.includes('certificacions.index')"
-                    >
-                        <router-link
-                            :to="{ name: 'certificacions.index' }"
-                            class="nav-link"
-                        >
-                            <i class="nav-icon fa fa-file-alt"></i>
-                            <p>Certificación POA</p>
-                        </router-link>
-                    </li>
-                    <li
-                        class="nav-item"
                         v-if="permisos.includes('seguimiento_trimestral.index')"
                     >
                         <router-link
@@ -418,6 +391,33 @@
                             <p>Informe de actividad realizada</p>
                         </router-link>
                     </li> -->
+                    <li
+                        class="nav-item"
+                        v-if="
+                            permisos.includes('verificacion_actividads.index')
+                        "
+                    >
+                        <router-link
+                            :to="{ name: 'verificacion_actividads.index' }"
+                            class="nav-link"
+                            v-loading.fullscreen.lock="fullscreenLoading"
+                        >
+                            <i class="nav-icon fas fa-list-alt"></i>
+                            <p>Verificación de la actividad POA</p>
+                        </router-link>
+                    </li>
+                    <li
+                        class="nav-item"
+                        v-if="permisos.includes('certificacions.index')"
+                    >
+                        <router-link
+                            :to="{ name: 'certificacions.index' }"
+                            class="nav-link"
+                        >
+                            <i class="nav-icon fa fa-file-alt"></i>
+                            <p>Certificación POA</p>
+                        </router-link>
+                    </li>
                     <li
                         class="nav-header bg-navy"
                         v-if="
@@ -613,6 +613,30 @@
                         </router-link>
                     </li> -->
                     <li class="nav-header bg-navy">OTRAS OPCIONES</li>
+                    <li
+                        class="nav-item"
+                        v-if="permisos.includes('anteproyectos.index')"
+                    >
+                        <router-link
+                            :to="{ name: 'anteproyectos' }"
+                            class="nav-link"
+                        >
+                            <i class="nav-icon fas fa-file"></i>
+                            <p>Anteproyecto POA</p>
+                        </router-link>
+                    </li>
+                    <li
+                        class="nav-item"
+                        v-if="permisos.includes('gestions.index')"
+                    >
+                        <router-link
+                            :to="{ name: 'gestions' }"
+                            class="nav-link"
+                        >
+                            <i class="nav-icon fas fa-list"></i>
+                            <p>Gestión</p>
+                        </router-link>
+                    </li>
                     <li
                         class="nav-item"
                         v-if="permisos.includes('configuracion.index')"

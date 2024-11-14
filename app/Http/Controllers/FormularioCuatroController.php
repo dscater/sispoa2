@@ -36,10 +36,12 @@ class FormularioCuatroController extends Controller
     public function index(Request $request)
     {
         $listado = [];
-        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "ENLACE") {
-            $listado = FormularioCuatro::where("unidad_id", Auth::user()->unidad_id)->get();
+        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "ENLACE" || Auth::user()->tipo == "FINANCIERA") {
+            $listado = FormularioCuatro::where("unidad_id", Auth::user()->unidad_id)
+                ->where("status", 1)
+                ->get();
         } else {
-            $listado = FormularioCuatro::all();
+            $listado = FormularioCuatro::where("status", 1)->get();
         }
         return response()->JSON(['listado' => $listado, 'total' => count($listado)], 200);
     }
@@ -148,17 +150,17 @@ class FormularioCuatroController extends Controller
 
     public function getPorUnidad(Request $request)
     {
-        $formularios = FormularioCuatro::where("unidad_id", $request->id)->get();
+        $formularios = FormularioCuatro::where("unidad_id", $request->id)->where("status", 1)->get();
         return response()->JSON($formularios);
     }
 
     public function getPoaPorUnidad(Request $request)
     {
         $listado = [];
-        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "ENLACE") {
-            $listado = FormularioCuatro::where("unidad_id", Auth::user()->unidad_id)->get();
+        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "ENLACE" || Auth::user()->tipo == "FINANCIERA") {
+            $listado = FormularioCuatro::where("unidad_id", Auth::user()->unidad_id)->where("status", 1)->get();
         } else {
-            $listado = FormularioCuatro::where("unidad_id", $request->id)->get();
+            $listado = FormularioCuatro::where("unidad_id", $request->id)->where("status", 1)->get();
         }
 
         $listado_final = [];
@@ -183,10 +185,10 @@ class FormularioCuatroController extends Controller
     public function getPeiPorUnidad(Request $request)
     {
         $listado = [];
-        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "ENLACE") {
-            $listado = FormularioCuatro::where("unidad_id", Auth::user()->unidad_id)->get();
+        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "ENLACE" || Auth::user()->tipo == "FINANCIERA") {
+            $listado = FormularioCuatro::where("unidad_id", Auth::user()->unidad_id)->where("status", 1)->get();
         } else {
-            $listado = FormularioCuatro::where("unidad_id", $request->id)->get();
+            $listado = FormularioCuatro::where("unidad_id", $request->id)->where("status", 1)->get();
         }
 
         $listado_final = [];
@@ -232,10 +234,10 @@ class FormularioCuatroController extends Controller
     public function listado_index()
     {
         $listado = [];
-        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "ENLACE") {
-            $listado = FormularioCuatro::where("unidad_id", Auth::user()->unidad_id)->get();
+        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "ENLACE" || Auth::user()->tipo == "FINANCIERA") {
+            $listado = FormularioCuatro::where("unidad_id", Auth::user()->unidad_id)->where("status", 1)->get();
         } else {
-            $listado = FormularioCuatro::all();
+            $listado = FormularioCuatro::where("status", 1)->get();
         }
 
         $listado_final = [];
@@ -260,10 +262,10 @@ class FormularioCuatroController extends Controller
     public function listado_pei_index()
     {
         $listado = [];
-        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "ENLACE") {
-            $listado = FormularioCuatro::where("unidad_id", Auth::user()->unidad_id)->get();
+        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "ENLACE" || Auth::user()->tipo == "FINANCIERA") {
+            $listado = FormularioCuatro::where("unidad_id", Auth::user()->unidad_id)->where("status", 1)->get();
         } else {
-            $listado = FormularioCuatro::all();
+            $listado = FormularioCuatro::where("status", 1)->get();
         }
 
         $listado_final = [];

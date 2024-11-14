@@ -23,11 +23,18 @@ class Certificacion extends Model
         // "presupuesto_usarse",
         // "saldo_total",
         "archivo",
-        "correlativo", "solicitante_id", "superior_id",
-        "inicio", "final",
+        "correlativo",
+        "solicitante_id",
+        "superior_id",
+        "inicio",
+        "final",
         "personal_designado",
-        "departamento", "municipio",
-        "estado", "fecha_registro", "anulado"
+        "departamento",
+        "municipio",
+        "estado",
+        "fecha_registro",
+        "anulado",
+        "status",
     ];
 
     protected $appends = ["url_archivo", "array_dptos"];

@@ -331,6 +331,24 @@ export default new Router({
             props: true,
         },
 
+        // ANTEPROYECTOS
+        {
+            path: "/anteproyectos",
+            name: "anteproyectos",
+            component: require("./components/modulos/anteproyectos/index.vue")
+                .default,
+            props: true,
+        },
+
+        // GESTIONS
+        {
+            path: "/gestions",
+            name: "gestions",
+            component: require("./components/modulos/gestions/index.vue")
+                .default,
+            props: true,
+        },
+
         // REPORTES
         {
             path: "/reportes/usuarios",

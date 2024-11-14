@@ -24,13 +24,14 @@ class MemoriaCalculoController extends Controller
     public function index(Request $request)
     {
         $listado = [];
-        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "ENLACE") {
+        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "ENLACE" || Auth::user()->tipo == "FINANCIERA") {
             $listado = MemoriaCalculo::select("memoria_calculos.*")
                 ->join("formulario_cuatro", "formulario_cuatro.id", "=", "memoria_calculos.formulario_id")
                 ->where("formulario_cuatro.unidad_id", Auth::user()->unidad_id)
+                ->where("memoria_calculos.status", 1)
                 ->get();
         } else {
-            $listado = MemoriaCalculo::all();
+            $listado = MemoriaCalculo::where("status", 1)->get();
         }
         return response()->JSON(['listado' => $listado, 'total' => count($listado)], 200);
     }
@@ -434,7 +435,7 @@ class MemoriaCalculoController extends Controller
 
     public function getOperaciones(Request $request)
     {
-        $memoria_calculo = MemoriaCalculo::where("formulario_seleccionado", $request->formulario_id)->get()->first();
+        $memoria_calculo = MemoriaCalculo::where("formulario_seleccionado", $request->formulario_id)->where("status", 1)->get()->first();
         $operaciones = [];
         if ($memoria_calculo) {
             $operaciones = $memoria_calculo->operacions;

@@ -1,7 +1,7 @@
 <table class="tabla_detalle" border="1">
     <thead class="bg-primary">
         <tr>
-            <th colspan="17">
+            <th colspan="15">
                 PLAN OPERATIVO ANUAL GESTIÓN
                 2022
             </th>
@@ -13,12 +13,12 @@
             <th rowspan="3">
                 Operación(2)
             </th>
-            <th rowspan="3">
+            {{-- <th rowspan="3">
                 Código tarea(3)
             </th>
             <th rowspan="3">
                 Actividad/Tareas(4)
-            </th>
+            </th> --}}
             <th rowspan="3">
                 Lugar de ejecución de la
                 Operación(5)
@@ -78,8 +78,8 @@
                                 <tr>
                                     <td rowspan="{{ $registro['rowspan'] }}">{{ $registro['codigo_operacion'] }}</td>
                                     <td rowspan="{{ $registro['rowspan'] }}">{{ $registro['operacion'] }}</td>
-                                    <td rowspan="{{ $registro['rowspan'] }}">{{ $registro['codigo_tarea'] }}</td>
-                                    <td rowspan="{{ $registro['rowspan'] }}">{{ $registro['tarea'] }}</td>
+                                    {{-- <td rowspan="{{ $registro['rowspan'] }}">{{ $registro['codigo_tarea'] }}</td>
+                                    <td rowspan="{{ $registro['rowspan'] }}">{{ $registro['tarea'] }}</td> --}}
                                     <td rowspan="{{ $lugar['rowspan'] }}">{{ $lugar['lugar'] }}</td>
                                     <td rowspan="{{ $responsable['rowspan'] }}">{{ $responsable['responsable'] }}</td>
                                     <td>{{ $registro_resp->partida }}</td>
@@ -151,7 +151,7 @@
             @endif
         @endforeach
         <tr class="bg-primary">
-            <th colspan="16">TOTAL</th>
+            <th colspan="14">TOTAL</th>
             <th class="centreado">{{ number_format($formulario_cinco->memoria->total_final, 2) }}</th>
         </tr>
     </tbody>

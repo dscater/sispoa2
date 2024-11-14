@@ -208,6 +208,10 @@
                 <td class="bold p-5">Código operación:</td>
                 <td class="bold p-5">{{ $operacion->codigo_operacion }}</td>
             </tr>
+            <tr>
+                <td class="bold p-5">Descripción:</td>
+                <td class="bold p-5">{{ $operacion->operacion }}</td>
+            </tr>
             {{-- <td class="bold p-5">Actividad:</td>
             <td class="bold p-5">{{ $actividad->actividad_tarea }}</td>
             </tr> --}}

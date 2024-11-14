@@ -141,6 +141,10 @@ class UserController extends Controller
 
             'configuracion.modulos',
 
+            'anteproyectos.index',
+
+            'gestions.index',
+
             "reportes.lista_certificacion",
             "reportes.formulario_cuatro",
             "reportes.formulario_cinco",
@@ -234,6 +238,8 @@ class UserController extends Controller
 
             "seguimiento_trimestral.index",
 
+            'semaforos.index',
+
             'formulario_cuatro.index',
             // 'formulario_cuatro.create',
             'formulario_cuatro.edit',
@@ -272,6 +278,8 @@ class UserController extends Controller
 
             "seguimiento_trimestral.index",
 
+            'semaforos.index',
+
             'formulario_cuatro.index',
             // 'formulario_cuatro.create',
             'formulario_cuatro.edit',
@@ -308,6 +316,8 @@ class UserController extends Controller
             'certificacions.edit',
             // 'certificacions.destroy',
 
+            'semaforos.index',
+
             "seguimiento_trimestral.index",
 
             'formulario_cuatro.index',
@@ -341,6 +351,10 @@ class UserController extends Controller
             "reportes.ejecucion_presupuestos_g",
         ],
         'FINANCIERA' => [
+            'semaforos.index',
+
+            'certificacions.index',
+
             'formulario_cinco.index',
             'formulario_cinco.create',
             'formulario_cinco.edit',

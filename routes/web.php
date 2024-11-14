@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ActividadRealizadaController;
 use App\Http\Controllers\ActividadTareaController;
+use App\Http\Controllers\AnteproyectoController;
 use App\Http\Controllers\AprobacionController;
 use App\Http\Controllers\CertificacionController;
 use App\Http\Controllers\ConfiguracionController;
@@ -14,8 +15,10 @@ use App\Http\Controllers\FormularioCuatroController;
 use App\Http\Controllers\FormularioDosController;
 use App\Http\Controllers\FormularioTresController;
 use App\Http\Controllers\FormularioUnoController;
+use App\Http\Controllers\GestionController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MemoriaCalculoController;
+use App\Http\Controllers\MemoriaOperacionController;
 use App\Http\Controllers\MemoriaOperacionDetalleController;
 use App\Http\Controllers\OperacionController;
 use App\Http\Controllers\PartidaController;
@@ -200,7 +203,12 @@ Route::prefix('admin')->group(function () {
         'show'
     ]);
 
+    // MEMORIA OPERACION
+
+    Route::get("memoria_operacions/{memoriaOperacion}", [MemoriaOperacionController::class, "memoriaOperacion"]);
+
     // MEMORIA OPERACION DETALLES
+    Route::get("memoria_operacion_detalles/getRegistro/{memoria_operacion_detalle}", [MemoriaOperacionDetalleController::class, "getRegistro"]);
     Route::get("memoria_operacion_detalles/getDetalles", [MemoriaOperacionDetalleController::class, "getDetalles"]);
 
     // CERTIFICACION
@@ -272,6 +280,22 @@ Route::prefix('admin')->group(function () {
     // ACTIVIDAD REALIZADA
     Route::post('actividad_realizadas/archivo/{actividad_realizada}', [ActividadRealizadaController::class, 'archivo']);
     Route::resource('actividad_realizadas', ActividadRealizadaController::class)->only([
+        'index',
+        'store',
+        'update',
+        'destroy'
+    ]);
+
+    // ANTEPROYECTOS
+    Route::resource('anteproyectos', AnteproyectoController::class)->only([
+        'index',
+        'store',
+        'update',
+        'destroy'
+    ]);
+
+    // ANTEPROYECTOS
+    Route::resource('gestions', GestionController::class)->only([
         'index',
         'store',
         'update',

@@ -12,11 +12,24 @@ class MemoriaCalculo extends Model
     use HasFactory;
 
     protected $fillable = [
-        "formulario_id", "formulario_seleccionado",
-        "total_actividades", "total_ene", "total_feb",
-        "total_mar", "total_abr", "total_may", "total_jun", "total_jul",
-        "total_ago", "total_sep", "total_oct", "total_nov", "total_dic",
-        "total_final", "fecha_registro",
+        "formulario_id",
+        "formulario_seleccionado",
+        "total_actividades",
+        "total_ene",
+        "total_feb",
+        "total_mar",
+        "total_abr",
+        "total_may",
+        "total_jun",
+        "total_jul",
+        "total_ago",
+        "total_sep",
+        "total_oct",
+        "total_nov",
+        "total_dic",
+        "total_final",
+        "fecha_registro",
+        "status",
     ];
 
     protected $with = ["formulario", "operacions"];

@@ -96,20 +96,25 @@ class ReporteController extends Controller
         $fecha_ini =  $request->fecha_ini;
         $fecha_fin =  $request->fecha_fin;
 
-        $memoria_calulos = MemoriaCalculo::all();
+        $memoria_calulos = MemoriaCalculo::where("status", 1)->get();
         if ($filtro != "Todos") {
             switch ($filtro) {
                 case "Unidad Organizacional":
                     $memoria_calulos = MemoriaCalculo::select("memoria_calculos.*")
                         ->join("formulario_cuatro", "formulario_cuatro.id", "=", "memoria_calculos.formulario_id")
                         ->where("formulario_cuatro.unidad_id", $unidad_id)
+                        ->where("memoria_calculos.status", 1)
                         ->get();
                     break;
                 case "Código PEI":
-                    $memoria_calulos = MemoriaCalculo::where("formulario_seleccionado", $formulario_id)->get();
+                    $memoria_calulos = MemoriaCalculo::where("formulario_seleccionado", $formulario_id)
+                        ->where("memoria_calculos.status", 1)
+                        ->get();
                     break;
                 case "Rango de fechas":
-                    $memoria_calulos = MemoriaCalculo::whereBetween("fecha_registro", [$fecha_ini, $fecha_fin])->get();
+                    $memoria_calulos = MemoriaCalculo::whereBetween("fecha_registro", [$fecha_ini, $fecha_fin])
+                        ->where("memoria_calculos.status", 1)
+                        ->get();
                     break;
             }
         }
@@ -357,12 +362,14 @@ class ReporteController extends Controller
                         ->where('certificacions.mo_id', $operacion->id)
                         ->where("anulado", 0)
                         ->where("mod_id", $mod->id)
+                        ->where("certificacions.status", 1)
                         ->sum('cantidad_usar');
                     $total_usado = CertificacionDetalle::select("certificacion_detalles.*")
                         ->join("certificacions", "certificacions.id", "=", "certificacion_detalles.certificacion_id")
                         ->where('certificacions.mo_id', $operacion->id)
                         ->where("anulado", 0)
                         ->where("mod_id", $mod->id)
+                        ->where("certificacions.status", 1)
                         ->sum('presupuesto_usarse');
                     $saldo = (float) $mod->total - (float) $total_usado;
                     $sheet->setCellValue('E' . $fila, $cantidad_usado);
@@ -441,10 +448,12 @@ class ReporteController extends Controller
 
         $memoria_calculos = [];
         $unidad = null;
-        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "MAE") {
+        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "MAE" || Auth::user()->tipo == "ENLACE" || Auth::user()->tipo == "FINANCIERA") {
             $memoria_calculos = MemoriaCalculo::select("memoria_calculos.*")
                 ->join("formulario_cuatro", "formulario_cuatro.id", "=", "memoria_calculos.formulario_id")
-                ->where("formulario_cuatro.unidad_id", Auth::user()->unidad_id)->get();
+                ->where("formulario_cuatro.unidad_id", Auth::user()->unidad_id)
+                ->where("memoria_calculos.status", 1)
+                ->get();
             if ($filtro != "Todos") {
                 switch ($filtro) {
                     case "Código PEI":
@@ -452,6 +461,7 @@ class ReporteController extends Controller
                             ->join("formulario_cuatro", "formulario_cuatro.id", "=", "memoria_calculos.formulario_id")
                             ->where("memoria_calculos.formulario_seleccionado", $formulario_id)
                             ->where("formulario_cuatro.unidad_id", Auth::user()->unidad_id)
+                            ->where("memoria_calculos.status", 1)
                             ->get();
                         break;
                     case "Rango de fechas":
@@ -459,6 +469,7 @@ class ReporteController extends Controller
                             ->join("formulario_cuatro", "formulario_cuatro.id", "=", "memoria_calculos.formulario_id")
                             ->whereBetween("fecha_registro", [$fecha_ini, $fecha_fin])
                             ->where("formulario_cuatro.unidad_id", Auth::user()->unidad_id)
+                            ->where("memoria_calculos.status", 1)
                             ->get();
                         break;
                 }
@@ -466,25 +477,31 @@ class ReporteController extends Controller
         } else {
             $memoria_calculos = MemoriaCalculo::select("memoria_calculos.*")
                 ->join("formulario_cuatro", "formulario_cuatro.id", "=", "memoria_calculos.formulario_id")
+                ->where("memoria_calculos.status", 1)
                 ->get();
             if ($filtro != "Todos") {
                 switch ($filtro) {
                     case "Unidad Organizacional":
                         $memoria_calculos = MemoriaCalculo::select("memoria_calculos.*")
                             ->join("formulario_cuatro", "formulario_cuatro.id", "=", "memoria_calculos.formulario_id")
-                            ->where("formulario_cuatro.unidad_id", $unidad_id)->get();
+                            ->where("formulario_cuatro.unidad_id", $unidad_id)
+                            ->where("memoria_calculos.status", 1)
+                            ->get();
                         $unidad = Unidad::find($unidad_id);
                         break;
                     case "Código PEI":
                         $memoria_calculos = MemoriaCalculo::select("memoria_calculos.*")
                             ->join("formulario_cuatro", "formulario_cuatro.id", "=", "memoria_calculos.formulario_id")
                             ->where("memoria_calculos.formulario_seleccionado", $formulario_id)
+                            ->where("memoria_calculos.status", 1)
                             ->get();
                         break;
                     case "Rango de fechas":
                         $memoria_calculos = MemoriaCalculo::select("memoria_calculos.*")
                             ->join("formulario_cuatro", "formulario_cuatro.id", "=", "memoria_calculos.formulario_id")
-                            ->whereBetween("memoria_calculos.fecha_registro", [$fecha_ini, $fecha_fin])->get();
+                            ->whereBetween("memoria_calculos.fecha_registro", [$fecha_ini, $fecha_fin])
+                            ->where("memoria_calculos.status", 1)
+                            ->get();
                         break;
                 }
             }
@@ -527,7 +544,7 @@ class ReporteController extends Controller
             $certificacion_detalles->where("formulario_cuatro.unidad_id", $unidad_id);
         }
 
-        $certificacion_detalles = $certificacion_detalles->get();
+        $certificacion_detalles = $certificacion_detalles->where("certificacions.status", 1)->get();
         $html = "";
         if ($tipo == 'pdf') {
             foreach ($certificacion_detalles as $certificacion_detalle) {
@@ -790,35 +807,45 @@ class ReporteController extends Controller
 
         $formularios = [];
         $unidad = null;
-        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "MAE") {
-            $formularios = FormularioCuatro::where("unidad_id", Auth::user()->unidad_id)->get();
+        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "MAE" || Auth::user()->tipo == "ENLACE" || Auth::user()->tipo == "FINANCIERA") {
+            $formularios = FormularioCuatro::where("unidad_id", Auth::user()->unidad_id)
+                ->where("status", 1)
+                ->get();
             if ($filtro != "Todos") {
                 switch ($filtro) {
                     case "Código PEI":
                         $formularios = FormularioCuatro::where("id", $formulario_id)
                             ->where("unidad_id", Auth::user()->unidad_id)
+                            ->where("status", 1)
                             ->get();
                         break;
                     case "Rango de fechas":
                         $formularios = FormularioCuatro::whereBetween("fecha_registro", [$fecha_ini, $fecha_fin])
                             ->where("unidad_id", Auth::user()->unidad_id)
+                            ->where("status", 1)
                             ->get();
                         break;
                 }
             }
         } else {
-            $formularios = FormularioCuatro::all();
+            $formularios = FormularioCuatro::where("status", 1)->get();
             if ($filtro != "Todos") {
                 switch ($filtro) {
                     case "Unidad Organizacional":
-                        $formularios = FormularioCuatro::where("unidad_id", $unidad_id)->get();
+                        $formularios = FormularioCuatro::where("unidad_id", $unidad_id)
+                            ->where("status", 1)
+                            ->get();
                         $unidad = Unidad::find($unidad_id);
                         break;
                     case "Código PEI":
-                        $formularios = FormularioCuatro::where("id", $formulario_id)->get();
+                        $formularios = FormularioCuatro::where("id", $formulario_id)
+                            ->where("status", 1)
+                            ->get();
                         break;
                     case "Rango de fechas":
-                        $formularios = FormularioCuatro::whereBetween("fecha_registro", [$fecha_ini, $fecha_fin])->get();
+                        $formularios = FormularioCuatro::whereBetween("fecha_registro", [$fecha_ini, $fecha_fin])
+                            ->where("status", 1)
+                            ->get();
                         break;
                 }
             }
@@ -847,10 +874,11 @@ class ReporteController extends Controller
 
         $memoria_calculos = [];
         $unidad = null;
-        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "MAE") {
+        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "MAE" || Auth::user()->tipo == "ENLACE" || Auth::user()->tipo == "FINANCIERA") {
             $memoria_calculos = MemoriaCalculo::select("memoria_calculos.*")
                 ->join("formulario_cuatro", "formulario_cuatro.id", "memoria_calculos.formulario_id")
                 ->where("formulario_cuatro.unidad_id", Auth::user()->unidad_id)
+                ->where("memoria_calculos.status", 1)
                 ->get();
             if ($filtro != "Todos") {
                 switch ($filtro) {
@@ -859,6 +887,7 @@ class ReporteController extends Controller
                             ->join("formulario_cuatro", "formulario_cuatro.id", "memoria_calculos.formulario_id")
                             ->where("memoria_calculos.formulario_seleccionado", $formulario_id)
                             ->where("formulario_cuatro.unidad_id", Auth::user()->unidad_id)
+                            ->where("memoria_calculos.status", 1)
                             ->get();
                         break;
                     case "Rango de fechas":
@@ -866,29 +895,35 @@ class ReporteController extends Controller
                             ->join("formulario_cuatro", "formulario_cuatro.id", "memoria_calculos.formulario_id")
                             ->whereBetween("memoria_calculos.fecha_registro", [$fecha_ini, $fecha_fin])
                             ->where("formulario_cuatro.unidad_id", Auth::user()->unidad_id)
+                            ->where("memoria_calculos.status", 1)
                             ->get();
                         break;
                 }
             }
         } else {
-            $memoria_calculos = MemoriaCalculo::select("memoria_calculos.*")->get();
+            $memoria_calculos = MemoriaCalculo::select("memoria_calculos.*")->where("status", 1)->get();
             if ($filtro != "Todos") {
                 switch ($filtro) {
                     case "Unidad Organizacional":
                         $memoria_calculos = MemoriaCalculo::select("memoria_calculos.*")
                             ->join("formulario_cuatro", "formulario_cuatro.id", "memoria_calculos.formulario_id")
-                            ->where("formulario_cuatro.unidad_id", $unidad_id)->get();
+                            ->where("formulario_cuatro.unidad_id", $unidad_id)
+                            ->where("memoria_calculos.status", 1)
+                            ->get();
                         $unidad = Unidad::find($unidad_id);
                         break;
                     case "Código PEI":
                         $memoria_calculos = MemoriaCalculo::select("memoria_calculos.*")
                             ->join("formulario_cuatro", "formulario_cuatro.id", "memoria_calculos.formulario_id")
                             ->where("memoria_calculos.formulario_seleccionado", $formulario_id)
+                            ->where("memoria_calculos.status", 1)
                             ->get();
                         break;
                     case "Rango de fechas":
                         $memoria_calculos = MemoriaCalculo::select("memoria_calculos.*")
-                            ->whereBetween("fecha_registro", [$fecha_ini, $fecha_fin])->get();
+                            ->whereBetween("fecha_registro", [$fecha_ini, $fecha_fin])
+                            ->where("memoria_calculos.status", 1)
+                            ->get();
                         break;
                 }
             }
@@ -918,10 +953,12 @@ class ReporteController extends Controller
 
         $memoria_calculos = [];
         $unidad = null;
-        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "MAE") {
+        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "MAE" || Auth::user()->tipo == "ENLACE" || Auth::user()->tipo == "FINANCIERA") {
             $memoria_calculos = MemoriaCalculo::select("memoria_calculos.*")
                 ->join("formulario_cuatro", "formulario_cuatro.id", "=", "memoria_calculos.formulario_id")
-                ->where("formulario_cuatro.unidad_id", Auth::user()->unidad_id)->get();
+                ->where("formulario_cuatro.unidad_id", Auth::user()->unidad_id)
+                ->where("memoria_calculos.status", 1)
+                ->get();
             if ($filtro != "Todos") {
                 switch ($filtro) {
                     case "Código PEI":
@@ -929,6 +966,7 @@ class ReporteController extends Controller
                             ->join("formulario_cuatro", "formulario_cuatro.id", "=", "memoria_calculos.formulario_id")
                             ->where("memoria_calculos.formulario_seleccionado", $formulario_id)
                             ->where("formulario_cuatro.unidad_id", Auth::user()->unidad_id)
+                            ->where("memoria_calculos.status", 1)
                             ->get();
                         break;
                     case "Rango de fechas":
@@ -936,30 +974,37 @@ class ReporteController extends Controller
                             ->join("formulario_cuatro", "formulario_cuatro.id", "=", "memoria_calculos.formulario_id")
                             ->whereBetween("memoria_calculos.fecha_registro", [$fecha_ini, $fecha_fin])
                             ->where("formulario_cuatro.unidad_id", Auth::user()->unidad_id)
+                            ->where("memoria_calculos.status", 1)
                             ->get();
                         break;
                 }
             }
         } else {
             $memoria_calculos = MemoriaCalculo::select("memoria_calculos.*")
+                ->where("status", 1)
                 ->get();
             if ($filtro != "Todos") {
                 switch ($filtro) {
                     case "Unidad Organizacional":
                         $memoria_calculos = MemoriaCalculo::select("memoria_calculos.*")
                             ->join("formulario_cuatro", "formulario_cuatro.id", "=", "memoria_calculos.formulario_id")
-                            ->where("formulario_cuatro.unidad_id", $unidad_id)->get();
+                            ->where("formulario_cuatro.unidad_id", $unidad_id)
+                            ->where("memoria_calculos.status", 1)
+                            ->get();
                         $unidad = Unidad::find($unidad_id);
                         break;
                     case "Código PEI":
                         $memoria_calculos = MemoriaCalculo::select("memoria_calculos.*")
                             ->join("formulario_cuatro", "formulario_cuatro.id", "=", "memoria_calculos.formulario_id")
                             ->where("memoria_calculos.formulario_seleccionado", $formulario_id)
+                            ->where("memoria_calculos.status", 1)
                             ->get();
                         break;
                     case "Rango de fechas":
                         $memoria_calculos = MemoriaCalculo::select("memoria_calculos.*")
-                            ->whereBetween("memoria_calculos.fecha_registro", [$fecha_ini, $fecha_fin])->get();
+                            ->whereBetween("memoria_calculos.fecha_registro", [$fecha_ini, $fecha_fin])
+                            ->where("memoria_calculos.status", 1)
+                            ->get();
                         break;
                 }
             }
@@ -1119,7 +1164,7 @@ class ReporteController extends Controller
         $fecha_ini =  $request->fecha_ini;
         $fecha_fin =  $request->fecha_fin;
 
-        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "MAE") {
+        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "MAE" || Auth::user()->tipo == "ENLACE" || Auth::user()->tipo == "FINANCIERA") {
             $unidads = Unidad::where("id", Auth::user()->unidad_id)->get();
         } else {
             $unidads = Unidad::all();
@@ -1138,16 +1183,24 @@ class ReporteController extends Controller
 
         foreach ($unidads as $unidad) {
             $categories[] = $unidad->nombre;
-            if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "MAE") {
-                $formularios = FormularioCuatro::where("unidad_id", $unidad->id)->where("id", Auth::user()->unidad_id)->get();
+            if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "MAE" || Auth::user()->tipo == "ENLACE" || Auth::user()->tipo == "FINANCIERA") {
+                $formularios = FormularioCuatro::where("unidad_id", $unidad->id)->where("id", Auth::user()->unidad_id)
+                    ->where("status", 1)
+                    ->get();
             } else {
-                $formularios = FormularioCuatro::where("unidad_id", $unidad->id)->get();
+                $formularios = FormularioCuatro::where("unidad_id", $unidad->id)
+                    ->where("status", 1)
+                    ->get();
             }
             if ($filtro == "Rango de fechas") {
-                if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "MAE") {
-                    $formularios = FormularioCuatro::where("unidad_id", $unidad->id)->whereBetween("fecha_registro", [$fecha_ini, $fecha_fin])->where("id", Auth::user()->unidad_id)->get();
+                if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "MAE" || Auth::user()->tipo == "ENLACE" || Auth::user()->tipo == "FINANCIERA") {
+                    $formularios = FormularioCuatro::where("unidad_id", $unidad->id)->whereBetween("fecha_registro", [$fecha_ini, $fecha_fin])->where("id", Auth::user()->unidad_id)
+                        ->where("status", 1)
+                        ->get();
                 } else {
-                    $formularios = FormularioCuatro::where("unidad_id", $unidad->id)->whereBetween("fecha_registro", [$fecha_ini, $fecha_fin])->get();
+                    $formularios = FormularioCuatro::where("unidad_id", $unidad->id)->whereBetween("fecha_registro", [$fecha_ini, $fecha_fin])
+                        ->where("status", 1)
+                        ->get();
                 }
             }
             if (count($formularios) > 0) {
@@ -1164,6 +1217,7 @@ class ReporteController extends Controller
                                     ->where("certificacions.mo_id", $operacion->id)
                                     ->where("anulado", 0)
                                     ->where("mod_id", $mod->id)
+                                    ->where("certificacion_detalles.status", 1)
                                     ->sum("presupuesto_usarse");
                                 $suma_ejecutados += (float)$total_usado;
                                 $saldo = (float) $mod->total - (float) $total_usado;

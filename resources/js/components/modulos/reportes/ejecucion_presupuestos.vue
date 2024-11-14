@@ -204,7 +204,7 @@
                                                     <el-option
                                                         v-for="item in [
                                                             'Todos',
-                                                            'Partidas utilizadas',
+                                                            'Registros con Partidas utilizadas',
                                                         ]"
                                                         :key="item"
                                                         :label="item"

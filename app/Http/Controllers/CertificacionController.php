@@ -37,15 +37,17 @@ class CertificacionController extends Controller
     public function index()
     {
         $certificacions = [];
-        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "ENLACE") {
+        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "ENLACE" || Auth::user()->tipo == "FINANCIERA") {
             $certificacions = Certificacion::with("certificacion_detalles.memoria_operacion", "certificacion_detalles.memoria_operacion_detalle")->with("o_personal_designado")
                 ->select("certificacions.*")
                 ->join("formulario_cuatro", "formulario_cuatro.id", "=", "certificacions.formulario_id")
                 ->where("formulario_cuatro.unidad_id", Auth::user()->unidad_id)
+                ->where("certificacions.status", 1)
                 ->orderBy("created_at", "desc")
                 ->get()->distinct("certificacions.correlativo");
         } else {
             $certificacions = Certificacion::with("certificacion_detalles.memoria_operacion", "certificacion_detalles.memoria_operacion_detalle")->with("o_personal_designado")
+                ->where("certificacions.status", 1)
                 ->orderBy("created_at", "desc")->get()->distinct("certificacions.correlativo");
         }
         return response()->JSON(["certificacions" => $certificacions, "total" => count($certificacions)]);
@@ -71,7 +73,7 @@ class CertificacionController extends Controller
             ->join("operacions", "operacions.id", "=", "memoria_operacions.operacion_id")
             ->join("memoria_operacion_detalles", "memoria_operacion_detalles.id", "=", "certificacion_detalles.mod_id")
             ->join("personals", "personals.id", "=", "certificacions.personal_designado");
-        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "ENLACE") {
+        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "ENLACE" || Auth::user()->tipo == "FINANCIERA") {
             $certificacions->where("formulario_cuatro.unidad_id", Auth::user()->unidad_id);
         }
 
@@ -124,7 +126,8 @@ class CertificacionController extends Controller
             $certificacions->orderBy("certificacions.correlativo", "DESC");
         }
 
-        $certificacions = $certificacions->distinct("certificacions.id")->paginate($request->per_page);
+        $certificacions = $certificacions->where("certificacions.status", 1)
+            ->distinct("certificacions.id")->paginate($request->per_page);
 
         return response()->JSON(['certificacions' => $certificacions, 'total' => count($certificacions)], 200);
     }
@@ -441,7 +444,7 @@ class CertificacionController extends Controller
 
     public function getNroCorrelativo()
     {
-        $ultimo = Certificacion::get()->last();
+        $ultimo = Certificacion::where("status", 1)->get()->last();
         if ($ultimo) {
             return response()->JSON((int)$ultimo->correlativo + 1);
         }
@@ -457,6 +460,7 @@ class CertificacionController extends Controller
             ->where("certificacion_detalles.mo_id", $certificacion_detalle->mo_id)
             ->where("certificacion_detalles.id", "<", $certificacion_detalle->id)
             ->where("anulado", 0)
+            ->where("certificacions.status", 1)
             ->orderBy("certificacion_detalles.created_at", "asc")->get()->last();
         if ($ultimo) {
             $certificacion_detalle->total_cantidad = $certificacion_detalle->memoria_operacion_detalle->cantidad;
@@ -485,7 +489,7 @@ class CertificacionController extends Controller
 
     public static function recalculaSaldos()
     {
-        $certificacions = Certificacion::all();
+        $certificacions = Certificacion::where("status", 1)->get();
         foreach ($certificacions as $certificacion) {
             CertificacionController::calculaSaldo($certificacion);
         }
@@ -499,6 +503,7 @@ class CertificacionController extends Controller
             ->where('certificacion_detalles.mo_id', $mo_id)
             ->where('mod_id', $mod_id)
             ->where("anulado", 0)
+            ->where("certificacions.status", 1)
             ->get();
         foreach ($certificacion_detalles as $certificacion_detalle) {
             CertificacionController::calculaSaldo($certificacion_detalle);
@@ -531,7 +536,7 @@ class CertificacionController extends Controller
 
     public function corrige_correlativos()
     {
-        $certificacions = Certificacion::orderBy("created_at", "asc")->get();
+        $certificacions = Certificacion::where("status", 1)->orderBy("created_at", "asc")->get();
         foreach ($certificacions as $key => $certificacion) {
             $certificacion->correlativo = (int)$key + 1;
             $certificacion->save();
@@ -542,7 +547,7 @@ class CertificacionController extends Controller
     // fix registros
     public function fix_registros()
     {
-        $certificacions = Certificacion::all();
+        $certificacions = Certificacion::where("status", 1)->get();
         foreach ($certificacions as $certificacion) {
             foreach ($certificacion->certificacion_detalles as $key => $certificacion_detalle) {
                 $presupuesto_usarse = $certificacion_detalle->presupuesto_usarse;

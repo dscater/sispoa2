@@ -15,6 +15,7 @@ class DetalleFormulario extends Model
         'formulario_id',
         'formulario_seleccionado',
         'fecha_registro',
+        'status'
     ];
 
     protected $with = ["formulario", "operacions"];
