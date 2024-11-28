@@ -208,13 +208,31 @@
 
                                                     <!-- con rowspan -->
                                                     <tr v-if="index_mod == 0">
-                                                        <td>
+                                                        <td
+                                                            :rowspan="
+                                                                item
+                                                                    .memoria_operacion_detalles
+                                                                    .length
+                                                            "
+                                                        >
                                                             {{ item_mod.ue }}
                                                         </td>
-                                                        <td>
+                                                        <td
+                                                            :rowspan="
+                                                                item
+                                                                    .memoria_operacion_detalles
+                                                                    .length
+                                                            "
+                                                        >
                                                             {{ item_mod.prog }}
                                                         </td>
-                                                        <td>
+                                                        <td
+                                                            :rowspan="
+                                                                item
+                                                                    .memoria_operacion_detalles
+                                                                    .length
+                                                            "
+                                                        >
                                                             {{ item_mod.act }}
                                                         </td>
                                                         <td
@@ -329,7 +347,7 @@
                                                     </tr>
                                                     <!-- sin rowspan -->
                                                     <tr v-else>
-                                                        <td>
+                                                        <!-- <td>
                                                             {{ item_mod.ue }}
                                                         </td>
                                                         <td>
@@ -337,7 +355,7 @@
                                                         </td>
                                                         <td>
                                                             {{ item_mod.act }}
-                                                        </td>
+                                                        </td> -->
                                                         <td>
                                                             {{
                                                                 item_mod.partida
@@ -351,11 +369,11 @@
                                                         <td>
                                                             {{ item_mod.nro }}
                                                         </td>
-                                                        <td>
+                                                        <!-- <td>
                                                             {{
                                                                 item_mod.descripcion_detallada
                                                             }}
-                                                        </td>
+                                                        </td> -->
                                                         <td>
                                                             {{
                                                                 item_mod.cantidad

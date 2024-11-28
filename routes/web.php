@@ -214,6 +214,7 @@ Route::prefix('admin')->group(function () {
     // CERTIFICACION
     Route::GET("certificacions/paginado", [CertificacionController::class, "paginado"]);
     Route::POST("certificacions/descargar/archivo/{certificacion}", [CertificacionController::class, "archivo"]);
+    Route::POST("certificacions/update_revertir/{certificacion}", [CertificacionController::class, "update_revertir"]);
     Route::POST("certificacions/anular/{certificacion}", [CertificacionController::class, "anular"]);
     Route::POST("certificacions/activar/{certificacion}", [CertificacionController::class, "activar"]);
     Route::get("certificacions/getNroCorrelativo", [CertificacionController::class, "getNroCorrelativo"]);

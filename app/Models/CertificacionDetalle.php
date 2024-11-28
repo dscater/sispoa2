@@ -18,6 +18,7 @@ class CertificacionDetalle extends Model
         "saldo_cantidad",
         "total",
         "presupuesto_usarse",
+        "revertir",
         "saldo_total",
     ];
 

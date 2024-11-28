@@ -52,25 +52,24 @@
                                         <tr>
                                             <td>MONTO CERTIFICADO</td>
                                             <td>
-                                                {{
-                                                    item.total
-                                                }}
+                                                {{ item.total }}
                                             </td>
                                         </tr>
-                                        <tr>
+                                        <tr class="bg-gray-light">
                                             <td>MONTO A REVERTIR</td>
                                             <td>
-                                                {{
-                                                    item.presupuesto_usarse
-                                                }}
+                                                <input
+                                                    type="number"
+                                                    step="0.01"
+                                                    class="form-control"
+                                                    v-model="item.revertir"
+                                                />
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>SALDO</td>
                                             <td>
-                                                {{
-                                                    item.saldo_total
-                                                }}
+                                                {{ item.saldo_total }}
                                             </td>
                                         </tr>
                                     </template>
@@ -86,7 +85,15 @@
                         data-dismiss="modal"
                         @click="cierraModal"
                     >
-                        Aceptar
+                        Cerrar
+                    </button>
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        data-dismiss="modal"
+                        @click="guardarCambios"
+                    >
+                        Guardar cambios
                     </button>
                 </div>
             </div>
@@ -193,6 +200,27 @@ export default {
         this.bModal = this.muestra_modal;
     },
     methods: {
+        guardarCambios() {
+            axios
+                .post(
+                    "/admin/certificacions/update_revertir/" +
+                        this.oCertificacion.id,
+                    {
+                        certificacion_detalles:
+                            this.oCertificacion.certificacion_detalles,
+                    }
+                )
+                .then((res) => {
+                    this.bModal = false;
+                    Swal.fire({
+                        icon: "success",
+                        title: res.data.msj,
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
+                    this.$emit("close");
+                });
+        },
         getMemoriaOperacion() {
             if (this.oCertificacion.mo_id) {
                 axios

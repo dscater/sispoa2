@@ -4,7 +4,13 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Semaforos - <small>Ejecución fisica por número de actividades</small></h1>
+                        <h1>
+                            Semaforos -
+                            <small
+                                >Ejecución fisica por número de
+                                actividades</small
+                            >
+                        </h1>
                     </div>
                 </div>
             </div>
@@ -35,6 +41,87 @@
                                 </div>
                             </div>
                             <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="row mb-2">
+                                            <div class="col-md-4">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <label
+                                                            >Fecha inicio</label
+                                                        >
+                                                        <input
+                                                            class="form-control"
+                                                            type="date"
+                                                            v-model="
+                                                                filtro.fecha_ini
+                                                            "
+                                                            @change="getResumen"
+                                                            @keyup="getResumen"
+                                                        />
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label
+                                                            >Fecha final</label
+                                                        >
+                                                        <input
+                                                            class="form-control"
+                                                            type="date"
+                                                            v-model="
+                                                                filtro.fecha_fin
+                                                            "
+                                                            @change="getResumen"
+                                                            @keyup="getResumen"
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <label>Mes</label>
+                                                        <select
+                                                            class="form-control"
+                                                            v-model="filtro.mes"
+                                                            @change="getResumen"
+                                                        >
+                                                            <option
+                                                                value="todos"
+                                                            >
+                                                                Todos
+                                                            </option>
+                                                            <option
+                                                                v-for="item in listMeses"
+                                                                :value="
+                                                                    item.value
+                                                                "
+                                                            >
+                                                                {{ item.label }}
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label>Año</label>
+                                                        <select
+                                                            class="form-control"
+                                                            v-model="
+                                                                filtro.anio
+                                                            "
+                                                            @change="getResumen"
+                                                        >
+                                                            <option
+                                                                v-for="item in listAnios"
+                                                                :value="item"
+                                                            >
+                                                                {{ item }}
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <table
                                     class="tabla_detalle"
                                     border="1"
@@ -61,6 +148,63 @@ export default {
                 fullscreen: this.fullscreenLoading,
             }),
             html: "",
+            listMeses: [
+                {
+                    value: "01",
+                    label: "Enero",
+                },
+                {
+                    value: "02",
+                    label: "Febrero",
+                },
+                {
+                    value: "03",
+                    label: "Marzo",
+                },
+                {
+                    value: "04",
+                    label: "Abril",
+                },
+                {
+                    value: "05",
+                    label: "Mayo",
+                },
+                {
+                    value: "06",
+                    label: "Junio",
+                },
+                {
+                    value: "07",
+                    label: "Julio",
+                },
+                {
+                    value: "08",
+                    label: "Agosto",
+                },
+                {
+                    value: "09",
+                    label: "Septiembre",
+                },
+                {
+                    value: "10",
+                    label: "Octubre",
+                },
+                {
+                    value: "11",
+                    label: "Novimebre",
+                },
+                {
+                    value: "12",
+                    label: "Diciembre",
+                },
+            ],
+            listAnios: [],
+            filtro: {
+                fecha_ini: "",
+                fecha_fin: "",
+                mes: "todos",
+                anio: new Date().getFullYear(),
+            },
         };
     },
     mounted() {
@@ -71,8 +215,11 @@ export default {
         // OBTENER EL REGISTRO DETALLE FORMULARIO
         getResumen() {
             axios
-                .get("/admin/semaforos/getResumenSemaforo")
+                .get("/admin/semaforos/getResumenSemaforo", {
+                    params: this.filtro,
+                })
                 .then((response) => {
+                    this.listAnios = response.data.arr_anios;
                     this.html = response.data.html;
                 });
         },

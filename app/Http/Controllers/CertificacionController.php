@@ -73,8 +73,11 @@ class CertificacionController extends Controller
             ->join("operacions", "operacions.id", "=", "memoria_operacions.operacion_id")
             ->join("memoria_operacion_detalles", "memoria_operacion_detalles.id", "=", "certificacion_detalles.mod_id")
             ->join("personals", "personals.id", "=", "certificacions.personal_designado");
-        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "ENLACE" || Auth::user()->tipo == "FINANCIERA") {
+        if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "ENLACE") {
             $certificacions->where("formulario_cuatro.unidad_id", Auth::user()->unidad_id);
+        }
+        if (Auth::user()->tipo  == 'FINANCIERA') {
+            $certificacions->where("certificacions.estado", 'APROBADO');
         }
 
         if ($buscar && trim($buscar)) {
@@ -438,6 +441,18 @@ class CertificacionController extends Controller
 
         $user = Auth::user();
         Log::registrarLog("MODIFICACIÓN", "CERTIFICACIÓN POA", "EL USUARIO $user->id MODIFICÓ EL ESTADO DE UNA CERTIFICACIÓN POA A " . $certificacion->estado, $user);
+
+        return response()->JSON(["sw" => true, "certificacion" => $certificacion, "msj" => "El registro se modificó correctamente"]);
+    }
+
+    public function update_revertir(Certificacion $certificacion, Request $request)
+    {
+        $certificacion_detalles = $request->certificacion_detalles;
+
+        foreach ($certificacion_detalles as $cd) {
+            $certificacion_detalle = CertificacionDetalle::find($cd["id"]);
+            $certificacion_detalle->update(["revertir" => $cd["revertir"]]);
+        }
 
         return response()->JSON(["sw" => true, "certificacion" => $certificacion, "msj" => "El registro se modificó correctamente"]);
     }

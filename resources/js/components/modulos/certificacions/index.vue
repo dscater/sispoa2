@@ -1027,9 +1027,14 @@ export default {
             });
         },
         revertirCertificacion(item) {
-            this.muestra_modal = true;
             this.modal_accion = "nuevo";
             this.oCertificacion = item;
+            this.oCertificacion.certificacion_detalles.forEach((element) => {
+                if (!element.revertir) {
+                    element.revertir = element.presupuesto_usarse;
+                }
+            });
+            this.muestra_modal = true;
         },
         activarCertificacion(id, descripcion) {
             Swal.fire({

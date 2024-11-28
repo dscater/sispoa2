@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Certificacion;
 use App\Models\DetalleFormulario;
 use App\Models\DetalleOperacion;
 use App\Models\Log;
@@ -19,7 +20,7 @@ class SemaforoController extends Controller
         'descripcion' => 'required|min:4',
     ];
 
-    public function index()
+    public function index(Request $request)
     {
         // $semaforos = Semaforo::all();
         // return response()->JSON(["semaforos" => $semaforos, "total" => count($semaforos)]);
@@ -57,12 +58,31 @@ class SemaforoController extends Controller
         ];
 
         $fecha_actual = date("Y-m-d");
+
+        // armar filtro
+        $fecha_ini_fil = $request->fecha_ini;
+        $fecha_fin_fil = $request->fecha_fin;
+        $mes_fil = $request->mes;
+        $anio_fil = $request->anio;
+        $fecha_filtro = $anio_fil;
+        if ($mes_fil != 'todos') {
+            $fecha_filtro .= '-' . $mes_fil;
+        }
+
         foreach ($unidads as $key => $unidad) {
             $detalle_formularios = DetalleFormulario::select("detalle_formularios.*")
                 ->join("formulario_cuatro", "formulario_cuatro.id", "detalle_formularios.formulario_id")
                 ->where("unidad_id", $unidad->id)
-                ->where("detalle_formularios.status", 1)
-                ->get();
+                ->where("detalle_formularios.status", 1);
+
+
+            if ($fecha_ini_fil && $fecha_fin_fil) {
+                $detalle_formularios->whereBetween("detalle_formularios.fecha_registro", [$fecha_ini_fil, $fecha_fin_fil]);
+            } else {
+                $detalle_formularios->where("detalle_formularios.fecha_registro", "LIKE", "$fecha_filtro%");
+            }
+
+            $detalle_formularios = $detalle_formularios->get();
 
             $total_actividades_programadas = 0;
             $total_actividades_ejecutadas = 0;
@@ -115,7 +135,27 @@ class SemaforoController extends Controller
             $html .= "</tr>";
         }
 
+        $certificacion_ini = Certificacion::where("status", 1)->get()->first();
+        $certificacion_fin = Certificacion::where("status", 1)->get()->last();
+
+        $anio_ini = (int)date("Y", strtotime($certificacion_ini->fecha_registro));
+        $anio_fin = (int)date("Y", strtotime($certificacion_fin->fecha_registro));
+        $anio_actual = (int)date("Y");
+        if ($anio_fin < $anio_actual) {
+            $anio_fin = $anio_actual;
+        }
+        $arr_anios = [$anio_fin];
+
+        if ($anio_fin > $anio_ini) {
+            $arr_anios = [];
+            for ($i = $anio_ini; $i <= $anio_fin; $i++) {
+                $arr_anios[] = $i;
+            }
+        }
+
         return response()->JSON([
+            "arr_anios" => $arr_anios,
+            "anio_actual" => $anio_actual,
             "html" => $html
         ]);
     }
@@ -232,7 +272,7 @@ class SemaforoController extends Controller
         }
     }
 
-    public function getResumenSemaforo()
+    public function getResumenSemaforo(Request $request)
     {
         $unidads = Unidad::all();
         if (Auth::user()->tipo == "JEFES DE UNIDAD" || Auth::user()->tipo == "DIRECTORES" || Auth::user()->tipo == "JEFES DE ÁREAS" || Auth::user()->tipo == "ENLACE" || Auth::user()->tipo == "FINANCIERA") {
@@ -273,12 +313,30 @@ class SemaforoController extends Controller
         $total2 = 0;
         $total3 = 0;
 
+        // armar filtro
+        $fecha_ini_fil = $request->fecha_ini;
+        $fecha_fin_fil = $request->fecha_fin;
+        $mes_fil = $request->mes;
+        $anio_fil = $request->anio;
+        $fecha_filtro = $anio_fil;
+        if ($mes_fil != 'todos') {
+            $fecha_filtro .= '-' . $mes_fil;
+        }
+
+
         foreach ($unidads as $key => $unidad) {
             $detalle_formularios = DetalleFormulario::select("detalle_formularios.*")
                 ->join("formulario_cuatro", "formulario_cuatro.id", "detalle_formularios.formulario_id")
                 ->where("unidad_id", $unidad->id)
-                ->where("detalle_formularios.status", 1)
-                ->get();
+                ->where("detalle_formularios.status", 1);
+
+            if ($fecha_ini_fil && $fecha_fin_fil) {
+                $detalle_formularios->whereBetween("detalle_formularios.fecha_registro", [$fecha_ini_fil, $fecha_fin_fil]);
+            } else {
+                $detalle_formularios->where("detalle_formularios.fecha_registro", "LIKE", "$fecha_filtro%");
+            }
+
+            $detalle_formularios = $detalle_formularios->get();
 
             $total_operaciones = 0;
             $total_operaciones_fecha = 0;
@@ -390,7 +448,27 @@ class SemaforoController extends Controller
         </tr>';
         $html .= "</tbody>";
         $html .= "</table>";
+
+        $certificacion_ini = Certificacion::where("status", 1)->get()->first();
+        $certificacion_fin = Certificacion::where("status", 1)->get()->last();
+
+        $anio_ini = (int)date("Y", strtotime($certificacion_ini->fecha_registro));
+        $anio_fin = (int)date("Y", strtotime($certificacion_fin->fecha_registro));
+        $anio_actual = (int)date("Y");
+        if ($anio_fin < $anio_actual) {
+            $anio_fin = $anio_actual;
+        }
+        $arr_anios = [$anio_fin];
+
+        if ($anio_fin > $anio_ini) {
+            $arr_anios = [];
+            for ($i = $anio_ini; $i <= $anio_fin; $i++) {
+                $arr_anios[] = $i;
+            }
+        }
+
         return response()->JSON([
+            "arr_anios" => $arr_anios,
             "html" => $html
         ]);
     }
